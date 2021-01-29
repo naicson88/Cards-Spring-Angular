@@ -1,0 +1,222 @@
+package com.naicson.yugioh.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tab_cards")
+public class Card {
+	
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	private String numero;
+	private String categoria;
+	private String nome;
+	private String atributo;
+	private String propriedade;
+	private Integer nivel;
+	private String tipos;
+	private Integer atk;
+	private Integer def;
+	private String condicao;
+	@Column(columnDefinition="text")
+	private String descricao;
+	private String imagem;
+	private String raridade;
+	private Integer pend_right;
+	private Integer pend_left;
+	@Column(columnDefinition="text")
+	private String descr_pendulum;
+	private String arquetipo;
+	private String qtd_link;
+	
+	public Card() {
+		
+	}
+	
+	public Card(Integer id, String numero, String categoria, String nome, String atributo, String propriedade, Integer nivel,
+			String tipos, Integer atk, Integer def, String condicao, String descricao, String imagem, String raridade,
+			Integer pend_right, Integer pend_left, String descr_pendulum, String arquetipo, String qtd_link) {
+		super();
+		this.id = id;
+		this.numero = numero;
+		this.categoria = categoria;
+		this.nome = nome;
+		this.atributo = atributo;
+		this.propriedade = propriedade;
+		this.nivel = nivel;
+		this.tipos = tipos;
+		this.atk = atk;
+		this.def = def;
+		this.condicao = condicao;
+		this.descricao = descricao;
+		this.imagem = imagem;
+		this.raridade = raridade;
+		this.pend_right = pend_right;
+		this.pend_left = pend_left;
+		this.descr_pendulum = descr_pendulum;
+		this.arquetipo = arquetipo;
+		this.qtd_link = qtd_link;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getAtributo() {
+		return atributo;
+	}
+
+	public void setAtributo(String atributo) {
+		this.atributo = atributo;
+	}
+
+	public String getPropriedade() {
+		return propriedade;
+	}
+
+	public void setPropriedade(String propriedade) {
+		this.propriedade = propriedade;
+	}
+
+	public Integer getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(Integer nivel) {
+		this.nivel = nivel;
+	}
+
+	public String getTipos() {
+		return tipos;
+	}
+
+	public void setTipos(String tipos) {
+		this.tipos = tipos;
+	}
+
+	public Integer getAtk() {
+		return atk;
+	}
+
+	public void setAtk(Integer atk) {
+		this.atk = atk;
+	}
+
+	public Integer getDef() {
+		return def;
+	}
+
+	public void setDef(Integer def) {
+		this.def = def;
+	}
+
+	public String getCondicao() {
+		return condicao;
+	}
+
+	public void setCondicao(String condicao) {
+		this.condicao = condicao;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
+	public String getRaridade() {
+		return raridade;
+	}
+
+	public void setRaridade(String raridade) {
+		this.raridade = raridade;
+	}
+
+	public Integer getPend_right() {
+		return pend_right;
+	}
+
+	public void setPend_right(Integer pend_right) {
+		this.pend_right = pend_right;
+	}
+
+	public Integer getPend_left() {
+		return pend_left;
+	}
+
+	public void setPend_left(Integer pend_left) {
+		this.pend_left = pend_left;
+	}
+
+	public String getDescr_pendulum() {
+		return descr_pendulum;
+	}
+
+	public void setDescr_pendulum(String descr_pendulum) {
+		this.descr_pendulum = descr_pendulum;
+	}
+
+	public String getArquetipo() {
+		return arquetipo;
+	}
+
+	public void setArquetipo(String arquetipo) {
+		this.arquetipo = arquetipo;
+	}
+
+	public String getQtd_link() {
+		return qtd_link;
+	}
+
+	public void setQtd_link(String qtd_link) {
+		this.qtd_link = qtd_link;
+	}
+	
+	
+	
+}
