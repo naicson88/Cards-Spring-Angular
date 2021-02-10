@@ -18,6 +18,7 @@ public class Card {
 	private String numero;
 	private String categoria;
 	private String nome;
+	private String nomePortugues;
 	private String atributo;
 	private String propriedade;
 	private Integer nivel;
@@ -27,27 +28,33 @@ public class Card {
 	private String condicao;
 	@Column(columnDefinition="text")
 	private String descricao;
+	@Column(columnDefinition="text")
+	private String descricaoPortugues;
 	private String imagem;
 	private String raridade;
 	private Integer pend_right;
 	private Integer pend_left;
 	@Column(columnDefinition="text")
 	private String descr_pendulum;
+	@Column(columnDefinition="text")
+	private String descr_pendulum_pt;
 	private String arquetipo;
 	private String qtd_link;
 	
 	public Card() {
 		
 	}
-	
-	public Card(Integer id, String numero, String categoria, String nome, String atributo, String propriedade, Integer nivel,
-			String tipos, Integer atk, Integer def, String condicao, String descricao, String imagem, String raridade,
-			Integer pend_right, Integer pend_left, String descr_pendulum, String arquetipo, String qtd_link) {
+
+	public Card(Integer id, String numero, String categoria, String nome, String nomePortgues, String atributo,
+			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
+			String descricao, String imagem, String raridade, Integer pend_right, Integer pend_left,
+			String descr_pendulum, String arquetipo, String qtd_link) {
 		super();
 		this.id = id;
 		this.numero = numero;
 		this.categoria = categoria;
 		this.nome = nome;
+		this.nomePortugues = nomePortgues;
 		this.atributo = atributo;
 		this.propriedade = propriedade;
 		this.nivel = nivel;
@@ -64,6 +71,8 @@ public class Card {
 		this.arquetipo = arquetipo;
 		this.qtd_link = qtd_link;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -215,6 +224,14 @@ public class Card {
 
 	public void setQtd_link(String qtd_link) {
 		this.qtd_link = qtd_link;
+	}
+
+	public String getNomePortgues() {
+		return nomePortugues;
+	}
+
+	public void setNomePortgues(String nomePortgues) {
+		this.nomePortugues = nomePortgues;
 	}
 	
 	
