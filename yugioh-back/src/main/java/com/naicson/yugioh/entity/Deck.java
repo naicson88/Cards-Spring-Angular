@@ -3,12 +3,14 @@ package com.naicson.yugioh.entity;
 
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -29,16 +31,17 @@ public class Deck {
 	private Integer qtd_super_raras;
 	private Integer qtd_ulta_raras;
 	private Date lancamento;
-	
+	@Transient
+	private List<Card> cards;
 	
 	public Deck() {
 		
 	}
 	
 	
-
+	
 	public Deck(Long id, String nome, String imagem, String nomePortugues, Integer qtd_cards, Integer qtd_comuns,
-			Integer qtd_raras, Integer qtd_super_raras, Integer qtd_ulta_raras, Date lancamento) {
+			Integer qtd_raras, Integer qtd_super_raras, Integer qtd_ulta_raras, Date lancamento, List<Card> cards) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -50,6 +53,7 @@ public class Deck {
 		this.qtd_super_raras = qtd_super_raras;
 		this.qtd_ulta_raras = qtd_ulta_raras;
 		this.lancamento = lancamento;
+		this.cards = cards;
 	}
 
 
@@ -132,6 +136,24 @@ public class Deck {
 
 	public void setLancamento(Date lancamento) {
 		this.lancamento = lancamento;
+	}
+
+	public List<Card> getCards() {
+		return cards;
+	}
+	
+	public void setCards(List<Card> cards) {
+		this.cards = cards;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Deck [id=" + id + ", nome=" + nome + ", imagem=" + imagem + ", nomePortugues=" + nomePortugues
+				+ ", qtd_cards=" + qtd_cards + ", qtd_comuns=" + qtd_comuns + ", qtd_raras=" + qtd_raras
+				+ ", qtd_super_raras=" + qtd_super_raras + ", qtd_ulta_raras=" + qtd_ulta_raras + ", lancamento="
+				+ lancamento + ", cards=" + cards + "]";
 	}
 
 	

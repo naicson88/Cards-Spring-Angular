@@ -14,4 +14,5 @@ public interface CardRepository extends JpaRepository<Card, Integer>{
 	Card findById(int id);
 	Card save (Card card);
 	void delete (Card card);
+
 }

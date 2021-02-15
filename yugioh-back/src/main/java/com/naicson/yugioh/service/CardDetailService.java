@@ -14,4 +14,5 @@ public interface CardDetailService {
 	Card add(Card card);
 	Card editar(Card card);
 	Card deletar (int id);
+	
 }
