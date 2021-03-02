@@ -1,15 +1,18 @@
 package com.naicson.yugioh.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tab_cards")
-public class Card {
+public class Card extends Sets {
 	
 	@Id
 	@Column
@@ -32,23 +35,25 @@ public class Card {
 	private String descricaoPortugues;
 	private String imagem;
 	private String raridade;
-	private Integer pend_right;
-	private Integer pend_left;
+	private Integer escala;
 	@Column(columnDefinition="text")
 	private String descr_pendulum;
 	@Column(columnDefinition="text")
 	private String descr_pendulum_pt;
 	private String arquetipo;
 	private String qtd_link;
-	
+	@Transient
+	private Sets sets;
+
+
 	public Card() {
-		
+		super();
 	}
 
 	public Card(Integer id, String numero, String categoria, String nome, String nomePortgues, String atributo,
 			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
-			String descricao, String imagem, String raridade, Integer pend_right, Integer pend_left,
-			String descr_pendulum, String arquetipo, String qtd_link) {
+			String descricao, String imagem, String raridade, Integer escala, 
+			String descr_pendulum, String arquetipo, String qtd_link, Sets sets) {
 		super();
 		this.id = id;
 		this.numero = numero;
@@ -65,14 +70,45 @@ public class Card {
 		this.descricao = descricao;
 		this.imagem = imagem;
 		this.raridade = raridade;
-		this.pend_right = pend_right;
-		this.pend_left = pend_left;
+		this.escala = escala;
 		this.descr_pendulum = descr_pendulum;
 		this.arquetipo = arquetipo;
 		this.qtd_link = qtd_link;
+		this.sets = sets;
 	}
 
+	
+	public String getNomePortugues() {
+		return nomePortugues;
+	}
 
+	public void setNomePortugues(String nomePortugues) {
+		this.nomePortugues = nomePortugues;
+	}
+
+	public String getDescricaoPortugues() {
+		return descricaoPortugues;
+	}
+
+	public void setDescricaoPortugues(String descricaoPortugues) {
+		this.descricaoPortugues = descricaoPortugues;
+	}
+
+	public String getDescr_pendulum_pt() {
+		return descr_pendulum_pt;
+	}
+
+	public void setDescr_pendulum_pt(String descr_pendulum_pt) {
+		this.descr_pendulum_pt = descr_pendulum_pt;
+	}
+
+	public Sets getSets() {
+		return sets;
+	}
+
+	public void setSets(Sets sets) {
+		this.sets = sets;
+	}
 
 	public Integer getId() {
 		return id;
@@ -186,20 +222,12 @@ public class Card {
 		this.raridade = raridade;
 	}
 
-	public Integer getPend_right() {
-		return pend_right;
+	public Integer getEscala() {
+		return escala;
 	}
 
-	public void setPend_right(Integer pend_right) {
-		this.pend_right = pend_right;
-	}
-
-	public Integer getPend_left() {
-		return pend_left;
-	}
-
-	public void setPend_left(Integer pend_left) {
-		this.pend_left = pend_left;
+	public void setEscala(Integer escala) {
+		this.escala = escala;
 	}
 
 	public String getDescr_pendulum() {

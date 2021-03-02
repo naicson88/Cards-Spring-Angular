@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.Sets;
 import com.naicson.yugioh.service.CardDetailService;
+
 
 @RestController
 @RequestMapping({"yugiohAPI/cards"})
@@ -36,7 +39,17 @@ public class CardController {
 	
 	@GetMapping(path = {"/{id}"})
 	public Card listarId(@PathVariable("id") int id) {
+		
 		return cardService.listarId(id);
+	}
+	
+	@GetMapping(path = {"number/{cardNumero}"})
+	public Card procuraPorCardNumero(@PathVariable("cardNumero") String cardNumero) {
+		List<Deck> deck_set = cardService.cardDecks(cardNumero);
+		Card card = cardService.encontrarPorNumero(cardNumero);
+		card.setSet_decks(deck_set);
+		return card;
+		
 	}
 	
 	@PutMapping(path = {"/{id}"})
@@ -49,4 +62,10 @@ public class CardController {
 	public Card card (@PathVariable("id") int id) {
 		return cardService.deletar(id);
 	}
+	
+	/*@GetMapping(path = "/{id}")
+	public Card cardDetails(@PathVariable("id") Integer id) {
+		return cardService.cardDetails(id);
+	}*/
+	
 }

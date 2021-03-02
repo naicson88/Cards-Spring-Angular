@@ -19,7 +19,6 @@ public class DeckServiceImpl implements DeckDetailService {
 	@Autowired
 	 EntityManager em;
 	
-
 	public Deck deck (Long deckId) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId", Deck.class);			
 				Deck deck = (Deck)  query.setParameter("deckId", deckId).getSingleResult();

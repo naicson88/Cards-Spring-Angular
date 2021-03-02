@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.Sets;
 
 @Service
 public interface CardDetailService {
@@ -15,4 +17,8 @@ public interface CardDetailService {
 	Card editar(Card card);
 	Card deletar (int id);
 	
+	Card cardDetails(Integer id);
+	List<Deck> cardDecks(String cardNumero);
+	
+	Card encontrarPorNumero(String numero);
 }
