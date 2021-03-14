@@ -26,8 +26,17 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	public List<Card> cardsOfDeck(Long deckId){	
-		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN"
-				+ " (SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)", Card.class);			
+		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n" + 
+				"(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + 
+				"order by case\r\n" + 
+				"when categoria LIKE 'link monster' then 1\r\n" + 
+				"when categoria like 'XYZ Monster' then 2\r\n" + 
+				"when categoria like 'Fusion Monster' then 3\r\n" + 
+				"when categoria like 'Synchro Monster' then 4\r\n" + 
+				"when categoria LIKE '%monster%' then 5\r\n" + 
+				"when categoria = 'Spell Card' then 6\r\n" + 
+				"ELSE    7\r\n" + 
+				"END", Card.class);			
 				List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 				return cards;			
 	}
