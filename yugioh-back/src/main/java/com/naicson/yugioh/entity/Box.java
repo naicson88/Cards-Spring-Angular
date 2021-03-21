@@ -18,6 +18,7 @@ public class Box {
 	private String nome;
 	private String imagem;
 	private String nomePortugues;
+	public String name;
 	
 	public Box() {
 		

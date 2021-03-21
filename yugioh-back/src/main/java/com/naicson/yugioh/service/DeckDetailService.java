@@ -1,6 +1,9 @@
 package com.naicson.yugioh.service;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
@@ -14,4 +17,8 @@ public interface DeckDetailService {
 	
 	Deck deck(Long deckId);
 	List<Card> cardsOfDeck(Long deckId);
+	
+
+	 int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,
+			String card_price) throws SQLException ;
 }

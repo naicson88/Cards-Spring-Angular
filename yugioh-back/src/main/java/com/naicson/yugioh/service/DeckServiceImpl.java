@@ -1,14 +1,17 @@
 package com.naicson.yugioh.service;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.QueryHint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
@@ -32,7 +35,7 @@ public class DeckServiceImpl implements DeckDetailService {
 				"when categoria LIKE 'link monster' then 1\r\n" + 
 				"when categoria like 'XYZ Monster' then 2\r\n" + 
 				"when categoria like 'Fusion Monster' then 3\r\n" + 
-				"when categoria like 'Synchro Monster' then 4\r\n" + 
+				"when categoria like '%Synchro%' then 4\r\n" + 
 				"when categoria LIKE '%monster%' then 5\r\n" + 
 				"when categoria = 'Spell Card' then 6\r\n" + 
 				"ELSE    7\r\n" + 
@@ -61,6 +64,23 @@ public class DeckServiceImpl implements DeckDetailService {
 			  
 			  return deckList;		
 	} */ 
+	
+	@Override
+	@Transactional
+	public int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,
+			String card_price) throws SQLException {
+	
+		Query query = em.createNativeQuery("INSERT INTO tab_rel_deck_cards VALUES (:deck_id,:card_numero,:card_raridade,:card_set_code,:card_price)")
+				.setParameter("deck_id", deck_id)
+				.setParameter("card_numero", card_numero)
+				.setParameter("card_raridade", card_raridade)
+				.setParameter("card_set_code", card_set_code)
+				.setParameter("card_price",  Double.parseDouble(card_price));
+		
+		System.out.println(query);
+						
+		return query.executeUpdate();
+	}
 
 	@Override
 	public List<Deck> findByNomeContaining(String nomeDeck) {
