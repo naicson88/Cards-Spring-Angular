@@ -18,7 +18,7 @@ public class Card extends Sets {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String numero;
+	private Integer numero;
 	private String categoria;
 	private String nome;
 	private String nomePortugues;
@@ -50,7 +50,7 @@ public class Card extends Sets {
 		super();
 	}
 
-	public Card(Integer id, String numero, String categoria, String nome, String nomePortgues, String atributo,
+	public Card(Integer id, Integer numero, String categoria, String nome, String nomePortgues, String atributo,
 			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
 			String descricao, String imagem, String raridade, Integer escala, 
 			String descr_pendulum, String arquetipo, String qtd_link, Sets sets) {
@@ -118,11 +118,11 @@ public class Card extends Sets {
 		this.id = id;
 	}
 
-	public String getNumero() {
+	public Integer getNumero() {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(Integer numero) {
 		this.numero = numero;
 	}
 

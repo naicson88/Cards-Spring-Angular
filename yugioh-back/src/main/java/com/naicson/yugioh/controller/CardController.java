@@ -38,13 +38,17 @@ public class CardController {
 	}
 	
 	@GetMapping(path = {"/{id}"})
-	public Card listarId(@PathVariable("id") int id) {
-		
+	public Card listarId(@PathVariable("id") Integer id) {	
 		return cardService.listarId(id);
 	}
 	
+	@GetMapping(path = {"/{numero}"})
+	public Card listarNumero(@PathVariable("numero") Integer numero) {
+		return cardService.listarNumero(numero);
+	}
+	
 	@GetMapping(path = {"number/{cardNumero}"})
-	public Card procuraPorCardNumero(@PathVariable("cardNumero") String cardNumero) {
+	public Card procuraPorCardNumero(@PathVariable("cardNumero") Integer cardNumero) {
 		List<Deck> deck_set = cardService.cardDecks(cardNumero);
 		Card card = cardService.encontrarPorNumero(cardNumero);
 		card.setSet_decks(deck_set);
@@ -53,7 +57,7 @@ public class CardController {
 	}
 	
 	@PutMapping(path = {"/{id}"})
-	public Card editar(@RequestBody Card card, @PathVariable("id") int id) {
+	public Card editar(@RequestBody Card card, @PathVariable("id") Integer id) {
 		card.setId(id);
 		return cardService.editar(card);
 	}

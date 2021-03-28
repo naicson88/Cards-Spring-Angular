@@ -13,12 +13,12 @@ public interface CardDetailService {
 	
 	List<Card> listar();
 	Card listarId(int id);
+	Card listarNumero(Integer numero);
 	Card add(Card card);
 	Card editar(Card card);
 	Card deletar (int id);
 	
 	Card cardDetails(Integer id);
-	List<Deck> cardDecks(String cardNumero);
-	
-	Card encontrarPorNumero(String numero);
+	List<Deck> cardDecks(Integer cardNumero);	
+	Card encontrarPorNumero(Integer numero);
 }

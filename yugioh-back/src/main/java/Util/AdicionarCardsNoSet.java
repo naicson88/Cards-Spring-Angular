@@ -35,7 +35,7 @@ public  class AdicionarCardsNoSet {
 	@Autowired
 	 EntityManager em;
 	
-	@EventListener(ContextRefreshedEvent.class)	
+	//@EventListener(ContextRefreshedEvent.class)	
 
 	public  void InserirNosSets() {
 		try {

@@ -9,3 +9,4 @@ public interface UtilitariosService {
 	
   void InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code, String card_price) throws SQLException;
 }
+

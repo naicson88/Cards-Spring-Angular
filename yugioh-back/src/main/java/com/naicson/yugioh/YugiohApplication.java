@@ -12,10 +12,7 @@ public class YugiohApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(YugiohApplication.class, args);
-		
-		AdicionarCardsNoSet add = new AdicionarCardsNoSet();
-		
-		add.InserirNosSets();
+
 	}
 
 }

@@ -28,7 +28,7 @@ public class CardServiceImpl implements CardDetailService {
 		return card;
 	}	
 	
-	public List<Deck> cardDecks(String cardNumero) {
+	public List<Deck> cardDecks(Integer cardNumero) {
 		Query query = em.createNativeQuery("SELECT *\r\n" + 
 				" FROM tab_decks deck \r\n" + 
 				"inner join TAB_REL_DECK_CARDS decks on deck.id = decks.deck_id\r\n" + 
@@ -52,7 +52,7 @@ public class CardServiceImpl implements CardDetailService {
 
 	@Override
 	public Card add(Card card) {
-		// TODO Auto-generated method stub
+
 		return cardRepository.save(card);
 	}
 
@@ -74,7 +74,12 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public Card encontrarPorNumero(String numero) {
+	public Card encontrarPorNumero(Integer numero) {
+		return cardRepository.findByNumero(numero);
+	}
+
+	@Override
+	public Card listarNumero(Integer numero) {
 		return cardRepository.findByNumero(numero);
 	}
 	
