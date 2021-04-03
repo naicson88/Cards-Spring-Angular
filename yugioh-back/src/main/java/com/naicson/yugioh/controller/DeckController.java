@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
 
@@ -38,8 +39,11 @@ public class DeckController {
 	@GetMapping(path = {"/{id}"})
 	public Deck deckAndCards(@PathVariable("id") Long id) {
 		List<Card> cardList = deckService.cardsOfDeck(id);
+		List <RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
 		Deck deck = deckService.deck(id);
 		deck.setCards(cardList);
+		deck.setRel_deck_cards(rel_deck_cards);
+		
 		return deck;
 		//return deckRepository.findById(id);
 	}

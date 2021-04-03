@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.RelDeckCards;
 
 @Service
 public class DeckServiceImpl implements DeckDetailService {
@@ -27,7 +28,8 @@ public class DeckServiceImpl implements DeckDetailService {
 				Deck deck = (Deck)  query.setParameter("deckId", deckId).getSingleResult();
 				return deck;
 	}
-
+	
+	//Traz informações completas dos cards contidos num deck
 	public List<Card> cardsOfDeck(Long deckId){	
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n" + 
 				"(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + 
@@ -44,27 +46,15 @@ public class DeckServiceImpl implements DeckDetailService {
 				return cards;			
 	}
 	
-	/*
-	public List<Deck> countNumberOfCards(Long deckId) {	
+	//Traz informações darelação entre o deck e os cards
+	public List<RelDeckCards> relDeckAndCards(Long deck_id) {	
+		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
+				RelDeckCards.class);
+		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).getResultList();
 		
-		Query query = em.createNativeQuery("SELECT count(rel.card_id) qtd_total, comuns.qtd_comuns, raros.qtd_raros, sraros.qtd_sraros, uraros.qtd_uraros\r\n" + 
-				" from tab_decks as deck\r\n" + 
-				"inner join tab_rel_deck_cards rel on rel.deck_id = deck.id \r\n" + 
-				"left join (SELECT COUNT(RARIDADE) as qtd_comuns, deck_id FROM tab_rel_deck_cards WHERE DECK_ID = :deckId AND raridade = 'common') \r\n" + 
-				"as comuns on comuns.deck_id = deck.id\r\n" + 
-				"left join (SELECT COUNT(RARIDADE) as qtd_raros, deck_id FROM tab_rel_deck_cards WHERE DECK_ID = :deckId  AND raridade = 'Rare')\r\n" + 
-				" as raros on raros.deck_id = deck.id\r\n" + 
-				"left join (SELECT COUNT(RARIDADE) as qtd_sraros, deck_id FROM tab_rel_deck_cards WHERE DECK_ID = :deckId  AND raridade = 'Super Rare')\r\n" + 
-				" as sraros on sraros.deck_id = deck.id\r\n" + 
-				" left join (SELECT COUNT(RARIDADE) as qtd_uraros, deck_id FROM tab_rel_deck_cards WHERE DECK_ID = :deckId  AND raridade = 'Ultra Rare')\r\n" + 
-				" as uraros on uraros.deck_id = deck.id\r\n" + 
-				"where rel.deck_id = :deckId ");
-				 
-			  List<Deck> deckList = query.setParameter("deckId", deckId).getResultList();
-			  
-			  return deckList;		
-	} */ 
-	
+		return rel;
+	}
+		
 	@Override
 	@Transactional
 	public int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,

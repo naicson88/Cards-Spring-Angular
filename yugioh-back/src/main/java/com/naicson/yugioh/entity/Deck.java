@@ -36,9 +36,7 @@ public class Deck {
 	@Transient
 	private List<Card> cards;
 	@Transient
-	private String card_set_code;
-	@Transient
-	private Float card_price;
+	private List<RelDeckCards> rel_deck_cards;
 	
 	public Deck() {
 		
@@ -60,25 +58,15 @@ public class Deck {
 		this.qtd_secret_raras = qtd_secret_raras;
 		this.lancamento = lancamento;
 		this.cards = cards;
-		this.card_set_code = card_set_code;
-		this.card_price = card_price;
+
+	}
+		
+	public List<RelDeckCards> getRel_deck_cards() {
+		return rel_deck_cards;
 	}
 
-
-	public String getCard_set_code() {
-		return card_set_code;
-	}
-
-	public void setCard_set_code(String card_set_code) {
-		this.card_set_code = card_set_code;
-	}
-
-	public Float getCard_price() {
-		return card_price;
-	}
-
-	public void setCard_price(Float card_price) {
-		this.card_price = card_price;
+	public void setRel_deck_cards(List<RelDeckCards> rel_deck_cards) {
+		this.rel_deck_cards = rel_deck_cards;
 	}
 
 	public Long getId() {
