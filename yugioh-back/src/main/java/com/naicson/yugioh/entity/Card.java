@@ -44,6 +44,7 @@ public class Card extends Sets {
 	private String qtd_link;
 	@Transient
 	private Sets sets;
+	private String generic_type;
 
 
 	public Card() {
@@ -53,7 +54,7 @@ public class Card extends Sets {
 	public Card(Integer id, Integer numero, String categoria, String nome, String nomePortgues, String atributo,
 			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
 			String descricao, String imagem, String raridade, Integer escala, 
-			String descr_pendulum, String arquetipo, String qtd_link, Sets sets) {
+			String descr_pendulum, String arquetipo, String qtd_link, Sets sets, String generic_type) {
 		super();
 		this.id = id;
 		this.numero = numero;
@@ -75,9 +76,19 @@ public class Card extends Sets {
 		this.arquetipo = arquetipo;
 		this.qtd_link = qtd_link;
 		this.sets = sets;
+		this.generic_type = generic_type;
+	}
+	
+	
+	
+	public String getGeneric_type() {
+		return generic_type;
 	}
 
-	
+	public void setGeneric_type(String generic_type) {
+		this.generic_type = generic_type;
+	}
+
 	public String getNomePortugues() {
 		return nomePortugues;
 	}
