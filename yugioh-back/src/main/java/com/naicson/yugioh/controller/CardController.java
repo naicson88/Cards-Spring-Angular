@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.entity.Sets;
 import com.naicson.yugioh.service.CardDetailService;
+import com.naicson.yugioh.service.DeckServiceImpl;
 
 
 @RestController
@@ -26,6 +28,8 @@ public class CardController {
 	
 	@Autowired
 	CardDetailService cardService;
+	@Autowired
+	DeckServiceImpl deckService;
 	
 	@GetMapping
 	public List<Card> listar(){
@@ -50,8 +54,15 @@ public class CardController {
 	@GetMapping(path = {"number/{cardNumero}"})
 	public Card procuraPorCardNumero(@PathVariable("cardNumero") Integer cardNumero) {
 		List<Deck> deck_set = cardService.cardDecks(cardNumero);
+		
 		Card card = cardService.encontrarPorNumero(cardNumero);
 		card.setSet_decks(deck_set);
+		
+		for(Deck rel : deck_set) {
+			List<RelDeckCards> rels = deckService.relDeckAndCards(rel.getId(), cardNumero);
+			rel.setRel_deck_cards(rels);
+		}
+		
 		return card;
 		
 	}

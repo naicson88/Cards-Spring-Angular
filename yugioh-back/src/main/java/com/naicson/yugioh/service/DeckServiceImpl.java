@@ -46,11 +46,20 @@ public class DeckServiceImpl implements DeckDetailService {
 				return cards;			
 	}
 	
-	//Traz informações darelação entre o deck e os cards
+	//Traz informações da relação entre o deck e os cards
 	public List<RelDeckCards> relDeckAndCards(Long deck_id) {	
 		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
 				RelDeckCards.class);
 		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).getResultList();
+		
+		return rel;
+	}
+	
+	//Preenche o deck apenas com a relação de card que contenha esse card number e mostra na tela de detalhes do Card
+	public List<RelDeckCards> relDeckAndCards(Long deck_id, Integer card_number) {	
+		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number",
+				RelDeckCards.class);
+		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).setParameter("card_number", card_number).getResultList();
 		
 		return rel;
 	}

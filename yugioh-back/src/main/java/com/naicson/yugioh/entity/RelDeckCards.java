@@ -14,6 +14,7 @@ public class RelDeckCards {
 	private Integer card_numero;
 	private String card_set_code;
 	private Double card_price;
+	private String card_raridade;
 	
 	public Integer getId() {
 		return id;
@@ -44,5 +45,11 @@ public class RelDeckCards {
 	}
 	public void setCard_price(Double card_price) {
 		this.card_price = card_price;
+	}
+	public String getCard_raridade() {
+		return card_raridade;
+	}
+	public void setCard_raridade(String card_raridade) {
+		this.card_raridade = card_raridade;
 	}	
 }
