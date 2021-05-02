@@ -1,5 +1,6 @@
 package com.naicson.yugioh.service;
 
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +17,7 @@ public class UserDetailsImpl implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String userName;
+	private String username;
 	private String email;
 	@JsonIgnore
 	private String password;
@@ -27,7 +28,7 @@ public class UserDetailsImpl implements UserDetails{
 			Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.id = id;
-		this.userName = userName;
+		this.username = userName;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
@@ -35,52 +36,75 @@ public class UserDetailsImpl implements UserDetails{
 	
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
-			.map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
-			.collect(Collectors.toList());
+				.map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
+				.collect(Collectors.toList());
+		
 		
 		return new UserDetailsImpl(user.getId(), user.getUserName(), user.getEmail(), user.getPassword(), authorities);
 	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+
+	public int getId() {
+		return id;
 	}
 
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -92,4 +116,5 @@ public class UserDetailsImpl implements UserDetails{
 		UserDetailsImpl user = (UserDetailsImpl) o;
 		return Objects.equals(id, user.id);
 	}
+	
 }

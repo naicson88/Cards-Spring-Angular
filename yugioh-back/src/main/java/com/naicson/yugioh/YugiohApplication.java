@@ -1,3 +1,4 @@
+
 package com.naicson.yugioh;
 
 import org.springframework.boot.SpringApplication;

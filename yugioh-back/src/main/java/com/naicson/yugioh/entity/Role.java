@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private ERole roleName;
@@ -23,11 +23,17 @@ public class Role {
 		
 	}
 
+	public Role(Integer id, ERole roleName) {
+		super();
+		this.id = id;
+		this.roleName = roleName;
+	}
+
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -37,6 +43,11 @@ public class Role {
 
 	public void setRoleName(ERole roleName) {
 		this.roleName = roleName;
+	}
+
+	public Object stream() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
