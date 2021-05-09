@@ -1,15 +1,14 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
-import javax.persistence.QueryHint;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,8 @@ import com.naicson.yugioh.entity.RelDeckCards;
 @Service
 public class DeckServiceImpl implements DeckDetailService {
 	
-	@Autowired
+	//@Autowired
+	@PersistenceContext
 	 EntityManager em;
 	
 	public Deck deck (Long deckId) {
@@ -30,6 +30,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 	
 	//Traz informações completas dos cards contidos num deck
+	@Transactional
 	public List<Card> cardsOfDeck(Long deckId){	
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n" + 
 				"(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + 
@@ -47,6 +48,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 	
 	//Traz informações da relação entre o deck e os cards
+	@Transactional
 	public List<RelDeckCards> relDeckAndCards(Long deck_id) {	
 		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
 				RelDeckCards.class);
@@ -56,6 +58,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 	
 	//Preenche o deck apenas com a relação de card que contenha esse card number e mostra na tela de detalhes do Card
+	@Transactional
 	public List<RelDeckCards> relDeckAndCards(Long deck_id, Integer card_number) {	
 		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number",
 				RelDeckCards.class);
