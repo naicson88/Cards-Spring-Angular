@@ -82,5 +82,10 @@ public class CardServiceImpl implements CardDetailService {
 	public Card listarNumero(Integer numero) {
 		return cardRepository.findByNumero(numero);
 	}
+
+	@Override
+	public List<Card> encontrarPorArchetype(int archId) {
+		return cardRepository.findByArchetype(archId);
+	}
 	
 }

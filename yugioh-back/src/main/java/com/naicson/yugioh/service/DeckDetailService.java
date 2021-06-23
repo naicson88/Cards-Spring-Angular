@@ -15,9 +15,8 @@ public interface DeckDetailService {
 	
 	List<Deck> findByNomeContaining(String nomeDeck);
 	
-	Deck deck(Long deckId);
-	List<Card> cardsOfDeck(Long deckId);
-	
+	Deck deck(Integer deckId);
+	List<Card> cardsOfDeck(Integer deckId);
 
 	 int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,
 			String card_price) throws SQLException ;

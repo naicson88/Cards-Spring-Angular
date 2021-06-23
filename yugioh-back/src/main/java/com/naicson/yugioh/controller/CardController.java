@@ -76,7 +76,7 @@ public class CardController {
 	@DeleteMapping(path = {"/{id}"})
 	public Card card (@PathVariable("id") int id) {
 		return cardService.deletar(id);
-	}
+	}	
 	
 	/*@GetMapping(path = "/{id}")
 	public Card cardDetails(@PathVariable("id") Integer id) {

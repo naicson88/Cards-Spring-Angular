@@ -21,4 +21,6 @@ public interface CardDetailService {
 	Card cardDetails(Integer id);
 	List<Deck> cardDecks(Integer cardNumero);	
 	Card encontrarPorNumero(Integer numero);
+	
+	List<Card> encontrarPorArchetype(int archId);
 }

@@ -17,8 +17,9 @@ public class Archetype {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String name;
+	private int id;
+	@Column(name = "arc_name")
+	private String arcName;
 	
 	@Transient
 	private List<Card> arrayCards;
@@ -28,22 +29,41 @@ public class Archetype {
 	public Archetype() {
 		
 	}
-
-	public Integer getId() {
+	
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getArcName() {
+		return arcName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setArcName(String arcName) {
+		this.arcName = arcName;
 	}
+
+	public List<Card> getArrayCards() {
+		return arrayCards;
+	}
+
+	public void setArrayCards(List<Card> arrayCards) {
+		this.arrayCards = arrayCards;
+	}
+
+	public List<Deck> getArrayDecks() {
+		return arrayDecks;
+	}
+
+	public void setArrayDecks(List<Deck> arrayDecks) {
+		this.arrayDecks = arrayDecks;
+	}
+	
+	
+
 
 
 	

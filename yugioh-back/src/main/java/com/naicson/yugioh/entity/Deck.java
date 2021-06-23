@@ -21,7 +21,7 @@ public class Deck {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	private String nome;
 	private String imagem;
 	private String nomePortugues;
@@ -37,14 +37,17 @@ public class Deck {
 	private List<Card> cards;
 	@Transient
 	private List<RelDeckCards> rel_deck_cards;
-	
+	@Column(name = "is_konami_deck")
+	private String isKonamiDeck;
+
 	public Deck() {
 		
 	}
 	
-	public Deck(Long id, String nome, String imagem, String nomePortugues, Integer qtd_cards, Integer qtd_comuns,
+	public Deck(Integer id, String nome, String imagem, String nomePortugues, Integer qtd_cards, Integer qtd_comuns,
 			Integer qtd_raras, Integer qtd_super_raras, Integer qtd_ulta_raras, Integer qtd_secret_raras,
-			Date lancamento, List<Card> cards, String card_set_code, Float card_price) {
+			Date lancamento, List<Card> cards, String card_set_code, Float card_price, String isKonamiDeck) {
+		
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -58,6 +61,7 @@ public class Deck {
 		this.qtd_secret_raras = qtd_secret_raras;
 		this.lancamento = lancamento;
 		this.cards = cards;
+		this.isKonamiDeck = isKonamiDeck;
 
 	}
 		
@@ -69,11 +73,11 @@ public class Deck {
 		this.rel_deck_cards = rel_deck_cards;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -177,6 +181,14 @@ public class Deck {
 
 	public void setQtd_secret_raras(Integer qtd_secret_raras) {
 		this.qtd_secret_raras = qtd_secret_raras;
+	}
+
+	public String getIsKonamiDeck() {
+		return isKonamiDeck;
+	}
+
+	public void setIsKonamiDeck(String isKonamiDeck) {
+		this.isKonamiDeck = isKonamiDeck;
 	}
 
 	

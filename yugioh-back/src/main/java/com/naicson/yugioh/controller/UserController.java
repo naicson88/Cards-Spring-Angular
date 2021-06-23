@@ -27,4 +27,9 @@ public class UserController {
 	public Optional<User> listarId(@PathVariable("id") Integer id) {	
 		return userRepository.findById(id);
 	}
+	
+	@GetMapping("consulta-usuario/{username}")
+	public Optional<User> consultarUsuario(@PathVariable("username") String username) {
+		return userRepository.findByUserName(username);
+	}
 }

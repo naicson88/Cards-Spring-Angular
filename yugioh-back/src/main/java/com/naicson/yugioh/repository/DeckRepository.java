@@ -1,5 +1,6 @@
 package com.naicson.yugioh.repository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -17,7 +18,5 @@ public interface DeckRepository extends JpaRepository<Deck, Long> {
 
 	
 	List<Deck> findByNomeContaining(String nomeDeck);
-
-	//public int countNumberOfCards(Integer deckId);
 	
 }

@@ -1,15 +1,16 @@
 package com.naicson.yugioh.controller;
 
-import java.awt.CardLayout;
-import java.util.Iterator;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class DeckController {
 	
 	
 	@GetMapping(path = {"/{id}"})
-	public Deck deckAndCards(@PathVariable("id") Long id) {
+	public Deck deckAndCards(@PathVariable("id") Integer id) {
 		List<Card> cardList = deckService.cardsOfDeck(id);
 		List <RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
 		Deck deck = deckService.deck(id);
@@ -53,4 +54,11 @@ public class DeckController {
 		return deckRepository.findByNomeContaining(nomeDeck);
 	}
 	
+	@GetMapping(path = {"/add-deck-to-user-collection/{deckId}"})
+	public int addDeckToUserCollection(@PathVariable("deckId") Integer deckId) throws SQLException {	
+	return deckService.addDeckToUserCollection(deckId);
+
+	}
+	
+
 }

@@ -9,12 +9,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.naicson.yugioh.dao.DeckDAO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.User;
 
 @Service
 public class DeckServiceImpl implements DeckDetailService {
@@ -23,7 +28,10 @@ public class DeckServiceImpl implements DeckDetailService {
 	@PersistenceContext
 	 EntityManager em;
 	
-	public Deck deck (Long deckId) {
+	@Autowired
+	DeckDAO dao;
+	
+	public Deck deck (Integer deckId) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId", Deck.class);			
 				Deck deck = (Deck)  query.setParameter("deckId", deckId).getSingleResult();
 				return deck;
@@ -31,7 +39,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	//Traz informações completas dos cards contidos num deck
 	@Transactional
-	public List<Card> cardsOfDeck(Long deckId){	
+	public List<Card> cardsOfDeck(Integer deckId){	
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n" + 
 				"(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + 
 				"order by case\r\n" + 
@@ -49,7 +57,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	//Traz informações da relação entre o deck e os cards
 	@Transactional
-	public List<RelDeckCards> relDeckAndCards(Long deck_id) {	
+	public List<RelDeckCards> relDeckAndCards(Integer deck_id) {	
 		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
 				RelDeckCards.class);
 		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).getResultList();
@@ -59,7 +67,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	//Preenche o deck apenas com a relação de card que contenha esse card number e mostra na tela de detalhes do Card
 	@Transactional
-	public List<RelDeckCards> relDeckAndCards(Long deck_id, Integer card_number) {	
+	public List<RelDeckCards> relDeckAndCards(Integer deck_id, Integer card_number) {	
 		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number",
 				RelDeckCards.class);
 		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).setParameter("card_number", card_number).getResultList();
@@ -89,5 +97,32 @@ public class DeckServiceImpl implements DeckDetailService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+	@Transactional
+	public int addDeckToUserCollection(Integer deckId) throws SQLException {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+		
+		int idGerado = dao.addDeckToUserCollection(deckId, user.getId());
+		
+		return idGerado;
+		/*
+		 * Query query = em.
+		 * createNativeQuery("INSERT INTO TAB_REL_USER_DECK (user_id, deck_id) values(:deck_id, :user_id)"
+		 * ) .setParameter("deck_id", deckId) .setParameter("user_id", user.getId());
+		 * 
+		 * return query.executeUpdate();
+		 */
+	
+	}
+
+	/*
+	 * @Transactional public List<Card> addCardsToUserCollection(Long deckId, Long
+	 * userId) throws SQLException { Query query = em.
+	 * createNativeQuery("INSERT INTO TAB_REL_USER_CARDS values (:card_numero, :user_id)"
+	 * ) .setParameter("card_numero", value) }
+	 */
 
 }
