@@ -20,6 +20,8 @@ import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
 
+import Util.ErrorMessage;
+
 @RestController
 @RequestMapping({"yugiohAPI/decks"})
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -54,9 +56,9 @@ public class DeckController {
 		return deckRepository.findByNomeContaining(nomeDeck);
 	}
 	
-	@GetMapping(path = {"/add-deck-to-user-collection/{deckId}"})
-	public int addDeckToUserCollection(@PathVariable("deckId") Integer deckId) throws SQLException {	
-	return deckService.addDeckToUserCollection(deckId);
+	@GetMapping(path = {"/add-deck-to-user-collection/{deckId}/{flagAddOrRemove}"})
+	public int addDeckToUserCollection(@PathVariable("deckId") Integer deckId, @PathVariable("flagAddOrRemove") String flagAddOrRemove) throws SQLException, ErrorMessage {	
+	return deckService.manegerCardsToUserCollection(deckId, flagAddOrRemove );
 
 	}
 	
