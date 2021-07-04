@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
@@ -60,6 +62,17 @@ public class DeckController {
 	public int addDeckToUserCollection(@PathVariable("deckId") Integer deckId, @PathVariable("flagAddOrRemove") String flagAddOrRemove) throws SQLException, ErrorMessage {	
 	return deckService.manegerCardsToUserCollection(deckId, flagAddOrRemove );
 
+	}
+	
+	@GetMapping("/rel-user-decks")
+	public List<RelUserDeckDTO> searchForDecksUserHave (@RequestParam int[] decksIds) throws SQLException, ErrorMessage {
+		List<RelUserDeckDTO> rel = null;
+		
+		if(decksIds != null && decksIds.length > 0) {
+			rel = deckService.searchForDecksUserHave(decksIds);
+		}
+		
+		return rel;
 	}
 	
 

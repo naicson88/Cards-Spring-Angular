@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.dto.DeckDTO;
+import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 
 @Repository
@@ -34,8 +35,7 @@ public class DeckDAO {
 				.setParameter("deckId", deckId);
 		
 		List<DeckDTO> relationDeckAndCards = (List<DeckDTO>) query.setParameter("deckId", deckId).getResultList();
-		return relationDeckAndCards;		
-		
+		return relationDeckAndCards;			
 	}
 	
 	public boolean verifyIfUserAleadyHasTheCard(int userId, String cardSetCode) throws SQLException {
@@ -126,6 +126,16 @@ public class DeckDAO {
 		}
 		
 		return changed;
+	}
+
+	public List<RelUserDeckDTO> searchForDecksUserHave(Integer userId, String decksIds) {		
+		Query query = em.createNativeQuery(" SELECT * FROM tab_rel_user_deck WHERE user_id = :userId and deck_id in (" + decksIds + ")", RelUserDeckDTO.class)
+				.setParameter("userId", userId);
+		
+		@SuppressWarnings("unchecked")
+		List<RelUserDeckDTO> relList = query.getResultList();
+		
+		return relList;
 	}
 	
 	

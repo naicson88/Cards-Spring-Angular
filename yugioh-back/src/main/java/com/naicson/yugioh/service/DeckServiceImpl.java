@@ -1,8 +1,10 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.ErrorManager;
+import java.util.stream.IntStream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.naicson.yugioh.dao.DeckDAO;
 import com.naicson.yugioh.dto.DeckDTO;
+import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
@@ -201,6 +204,39 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw msg;
 		} catch (Exception ex) {
 			throw ex;
+		}
+	}
+	
+	public List<RelUserDeckDTO> searchForDecksUserHave(int[] decksIds) throws SQLException, ErrorMessage {		
+		try {
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+			
+			if(user.getId() == 0) {
+				throw new ErrorMessage("Unable to query user decks, user ID not entered");
+			}
+			
+			if(decksIds == null || decksIds.length == 0) {
+				throw new ErrorMessage("Unable to query user decks, decks IDs not entered");
+			}
+			 
+		     String decksIdsString = "";
+		     
+		     for(int id: decksIds) {
+		    	 decksIdsString += id;
+		    	 decksIdsString += ",";
+		     }	     
+		     decksIdsString += "0";
+		     
+			List<RelUserDeckDTO> relUserDeckList = dao.searchForDecksUserHave(user.getId(), decksIdsString);
+			
+			return relUserDeckList;
+			
+		}catch(ErrorMessage em) {
+			throw em;
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 
