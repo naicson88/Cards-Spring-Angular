@@ -1,0 +1,153 @@
+
+
+nav {
+height: fit-content;
+margin-top: 0;
+border-bottom: solid thin blue;
+
+}
+nav.primary-navigation {
+
+      display: block;
+      background-color: #0f75b2;
+      padding: 5px 0 0 0;  
+      text-align: center;
+      font-size: 16px; 
+   
+    }
+
+    dl, ol, ul {
+      margin: 2px 0 10px 0;
+  }
+  
+      ul li {
+        list-style: none;
+        border-left: 2px solid #3ca0e7;
+        display: inline-block;
+        padding: 0 30px;
+        position: relative;
+        text-decoration: none;
+        text-align: center;
+        font-family: arvo;
+      }
+  
+      li a {
+        color: white;
+      }
+  
+      li a:hover {
+        color: yellowgreen;
+      
+      }
+  
+      li:hover {
+        cursor: pointer;
+      
+      }
+  
+      ul li ul {
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        padding-left: 0;
+        left: 0;
+        display: none;
+        background: #0f75b2;
+      }
+  
+      ul li:hover > ul,
+      ul li ul:hover {
+        visibility: visible;
+        opacity: 1;
+        display: block;
+        min-width: 250px;
+        text-align: left;
+        padding-top: 20px;
+        box-shadow: 0px 3px 5px -1px #ccc;
+      }
+  
+      ul li ul li {
+        clear: both;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 20px;
+        border-style: none;
+      }
+  
+      ul li ul li a:hover {
+        padding-left: 10px;
+        border-left: 2px solid #3ca0e7;
+        transition: all 0.3s ease;
+      }
+      
+  
+  a {
+  
+      text-decoration: none;}
+  
+        a:hover {
+          color: #3CA0E7;
+      }
+  
+   ul li ul li a { transition: all 0.5s ease; }
+
+   #iconAccount {
+   
+    width: 120px;
+    height: 120px; 
+    float: right;
+    margin-top:40px; 
+    margin-right: 20px;
+   }
+
+   #iconAccount img {
+      width: 60%;
+      height: 60%;
+      border-radius: 50%;
+
+   }
+
+   .search{
+     width: 40%;
+     position: absolute;
+     top: 10%;
+     left: 30%;
+      background: rgba(0,0,0,0.4);
+      padding: 15px;
+      border-radius: 15px;
+      display: flex;
+   }
+
+   .search input[type=text]{
+  
+     width: 90%;
+     height: 35px;
+     padding: 0 15px;
+     color: #666666;
+     border: 1px solid blue;
+     border-radius: 4px;
+   }
+
+   .search button { 
+      width: 40px;
+      height: 35px;
+      top:1px;
+      right: -16px;
+      padding: 0 15px;
+      border: none;
+      background: none;
+      color: black;
+      background-color: yellow;
+      border-radius: 5px;
+      position: relative;
+      cursor: pointer;
+         
+   }
+
+   .search button mat-icon {
+     position: absolute;
+     top: 22%;
+     left: 25%;
+   }
+  
+  

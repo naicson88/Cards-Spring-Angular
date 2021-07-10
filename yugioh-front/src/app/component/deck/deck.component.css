@@ -1,0 +1,284 @@
+
+/*
+.container{
+    transition: margin-left .5s;
+    border: solid thin;
+    max-width: 90%;
+    margin: 1% 1% 4% auto;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: #BEBEBE;
+    background-color: #f1f1f1;
+    margin-left: 5%;
+} */
+
+.container {
+ max-width: 85%;
+  margin: 20px auto;
+  padding: 20px;
+justify-items: center;
+  border: solid thin #BEBEBE;
+  border-radius: 5px;
+  justify-content:space-evenly;
+  
+}
+
+.set-header{
+  background: rgb(15,117,178);
+  background: linear-gradient(146deg, rgba(15,117,178,1) 59%, rgba(59,216,235,1) 78%, rgba(239,241,241,1) 97%, rgba(241,241,241,1) 100%);
+  color: white;
+   font-size: 1.5em;
+   text-align: center;
+   vertical-align: center;
+   text-transform: uppercases;
+   height: 35px; 
+   margin-bottom: 20px;
+}
+
+#header-main{
+  position: relative;
+  width: 92%;
+  margin-left: 5%;
+  height: fit-content;
+}
+ .container-fluid{  
+   width: 100%;
+   max-width: 1250px;
+   justify-self: center;
+   justify-content:center;
+}
+
+
+.deck-info-main {
+  border: 1px solid #ceefff;
+  margin-top: 10px;
+  margin-bottom: 20px; 
+  margin-left: 1%;
+  background: #fff;
+  padding: 6px;
+  box-shadow: 0 1px 4px 0 rgba(21,180,255,0.5);
+  width: 230px;
+  
+  display: inline-block;
+
+}
+
+.deck-info-main .deckuct-image{
+  background-color: #ebf8fe;
+  display: inline-block;
+  max-height: 238px;
+  max-width:169px ;
+  position: relative;
+  border: 1px solid #ceefff;
+  object-fit: cover         ;
+  
+}
+
+.deck-info-main .deckuct-detail{
+  border-bottom: 1px solid #dfe5e9;
+  margin-bottom: 5px;
+  margin-top: 2px;
+  position: absolute;
+  background: #fff;
+}
+
+
+
+.deck-info-main .deckuct-deatil h5 a span {
+  color: #9aa7af;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.deck-info-main .description{
+  font-size: 12.5px;;
+  padding: 9px 5px 1px 9px;
+  background-color: #f2f2f2;
+  width: 220px;
+  margin-left: -1px;
+  margin-top: 8px;
+  border-radius: 15px;
+
+}
+
+.deckuct-info.smart-form .btn {
+  padding: 6px 12px;
+  margin-left:6px;
+
+}
+
+.deckuct-block .deckuct-deatil p.price-container span,
+.deck-info-main .deckuct-deatil p.price-container span,
+.shipping table tbody tr td p.price-container span,
+.shopping-items table tbody tr td p.price-container span {
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 24px;
+    line-height: 20px;
+     
+}
+
+.deckuct-info.smart-form .rating label {
+  margin-top:15px;
+  
+}
+
+.deck-wrap .deckuct-image span.tag2 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 10px 0;
+  color: #fff;
+  font-size: 11px;
+  text-align: center
+}
+
+.deck-wrap .deckuct-image span.hot {
+  background-color: #a90329;
+}
+
+.deckuct-deatil .deckuct-image {
+  border-right: 0px solid #fff !important
+}
+
+.deckuct-deatil .name {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 250% !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.deckuct-deatil .price-container {
+  font-size: 24px;
+  margin: 0;
+  font-weight: 300;
+
+}
+
+div .row {
+  width:490px;
+}
+.col-md-7 {
+  max-width: 50%;
+}
+
+
+
+input[type=search] {
+  background: rgb(255, 252, 252) url(https://upload.wikimedia.org/wikipedia/commons/c/ca/VisualEditor_-_Icon_-_Search.svg)no-repeat 5px center; ;
+	border: solid 1px #ccc;
+	padding: 9px 10px 9px 32px;
+  width: 55px;
+  border-radius: 15px;
+ 
+}
+input[type=search]:focus {
+	width: 600px;
+	background-color: #ccc;
+	border-color: #333;
+	border: solid 1px #fff;
+}
+
+#btnSearch  {
+  padding: 6px 10px;
+  margin-top: 1px;
+  margin-left: -6px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.quantity {
+  background: #f5f7f8;
+  border: 2px solid rgba(251, 167, 27, 0.82);
+  width: fit-content;
+  border-radius: 5px;
+  
+}
+
+.f_size_medium {
+  font-size: .85em;
+}
+
+.quantity button {
+  height: 23px;
+  width: 24px;
+}
+.quantity input[type="text"] {
+  padding: 0 8px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-top: none;
+  border-bottom: none;
+  background: transparent;
+  height: 26px;
+  width: 44px;
+}
+
+.if_left, textarea {
+  background: #f5f7f8;
+  height: 40px;
+  padding: 9px 10px;
+  color: #696e6e;
+  border: 2px solid rgba(251, 167, 27, 0.82);
+  outline: none;
+  resize: none;
+}
+
+.bg_tr {
+  background: transparent;
+  border-radius: 5px;
+  border:transparent
+  
+}
+
+.spanQtdCards{
+  color: white;
+  font: bolder helvetica;
+  border-radius:50%; 
+  border:solid silver 1px;
+  padding:1px; 
+  padding-left: 3px;
+
+}
+
+#home{
+width: 89%; 
+max-width:900px ;
+margin-left: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

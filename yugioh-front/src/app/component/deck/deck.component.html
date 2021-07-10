@@ -1,0 +1,103 @@
+
+
+<div id="mainDiv" class="container"> 
+   <div class="set-header">  
+      Konami's Decks
+     </div>
+
+   <div id="header-main">
+      <div style="
+      width: 300px; margin-top: 4%; float: left;"> 
+        <div class="input-group input-group-sm" style="width: 400px;">
+           <input class="form-control mr-sm-2" type="search" 
+           placeholder="Search deck.." aria-label="Search" [(ngModel)]="deckFilter.nome"  >           
+         </div>
+     </div>
+
+<div style="margin-left: 80%; position: relative;">
+   <h4 style="font-family: Roboto,Helvetica Neue,sans-serif;
+   font-size: 16px; color:#0f75b2">
+  Itens per page:</h4>
+  <mat-form-field appearance="fill">
+     <mat-label>Quantity</mat-label>
+     <mat-select (selectionChange)="handlePageSizeChange($event)">
+     <mat-option [value]="size" *ngFor="let size of pageSizes">
+        {{size}}
+     </mat-option>
+     </mat-select>
+  </mat-form-field>
+</div>
+   </div>
+           <!-- PAGINATION-->         
+
+   <!--END PAGINATION-->  
+
+<div id="cont-cards" class="container-fluid" >
+   <div class="cardDiv" style="display: inline; max-width: 100px; " *ngFor="let deck of (deck |  filterBy: deckFilter) |
+    paginate: {itemsPerPage: pageSize, currentPage: page, totalItems: totalItens} ">
+     
+    
+    <!-- First deckuct box start here-->
+      <div class="deck-info-main deck-wrap clearfix">
+         <div class="row">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+               <div class="deckuct-deatil" style="margin-bottom: 12px; margin-left: 12px;">
+                     <h5 class="name" title=" {{deck.nome}}">
+                        <!--<a  name="{{deck.id}}"  (click)="deckDetailPage(deck.nome); storeDeckId($event)" >-->
+                        
+                           <a  name="{{deck.id}}"  (click)="storeDeckId($event)" [routerLink]="['/deck-details/', deck.nome]" > 
+                           <!--(click)="storeDeckId($event)"-->
+                           {{deck.nome}}
+                        </a><br>
+                        <a href="#">
+                           <span >{{deck.nomePortugues}}</span>
+                        </a>                            
+   
+                     </h5>
+                     <span class="tag1"></span> 
+               </div>
+               <div class="col-md-6 col-sm-10 col-xs-10" style="margin-left: -4px;">
+                  <div class="deckuct-image"> 
+                     <img [src]='deck.imagem' class="img-responsive" height="238px" width="200px" title="{{deck.nome}}"> 
+                     <span class="tag2 hot">
+                        HO
+                     </span> 
+                  </div>
+               </div>
+          
+               <div class="deckuct-info smart-form" style="margin-left: 65%;" >
+                  <div class="row">
+                     <div class="col-md-6"> 
+                    <!--    <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>-->
+                    <span style="font-size:x-small; color: #ccc; font-weight: bold;">Total you have:</span><br>
+                    <div class="clearfix quantity r_corners d_inline_middle f_size_medium color_dark" style="display: inline-block;">
+                     
+                        <button class="bg_tr d_block f_left" data-direction="down" name="{{deck.id}}"
+                        (click)="manegeDeckAndCardsOfUserCollection($event, 'R')"  >-</button>
+                        
+                           <input class="quantidade" type="text" name="input_qtde" id="inp_{{deck.id}}"
+                           value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" class="f_left">
+                     
+                        <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}" 
+                        (click)="manegeDeckAndCardsOfUserCollection($event,'A')" >+</button>
+                     
+
+                 </div>
+                           
+                     </div>              
+                  </div>
+               </div>
+            </div>
+         </div>
+    </div>
+  
+</div>
+</div>
+ 
+<!--PAGINAÇÃO-->
+<!--<pagination-controls (pageChange)="p = $event"></pagination-controls>-->
+<pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+</div>
+
+<app-footer></app-footer>
+

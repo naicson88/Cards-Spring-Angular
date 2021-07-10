@@ -1,0 +1,70 @@
+
+<div *ngIf="!isLogin && !isRegister && !isIndex">
+        
+  <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+  <div id="divBg" style="background: url('..\\..\\assets\\img\\img.jpg') ; height: 200px;">
+   <!--<img src="..\..\assets\img\img.jpg" alt="" width="100%" height="150px" >--> 
+    
+   <div class="search" >
+     <input type="text" placeholder="Search here...">
+     <button><mat-icon>search</mat-icon></button>
+   </div>
+
+   <div id="iconAccount"  >
+      <img src="..\\..\\assets\\img\\tiposMonstros\\Fish-DG.png" alt="">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>Account Maneger</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span style="color: red;" (click)='logout()'><b>Logout</b> </span>
+        </button>
+      </mat-menu>
+
+      <button type="button" class="btn btn-danger" style="margin-top: 20px;">New Deck!</button>
+    </div>
+
+  </div>
+  <nav role="navigation" class="primary-navigation" >
+    <ul>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/home" >Your Collection</a>
+        <ul class="dropdown">
+          <li><a href="#">All Cards</a></li>
+          <li><a href="#">Konami Sets</a></li>
+          <li><a href="#">Created Sets</a></li>
+         
+        </ul>
+      </li>
+      <li><a href="#">Cards</a>
+        <ul class="dropdown">
+          <li><a href="#">All Cards</a></li>
+          <li><a href="#">Monsters</a></li>
+          <li><a href="#">Trap Cards</a></li>
+          <li><a href="#">Magic Cards</a></li>
+        </ul>
+      </li>
+      <li><a >Sets</a>
+      <ul class="dropdown">
+        <li><a href="/decks">Decks</a></li>
+        <li><a href="#">Boxes</a></li>
+        <li><a href="#">Tins Cards</a></li>
+      </ul>
+
+      </li>
+      <li><a href="/archetypes">Archetypes</a></li>
+    </ul>
+
+  </nav>
+  <div id="subNav" style="height: 30px; background-color: rgb(145, 219, 177);">
+
+  </div>
+
+</div>
+
+   

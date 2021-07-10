@@ -1,0 +1,204 @@
+#mainDivCards{
+    transition: margin-left .5s;
+    border: solid thin;
+    max-width: 85%;
+    margin: 1% 1% 4% auto;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: #BEBEBE;
+   /* background: url(../../../../assets/img/banner.jpg); */
+    margin-left: 7%;
+    min-width: 900px; 
+
+}
+
+
+#cabecalho{
+    width: 95%;
+    min-height: 350px;
+    height: fit-content;
+    border: solid thin;
+    margin-left: 3%;
+    padding: 10px;
+    vertical-align:top;
+    background: linear-gradient(153deg, rgba(2,0,36,1) 0%, rgba(241,241,241,1) 0%, rgba(230,239,240,1) 25%, rgba(249,241,241,1) 72%, rgba(211,219,221,1) 100%, rgba(241,241,241,1) 100%);
+}
+
+#infoCard{
+    width: 75%;
+    min-height: 300px;
+    height: fit-content;
+    margin-top: -290px;
+    margin-left: 230px;
+    float: left;
+    padding: 10px;
+    
+}
+
+#cardImagem{
+    border: 1px solid #ceefff;
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    margin-left: 1%;
+    background: #fff;
+    padding: 6px;
+    box-shadow: 0 1px 4px 0 rgba(21,180,255,0.5);
+    width: 200px;
+    height: 270px;
+    float: left;
+    object-fit: cover       ;
+  
+}
+.raridade {
+    width: 70px; 
+    height: 30px; 
+    border-radius: 15px; 
+    text-align: center ; 
+    font-weight:bolder; 
+    font-size: 20px;    
+}
+
+.comum{
+   background: rgb(211,211,211);
+   background: linear-gradient(318deg, rgba(211,211,211,1) 5%, rgba(239,241,241,1) 80%);
+   color: #778899;
+}
+
+.raro{
+    background: rgb(255,215,0);
+    background: linear-gradient(318deg, rgba(255,215,0,1) 14%, rgba(255,245,190,1) 54%, rgba(255,246,194,1) 92%);
+    color:#778899; ;
+}
+
+.super-raro{
+    background: rgb(122,103,238);
+    background: linear-gradient(318deg, rgba(122,103,238,1) 24%, rgba(191,239,255,1) 54%, rgba(255,255,255,1) 82%);
+    color: yellow !important;
+}
+
+.ultra-raro{
+    background: rgb(79,148,205);
+    background: linear-gradient(318deg, rgba(79,148,205,1) 24%, rgba(0,255,255,1) 66%, rgba(255,215,0,1) 82%);
+    color: yellow  !important;
+}
+.nome-cabecalho {
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 24px;
+    line-height: 20px;
+}
+.td1{
+    font-weight: bold;
+}
+
+
+/*.card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 1em 0;
+    text-align: left;
+    margin-top: 20px;
+  }*/
+  #setsTitle{
+     width: 90%;
+     border-radius: 25px;
+     background-color: lightskyblue;
+     color: white;
+     text-align: center;
+     margin-bottom: 10px;
+     border: solid thin;
+  }
+  .card {   
+    width: 80%;
+    display: flex;
+
+    padding: .6em 1em .6em .6em;
+    margin-bottom: 1em;
+    border-radius: .3em;
+    box-shadow: rgba(0, 0, 0, 0.2) 3px 6px 10px;
+    border: solid 1px #ccc;
+    color: #2d1265;
+    font-family: Lato, sans-serif;
+  }
+
+  .set-header {
+    background: rgb(15,117,178);
+    background: linear-gradient(146deg, rgba(15,117,178,1) 59%, rgba(59,216,235,1) 78%, rgba(239,241,241,1) 97%, rgba(241,241,241,1) 100%);
+    color: white;
+     font-size: 1.5em;
+     text-align: center;
+     vertical-align: center;
+     text-transform: uppercases;
+     height: 35px; 
+     margin-bottom: 20px;
+     
+  }
+
+ .table-users{
+     border: 1px solid darken(#398B93,5%);
+     border-radius: 10px;
+     box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+     max-width: calc(100% - 2em);
+     overflow: hidden;
+     width: 105%;
+ }
+
+table {
+     width: 100%;
+ }
+
+ .table-users table td {
+    color:#0f75b2 ;
+    padding: 10px;
+    border: solid thin silver;
+ }
+
+ .table-users td, th {
+    text-align: center;
+    vertical-align: middle;
+ }
+
+ .table-users td:last-child{
+    font-size: 0.95em;
+    line-height: 1.4;
+    text-align: left;
+ }
+
+ .table-users td:not(first-child){
+        clear: both;
+         margin-left: 100px;
+         padding: 4px 20px 4px 90px;
+         position: relative;
+         text-align: left;
+ }
+
+ .table-users td::before{
+    color: #588488;
+            content: '';
+            display: block;
+            left: 0;
+            position: absolute;
+}
+
+ .table-users th {
+     background-color:#59b4bd ;
+     color: white;
+     font-weight: 600;
+ }
+
+ .table-users tr:nth-child(2n) {
+    background-color: white;
+ }
+
+ .table-users tr:nth-child(2n+1) {
+    background-color: #b1e9ee ;
+ }
+
+ .divTooltip{
+    position: absolute;
+    margin: 0;
+    z-index: 9999;
+    display: block;
+  }
+

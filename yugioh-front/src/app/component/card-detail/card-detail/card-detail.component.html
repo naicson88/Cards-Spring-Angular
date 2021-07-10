@@ -1,0 +1,232 @@
+<div id="mainDivCards">
+    <div id="cabecalho" class="row">
+        <div id="cardImagem" >
+            <!--<img [src]="card.imagem" alt="" width="193" height="265" style="margin-left: -3px; margin-top: -3px;">-->
+            <img [src]="cardImagem(card.numero)" alt="" width="193" height="265" style="margin-left: -3px; margin-top: -3px;"
+            (mouseover)="mostrarImgToolTip($event)"
+            (mousemove)="mostrarImgToolTip($event)"
+            (mouseout)="esconderImgToolTip()">
+        </div>
+        
+          <!--Div que será mostrada quando o mouse passar sobre a carta -->
+          <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+            <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+            class="imgTooltip" >
+            </div>
+
+        <!--Informações Card Monstros-->
+        <div id="infoCard" *ngIf="card.categoria !== 'Trap Card' && card.categoria !== 'Spell Card'">
+            <div class="row" style="border-bottom: solid thin #ccc; height: 40px;">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 hide-sm">
+                    <p class="nome-cabecalho">{{card.nome}}</p>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm">
+                    <td class="td2">  <img [src]='atributoImagem(card.atributo)' alt="" width="40px" 
+                        height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo}} </td>
+                </div>
+
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <div id="left-col" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 hide-sm">
+                    <table  class="table table-striped table-sm">
+                        <tr>
+                            <td class="td1">Number:</td>
+                            <td class="td2"> {{card.numero}}</td>
+                        </tr>
+                        <tr>
+                            <td class="td1">Nível:</td>
+                            <td class="td2"><img src="..\..\assets\img\outras\Nivel.png" alt="" 
+                                width="25px" height="25px" style="display: inline-block;"> {{card.nivel}}</td>
+                        </tr>
+                        <tr>
+                            <td class="td1">Types: </td>
+                            <td class="td2"> <img  [src]='tipoImagem(card.tipos)' alt=""
+                                 height="28px" width="28px" style="display: inline-block; margin-right: 3px;"> 
+                                <span>{{card.tipos}} </span> 
+                                <span *ngIf="card.generic_type == 'XYZ' ">/ XYZ </span>
+                               <span *ngIf="card.generic_type == 'FUSION'">/ Fusion </span>
+                               <span *ngIf="card.generic_type == 'LINK'">/ Link </span>
+                               <span *ngIf="card.generic_type == 'SYNCHRO' ">/ Synchro </span>
+                               <span *ngIf="card.categoria == 'Toon Monster'">/ Toon </span>
+                               <span *ngIf="card.categoria == 'Effect Monster'">/ Effect </span>
+                               <span *ngIf="card.categoria == 'Flip Effect Monster'">/ Flip </span>
+                               <span *ngIf="card.categoria == 'Tuner Monster'">/ Turner </span>
+                               <span *ngIf="card.generic_type == 'PENDULUM'">/ Pendulum </span>
+                                
+                                </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="right-col" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 hide-sm">
+                    <table  class="table table-striped table-sm">
+                        <tr>
+                            <td class="td1" width="60px">ATK:</td>
+                            <td class="td2" style="text-align: left;"> <img src="..\..\assets\img\tiposMonstros\atk.JPG"
+                                 alt="" width="32px" height="32px"> {{card.atk}}</td>
+                        </tr>
+                        <tr *ngIf="card.generic_type != 'LINK' ">
+                            <td class="td1">DEF: </td>
+                            <td class="td2">  <img src="..\..\assets\img\tiposMonstros\def.JPG" alt="" width="32px" 
+                                height="32px" > {{card.def}}</td>
+                        </tr>
+                        <tr *ngIf="card.generic_type == 'LINK' ">
+                            <td class="td1">Link: </td>
+                            <td class="td2">  <img src="..\..\assets\img\tiposMonstros\Link.PNG" alt="" width="32px" 
+                                height="32px" > {{card.qtd_link}}</td>
+                        </tr>
+                        <tr>        
+                            <td class="td1">Archetype: </td>
+                            <td class="td2"> {{card.arquetipo}}</td>
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+                    </table>
+                </div>
+                        <!--Descricao Pèndulum-->
+                        <div class="row" style="padding: 3px; height: fit-content;margin-bottom: -5px; " *ngIf="card.generic_type == 'PENDULUM'">
+                            <div class="col-md-2" style=" position: relative; border-right:solid thin #ccc;">
+                                <p  style=" top: 25%; left: 30%; position: absolute; text-align: right;">
+                                <img src="..\..\assets\img\outras\EscalaAzul.png" alt="Blue Scale"> &nbsp;
+                                    <span>{{card.escala}}</span> &nbsp;
+                                <img src="..\..\assets\img\outras\EscalaVermelha.png" alt="Red Scale"> 
+                                </p>
+                            </div>
+                            <div class="col-md-10" style="text-align: left; margin: -2; font-family:'Open Sans', Arial, sans-serif;" >
+                                <p class="card-descr-pend" style="font-size:12px; " >
+                                    {{card.descr_pendulum}}
+                                    </p>
+                            </div>
+                        </div> 
+                          <!--Descricao Card-->
+                          <div class="row" style="padding: 5px; margin-left: 10px ; width: 95%; height: fit-content; border-top: solid thin #ccc;" >
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="text-align: left;">
+                                <p class="card-descr-pend" style="font-size:12px; margin-bottom: 1px;margin-top: 3px;
+                                 font-family:'Open Sans', Arial, sans-serif;" >
+                                      {{card.descricao}}
+                                 </p>
+                            </div>
+                        </div>
+
+                        
+            </div>
+
+        </div> 
+
+         <!--Informações Card Magia ou Trap-->
+         <div id="infoCard" *ngIf="card.categoria == 'Spell Card' || card.categoria == 'Trap Card' ">
+            <div class="row" style="border-bottom: solid thin #ccc; height: 40px;">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 hide-sm">
+                    <p class="nome-cabecalho">{{card.nome}}</p>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm">
+                    <td class="td2">  <img [src]='atributoImagem(card.categoria)' alt="" width="40px" 
+                        height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo}} </td>
+                </div>
+
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <div id="left-col" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 hide-sm">
+                    <table  class="table table-striped table-sm">
+                        <tr>
+                            <td class="td1">Number:</td>
+                            <td class="td2"> {{card.numero}}</td>
+                        </tr>
+                        <tr>
+                            <td class="td1">Propriedade:</td>
+                            <td class="td2"> {{card.propriedade}}
+                                <img [src]='atributoImagem(card.propriedade)' alt="" *ngIf="card.propriedade !== 'Normal' " width="40px"/>
+                            </td>
+                        </tr>
+                        <tr>        
+                            <td class="td1">Archetype: </td>
+                            <td class="td2"> {{card.arquetipo}}</td>
+                        </tr>
+                    </table>
+                </div>
+                          <!--Descricao Card-->
+                          <div class="row" style="padding: 5px; margin-left: 10px ; width: 95%; height: fit-content; border-top: solid thin #ccc;" >
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="text-align: left;">
+                                <p class="card-descr-pend" style="font-size:12px; margin-bottom: 1px;margin-top: 3px;
+                                 font-family:'Open Sans', Arial, sans-serif;" >
+                                      {{card.descricao}}
+                                 </p>
+                            </div>
+                        </div>
+
+                        
+            </div>
+
+        </div>
+
+       
+       
+    </div>
+
+    <!--Div Decks que tem esse card-->
+    <div style=" width: 90%; margin-top: 30px;" class="container">
+       <!-- <div id="setsTitle">
+            <h3> Sets that contains this card</h3>
+        </div>
+        <div class="card mb-3" style="max-width: 540px;" *ngFor="let setsInfo of card.set_decks">
+            <div class="row g-0">
+              <div class="col-md-4" style="max-width: 28.33%;">
+                <img [src]='setsInfo.imagem' alt="..." width="130px" height="180px" >
+              </div>
+              <div class="col-md-8" style="background: white  !important;">
+                <div class="card-body">
+                    
+                  <h5 class="card-title" ><b><a href="/details" (click)="storeDeckId($event)" name={{setsInfo.id}} >{{setsInfo.nome}}
+                </a> </b>  </h5>        
+                  <p class="card-text"  style="color: #76767B !important;">DR3-EN157</p>
+                  <p class="raridade" style="width: 70px; height: 30px; border-radius: 15px; 
+                  background-color: green; color: white ; text-align: center ; font-weight: bold; font-size: 20px;" title="Ultra Rare">
+                    UR
+                </p>
+                  <p class="card-text" style="color: #1c9eff !important;
+                  font-weight: bold; font-size: 1.3em !important;"> US$ 3.08</p>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="set-header" >
+            Sets that contains this card
+          </div>
+          <div class="table-users">
+
+          <table cellspacing="0">
+              <tr>
+                  <th width="20%">Image</th>
+                  <th width="30%">Set Name</th>
+                  <th width="15%">Card Set Code</th>
+                  <th width="10%">Rarity</th>
+                  <th width="15%">Price</th>
+              </tr >
+              <tr *ngFor="let sets of card.set_decks">
+                <td style="text-align: center;">
+                    <img [src]='sets.imagem' alt="Image of the set" width="120px" height="160px" >
+                </td>
+                <td>
+                   <a [routerLink]="['/deck-details/', sets.nome]" >{{sets.nome}}</a> 
+                </td>
+                <td style="text-align: center ;">
+                    {{sets.rel_deck_cards[0].card_set_code}}
+                </td>
+                <td style="text-align: center !important;">
+                    <p  [title]='sets.rel_deck_cards[0].card_raridade'
+                    [ngClass]="['raridade', corRaridade(sets.rel_deck_cards[0].card_raridade)]"
+                     style="margin-left: 15px;">
+                     {{raridade}}
+                  </p>
+                </td>
+                <td style="text-align: center !important;">
+                    <p class="card-text" style="color: #1c9eff !important;
+                    font-weight: bold; font-size: 1.3em !important;"> US$    {{sets.rel_deck_cards[0].card_price}}</p>
+                </td>
+              </tr>
+          </table>
+        </div>
+        </div> 
+        </div>
+        <app-footer></app-footer>
+        

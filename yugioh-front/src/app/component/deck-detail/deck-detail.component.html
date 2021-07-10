@@ -1,0 +1,555 @@
+
+<div id="mainDiv" >
+  <div class="set-header">  
+     Deck Details
+    </div>
+    <div id="cabecalhoDeck" class="row">
+      
+        <div id="imagemCabecalho">
+            <img [src]='deckDetails.imagem' alt="" width="193" height="265" style="margin-left: -3px; margin-top: -3px;">
+        </div>
+
+        <div id="informacoes">
+            <!--Nome do Deck e data de lançamento-->
+           
+            <div class="row" style="border-bottom: solid thin #ccc; height: 40px;">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 hide-sm">
+                    <p class="nome-cabecalho" style="font-size: 1.3em; color: #0d0d0d; font-weight: 700;">{{deckDetails.nome}}</p>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4">
+                    <p class="dt_lancamento" style=" color:#555;
+                    font-weight: 700;"> <i> 04/07/2017 </i></p>
+                </div>
+            </div>
+            <!--Raridade-->
+            <div class="row">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 hide-sm raridade" >
+                   <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" style="border-top: none !important">Common:
+                        <span class="badge badge-primary badge badge-secondary">{{deckDetails.qtd_comuns}}</span> </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Rare: 
+                        <span class="badge badge-primary badge">{{deckDetails.qtd_raras}}</span> </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Super Rare: 
+                        <span class="badge badge-primary badge badge-success">{{deckDetails.qtd_super_raras}}</span> </li>
+            
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Ultra Raras: 
+                        <span class="badge badge-primary badge badge-danger"> {{deckDetails.qtd_ulta_raras}}</span> </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Secret Rare:
+                        <span class="badge badge-primary badge badge-info">1</span> </li>
+                    <li class="list-group-item"> <b> TOTAL: {{deckDetails.qtd_cards}}</b> </li>
+                   </ul> 
+                </div>
+            </div>
+            <!--Total de Cartas-->
+     
+            <!--Descrição-->
+            <!-- <div class="row" style="margin-top: 20px;">
+                <label class="col-xl-9 col-lg-9 col-md-9 col-sm-8 hide-sm" style="font-size: small;">Description:</label> <br>
+                <p class="p-descricao">
+                    Deck Inicial: Ataque Link é um Deck Inicial no Yu-Gi-Oh! Estampas Ilustradas (TCG).
+                     É o décimo segundo deck na série de Decks Iniciais anuais do TCG, e é sucessor do Deck Inicial - Yuya e 
+                     o antecessor do Deck Inicial: Decifrador de Códigos.
+                </p>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="p-5  rounded shadow mb-5" style="margin-top: 25px">
+        <!-- Rounded tabs -->
+        <ul id="myTab" role="tablist" 
+        class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav" >
+
+          <li class="nav-item flex-sm-fill" >
+            <a id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Details</a>
+          </li>
+          <li class="nav-item flex-sm-fill">
+            <a id="profile-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">General</a>
+          </li>
+          <li class="nav-item flex-sm-fill">
+            <a id="contact-tab" data-toggle="tab" href="#statistics" role="tab" aria-controls="statistics" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Statistics</a>
+          </li>
+        </ul>
+        <div id="myTabContent" class="tab-content"  >
+            <!--INFORMACOES CARDS-->
+          <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active container">
+            <div class="card-details-header">
+              Card Details
+            </div>
+            <div class="row linha-div-carddetails" *ngFor="let cardsInfo of deckDetails.cards"
+            style="background: rgb(2,0,36);
+            background: linear-gradient(153deg, rgba(2,0,36,1) 0%, rgba(241,241,241,1) 0%, rgba(230,239,240,1) 25%, rgba(249,241,241,1) 72%, rgba(211,219,221,1) 100%, rgba(241,241,241,1) 100%);">
+                <div class="col-xl-2 col-lg-1 col-md-2 col-sm-2 hide-sm">
+                    <div id="imgLinha" >
+                       <img [src]='cardImagem(cardsInfo.numero)'                    
+                        (mouseover)="mostrarImgToolTip(cardsInfo.imagem, $event)"
+                        (mousemove)="mostrarImgToolTip(cardsInfo.imagem, $event)"
+                        (mouseout)="esconderImgToolTip()"
+                        alt="" width="160px" height="219px" style="margin: -2px;"> 
+                    </div>
+                    
+                         <!--Div que será mostrada quando o mouse passar sobre a carta -->
+                         <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+                            <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+                            class="imgTooltip" >
+                        </div>
+                </div>
+                <!--MONSTROS-->
+                <div  id="row-infomacoes-card" *ngIf="cardsInfo.atributo != null">
+                   <!--Nome e raridade-->
+                    <div class="row" style="padding: 3px; border-bottom: solid thin #ccc; height: 30px;">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 hide-sm">
+                            <p class="nome-card"> 
+                                <a [routerLink]="['/card-detail/', cardsInfo.nome]"  name="{{cardsInfo.numero}}" (click)="storedCardId($event)"  >
+                                 {{cardsInfo.nome}} 
+                                 </a>
+                                </p>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4" style="text-align: right; margin-top: -3px; margin-right: -10px;">
+                           <img src="..\..\assets\img\tiposMonstros\UR.JPG" > 
+                          
+                        </div>
+                    </div>
+                      <!--Informacoes da carta caso seja MONSTRO-->
+                      <div 
+                       class="row" style="padding: 3px; border-bottom: solid thin #ccc; height: 39px; font-size: 14px; margin-bottom: 1px;">
+                      
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 hide-sm" style="max-width: 13%; padding-right: 1px; padding-left: 1px;">
+                            <img [src]='atributoImagem(cardsInfo.atributo)' alt="" width="30px" height="30px" style="display: inline-block;">
+                            <p class="atributo-card" style=" display: inline-block; margin: 0 2px 0 2px;">{{cardsInfo.atributo}} </p>
+                        </div>
+
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2"style="max-width: 13%; padding-right: 1px; padding-left: 1px;margin-top: 1px;"
+                        *ngIf="cardsInfo.categoria !='Link Monster' ">
+                            <img src="..\..\assets\img\outras\Nivel.png" alt="" width="25px" height="25px" style="display: inline-block;">
+                            <p class="nivel" style=" display: inline-block; margin-left: 2px; "> Level {{cardsInfo.nivel}} </p>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5" style="padding-right: 1px; padding-left: 1px;">
+                            <img [src]='tipoImagem(cardsInfo.tipos)' alt="" height="30px" width="30px" 
+                            style="display: inline-block; ">
+                            <p class="tipos" style="display: inline-block; margin-left: 2px;" >[ 
+                               <span>{{cardsInfo.tipos}} </span> 
+
+                               <span *ngIf="cardsInfo.categoria == 'XYZ Monster' ">/ XYZ </span>
+                               <span *ngIf="cardsInfo.categoria == 'Fusion Monster'">/ Fusion </span>
+                               <span *ngIf="cardsInfo.categoria == 'Link Monster'">/ Link </span>
+                               <span *ngIf="cardsInfo.categoria == 'Synchro Monster'||
+                               cardsInfo.categoria == 'Synchro Tuner Monster' ">/ Synchro </span>
+                               <span *ngIf="cardsInfo.categoria == 'Toon Monster'">/ Toon </span>
+                               <span *ngIf="cardsInfo.categoria == 'Effect Monster'">/ Effect </span>
+                               <span *ngIf="cardsInfo.categoria == 'Flip Effect Monster'">/ Flip </span>
+                               <span *ngIf="cardsInfo.categoria == 'Tuner Monster'">/ Turner </span>
+                               <span *ngIf="cardsInfo.categoria == 'Pendulum Effect Monster'">/ Pendulum </span>
+                             
+                               ]</p>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2" style="max-width: 14%;">
+                            <img src="..\..\assets\img\tiposMonstros\atk.JPG" alt="" width="30px" height="30px" 
+                            style="display: inline-block; margin-top: -25px; margin-left: -10px;">
+                            <p class="nivel" style="display: inline-block; margin-top: -7px; margin-left: 4px;">ATK / <br> {{cardsInfo.atk}}</p>
+                        </div>
+                        <!--Caso não seja monstro Link-->
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2" style="max-width: 14% !important;"
+                        *ngIf="cardsInfo.categoria !='Link Monster' ">
+                            <img src="..\..\assets\img\tiposMonstros\def.JPG" alt="" width="30px" height="30px" 
+                            style="display: inline-block; margin-top: -25px; margin-left: -10px;">
+                            <p class="nivel" style="display: inline-block; margin-top: -7px; margin-left: 4px;">DEF / <br> {{cardsInfo.def}}</p>
+                        </div>
+                        <!--Caso seja monstro LINK-->
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2" style="max-width: 17% !important;"
+                        *ngIf="cardsInfo.categoria == 'Link Monster' ">
+                        <p class="nivel" style="display: inline-block;  margin-left: 4px;"> 
+                              <img src="..\..\assets\img\tiposMonstros\Link.PNG" alt="" width="30px" height="30px" 
+                            style="display: inline-block;">            
+                                 <b> Link - {{cardsInfo.qtd_link}}</b></p>
+                        </div>
+                    </div>
+
+                    
+
+                     <!--Descricao Pèndulum-->
+                 <div class="row" style="padding: 3px; border-bottom: solid thin #ccc;; height: fit-content;margin-bottom: -5px; " *ngIf="cardsInfo.categoria == 'Pendulum Effect Monster'">
+                        <div class="col-md-2" style=" position: relative;border-right:solid thin #ccc;">
+                            <p class="nome-card" style=" top: 25%; position: absolute; text-align: center
+                            ;">
+                              <img src="..\..\assets\img\outras\EscalaAzul.png" alt="Blue Scale"> &nbsp;
+                                <span>{{cardsInfo.escala}}</span> &nbsp;
+                               <img src="..\..\assets\img\outras\EscalaVermelha.png" alt="Red Scale"> 
+                             </p>
+                        </div>
+                        <div class="col-md-10" style="text-align: left; margin: -2; font-family:'Open Sans', Arial, sans-serif;" >
+                            <p class="card-descr-pend" style="font-size:12px; margin-bottom: 4px;" >
+                                {{cardsInfo.descr_pendulum}}
+                                </p>
+                        </div>
+                    </div> 
+                          <!--Descricao Card-->
+                          <div class="row" style="padding: 5px; ; height: fit-content" >
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="text-align: left;">
+                                <p class="card-descr-pend" style="font-size:14px; margin-bottom: 1px;margin-top: 3px;
+                                 font-family:'Open Sans', Arial, sans-serif;" >
+                                        {{cardsInfo.descricao}}
+                                 </p> <br>
+                                 <p style="margin-bottom: 0;"*ngIf="cardsInfo.arquetipo"> <i> <b>Archetype</b> : {{cardsInfo.arquetipo}} </i></p>
+                            </div>
+                        </div>
+                </div>
+
+                   <!--MAGICAS ARMADILHAS-->
+                   <div  id="row-infomacoes-card" *ngIf="cardsInfo.categoria == 'Spell Card' || cardsInfo.categoria == 'Trap Card' ">
+                    <!--Nome e raridade-->
+                     <div class="row" style="padding: 3px; border-bottom: solid thin #ccc; height: 30px;">
+                         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 hide-sm">
+                             <p class="nome-card"> 
+                                 <a [routerLink]="['/card-detail/', cardsInfo.nome]"  name="{{cardsInfo.numero}}" (click)="storedCardId($event)"  >
+                                  {{cardsInfo.nome}} 
+                                  </a>
+                                 </p>
+                         </div>
+                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4" style="text-align: right; margin-top: -3px; margin-right: -10px;">
+                            <img src="..\..\assets\img\tiposMonstros\UR.JPG" > 
+                           
+                         </div>
+                     </div>
+                       <div 
+                        class="row" style="padding: 3px; border-bottom: solid thin #ccc; height: 39px; font-size: 14px; margin-bottom: 1px;">
+
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 hide-sm" style="max-width: 14%; padding-right: 1px; padding-left: 1px;">
+                            <img [src]='atributoImagem(cardsInfo.categoria)' alt="" width="30px" height="30px" style="display: inline-block;">
+                            <p class="atributo-card" style=" display: inline-block; margin: 0 2px 0 2px;">
+                            <span *ngIf="cardsInfo.categoria == 'Spell Card'">Magic</span>
+                            <span *ngIf="cardsInfo.categoria == 'Trap Card'">Trap</span>
+                            </p>
+                        </div>
+
+                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm" 
+                         style="max-width: 16%; padding-right: 1px; padding-left: 1px;"
+                        *ngIf="cardsInfo.propriedade != 'Normal' ">
+                             <img [src]='atributoImagem(cardsInfo.propriedade)' alt="" width="30px" height="30px" style="display: inline-block;">
+                             <p class="atributo-card" style=" display: inline-block; margin: 0 2px 0 2px;"> {{cardsInfo.propriedade}} </p>
+                         </div>
+
+                     </div>
+
+                           <!--Descricao Card-->
+                           <div class="row" style="padding: 5px; ; height: fit-content">
+                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="text-align: left;">
+                                 <p class="card-descr-pend" style="font-size:14px; margin-bottom: 1px;margin-top: 3px;
+                                  font-family:'Open Sans', Arial, sans-serif;" >
+                                         {{cardsInfo.descricao}}
+                                  </p>
+                             </div>
+                         </div>
+                 </div>
+
+            </div>
+          </div>
+            <!--CARDAS EM GERAL-->
+            <div id="general" role="tabpanel" aria-labelledby="general-tab" class="tab-pane fade px-4 py-5 show active container">
+
+              <div id="deckCards" >
+                <div class="DeckHeader" >
+                     General View                
+                </div>
+                <div class="container" style="margin-top: 20px">
+                    <div id="imgGeneral" *ngFor="let imgGen of deckDetails.cards"    
+                    style="margin-left: 1%; margin-bottom: 1%; cursor: pointer; " class="imgCard">
+                        <img [src]='cardImagem(imgGen.numero)' alt="" width="160px" height="219px"
+                        (mouseover)="mostrarImgToolTip(imgGen.imagem, $event)"
+                        (mousemove)="mostrarImgToolTip(imgGen.imagem, $event)"
+                        (mouseout)="esconderImgToolTip()"
+                        style="margin: -2px;" > 
+                    </div>
+
+                    <!--Div que será mostrada quando o mouse passar sobre a carta -->
+                    <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+                        <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+                        class="imgTooltip" >
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!--ESTATISTICAS-->
+            <div id="statistics" role="tabpanel" aria-labelledby="general-tab" class="tab-pane fade px-4 py-5 show active">
+              <div class="statistics-header">
+                Statistics
+              </div>
+              <div class="grey-bg ">
+                    <section id="minimal-statistics">
+                   
+                      <div class="row" >
+                        <div class="col-xl-3 col-sm-6 col-12"> 
+                          <div class="card-static" style="border: solid thin BurlyWood;"> 
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/monsterIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                  <div class="media-body text-right">
+                                    <h3> {{countsGeneric_type[0].MONSTER}}</h3>
+ 
+                                    <span>Monsters</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border: solid thin green;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/magicIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                  <div class="media-body text-right">
+                                    <h3>{{countsGeneric_type[0].SPELL}}</h3>
+                                    <span>Spells cards</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border: solid thin red;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/trapIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                  <div class="media-body text-right">
+                                   <!-- <h3>{{countsGeneric_type[0].TRAP}}</h3> -->
+                                  <h3 *ngIf="countsGeneric_type[0].TRAP > 0; then maior else menor"> {{countsGeneric_type[0].TRAP}} </h3>
+                                
+                                    <span>Traps cards</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border: solid thin BurlyWood ;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/pendulumIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                  <div class="media-body text-right">
+                                    <h3>{{countsGeneric_type[0].PENDULUM}}</h3>
+                                    <span>Pendulum Monsters</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    
+                      <div class="row">
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border: solid thin ;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="media-body text-left">
+                                    <h3 class="danger">{{countsGeneric_type[0].XYZ}}</h3>
+                                    <span>XYZ Monsters</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/xyzIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border: solid thin silver;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="media-body text-left">
+                                    <h3 class="success" *ngIf="countsGeneric_type[0].SYNCHRO > 0 ? countsGeneric_type[0].SYNCHRO : 0">
+                                    
+                                    </h3>
+                                    <span>Sincron Monsters</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/syncronIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                 
+                        <div class="col-xl-3 col-sm-6 col-12" >
+                          <div class="card-static" style="border: solid thin purple;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="media-body text-left">
+                                    <h3 class="primary">{{countsGeneric_type[0].FUSION}}</h3>
+                                    <span>Fusion Monsters</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/fusionIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>  
+
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border: solid thin blue;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="media-body text-left">
+                                    <h3 class="warning">{{countsGeneric_type[0].LINK}}</h3>
+                                    <span>Link Monsters</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/linkIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                         
+                        <div class="col-xl-3 col-sm-6 col-12">
+                          <div class="card-static" style="border-color: solid thin green; outline: 1px solid  CornflowerBlue ;">
+                            <div class="card-content">
+                              <div class="card-body">
+                                <div class="media d-flex">
+                                  <div class="media-body text-left">
+                                    <h3 class="primary">{{countsGeneric_type[0].RITUAL}}</h3>
+                                    <span>Ritual Monsters</span>
+                                  </div>
+                                  <div class="align-self-center">
+                                    <img src="/../../assets/img/outras/ritualIcon.png" alt="" width="58px" height="85px">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                 
+                  <div class="row">
+                    <!--COLUNA ESQUERDA-->
+                    <div class="col-md-8" style="box-shadow:0 10px 40px 0 rgba(62,57,107,.07),0 2px 9px 0 rgba(62,57,107,.06); 
+                    padding:6px"> 
+                     <div class=" row" style="margin-left: -5px;" >
+                      <canvas #attrCanvas ></canvas>
+             
+                            <div class="col-md-2" style="text-align: right;" ><img src="/../../assets/img/outras/EARTH.png" alt="" width="50" height="50"> </div>
+                            <div class="col-md-2" style="text-align: right;" ><img src="/../../assets/img/outras/FIRE.png" alt="" width="50" height="50" style="margin:0;"> </div>
+                            <div class="col-md-2" style="text-align: right;" ><img src="/../../assets/img/outras/WIND.png" alt="" width="50" height="50"> </div>
+                            <div class="col-md-2" style="text-align: right;" ><img src="/../../assets/img/outras/DARK.png" alt="" width="50" height="50"> </div>
+                            <div class="col-md-2" style="text-align: right;" ><img src="/../../assets/img/outras/LIGHT.png"alt="" width="50" height="50"> </div>
+                            <div class="col-md-2" style="text-align: right;" ><img src="/../../assets/img/outras/WATER.png" alt="" width="50" height="50"> </div>
+                          </div>
+                            <!--ESTELAS POR MONSTROS-->
+                            <div id="estrasPorMonstros" style="margin-top: 55px;" >
+                              <div style="border: solid thin lightsteelblue;
+                              box-shadow:0 10px 40px 0 rgba(62,57,107,.07),0 2px 9px 0 rgba(62,57,107,.06); border-radius: 5px;">
+                              <div class="header-static" style="background-color: darkcyan; font-family: Arial, Helvetica, sans-serif;">
+                              Quantity Stars per Monsters
+                              </div>
+                                  <table class="table table-sm table-bordered" style="text-align: center;"  >                                   
+                                    <tr scope="row">
+                                      <th *ngFor='let stars of quantidadePorEstrelas'>
+                                        <img src="/../../assets/img/outras/Nivel.png" alt="" width="25px" height="25px">
+                                        <span style="color: tomato;  font-size: x-large; font-weight: 700; margin-left: 5px;">{{stars.Estrelas}}x</span>
+                                      
+                                      </th>
+                                    </tr>
+                                    <tr>
+                                    <td *ngFor='let starsMon of quantidadePorEstrelas'>
+                                      <span style="color:teal; ">{{starsMon.Quantidade}} monsters</span>
+                                      
+                                    </td>
+                                  </tr>
+                                  </table>        
+                              </div>
+                            </div>
+                            <!--Top 3-->
+                            <div class="container" style="margin-top: 25px;">
+                              <div class="header-static" style="background-color:mediumpurple; font-family: Arial, Helvetica, sans-serif;">
+                                Most valuable cards
+                              </div>
+                                <div class="row">
+                                  <div class="col-md-4 border border primary" *ngFor="let val of cardsValiosos" style="margin-top: 10px;">
+                                    <img [src]='cardImagem(val.numero)' alt="" width="100%">
+                                    <span>Price: <span style="color:green; font-weight: bold;">US$ {{val.preco}}</span> </span>
+                                  </div>
+                                 
+                                </div>
+                            </div>
+                    </div>
+                    <!--COLUNA DA DIREITA-->
+                    <div class="col-md-4">
+                      <!--TIPOS DE MONSTRO-->
+                     <div class="row box-static" style="
+                       border: solid thin #007bff;">
+                      <div class="header-static" style="background-color:#007bff;"> Types </div>
+               
+                      <div class="col-md-6" *ngFor="let qtdTipo of quantidadePorTipo" style="margin-bottom: 8px">
+                           <img [src]='tipoImagem(qtdTipo.Tipo)' alt="" [title]='qtdTipo.Tipo' width="40px" height="40px" style="margin-right: 10px;">
+                           <span style="font-size:x-large; color: darkblue; font-weight:800;">{{qtdTipo.Quantidade}}</span><span style="color: darkblue;" >x</span>      
+                         </div>    
+                      </div>
+                      <!--PROPRIEDADE-->
+                      <div class="row box-static" style=" margin-top: 20px; border: solid thin red;">
+                       <div class="header-static" style="background-color:crimson;"> Property </div>
+                        <div class="col-md-6" *ngFor="let qtdAttr of qtdPorPropriedade" style="margin-bottom: 8px">
+                          <img [src]='atributoImagem(qtdAttr.Propriedade)' alt="" [title]='qtdAttr.Propriedade' width="40px" height="40px" style="margin-right: 10px;">
+                          <span style="font-size:x-large; color:crimson; font-weight:800;">{{qtdAttr.Quantidade}}</span><span style="color: crimson;" >x</span>      
+                        </div>    
+                     </div>
+                     <!--INFO GERAL ATK-->
+                     <div class="row box-static" style="margin-top: 20px; border: 1px solid  silver;padding: 1px; ">
+                      <div class="header-static" style="background-color:silver; line-height: 25px !important"> 
+                        <span style="font-weight: bold;"> ATK</span>  Monsters </div>
+                       <div class="col-md-3" *ngFor="let atkInfo of infoGeralAtk" style="margin-bottom: 8px; border: solid thin; text-align: left;"
+                       [ngStyle]="{'background-color':setColor(atkInfo)}">
+                         <span style="font-size:medium; color:crimson;">{{atkInfo}}</span>   
+                       </div>    
+                    </div>
+                      <!--INFO GERAL DEF-->
+                      <div class="row box-static" style="margin-top: 20px;  border: 1px solid  silver; padding: 2px; ">
+                        <div class="header-static" style="background-color:silver; line-height: 25px !important;"> 
+                          <span style="font-weight: bold;"> DEF</span> Monsters </div>
+                        <div class="col-md-3" *ngFor="let defInfo of infoGeralDef" style="margin-bottom: 8px; border: solid thin"
+                         [ngStyle]="{'background-color':setColor(defInfo)}">
+                          <span style="font-size:medium; color:#007bff;">{{defInfo}}</span>   
+                        </div>    
+                     </div>
+
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top: 25px;">
+                 
+
+                  </div>
+               
+                  </div>
+            </div> 
+        </div>
+        <!-- End rounded tabs -->
+  
+      </div>
+</div>
+

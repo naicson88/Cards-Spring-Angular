@@ -1,0 +1,55 @@
+<div class="container">
+    <div style="margin-left: 10%; margin-top: 20px;">
+        <h2>Archetype: &nbsp; &nbsp;<span>{{archetype.arcName}}</span>  </h2>  
+    </div>
+    <div class="flex-container" style="border: solid thin">
+            <div class="set-header">  
+            Cards related to this archetype
+           </div>
+
+           <table class="table table-striped" style="width: 100%;">
+            <thead>
+              <tr style="text-align: center;">
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let arc of archetype.arrayCards">
+               <td width="17%">
+                <img [src]="cardImagem(arc.numero)" alt="" width="143" height="200" style="margin-left: -3px; margin-top: -3px;"
+                (mouseover)="mostrarImgToolTip($event)"
+                (mousemove)="mostrarImgToolTip($event)"
+                (mouseout)="esconderImgToolTip()">
+
+                 
+               </td>
+               
+                 <!--Div que será mostrada quando o mouse passar sobre a carta -->
+                 <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+                  <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+                  class="imgTooltip" >
+                  </div>
+
+                <td width="23%">
+                  <b>
+                      <a [routerLink]="['/card-detail/', arc.nome]"  name="{{arc.numero}}" (click)="storedCardId($event)"  >
+                          {{arc.nome}}
+                        
+                      </a>
+                    </b> 
+                </td>
+              
+                <td style=" font-family: 'Carme', sans-serif; ">
+                    {{arc.descricao}}
+                </td>
+              </tr>
+      
+            </tbody>
+          </table>
+
+    </div>
+</div>
+<div style="margin-bottom: 30px;"></div>
+<app-footer></app-footer>

@@ -1,0 +1,236 @@
+#mainDiv{
+    transition: margin-left .5s;
+    border: solid thin;
+    max-width: 85%;
+    margin: 1% 1% 4% auto;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: #BEBEBE;
+    margin-left: 7%;
+    min-width: 900px;
+}
+
+#cabecalhoDeck{
+    width: 65%;
+    height: 350px;
+    background-color: white;
+    border: solid thin;
+    margin-left: 20%;
+    padding: 10px;
+    vertical-align:top;
+}
+
+#imagemCabecalho{
+    border: 1px solid #ceefff;
+    margin-top: 5px;
+    margin-bottom: 5px; 
+    margin-left: 1%;
+    background: #fff;
+    padding: 6px;
+    box-shadow: 0 1px 4px 0 rgba(21,180,255,0.5);
+    width: 200px;
+    height: 270px;
+    float: left;
+  
+}
+
+#informacoes{
+    width: 65%;
+    background-color: white;
+    height: 320px;
+    margin-top: -300px;
+    margin-left: 230px;
+    float: right;
+    padding: 10px;
+}
+/*
+.raridade{
+    border: solid thin green;
+    border-radius: 15px;
+    align-items: center;
+    width: 30%;
+    margin-left: 20px;
+    margin-top: 10px;
+    padding-top: 5px;
+}*/
+
+.raridade ul li {
+
+  line-height: .8;
+  border-top: solid thin #ccc !important;
+}
+
+.raridade ul li span {
+  font-size: 13px;
+}
+
+.list-group-item{
+  border-bottom: solid thin #ccc !important;
+}
+
+.raridade p {
+    margin-bottom: 4px;
+}
+
+.p-descricao{
+   width: 90%; 
+   border: solid thin;
+    margin-left: 5%;
+     font-size: small;
+     padding: 5px;
+     border-radius: 10px;
+
+}
+
+/* Rounded tabs */
+
+@media (min-width: 576px) {
+    .rounded-nav {
+      border-radius: 50rem !important;
+    }
+  }
+  
+  @media (min-width: 576px) {
+    .rounded-nav .nav-link {
+      border-radius: 50rem !important;
+    }
+  }
+
+  .linha-div-carddetails{ 
+    border: solid thin;
+    height:max-content;
+    padding: 3px;
+    min-width: 900px;
+  }
+
+  #imgLinha{
+    border: 1px solid #ceefff;
+    margin-top:2px;
+    margin-left:-13px;
+    margin-right: 5%;
+    background: #fff;
+    padding: 6px;
+    box-shadow: 0 1px 4px 0 rgba(21,180,255,0.5);
+    width: 169px;
+    height: 229px;
+
+  }
+  #row-infomacoes-card{
+    margin-left: 3%;
+     min-height: 233px;
+     height: fit-content;
+     margin-right: auto;
+     width: 80%;
+    padding: 0;
+   }
+
+  .nome-card{
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 18px;
+    line-height: 20px;
+    
+  }
+
+  .row {
+      margin: 0;
+  }
+
+
+  #extraDeck{
+    width:100%;
+    border:solid thin;
+    height: fit-content;
+    padding: 3px;
+  }
+
+  .DeckHeader{
+    background: rgb(0,191,255);
+    background: linear-gradient(318deg, rgba(0,191,255,0) 3%, rgba(147,228,255,1) 21%, rgba(130,217,246,1) 39%, rgba(187,238,255,1) 96%);
+     color: white;
+     font-size: 1.5em;
+     text-align: center;
+     vertical-align: center;
+     text-transform: uppercases;
+     height: 35px; 
+     margin-bottom: 20px;
+  }
+
+  .statistics-header{
+    background: rgb(0,191,255);
+    background: linear-gradient(318deg, rgba(255,255,255,1) 2%, rgba(247,163,151,1) 36%, rgba(247,156,143,1) 59%, rgba(246,145,130,1) 93%); color: white;
+     font-size: 1.5em;
+     text-align: center;
+     vertical-align: center;
+     text-transform: uppercases;
+     height: 35px; 
+     margin-bottom: 20px;
+  }
+
+
+  #imgGeneral{
+    height: fit-content;
+    display: inline-block;
+    margin: 0;    
+  }
+
+  #deckCards{
+    border: solid thin;  
+    margin-top: 10px; 
+    padding: 3px;
+   align-content: center;
+  }
+  .divTooltip{
+    position: absolute;
+    margin: 0;
+    z-index: 9999;
+    display: block;
+  }
+  
+  .set-header{
+    background: rgb(15,117,178);
+    background: linear-gradient(146deg, rgba(15,117,178,1) 59%, rgba(59,216,235,1) 78%, rgba(239,241,241,1) 97%, rgba(241,241,241,1) 100%);
+    color: white;
+     font-size: 1.5em;
+     text-align: center;
+     vertical-align: center;
+     text-transform: uppercases;
+     height: 35px; 
+     margin-bottom: 20px;
+  }
+
+  .card-details-header{
+    background: rgb(15,117,178);
+    background: linear-gradient(146deg, rgba(15,117,178,1) 59%, rgba(59,216,235,1) 78%, rgba(239,241,241,1) 97%, rgba(241,241,241,1) 100%);
+    color: white;
+     font-size: 1.5em;
+     text-align: center;
+     vertical-align: center;
+     text-transform: uppercases;
+     height: 35px; 
+     margin-bottom: 20px;
+  }
+
+  .card-static{
+    margin-bottom:1.875rem;
+    border:none;
+    border-radius:5px;
+    box-shadow:0 10px 40px 0 rgba(62,57,107,.07),0 2px 9px 0 rgba(62,57,107,.06)
+
+  }
+  .card-static  .card-title{font-weight:500;letter-spacing:.05rem;font-size:1.12rem}
+
+  .box-static{
+    box-shadow:0 10px 40px 0 rgba(62,57,107,.07),0 2px 9px 0 rgba(62,57,107,.06);
+    border-radius: 5px;
+  }
+
+  .header-static {
+  width: 100%;
+  font-family:  'Train One', 'Arial Narrow', 'Arial', 'sans-serif'
+  ;font-size: 19px;
+  color: white;
+  line-height: 28px;
+  background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,.3));text-align: center; letter-spacing: 5px;
+
+  }

@@ -1,0 +1,218 @@
+.header-top {
+    background:url(../../../assets/img/outras/paginas/banner2.jpg);
+     background-size: 100% 100%;
+     background-repeat: no-repeat;
+     padding-bottom: 90px;
+}
+
+.header {
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    padding: 40px 40px 40px 40px;
+}
+.slider_section {
+    padding-top: 134px;
+    padding-left: 40px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0;
+    font-weight: normal;
+    position: relative;
+    padding: 0 0 10px 0;
+    font-weight: normal;
+    line-height: normal;
+    color: #111111;
+    margin: 0 
+}
+button:focus {
+    outline: none;
+}
+ul, li, ol {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+p {
+    margin: 0px;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 24px;
+}
+a {
+    color: #222222;
+    text-decoration: none;
+    outline: none !important;
+}
+a, .btn {
+    text-decoration: none !important;
+    outline: none !important;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+.text-bg h1 {
+    color: #fff;
+    padding-top: 50px;
+    font-size: 75px;
+    line-height: 94px;
+    padding-bottom: 25px;
+}
+.b_bold {
+   font-size: 90px;
+}
+.text-bg span {
+   font-size: 17px;
+    display: block;
+    color: #fff;
+    line-height: 25px;
+    padding-bottom: 50px;
+}
+.text-bg a {
+   font-size: 16px;
+    margin-right: 10px;
+    background-color: #fff;
+    color: #000;
+    padding: 10px 40px;
+    border-radius: 27px;
+    display: inline-block;
+}
+.text-bg a:hover {
+   background-color: #00eb4e;
+    color: #fff;
+}
+.text {
+   position: inherit;
+    text-align: left;
+    background: #0fbbad;
+    width: 100%;
+    bottom: auto;
+    padding: 0;
+    margin-top: 90px 
+}
+
+.about {
+    background: url(../../../assets/img/outras/paginas/about_bg.png);
+    /* background: blueviolet; */
+    clip-path: polygon(0 0, 100% 17%, 100% 100%, 0% 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-top: -225px;
+    margin-bottom: 100px;
+    padding-bottom: 50px;
+    height: 100%;
+}
+
+.top_layer {
+    position: relative;
+}
+.top_layer::before {
+    position: absolute;
+    width: 208px;
+    content: "";
+    background: url(../../../assets/img/outras/paginas/jaden.png);
+    background-repeat: repeat;
+    height: 444px;
+    background-repeat: no-repeat;
+    top: -131px;
+    text-align: left;
+    float: left;
+}
+.top_layer2 {
+    position: relative;
+}
+.top_layer2::before {
+    position: absolute;
+    width: 208px;
+    content: "";
+    background: url(../../../assets/img/outras/paginas/jaden.png);
+    background-repeat: repeat;
+    height: 444px;
+    background-repeat: no-repeat;
+    right: 0;
+    bottom: -312px;
+    z-index: 999;
+}
+.about .titlepage {
+    text-align: center;
+    padding-bottom: 60px;
+}
+.about .about-box h3 {
+    font-size: 30px;
+    text-transform: uppercase;
+    line-height: 30px;
+    padding-bottom: 30px;
+    color: #fff;
+    display: block;
+    font-weight: bold;
+}
+.about .about-box {
+    padding: 80px 30px;
+    background-color:#08082d;
+    margin-top: 224px;
+}
+.about .about-box span {
+    font-size: 36px;
+    text-transform: uppercase;
+    line-height: 37px;
+    padding-bottom: 30px;
+    color: #fff;
+    display: block;
+    font-weight: bold;
+}
+.about .about-box p {
+    font-size: 17px;
+    line-height: 28px;
+    color: #fff;
+    padding-bottom: 50px;
+}
+.about .about-img figure {
+    margin: 0;
+}
+.about a {
+    text-transform: uppercase;
+    background: #fff;
+    width: 190px;
+    padding: 12px 0;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 30px;
+    color: #000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    border-radius: 27px;
+}
+.about a:hover {
+    background: #0f69c6;
+    color: #fff;
+}
+
+.main-menu {
+    text-align: center;
+}
+.main-menu ul {
+    margin: 0;
+    list-style-type: none;
+}
+.main-menu ul>li {
+    display: inline-block;
+    position: relative;
+}
+.main-menu ul>li a {
+    padding: 6px 25px 0 25px;
+    line-height: 20px;
+    font-size: 16px;
+    display: block;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+}
+.main-menu ul li:last-child a {
+    padding-right: 0;
+}
+

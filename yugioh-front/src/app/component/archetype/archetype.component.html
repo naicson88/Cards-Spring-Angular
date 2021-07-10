@@ -1,0 +1,356 @@
+<div style="margin-left: 10%; margin-top: 20px;">
+    <h2>Yu-Gi-Oh! Archetypes:</h2>
+</div>
+
+<div style="background-color: deepskyblue; width: fit-content; margin-left: 10%; text-align: center;">
+    <span (click)='goToLetter("A")' class="letra">#A</span>
+    <span (click)='goToLetter("B")' class="letra">#B</span>
+    <span (click)='goToLetter("C")' class="letra">#C</span>
+    <span (click)='goToLetter("D")' class="letra">#D</span>
+    <span (click)='goToLetter("E")' class="letra">#E</span>
+    <span (click)='goToLetter("F")' class="letra">#F</span>
+
+    <span (click)='goToLetter("G")' class="letra">#G</span>
+    <span (click)='goToLetter("H")' class="letra">#H</span>
+    <span (click)='goToLetter("I")' class="letra">#I</span>
+    <span (click)='goToLetter("J")' class="letra">#J</span>
+    <span (click)='goToLetter("K")' class="letra">#K</span>
+    <span (click)='goToLetter("L")' class="letra">#L</span>
+
+    <span (click)='goToLetter("M")' class="letra">#M</span>
+    <span (click)='goToLetter("N")' class="letra">#N</span>
+    <span (click)='goToLetter("O")' class="letra">#O</span>
+    <span (click)='goToLetter("P")' class="letra">#P</span>
+    <span (click)='goToLetter("Q")' class="letra">#Q</span>
+    <span (click)='goToLetter("R")' class="letra">#R</span>
+
+    
+    <span (click)='goToLetter("S")' class="letra">#S</span>
+    <span (click)='goToLetter("T")' class="letra">#T</span>
+    <span (click)='goToLetter("U")' class="letra">#U</span>
+    <span (click)='goToLetter("V")' class="letra">#V</span>
+    <span (click)='goToLetter("W")' class="letra">#W</span>
+    <span (click)='goToLetter("X")' class="letra">#X</span>
+    <span (click)='goToLetter("Y")' class="letra">#Y</span>
+    <span (click)='goToLetter("Z")' class="letra">#Z</span>
+</div>
+
+<div class="container" >
+    <div class="flex-container alfabeto">
+        <div class="coluna border rounded" >
+            <div class="alfa   ">
+                <span id="A">A</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'A'" 
+                    [routerLink]="['/archetypeDetails/', arcs.id]" 
+                    (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+                
+            </ul>
+
+            <div class="alfa ">
+                <span id="E">E</span>
+            </div>
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'E'"
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+
+            <div class="alfa ">
+                <span id="I">I</span>
+            </div>
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'I'"
+               
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+
+            <div class="alfa ">
+                <span id="M">M</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'M'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="Q">Q</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'Q'"
+                    
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="U">U</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'U'"
+                  
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>  
+            </ul>
+
+            <div class="alfa ">
+                <span id="Y">Y</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'Y'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+                
+            </ul>
+
+        </div>
+        <div class="coluna border rounded" >
+            <div class="alfa ">
+                <span id="B">B</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'B'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+                
+            </ul>
+
+            <div class="alfa ">
+                <span id="F">F</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'F'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="J">J</span>
+            </div>
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'J'"
+               
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+
+            
+            <div class="alfa ">
+                <span id="N">N</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'N'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="R">R</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'R'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="V">V</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'V'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+                
+            </ul>
+
+       
+
+        </div>
+        <div class="coluna border rounded" >
+            <div class="alfa ">
+                <span id="C">C</span>
+            </div>
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'C'"
+                
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+
+            <div class="alfa ">
+                <span id="G">G</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'G'"
+                  
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="K">K</span>
+            </div>
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'K'"
+               
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+
+            <div class="alfa ">
+                <span id="O">O</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'O'"
+                  
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="S">S</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'S'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+            </ul>
+
+            <div class="alfa ">
+                <span id="W">W</span>
+            </div>
+            <ul>  
+                <div *ngFor="let arcs of archetype">
+                    <li *ngIf="arcs.arcName.substring(0,1) === 'W'"
+                   
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+                </div>
+                
+            </ul>
+
+        </div>
+        <div class="coluna border rounded" >
+            <div class="alfa ">
+                <span id="D">D</span>
+            </div>
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'D'"
+                
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+
+                
+        <div class="alfa ">
+            <span id="H">H</span>
+        </div>
+        <ul>  
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'H'"
+               
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+        </ul>
+
+        <div class="alfa ">
+            <span id="L">L</span>
+        </div>
+        <ul>  
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'L'"
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+        </ul>
+
+        <div class="alfa ">
+            <span id="P">P</span>
+        </div>
+        <ul>  
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'P'"
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+        </ul>
+
+        <div class="alfa ">
+            <span id="T">T</span>
+        </div>
+        <ul>  
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'T'"
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+        </ul>
+
+        <div class="alfa ">
+            <span id="X">X</span>
+        </div>
+        <ul>  
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'X'"
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+        </ul>
+
+        <div class="alfa ">
+            <span  id="Z">Z</span>
+        </div>
+        <ul>  
+            <div *ngFor="let arcs of archetype">
+                <li *ngIf="arcs.arcName.substring(0,1) === 'Z'"
+                [routerLink]="['/archetypeDetails/', arcs.id]" 
+                (click)='storedArchetype($event)' id="{{arcs.id}}">{{arcs.arcName}}</li>
+            </div>
+            
+        </ul>
+
+        </div>
+    </div>
+
+    
+</div>
+
+<app-footer></app-footer>
