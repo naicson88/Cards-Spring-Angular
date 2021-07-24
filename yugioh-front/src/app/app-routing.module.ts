@@ -3,14 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { ArchetypeDetailsComponent } from './component/archetype-details/archetype-details/archetype-details.component';
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { CardDetailComponent } from './component/card-detail/card-detail/card-detail.component';
+import { CardsSearchComponent } from './component/cards-search/cards-search/cards-search.component';
 import { DeckDetailComponent } from './component/deck-detail/deck-detail.component';
 import { DeckComponent } from './component/deck/deck.component';
 import { HomeComponent } from './component/home/home.component';
 import { IndexComponent } from './component/index/index.component';
 import { LoginComponent } from './component/index/login/login.component';
 import { RegisterComponent } from './component/index/register/register.component';
-
-
 
 const routes: Routes = [
   { path: 'decks', component: DeckComponent },
@@ -22,6 +21,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'archetypes', component: ArchetypeComponent},
   { path: 'archetypeDetails/:archId', component: ArchetypeDetailsComponent},
+  { path: 'cards-search', component: CardsSearchComponent},
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   
 ];

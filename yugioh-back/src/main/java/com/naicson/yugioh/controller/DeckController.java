@@ -27,8 +27,7 @@ import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
-
-import Util.ErrorMessage;
+import com.naicson.yugioh.util.ErrorMessage;
 
 @RestController
 @RequestMapping({ "yugiohAPI/decks" })
@@ -46,7 +45,7 @@ public class DeckController {
 	}
 
 	
-	  @GetMapping("/pagination") public ResponseEntity<Page<Deck>>
+	@GetMapping("/pagination") public ResponseEntity<Page<Deck>>
 	  deckPagination(@PageableDefault(page = 0, size = 8, sort = "id", direction =
 	  Sort.Direction.ASC) Pageable pageable){ Page<Deck> deckList =
 	  deckRepository.findAll(pageable);
@@ -57,16 +56,6 @@ public class DeckController {
 	  return new ResponseEntity<>(deckList, HttpStatus.OK);
 	  
 	  }
-	 
-
-	/*
-	 * @GetMapping("/pagination") public Page<Deck>
-	 * deckPagination(@PageableDefault(page = 0, size = 8, sort = "id", direction =
-	 * Sort.Direction.ASC) Pageable pageable){ Page<Deck> deckList =
-	 * deckRepository.findAll(pageable);
-	 * 
-	 * return deckList; }
-	 */
 
 	@GetMapping(path = { "/{id}" })
 	public Deck deckAndCards(@PathVariable("id") Integer id) {
