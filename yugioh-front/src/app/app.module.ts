@@ -30,12 +30,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { ArchetypeDetailsComponent } from './component/archetype-details/archetype-details/archetype-details.component';
 import { ImageToolTip } from './Util/ImageToolTip';
-import { MatSelectModule } from '@angular/material';
+import { MatExpansionModule, MatSelectModule } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 import { SessionAuthStrategy } from './service/auth-service/session-auth.strategy';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SpinnerComponent } from './component/spinner/spinner.component';
 import { SpinnerService } from './service/spinner.service';
+import { CardsSearchComponent } from './component/cards-search/cards-search/cards-search.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Imagens } from './module/Imagens';
 
 
 @NgModule({
@@ -52,7 +55,8 @@ import { SpinnerService } from './service/spinner.service';
     FooterComponent,
     ArchetypeComponent,
     ArchetypeDetailsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    CardsSearchComponent
 
   ],
   imports: [
@@ -73,6 +77,8 @@ import { SpinnerService } from './service/spinner.service';
     MatMenuModule,
     MatIconModule,
     MatSelectModule,
+    MatCheckboxModule,
+    MatExpansionModule,
     NgxSpinnerModule,
 
     ToastrModule.forRoot()
@@ -84,7 +90,8 @@ import { SpinnerService } from './service/spinner.service';
   useClass: AuthInterceptor,
   multi: true},
   ImageToolTip,
-  {provide: HTTP_INTERCEPTORS,useClass: SpinnerService, multi: true }
+  {provide: HTTP_INTERCEPTORS,useClass: SpinnerService, multi: true },
+  Imagens
 ],
   bootstrap: [AppComponent]
 })

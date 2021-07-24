@@ -308,6 +308,17 @@ public class Card extends Sets {
 	public void setCodArchetype(int codArchetype) {
 		this.codArchetype = codArchetype;
 	}
+
+	@Override
+	public String toString() {
+		return "Card [id=" + id + ", numero=" + numero + ", categoria=" + categoria + ", nome=" + nome
+				+ ", nomePortugues=" + nomePortugues + ", atributo=" + atributo + ", propriedade=" + propriedade
+				+ ", nivel=" + nivel + ", tipos=" + tipos + ", atk=" + atk + ", def=" + def + ", condicao=" + condicao
+				+ ", descricao=" + descricao + ", descricaoPortugues=" + descricaoPortugues + ", imagem=" + imagem
+				+ ", raridade=" + raridade + ", escala=" + escala + ", descr_pendulum=" + descr_pendulum
+				+ ", descr_pendulum_pt=" + descr_pendulum_pt + ", arquetipo=" + arquetipo + ", qtd_link=" + qtd_link
+				+ ", sets=" + sets + ", generic_type=" + generic_type + ", codArchetype=" + codArchetype + "]";
+	}
 	
 	
 	

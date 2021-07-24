@@ -346,9 +346,9 @@ export class DeckDetailComponent implements OnInit {
 
   tipoImagem(tipo:string){
     switch(tipo){
-      case 'Aqua': return '..\\..\\assets\\img\\tiposMonstros\\Aqua.png';
-      case 'Beast': return '..\\..\\assets\\img\\tiposMonstros\\Beast-DG.png';
-      case 'Beast-Warrior': return '..\\..\\assets\\img\\tiposMonstros\\Beast-Warrior-DG.png';
+    case 'Aqua': return '..\\..\\assets\\img\\tiposMonstros\\Aqua.png';
+    case 'Beast': return '..\\..\\assets\\img\\tiposMonstros\\Beast-DG.png';
+    case 'Beast-Warrior': return '..\\..\\assets\\img\\tiposMonstros\\Beast-Warrior-DG.png';
     //  case 'Creator-God'  : return '..\\..\\assets\\img\\tiposMonstros\\Beast-Warrior-DG.png';
     case 'Cyberse' : return '..\\..\\assets\\img\\tiposMonstros\\Cyberse.PNG';
     case 'Dinosaur' : return '..\\..\\assets\\img\\tiposMonstros\\Dinosaur-DG.png';

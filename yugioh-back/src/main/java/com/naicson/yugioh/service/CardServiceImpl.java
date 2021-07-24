@@ -12,6 +12,7 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.Sets;
 import com.naicson.yugioh.repository.CardRepository;
+import com.naicson.yugioh.util.CardSpecification;
 
 @Service
 public class CardServiceImpl implements CardDetailService {
@@ -87,5 +88,6 @@ public class CardServiceImpl implements CardDetailService {
 	public List<Card> encontrarPorArchetype(int archId) {
 		return cardRepository.findByArchetype(archId);
 	}
+
 	
 }

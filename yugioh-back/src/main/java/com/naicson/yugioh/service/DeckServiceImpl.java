@@ -26,8 +26,7 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.entity.User;
-
-import Util.ErrorMessage;
+import com.naicson.yugioh.util.ErrorMessage;
 
 @Service
 public class DeckServiceImpl implements DeckDetailService {

@@ -1,4 +1,4 @@
-package Util;
+package com.naicson.yugioh.util;
 
 import java.io.IOException;
 
@@ -84,23 +84,6 @@ public  class AdicionarCardsNoSet {
 		}
 	}
 	
-	/*private  int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code, String card_price) throws SQLException {	
-		
-		/*Query query = em.createNativeQuery("INSERT INTO TAB tab_rel_deck_cards VALUES (" + deck_id + ", " + card_numero + ", '"
-		+ card_raridade + "','" + card_set_code + "'," + Double.parseDouble(card_price) + ")");
-
-		Query query = em.createNativeQuery("INSERT INTO tab_rel_deck_cards VALUES (:deck_id,:card_numero,:card_raridade,:card_set_code,:card_price)")
-				.setParameter("deck_id", deck_id)
-				.setParameter("card_numero", card_numero)
-				.setParameter("card_raridade", card_raridade)
-				.setParameter("card_set_code", card_set_code)
-				.setParameter("card_price",  Double.parseDouble(card_price));
-		
-		System.out.println(query);
-						
-		return query.executeUpdate();
-	}*/
-				
 }
 
 

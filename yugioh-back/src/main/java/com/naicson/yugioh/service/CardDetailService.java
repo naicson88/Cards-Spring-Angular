@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.Sets;
+import com.naicson.yugioh.util.CardSpecification;
 
 @Service
 public interface CardDetailService {

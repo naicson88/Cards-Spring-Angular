@@ -235,7 +235,13 @@ input[type=search]:focus {
 .bg_tr {
   background: transparent;
   border-radius: 5px;
-  border:transparent
+  border:transparent;
+  font-family: Roboto, "Helvetica Neue";
+  font-size: 16px;
+  text-decoration: none solid rgba(0,0,0,0.8
+  
+  
+  );
   
 }
 

@@ -5,61 +5,52 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.naicson.yugioh.controller.AuthController;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.repository.CardRepository;
+import com.naicson.yugioh.repository.DeckRepository;
+import com.naicson.yugioh.service.CardDetailService;
+import com.naicson.yugioh.service.CardServiceImpl;
 import com.naicson.yugioh.service.DeckServiceImpl;
+import com.naicson.yugioh.util.CardSpecification;
+import com.naicson.yugioh.util.SearchCriteria;
 
-
-//@ExtendWith(SpringExtension.class)
-//@DataJpaTest
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+@SpringBootTest(classes = CardSpecification.class)
 public class DeckServiceImplTest {
-
-	@InjectMocks
-	 DeckServiceImpl deckService;
-
-	@MockBean
-	private CardRepository cardRepository;
 	
-	@Before
-	public void testaSalvarCard() {
-		Card card = new Card();
-		card.setArquetipo("arquetipoTeste");
-		card.setAtk(1500);
-		card.setAtributo("DARK");
-		card.setCategoria("Assassin");
-		card.setDef(2500);
-		card.setDescr_pendulum("DescricaoTeste");
-		card.setId(5);
-		card.setNome("Dark Magician");
-		card.setNumero(91628319);
-		card.setRaridade("rare");
-		card.setId(2);
-		
-		cardRepository.save(card);
-		
-		verify(cardRepository, times(1)).save(card);
-	}
-	
-	@Test
-	public void consultaCard() {
-		int id = 2;
-		Card card = new Card();
-		card = cardRepository.findById(id);
-		
-		assertNotNull(card);
-		
-	}
+	/*
+	 * @Autowired CardServiceImpl cardRepository;
+	 * 
+	 * private Card card;
+	 * 
+	 * @Before public void init() { card = new Card();
+	 * card.setNome("Dark Magician"); }
+	 * 
+	 * @Test public void firtTest() { CardSpecification spec = new
+	 * CardSpecification(new SearchCriteria("nome", ":", "dark magician"));
+	 * 
+	 * List<Card> results = cardRepository.findAll(spec);
+	 * 
+	 * System.out.println(results.get(0).toString()); }
+	 */
 }
