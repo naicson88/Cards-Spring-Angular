@@ -1,4 +1,4 @@
-<div class="container" style="border: solid thin red">
+<div class="container" style="border: solid thin red; background-color: ghostwhite;">
     
     <div id="search-div">
 
@@ -50,7 +50,7 @@
                         <div class="col-md-4">
                             <mat-form-field style="width: 30% !important; " appearance="legacy" >
                                 <mat-label>Level</mat-label>                      
-                                <input matInput type="number" name="level" [(ngModel)]="level">
+                                <input matInput type="text" name="level" [(ngModel)]="level" maxlength="5">
                                
                             </mat-form-field>
                             <mat-icon>stars</mat-icon>      	
@@ -108,7 +108,7 @@
                                 <img src="..\..\assets\img\tiposMonstros\Link.PNG" alt="" width="30px" height="30px">                       
                                 <mat-form-field style="width: 60% !important; " appearance="legacy" >
                                     <mat-label>Links</mat-label>                      
-                                    <input matInput type="number" name="links" [(ngModel)]="links">      	
+                                    <input matInput type="text" maxlength="3" name="links" [(ngModel)]="links">      	
                                 </mat-form-field>
                             </div>
         
@@ -116,7 +116,7 @@
                                 <img src="..\..\assets\img\outras\EscalaAzul.png" alt="Blue Scale"> &nbsp;
                                 <mat-form-field style="width: 60% !important; " appearance="legacy" >
                                     <mat-label>Pendulums</mat-label>                      
-                                    <input matInput type="number" name="pendulum" [(ngModel)]="pendulum">      	
+                                    <input matInput type="text" maxlength="5" name="pendulum" [(ngModel)]="pendulum">      	
                                 </mat-form-field>
                                 <img src="..\..\assets\img\outras\EscalaVermelha.png" alt="Red Scale"> 
                             </div>
@@ -139,8 +139,9 @@
                         </mat-expansion-panel-header>
                         <ul>
                             <li *ngFor="let card of cards">
-                            <mat-checkbox class="example-margin">
-                                <img [src]='card.img' alt="card.nome"  width="30" height="40">
+                            <mat-checkbox class="example-margin cards" value='{{card.name}}'
+                             #cards>
+                                <img [src]='card.img' alt="card.nome"  width="30" height="40" name>
                                 {{card.name}}
                                 </mat-checkbox>     
                             </li>
@@ -164,7 +165,7 @@
                        
                                 <ul>
                                     <li *ngFor="let attr of atributos">
-                                    <mat-checkbox class="example-margin">
+                                    <mat-checkbox class="example-margin attr" value='{{attr.name}}'>
                                         <img [src]='attr.img' alt="attr.nome"  width="40" height="40">
                                         {{attr.name}}
                                         </mat-checkbox>     
@@ -189,7 +190,7 @@
                                 
                         <ul>
                             <li *ngFor="let type of types" >
-                            <mat-checkbox class="example-margin">
+                            <mat-checkbox class="example-margin types" value="{{type.name}}">
                                 <img [src]='type.img' alt="type.nome"  width="30" height="30">
                                 {{type.name}}
                                 </mat-checkbox>     
@@ -210,7 +211,76 @@
             
     </div>
 
-    <div id="painel-cards" style="border: solid thin green">
-        cards
+    <div id="painel-cards">
+        
+        <div id="cards-filter" >
+            <label for="sort">Sort By:</label> &nbsp;&nbsp;
+            <mat-form-field appearance="fill" >
+                <mat-label>Choose one</mat-label>
+                <mat-select [(value)]="chosen">
+                   <mat-option>Nothing</mat-option> 
+                  <mat-option *ngFor="let sort of sorts" [value]="sort.value">
+                    {{sort.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field> &nbsp;&nbsp;
+
+            <mat-form-field appearance="fill" style="width: 13% !important;" *ngIf=" chosen != null">  
+                <mat-label>Order</mat-label> 
+                <mat-select *ngIf=" chosen != 'name' " value="asc">
+                   <mat-option value="asc">Ascendant</mat-option> 
+                   <mat-option value="desc">Descendant</mat-option> 
+                </mat-select>
+
+                <mat-select *ngIf=" chosen == 'name' " value="az">
+                    <mat-option value="az">A-z</mat-option> 
+                    <mat-option value="za">Z-a</mat-option> 
+                 </mat-select>
+
+            </mat-form-field>&nbsp;&nbsp;
+
+            <mat-form-field appearance="fill" style="width: 14% !important;">  
+                <mat-label>Only</mat-label> 
+                <mat-select >
+                    <mat-option>Both</mat-option> 
+                   <mat-option value="have"> I have</mat-option> 
+                   <mat-option value="dont"> I Don't have</mat-option> 
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+        <div id="cards-header">
+            Cards
+        </div>
+        <mat-spinner *ngIf="!loading"></mat-spinner>
+        <div id="cards-body" style="padding-left: 3%;">
+            
+            <div id="imgGeneral" *ngFor="let card of cardsFound"    
+                style="margin-left: 1%; margin-bottom: 1%; cursor: pointer; " class="imgCard">
+                    <img [src]='cardImagem(card.numero)' alt="" width="160px" height="219px"
+                    (mouseover)="mostrarImgToolTip(card.imagem, $event)"
+                    (mousemove)="mostrarImgToolTip(card.imagem, $event)"
+                    (mouseout)="esconderImgToolTip()"
+                    style="margin: -2px;" > <br>
+                    <span style="font-size: small;
+                    font-family: 'Roboto', 'Helvetica Neue', 'sans-serif'; font-weight: 600;color: rgb(163, 159, 159);">
+                        Total you have: 
+                        <span style="color: red;" *ngIf="card.qtd == null">0</span>
+                        <span style="color: navy;" *ngIf="card.qtd > 0">{{card.qtd}}</span>
+                    </span>
+            </div>
+
+                <!--Div que será mostrada quando o mouse passar sobre a carta -->
+                <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+                    <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+                    class="imgTooltip" >
+                </div>
+                
+        </div>
     </div>
 </div>
+<div style="margin-top: 10%;">
+    <app-footer></app-footer>
+</div>
+

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Archetype } from 'src/app/module/Archetype';
+import { Archetype } from 'src/app/classes/Archetype';
 import { AchetypeService } from 'src/app/service/archetype-service/achetype.service';
 
 import {MatSort} from '@angular/material/sort';

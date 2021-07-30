@@ -68,7 +68,8 @@ public class CardSpecification implements Specification<Card> {
 			}
 			
 			else if(criteria.getOperation().equals(SearchOperation.GREATER_THAN_EQUAL)) {
-				
+				predicates.add(builder.greaterThanOrEqualTo(
+						root.get(criteria.getKey()), criteria.getValue().toString()));
 			}
 			
 			else if (criteria.getOperation().equals(SearchOperation.LESS_THAN_EQUAL)) {

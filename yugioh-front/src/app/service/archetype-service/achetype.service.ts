@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Archetype } from 'src/app/module/Archetype';
+import { Archetype } from 'src/app/classes/Archetype';
 
 @Injectable({
   providedIn: 'root'

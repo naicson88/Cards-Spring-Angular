@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { InjectionToken } from "@angular/core";
 import { config, Observable } from "rxjs";
-import { User } from "src/app/module/User";
+import { User } from "src/app/classes/User";
 import { configg } from "./config";
 
 import { JwtAuthStrategy } from "./jwt-auth.strategy";

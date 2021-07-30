@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Archetype } from 'src/app/module/Archetype';
+import { Archetype } from 'src/app/classes/Archetype';
 import { AchetypeService } from 'src/app/service/archetype-service/achetype.service';
 
 

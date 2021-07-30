@@ -1,5 +1,7 @@
 package com.naicson.yugioh.controller;
 
+import java.net.http.HttpResponse;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -7,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.naicson.yugioh.dto.RelUserCardsDTO;
+import com.naicson.yugioh.dto.RelUserDeckDTO;
+import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
@@ -28,6 +35,7 @@ import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.CardSpecificationBuilder;
+import com.naicson.yugioh.util.ErrorMessage;
 import com.naicson.yugioh.util.SearchCriteria;
 
 
@@ -90,7 +98,59 @@ public class CardController {
 		return cardService.deletar(id);
 	}	
 	
+	//Transforma as cartas encontradas no DTO para passar menos parametros
 	@PostMapping(path = {"/searchCard"})
+	@ResponseBody
+	public ResponseEntity<List<CardsSearchDTO>> cardSearch(@RequestBody List<SearchCriteria> criterias){
+		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		
+		CardSpecification spec = new CardSpecification();	
+		for(SearchCriteria criterio: criterias) {
+			spec.add(new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue()));
+		}
+		
+		List<Card> list = cardRepository.findAll(spec);
+		
+		for(Card card : list) {
+			if(list != null && list.size() > 0) 
+				dtoList.add(CardsSearchDTO.transformInDTO(card));
+		}
+		
+		return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = {"/randomCards"})
+	@ResponseBody
+	public ResponseEntity<List<CardsSearchDTO>> randomCards(){
+		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		
+		List<Card> list = cardRepository.findRandomCards();
+		
+		for(Card card : list) {
+			if(list != null && list.size() > 0) 
+				dtoList.add(CardsSearchDTO.transformInDTO(card));
+		}
+		
+		return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
+	}
+	//46986414,53129443
+	@GetMapping(path = {"/rel-user-cards"})
+	@ResponseBody
+	public ResponseEntity<List<RelUserCardsDTO>> searchForCardsUserHave(@RequestParam int[] cardsNumbers) throws SQLException, ErrorMessage {
+		List<RelUserCardsDTO> rel = null;
+		
+		if(cardsNumbers != null && cardsNumbers.length > 0) {
+			rel = cardService.searchForCardsUserHave(cardsNumbers);
+		}
+		
+		if(rel != null && rel.size() > 0) {
+			return new ResponseEntity<List<RelUserCardsDTO>>(rel, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<List<RelUserCardsDTO>>(rel, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	/*@PostMapping(path = {"/searchCard"})
 	@ResponseBody
 	public List<Card> search(@RequestBody List<SearchCriteria> criterias){
 		CardSpecification spec = new CardSpecification();
@@ -102,40 +162,7 @@ public class CardController {
 		List<Card> list = cardRepository.findAll(spec);
 		
 		return list;
-	}
+	}*/
 	
-	/*
-	 * @GetMapping(path = {"/teste"}) public void testeSpec() { CardSpecification
-	 * spec = new CardSpecification(new SearchCriteria("nome", ":",
-	 * "Dark Magician"));
-	 * 
-	 * List<Card> results = cardRepository.findAll(spec);
-	 * 
-	 * System.out.println(results.get(0).toString()); }
-	 */
-	
-	/*
-	 * @GetMapping(path = {"/testeBuild"})
-	 * 
-	 * @ResponseBody public List<Card> search(@RequestParam(value = "search") String
-	 * search){ CardSpecificationBuilder builder = new CardSpecificationBuilder();
-	 * Pattern pattern = Pattern.compile("(\\w+?)(:|<|>|;)(\\w+?),",
-	 * Pattern.CASE_INSENSITIVE); Matcher matcher = pattern.matcher(search + ",");
-	 * 
-	 * List<String> list = new ArrayList<>(); while(matcher.find()) {
-	 * 
-	 * if(matcher.group(2).equals(";")) { String[] separado =
-	 * matcher.group(3).split("_");
-	 * 
-	 * for(int i = 0; i < separado.length; i++ ) { list.add(separado[i]); } }
-	 * 
-	 * 
-	 * if(list == null) builder.with(matcher.group(1), matcher.group(2),
-	 * matcher.group(3)); else builder.with(matcher.group(1), matcher.group(2),
-	 * list); }
-	 * 
-	 * Specification<Card> spec = builder.build(); return
-	 * cardRepository.findAll(spec); }
-	 */
 	
 }

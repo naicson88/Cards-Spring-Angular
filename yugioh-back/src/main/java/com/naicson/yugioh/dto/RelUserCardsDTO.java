@@ -1,0 +1,72 @@
+package com.naicson.yugioh.dto;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table(name = "tab_rel_user_cards")
+@Entity
+public class RelUserCardsDTO {
+	
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	private Integer userId;
+	private Integer cardNumero;
+	private String cardSetCode;
+	private Integer qtd;
+	
+	
+	public RelUserCardsDTO() {
+		
+	}
+	
+
+	public RelUserCardsDTO(Integer id, Integer userId, Integer cardNumero, String cardSetCode, Integer qtd) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.cardNumero = cardNumero;
+		this.cardSetCode = cardSetCode;
+		this.qtd = qtd;
+	}
+
+
+
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public Integer getCardNumero() {
+		return cardNumero;
+	}
+	public void setCardNumero(Integer cardNumero) {
+		this.cardNumero = cardNumero;
+	}
+	public String getCardSetCode() {
+		return cardSetCode;
+	}
+	public void setCardSetCode(String cardSetCode) {
+		this.cardSetCode = cardSetCode;
+	}
+	public Integer getQtd() {
+		return qtd;
+	}
+	public void setQtd(Integer qtd) {
+		this.qtd = qtd;
+	}
+	
+	
+}

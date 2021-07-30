@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { User } from "src/app/module/User";
+import { User } from "src/app/classes/User";
 
 import { AuthStrategy } from "./auth.strategy";
 import { configg } from "./config";

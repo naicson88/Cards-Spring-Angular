@@ -4,4 +4,6 @@ export class Cards {
     rare: number;
     superRare: number
     ultaRare: number
+    numero: number;
+    qtd:number;
 }

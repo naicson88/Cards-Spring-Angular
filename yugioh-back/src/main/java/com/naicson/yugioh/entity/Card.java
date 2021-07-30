@@ -81,6 +81,13 @@ public class Card extends Sets {
 		this.generic_type = generic_type;
 	}
 	
+	//Construtor para CardsSearchDTO
+	public Card(Integer numero, String nome, String imagem) {
+		this.numero = numero;
+		this.nome = nome;
+		this.imagem = imagem;
+	}
+	
 	
 	
 	public String getGeneric_type() {

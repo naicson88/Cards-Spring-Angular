@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Deck } from 'src/app/module/deck';
+import { Deck } from 'src/app/classes/deck';
 import { DeckService } from 'src/app/service/deck.service';
 import {Chart} from   'Chart.js';
 import { arch } from 'process';
@@ -15,9 +15,7 @@ export class DeckDetailComponent implements OnInit {
   @ViewChild("attrCanvas",{static: true}) elemento: ElementRef;
 
   deckDetails: Deck[] = [];
-  isShowTooltip: boolean = false;
-  imgTooltip: string;
-
+  
   quantidadePorTipo = [];
   quantidadePorEstrelas = [];
   qtdPorPropriedade = [];
@@ -41,6 +39,8 @@ export class DeckDetailComponent implements OnInit {
 
   topTp;
   leftTp;
+  imgTooltip: string;
+  isShowTooltip: boolean = false;
  
   
 
