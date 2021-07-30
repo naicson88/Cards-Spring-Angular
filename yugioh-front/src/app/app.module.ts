@@ -30,7 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { ArchetypeDetailsComponent } from './component/archetype-details/archetype-details/archetype-details.component';
 import { ImageToolTip } from './Util/ImageToolTip';
-import { MatExpansionModule, MatSelectModule } from '@angular/material';
+import { MatExpansionModule, MatSelectModule, MatSpinner } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 import { SessionAuthStrategy } from './service/auth-service/session-auth.strategy';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -38,7 +38,7 @@ import { SpinnerComponent } from './component/spinner/spinner.component';
 import { SpinnerService } from './service/spinner.service';
 import { CardsSearchComponent } from './component/cards-search/cards-search/cards-search.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Imagens } from './module/Imagens';
+import { Imagens } from './classes/Imagens';
 
 
 @NgModule({
@@ -56,6 +56,7 @@ import { Imagens } from './module/Imagens';
     ArchetypeComponent,
     ArchetypeDetailsComponent,
     SpinnerComponent,
+    MatSpinner,
     CardsSearchComponent
 
   ],
@@ -79,6 +80,7 @@ import { Imagens } from './module/Imagens';
     MatSelectModule,
     MatCheckboxModule,
     MatExpansionModule,
+   
     NgxSpinnerModule,
 
     ToastrModule.forRoot()

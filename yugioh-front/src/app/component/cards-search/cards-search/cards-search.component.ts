@@ -1,23 +1,46 @@
-import { COMPILER_OPTIONS, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Imagens } from 'src/app/module/Imagens';
-import { Cards } from 'src/app/module/Rel_Deck_Cards';
-import { SearchCriteria } from 'src/app/module/SearchCriteria';
+import { COMPILER_OPTIONS, Component, Directive, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Imagens } from 'src/app/classes/Imagens';
+import { Cards } from 'src/app/classes/Rel_Deck_Cards';
+import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
+import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 
 @Component({
   selector: 'app-cards-search',
   templateUrl: './cards-search.component.html',
   styleUrls: ['./cards-search.component.css']
 })
+@Directive({ selector: 'img' })
 export class CardsSearchComponent implements OnInit {
 
-  constructor(private imagens: Imagens, private cardService: CardServiceService) { }
+  constructor(private imagens: Imagens, private cardService: CardServiceService, {nativeElement}: ElementRef<HTMLImageElement>) {
+    const supports = 'loading' in HTMLImageElement.prototype;
 
+    if(supports){
+      nativeElement.setAttribute('loading','lazy');
+    }
+   }
+ 
   ngOnInit() {
-   
+    this.loadRandomCards();
   }
+
+  loading: boolean = true
+  onLoad() {
+      this.loading = false;
+
+  }
+  //Tooltip image
+  topTp;
+  leftTp;
+  imgTooltip: string;
+  isShowTooltip: boolean = false;
+
+
   panelOpenState = false;
+  chosen:string;
   cardsFound: Cards[] = [];
+  relUserCard: any;
 
   //Cards input field data 
  cardname = '';
@@ -87,46 +110,267 @@ export class CardsSearchComponent implements OnInit {
     {name: this.imagens.ritual, img: this.imagens.ritual_img},
   ]
 
+  sorts: Object[] = [
+    {value: 'name', viewValue: 'Name'},
+    {value: 'atk', viewValue: 'Attack'},
+    {value: 'def', viewValue: 'Defense'},
+    {value: 'level', viewValue: 'Level'},
+    {value: 'links', viewValue: 'Links'},
+    {value: 'pend', viewValue: 'Pendulum Scale'},
+  ];
+
+  loadRandomCards(){
+      this.cardsFound = [];
+
+      this.cardService.randomCards().subscribe(data =>{
+        this.cardsFound = data;
+        console.log(data);
+      })
+  }
+
   searchCards(){
 
+    this.criterios = []
+
     this.inputFilters();
+    
+    this.cardsFilters();
+
+    this.attrFilters();
+    
+    this.typesFilters();
 
     if(this.criterios != null && this.criterios.length > 0){
       
       this.cardService.searchCards(this.criterios).subscribe(data => {
         this.cardsFound = data;
         console.log(this.cardsFound);
-      this.cardsFound = [];
-      }) 
 
-     
+       this.relUserCard = GeneralFunctions.relUserCards(this.cardsFound, this.cardService);
+
+       /* for(var i = 0; i < this.cardsFound.length; i++){
+          if(this.cardsFound[i]['numero'] != null){cardNumbers.push(this.cardsFound[i]['numero'] )}
+         }
+
+        this.cardService.relUserCards(cardNumbers).subscribe(rel =>{
+          this.relUserCard = rel;
+         
+          this.cardsFound.forEach( comp => {
+            this.relUserCard.map( e => {
+              if(e.cardNumero === comp.numero){
+                Object.assign(comp, {"qtd": e.qtd})
+              }
+            })
+          })
+        });*/
+
+      }) 
+  
     }
-    console.log(this.criterios);
+    //console.log(this.criterios);
     
   }
 
-  inputFilters(){
+      inputFilters(){
 
-    if(this.cardname != null && this.cardname != ''){
-        const criterio = new SearchCriteria();
-        criterio.criterios('nome', 'MATCH', this.cardname );
-        this.criterios.push(criterio);           
-    }
-
-      if(this.number != null && this.number != ''){
-        const criterio = new SearchCriteria();
-        criterio.criterios('numero', 'EQUAL', this.number );
-        this.criterios.push(criterio);           
-      }
-
-      if(this.level != null && this.level != ''){
-          const criterio = new SearchCriteria();
-          criterio.criterios('nivel', 'EQUAL', this.number );
-          this.criterios.push(criterio);           
+        if(this.cardname != null && this.cardname != ''){
+            const criterio = new SearchCriteria();
+            criterio.criterios('nome', 'MATCH', this.cardname );
+            this.criterios.push(criterio);           
         }
 
-  }
+          if(this.number != null && this.number != ''){
+            const criterio = new SearchCriteria();
+            criterio.criterios('numero', 'EQUAL', this.number );
+            this.criterios.push(criterio);           
+          }
 
+          if(this.plusatk != null && this.plusatk != '' && parseInt(this.plusatk) >= 0){
+              const criterio = new SearchCriteria();  
+              criterio.criterios('atk', 'GREATER_THAN_EQUAL', this.plusatk );
+              this.criterios.push(criterio);
+          }
 
+          if(this.lessatk != null && this.lessatk != '' && parseInt(this.lessatk) >= 0){
+            const criterio = new SearchCriteria();
+            criterio.criterios('atk', 'LESS_THAN_EQUAL', this.lessatk );
+            this.criterios.push(criterio);
+        }
+
+          if(this.plusdef != null && this.plusdef != '' && parseInt(this.plusdef) >= 0){
+            const criterio = new SearchCriteria();  
+            criterio.criterios('def', 'GREATER_THAN_EQUAL', this.plusdef );
+            this.criterios.push(criterio);
+        }
+
+          if(this.lessdef != null && this.lessdef != '' && parseInt(this.lessdef) >= 0){
+            const criterio = new SearchCriteria();  
+            criterio.criterios('def', 'LESS_THAN_EQUAL', this.lessdef );
+            this.criterios.push(criterio);
+        } 
+
+          if(this.description != null && this.description != ''){
+            const criterio = new SearchCriteria();  
+            criterio.criterios('descricao', 'MATCH', this.description );
+            this.criterios.push(criterio);
+        }
+
+          // Inputs que possam ter Between
+          if(this.level != null && this.level != ''){
+        
+            if(this.level.indexOf("-") !== -1){
+                this.splitString(this.level, 'nivel');
+
+            } else {
+              const criterio = new SearchCriteria();
+              criterio.criterios('nivel', 'EQUAL', this.level );
+              this.criterios.push(criterio);    
+            }
+
+          }
+
+          if(this.links != null && this.links != ''){
+          
+
+            if(this.links.indexOf("-") !== -1){
+                this.splitString(this.links, 'qtd_link');
+
+            } else {
+              const criterio = new SearchCriteria();
+              criterio.criterios('qtd_link', 'EQUAL', this.links );
+              this.criterios.push(criterio);    
+            }
+
+          }
+
+          if(this.pendulum != null && this.pendulum != ''){
+        
+            if(this.pendulum.indexOf("-") !== -1){
+                this.splitString(this.pendulum, 'escala');
+
+            } else {
+              const criterio = new SearchCriteria();
+              criterio.criterios('escala', 'EQUAL', this.pendulum );
+              this.criterios.push(criterio);    
+            }
+
+          }
+
+      }
+
+      cardsFilters(){
+
+            const cards = document.querySelectorAll('.cards');
+            const criterio = new SearchCriteria();
+            let param = new Array();
+
+            if(cards != null && cards.length > 0){
+
+              for(var i = 0; i < cards.length; i++){
+                if(cards[i].className.indexOf("mat-checkbox-checked") !== -1)
+                param.push(cards[i].getElementsByTagName('input')[0].defaultValue)
+              }
+
+              if(param != null && param.length > 0){
+                criterio.criterios('generic_type', 'IN', param);
+                this.criterios.push(criterio);
+              }
+              
+            }
+
+      }
+
+      attrFilters(){
+        const attrs = document.querySelectorAll('.attr');
+        const criterio = new SearchCriteria();
+        const criterio2 = new SearchCriteria();
+        let arrAttr = new Array();
+        let arrProp = new Array();
+
+        if(attrs != null && attrs.length > 0){
+
+          for(var i = 0; i < attrs.length; i++){
+            if(attrs[i].className.indexOf("mat-checkbox-checked") !== -1){
+              let txt = attrs[i].getElementsByTagName('input')[0].defaultValue;
+
+              if(txt == 'Continuous' || txt == 'Field' || txt == 'Counter' || txt == 'Equip'){
+                  arrProp.push(txt);
+              } else {
+                arrAttr.push(txt);
+              }
+            }
+                     
+          }
+
+          if(arrProp != null && arrProp.length > 0){
+            criterio.criterios('propriedade', 'IN', arrProp);
+            this.criterios.push(criterio);
+          }
+
+          if(arrAttr != null && arrAttr.length > 0){
+            criterio2.criterios('atributo', 'IN', arrAttr);
+            this.criterios.push(criterio2);
+          }
+
+        }
+      
+       console.log(this.criterios);
+      }
+
+      typesFilters(){
+
+        const types = document.querySelectorAll('.types');
+        const criterio = new SearchCriteria();
+        let param = new Array();
+
+        if(types != null && types.length > 0){
+
+          for(var i = 0; i < types.length; i++){
+            if(types[i].className.indexOf("mat-checkbox-checked") !== -1)
+            param.push(types[i].getElementsByTagName('input')[0].defaultValue)
+          }
+
+          if(param != null && param.length > 0){
+            criterio.criterios('tipos', 'IN', param);
+            this.criterios.push(criterio);
+          }
+          
+        }
+
+          console.log(this.criterios);
+      }
+      
+      splitString(txt:string, key:string){
+          console.log(key)
+            const criterio = new SearchCriteria();
+            const criterio2 = new SearchCriteria();
+
+            const splitted = txt.split("-",2);
+
+            criterio.criterios(key, 'GREATER_THAN_EQUAL', splitted[0] );
+            this.criterios.push(criterio);
+
+            criterio2.criterios(key, 'LESS_THAN_EQUAL', splitted[1] );
+            this.criterios.push(criterio2);
+
+      }
+
+      cardImagem(cardId: any){
+        let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
+        return urlimg;
+      }
+
+      mostrarImgToolTip(img:string, e){
+          this.leftTp =  e.pageX + 15 + "px";
+          this.topTp = + e.pageY + 15 + "px";
+    
+          //this.imgTooltip = img;
+          this.imgTooltip = e.target.src;
+          this.isShowTooltip = true;
+      }
+   
+      esconderImgToolTip(){
+        this.isShowTooltip = false;
+      }
 
 }

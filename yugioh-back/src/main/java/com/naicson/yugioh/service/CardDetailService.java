@@ -1,13 +1,16 @@
 package com.naicson.yugioh.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.Sets;
 import com.naicson.yugioh.util.CardSpecification;
+import com.naicson.yugioh.util.ErrorMessage;
 
 @Service
 public interface CardDetailService {
@@ -24,4 +27,6 @@ public interface CardDetailService {
 	Card encontrarPorNumero(Integer numero);
 	
 	List<Card> encontrarPorArchetype(int archId);
+	
+	List<RelUserCardsDTO> searchForCardsUserHave(int[] cardsNumbers) throws SQLException, ErrorMessage;
 }

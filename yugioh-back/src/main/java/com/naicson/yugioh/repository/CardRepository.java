@@ -25,4 +25,7 @@ public interface CardRepository extends JpaRepository<Card, Integer>, JpaSpecifi
 	@Query(value = "SELECT * FROM tab_cards WHERE COD_ARCHETYPE = :archId",  nativeQuery = true)	
 	List<Card> findByArchetype(int archId);
 	
+	@Query(value = "SELECT * FROM tab_cards ORDER BY RAND() LIMIT 30",  nativeQuery = true)
+	List<Card> findRandomCards();
+	
 }

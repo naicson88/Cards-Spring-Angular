@@ -1,8 +1,8 @@
 
 
 import { Observable, of } from "rxjs";
-import { Token } from "src/app/module/Token";
-import { User } from "src/app/module/User";
+import { Token } from "src/app/classes/Token";
+import { User } from "src/app/classes/User";
 import { AuthStrategy } from "./auth.strategy";
 
 export class JwtAuthStrategy implements AuthStrategy<Token> {
