@@ -1,5 +1,7 @@
 package com.naicson.yugioh.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class RelUserCardsDTO {
 	private Integer cardNumero;
 	private String cardSetCode;
 	private Integer qtd;
+	private Date dtCriacao;
 	
 	
 	public RelUserCardsDTO() {
@@ -66,6 +69,16 @@ public class RelUserCardsDTO {
 	}
 	public void setQtd(Integer qtd) {
 		this.qtd = qtd;
+	}
+
+
+	public Date getDtCriacao() {
+		return dtCriacao;
+	}
+
+
+	public void setDtCriacao(Date dtCriacao) {
+		this.dtCriacao = dtCriacao;
 	}
 	
 	

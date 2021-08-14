@@ -9,7 +9,6 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.dto.RelUserCardsDTO;
-import com.naicson.yugioh.dto.RelUserDeckDTO;
 
 @Repository
 public class CardDAO {

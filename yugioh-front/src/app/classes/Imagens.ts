@@ -1,5 +1,7 @@
 
 export  class Imagens {
+    
+
     public dark: string  = "DARK";
     public fire: string  = "FIRE";
     public earth: string  = "EARTH";
@@ -105,8 +107,6 @@ export  class Imagens {
     public fusion_img:string ='/../../assets/img/outras/fusionIcon.png'
     public link_img:string = ' /../../assets/img/outras/linkIcon.png'
     public ritual_img:string = '/../../assets/img/outras/ritualIcon.png'
-
-
 
     
 }

@@ -32,21 +32,29 @@ public class Deck {
 	private Integer qtd_super_raras;
 	private Integer qtd_ulta_raras;
 	private Integer qtd_secret_raras;
-	private Date lancamento;
+	private Integer lancamento;
 	@Transient
 	private List<Card> cards;
 	@Transient
 	private List<RelDeckCards> rel_deck_cards;
 	@Column(name = "is_konami_deck")
 	private String isKonamiDeck;
-
+	@Column(name = "set_type")
+	private String setType;
+	@Column(name = "dt_criacao")
+	private Date dt_criacao;
+	@Column(name = "copied_from_deck")
+	private Integer copiedFromDeck;	
+	@Column(name = "user_id")
+	private Integer userId;
+		
 	public Deck() {
 		
 	}
 	
 	public Deck(Integer id, String nome, String imagem, String nomePortugues, Integer qtd_cards, Integer qtd_comuns,
 			Integer qtd_raras, Integer qtd_super_raras, Integer qtd_ulta_raras, Integer qtd_secret_raras,
-			Date lancamento, List<Card> cards, String card_set_code, Float card_price, String isKonamiDeck) {
+			Integer lancamento, List<Card> cards, String card_set_code, Float card_price, String isKonamiDeck) {
 		
 		super();
 		this.id = id;
@@ -145,11 +153,11 @@ public class Deck {
 		this.qtd_ulta_raras = qtd_ulta_raras;
 	}
 
-	public Date getLancamento() {
+	public Integer getLancamento() {
 		return lancamento;
 	}
 
-	public void setLancamento(Date lancamento) {
+	public void setLancamento(Integer lancamento) {
 		this.lancamento = lancamento;
 	}
 
@@ -160,7 +168,8 @@ public class Deck {
 	public void setCards(List<Card> cards) {
 		this.cards = cards;
 	}
-
+	
+	
 
 
 	@Override
@@ -177,8 +186,6 @@ public class Deck {
 		return qtd_secret_raras;
 	}
 
-
-
 	public void setQtd_secret_raras(Integer qtd_secret_raras) {
 		this.qtd_secret_raras = qtd_secret_raras;
 	}
@@ -191,5 +198,38 @@ public class Deck {
 		this.isKonamiDeck = isKonamiDeck;
 	}
 
+	public String getSetType() {
+		return setType;
+	}
+
+	public void setSetType(String setType) {
+		this.setType = setType;
+	}
+
+	public Date getDt_criacao() {
+		return dt_criacao;
+	}
+
+	public void setDt_criacao(Date dt_criacao) {
+		this.dt_criacao = dt_criacao;
+	}
+
+	public Integer getCopiedFromDeck() {
+		return copiedFromDeck;
+	}
+
+	public void setCopiedFromDeck(Integer copiedFromDeck) {
+		 this.copiedFromDeck = copiedFromDeck;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	
+	
 	
 }

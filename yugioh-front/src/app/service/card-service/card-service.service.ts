@@ -6,6 +6,7 @@ import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 import { Cards } from 'src/app/classes/Rel_Deck_Cards';
 import { catchError } from 'rxjs/operators';
 import { HandleErros } from 'src/app/Util/HandleErros';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -14,12 +15,21 @@ import { HandleErros } from 'src/app/Util/HandleErros';
 export class CardServiceService {
 
   card: Card;
+  private cardNumber: number;
 
   constructor(private http: HttpClient) {}
   
   base_url = "http://localhost:8080/yugiohAPI"
 
   //head = new HttpHeaders().set('Authorization', `Bearer ${this.jwt.getToken()}`).set('Content-Type', 'application/json').set('Accept', 'application/json');
+
+  setCardNumber(cardNumber:number) {
+     this.cardNumber = cardNumber;
+  }
+
+  getCardNumber(){
+    return this.cardNumber;
+  }
 
   public getCards(params){
     return  this.http.get<Card[]>(this.base_url+"/decks/todos")
@@ -55,5 +65,6 @@ export class CardServiceService {
       catchError(HandleErros.handleError)
     );
   }
+
 
 }

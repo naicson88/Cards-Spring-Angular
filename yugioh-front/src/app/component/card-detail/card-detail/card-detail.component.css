@@ -202,3 +202,14 @@ table {
     display: block;
   }
 
+  .archetype{
+    color: #337ab7;
+    font-weight: 500;
+}
+
+.archetype:hover {
+    color: #23527c;
+    text-decoration: underline;
+    cursor: pointer;
+}
+

@@ -76,7 +76,12 @@
                         </tr>
                         <tr>        
                             <td class="td1">Archetype: </td>
-                            <td class="td2"> {{card.arquetipo}}</td>
+                            <td class="td2 archetype"  id="{{card.codArchetype}}"> 
+                                <li  [routerLink]="['/archetypeDetails/', card.codArchetype]" 
+                                id='{{card.codArchetype}}' (click)="storedArchetype($event)" style=" list-style-type: none;">
+                                    {{card.arquetipo}} 
+                                </li>                            
+                            </td>
                         </tr>
                         <tr>
                             
@@ -140,7 +145,13 @@
                         </tr>
                         <tr>        
                             <td class="td1">Archetype: </td>
-                            <td class="td2"> {{card.arquetipo}}</td>
+                            
+                            <td class="td2"  attr.data-name="{{card.codArchetype}}" (click)="storedArchetype($event)"> 
+                                <li  [routerLink]="['/archetypeDetails/', card.codArchetype]" 
+                                id='{{card.codArchetype}}' (click)="storedArchetype($event)">
+                                    {{card.arquetipo}} 
+                                </li>                             
+                            </td>
                         </tr>
                     </table>
                 </div>

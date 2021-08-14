@@ -1,6 +1,11 @@
 package com.naicson.yugioh.entity;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,12 +14,15 @@ import javax.persistence.Table;
 public class RelDeckCards {
 	
 	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer deck_id;
 	private Integer card_numero;
 	private String card_set_code;
 	private Double card_price;
 	private String card_raridade;
+	private Date dt_criacao;
 	
 	public Integer getId() {
 		return id;
@@ -51,5 +59,13 @@ public class RelDeckCards {
 	}
 	public void setCard_raridade(String card_raridade) {
 		this.card_raridade = card_raridade;
+	}
+	public Date getDt_criacao() {
+		return dt_criacao;
+	}
+	public void setDt_criacao(Date dt_criacao) {
+		this.dt_criacao = dt_criacao;
 	}	
+	
+	
 }
