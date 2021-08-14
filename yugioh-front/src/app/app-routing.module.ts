@@ -12,7 +12,10 @@ import { LoginComponent } from './component/index/login/login.component';
 import { RegisterComponent } from './component/index/register/register.component';
 
 const routes: Routes = [
-  { path: 'decks', component: DeckComponent },
+  { path: 'decks', component: DeckComponent , data : {set_type: 'D'}},
+  { path: 'tins', component: DeckComponent , data : {set_type: 'T'}},
+  { path: 'boxes', component: DeckComponent , data : {set_type: 'B'}},
+  { path: 'usercollection', component: DeckComponent , data : {set_type: 'U'}},
   { path: 'home', component: HomeComponent },
   { path: 'deck-details/:deckName', component: DeckDetailComponent},
   { path: 'card-detail/:cardName', component: CardDetailComponent },

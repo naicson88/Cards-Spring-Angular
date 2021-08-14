@@ -5,6 +5,7 @@ import { AchetypeService } from 'src/app/service/archetype-service/achetype.serv
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { ImageToolTip } from 'src/app/Util/ImageToolTip';
+import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 
 @Component({
   selector: 'app-archetype-details',
@@ -14,7 +15,7 @@ import { ImageToolTip } from 'src/app/Util/ImageToolTip';
 export class ArchetypeDetailsComponent  implements OnInit  {
   archetype: Archetype[] = [];
 
-  constructor(private archService: AchetypeService, private tool: ImageToolTip) {
+  constructor(private archService: AchetypeService, private tool: ImageToolTip, private cardService: CardServiceService) {
    
   }
   
@@ -24,9 +25,19 @@ export class ArchetypeDetailsComponent  implements OnInit  {
   }
 
   storedCardId(event){
-    const id = event.target.name;
+  /*  const id = event.target.name;
     console.log(id);
-    localStorage.setItem("idCard", id);
+    localStorage.setItem("idCard", id);*/
+
+    const cardNumber = event.target.name;
+    if(cardNumber != null && cardNumber != ""){
+      console.log(cardNumber)
+      this.cardService.setCardNumber(cardNumber);
+    
+    } else {
+       console.log("Unable to consult this card, try again later.");
+       return false;
+    }
    
   }
 
@@ -37,13 +48,13 @@ export class ArchetypeDetailsComponent  implements OnInit  {
 
   loadDeckDetails(){
 
-    const id = localStorage.getItem("idArchetype");
+    //const id = localStorage.getItem("idArchetype");
+    const id = this.archService.getArchetypeId();
     this.archService.getArchetype(id).subscribe(data =>{
       console.log(data)
      this.archetype = data;
      
     })
- 
   }
    
    mostraImagem(e){

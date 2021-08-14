@@ -20,8 +20,8 @@ export class DeckService {
     return  this.http.get<Deck[]>(this.base_url+"/decks/todos");
   } */
 
-    public getDecks(params): Observable<any>{
-    return  this.http.get(this.base_url+`/decks/pagination?size=${params.size}&page=${params.page}`)
+    public getDecks(params, set_type:string): Observable<any>{
+    return  this.http.get(this.base_url+`/decks/pagination?size=${params.size}&page=${params.page}&setType=${set_type}`)
     .pipe(
       catchError(HandleErros.handleError)
     )
@@ -29,6 +29,20 @@ export class DeckService {
 
   public getDeckDetails(id:any) {
     return this.http.get<Deck[]>(this.base_url+`/decks/${id}`)
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+  }
+
+  public addSetToUsersCollection(setId:number){
+    return this.http.get<any>(this.base_url+`/decks/add-deck-to-user-collection/${setId}`)
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+  }
+
+  public removeSetToUsersCollection(setId:number){
+    return this.http.get<any>(this.base_url+`/decks/remove-set-to-user-collection/${setId}`)
     .pipe(
       catchError(HandleErros.handleError)
     )

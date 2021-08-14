@@ -11,7 +11,7 @@ import { AchetypeService } from 'src/app/service/archetype-service/achetype.serv
 })
 export class ArchetypeComponent implements OnInit {
 
-  constructor(private router: Router, private service: AchetypeService) { }
+  constructor(private router: Router, private service: AchetypeService, private archService: AchetypeService) { }
 
   ngOnInit() {
     this.loadAllArchetypes();
@@ -39,9 +39,18 @@ export class ArchetypeComponent implements OnInit {
 
   
   storedArchetype(event){
-    const id = event.target.id;
-    localStorage.setItem("idArchetype", id);
+    //const id = event.target.id;
+    //localStorage.setItem("idArchetype", id);
    // console.log(id);
+   const archId = event.target.id;
+   if(archId != null && archId != ""){
+     console.log(archId)
+     this.archService.setArchetypeId(archId);
+   
+   } else {
+      console.log("Unable to consult this card, try again later.");
+      return false;
+   }
   }
 
 }

@@ -11,6 +11,8 @@ export class ImageToolTip  {
     imgTooltip: string;
     topTp;
     leftTp;
+
+    
  
     mostrarImgToolTip(e){
         console.log("e 2")

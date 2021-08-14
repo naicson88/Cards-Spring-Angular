@@ -73,15 +73,14 @@
                     <div class="clearfix quantity r_corners d_inline_middle f_size_medium color_dark" style="display: inline-block;">
                      
                         <button class="bg_tr d_block f_left" data-direction="down" name="{{deck.id}}"
-                        (click)="manegeDeckAndCardsOfUserCollection($event, 'R')"  >-</button>
+                        (click)="removeSetToUserCollection($event)"  >-</button>
                         
                            <input class="quantidade bg_tr" type="text" name="input_qtde" id="inp_{{deck.id}}"
                            value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" class="f_left">
                      
                         <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}" 
-                        (click)="manegeDeckAndCardsOfUserCollection($event,'A')" >+</button>
+                        (click)="addSetToUserCollection($event)" >+</button>
                      
-
                  </div>
                            
                      </div>              

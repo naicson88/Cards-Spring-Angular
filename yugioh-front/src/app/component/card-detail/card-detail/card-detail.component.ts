@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/classes/Card';
+import { AchetypeService } from 'src/app/service/archetype-service/achetype.service';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
+import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 
 @Component({
   selector: 'app-card-detail',
@@ -13,27 +15,34 @@ export class CardDetailComponent implements OnInit {
   raridade:string;
   
 
-  constructor(private router: Router, private service: CardServiceService) { }
+  constructor(private router: Router, private service: CardServiceService, private archService: AchetypeService) { }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.loadCardDetail();
   }
 
   card: Card[]=[];
 
   loadCardDetail(){
-    const id = localStorage.getItem("idCard");
-
-    this.service.getCardDetails(id).subscribe(data => {
-      this.card = data;
-      console.log(this.card);
-      console.log("chamou");
-    })
+   // const id = localStorage.getItem("idCard");
+    let id = this.service.getCardNumber();
+    
+    if(id == null || id == undefined){
+      id = Number(localStorage.getItem("idArchetype"));
+    }
+      this.service.getCardDetails(id).subscribe(data => {      
+        this.card = data;
+        
+      })
+    
+  
   }
 
   cardImagem(cardId: any){
-    let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
-    return urlimg;
+   // let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
+      let urlimg = GeneralFunctions.cardImagem + cardId + '.jpg';
+      return urlimg;
   }
 
   storeDeckId(event){
@@ -145,6 +154,20 @@ export class CardDetailComponent implements OnInit {
    esconderImgToolTip(){
     this.isShowTooltip = false;
   }
-  
+
+  storedArchetype(event){
+    //const id = event.target.id;
+    const archId = event.target.id;
+   localStorage.setItem("idArchetype", archId);
+   // console.log(id);s
+   if(archId != null && archId != ""){  
+     console.log( "archid" + archId)
+     this.archService.setArchetypeId(archId);
+
+   } else {
+      console.log("Unable to consult this card, try again later.");
+      return false;
+   }
+  }
 
 }

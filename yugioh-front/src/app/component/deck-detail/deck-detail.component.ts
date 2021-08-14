@@ -4,6 +4,7 @@ import { DeckService } from 'src/app/service/deck.service';
 import {Chart} from   'Chart.js';
 import { arch } from 'process';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 
 @Component({
   selector: 'app-deck-detail',
@@ -44,9 +45,10 @@ export class DeckDetailComponent implements OnInit {
  
   
 
-  constructor(private service: DeckService) { }
+  constructor(private service: DeckService, private cardService: CardServiceService) { }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.loadDeckDetails();
   
   }
@@ -307,9 +309,17 @@ export class DeckDetailComponent implements OnInit {
  }
 
   storedCardId(event){
-    const id = event.target.name;
-    localStorage.setItem("idCard", id);
-   // console.log(id);
+    
+    //localStorage.setItem("idCard", id);
+    const cardNumber = event.target.name;
+    if(cardNumber != null && cardNumber != ""){
+      console.log(cardNumber)
+      this.cardService.setCardNumber(cardNumber);
+    
+    } else {
+       console.log("Unable to consult this card, try again later.");
+       return false;
+    }
   }
 
   atributoImagem(atributo:string){

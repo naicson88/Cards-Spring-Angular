@@ -44,18 +44,22 @@ public class DeckController {
 		return deckRepository.findAll();
 	}
 
-	
-	@GetMapping("/pagination") public ResponseEntity<Page<Deck>>
-	  deckPagination(@PageableDefault(page = 0, size = 8, sort = "id", direction =
-	  Sort.Direction.ASC) Pageable pageable){ Page<Deck> deckList =
-	  deckRepository.findAll(pageable);
-	  
-	  if(deckList.isEmpty()) { return new
-	  ResponseEntity<Page<Deck>>(HttpStatus.NOT_FOUND); }
-	  
-	  return new ResponseEntity<>(deckList, HttpStatus.OK);
-	  
-	  }
+	@GetMapping("/pagination")
+	public ResponseEntity<Page<Deck>> deckPagination(
+			@PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+			@RequestParam String setType) {
+		Page<Deck> deckList =
+				// deckRepository.findAll(pageable);
+
+				deckRepository.findAllBySetType(setType, pageable);
+		if (deckList.isEmpty()) {
+
+			return new ResponseEntity<Page<Deck>>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(deckList, HttpStatus.OK);
+
+	}
 
 	@GetMapping(path = { "/{id}" })
 	public Deck deckAndCards(@PathVariable("id") Integer id) {
@@ -74,12 +78,39 @@ public class DeckController {
 		return deckRepository.findByNomeContaining(nomeDeck);
 	}
 
-	@GetMapping(path = { "/add-deck-to-user-collection/{deckId}/{flagAddOrRemove}" })
-	public int addDeckToUserCollection(@PathVariable("deckId") Integer deckId,
-			@PathVariable("flagAddOrRemove") String flagAddOrRemove) throws SQLException, ErrorMessage {
-		return deckService.manegerCardsToUserCollection(deckId, flagAddOrRemove);
+	/*
+	 * @GetMapping(path = {
+	 * "/add-deck-to-user-collection/{deckId}/{flagAddOrRemove}" }) public int
+	 * addDeckToUserCollection(@PathVariable("deckId") Integer deckId,
+	 * 
+	 * @PathVariable("flagAddOrRemove") String flagAddOrRemove) throws SQLException,
+	 * ErrorMessage { return deckService.manegerCardsToUserCollection(deckId,
+	 * flagAddOrRemove);
+	 * 
+	 * }
+	 */
 
+	@GetMapping(path = { "/add-deck-to-user-collection/{deckId}" })
+	public int addSetToUserCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {			
+		if(deckId != null && deckId > 0) {
+			return deckService.addSetToUserCollection(deckId);
+		}
+		else {
+			throw new ErrorMessage("The deck informed is not valid!");
+		}
 	}
+	
+	@GetMapping(path = { "/remove-set-to-user-collection/{deckId}" })
+	public int removeSetFromUsersCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {			
+		if(deckId != null && deckId > 0) {
+			return deckService.removeSetFromUsersCollection(deckId);
+		}
+		else {
+			throw new ErrorMessage("The deck informed is not valid!");
+		}
+	}
+	
+	
 
 	@GetMapping("/rel-user-decks")
 	public List<RelUserDeckDTO> searchForDecksUserHave(@RequestParam int[] decksIds) throws SQLException, ErrorMessage {

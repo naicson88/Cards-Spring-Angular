@@ -2,7 +2,7 @@ import { Component, Inject, OnInit ,Pipe, PipeTransform} from '@angular/core';
 import { Deck } from 'src/app/classes/deck';
 import { DeckService } from 'src/app/service/deck.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SpinnerService } from 'src/app/service/spinner.service';
 
@@ -23,6 +23,8 @@ export class DeckComponent implements OnInit {
  pageSizes = [8,12,24,36,100];
  totalItens = 0;
 
+ set_type: any;
+
  deck: Deck[]
  relUserDeck: any[];
  safeUrl: SafeUrl;
@@ -31,10 +33,16 @@ export class DeckComponent implements OnInit {
  user: any;
  
   constructor(private service: DeckService, private domSanitizer: DomSanitizer, private  router: Router,
-     private toastr: ToastrService, private  spinner: SpinnerService) { }
+     private toastr: ToastrService, private  spinner: SpinnerService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.route.data.subscribe(set_type =>{
+      this.set_type = set_type.set_type;
+    })
+
     this.getDecksInfo();
+
   }
 
   deckDetailPage(nome:any){
@@ -49,7 +57,7 @@ export class DeckComponent implements OnInit {
     const params = this.getRequestParam(this.pageSize, this.page);
     
 
-    this.service.getDecks(params).subscribe(data => {
+    this.service.getDecks(params, this.set_type).subscribe(data => {
      const {content, totalElements} = data;
       //this.deck = data
       this.deck = content;
@@ -80,11 +88,8 @@ export class DeckComponent implements OnInit {
          })
        })
 
-       console.log(this.deck)
-
      })
-
-     
+       
     })
 
     error => {
@@ -107,42 +112,48 @@ export class DeckComponent implements OnInit {
 
   }
 
-  manegeDeckAndCardsOfUserCollection(event:any, flagAddOrRemove:string){
-    let qtdCardManeged:number;
-    let deckId = event.target.name;
+    addSetToUserCollection(event:any){
+      let qtdCardManeged:number;
+      let setId = event.target.name;
 
-    this.service.manegeDeckAndCardsOfUserCollection(deckId, flagAddOrRemove).subscribe(data => {
-      qtdCardManeged = data;
+      this.service.addSetToUsersCollection(setId).subscribe(data => {
+        qtdCardManeged = data;
 
-      if(qtdCardManeged == 0){
-        return false;
-      }
+        if(qtdCardManeged == 0){
+          return false;
+        }
 
-      if(flagAddOrRemove === "A"){
-      
         if(qtdCardManeged > 0){
           this.toastr.success('The Deck has been added to your collection! Plus ' + qtdCardManeged + ' cards of this Deck.', 'Success!');
             
-          this.manegeQuantity(deckId, flagAddOrRemove);
+          this.manegeQuantity(setId, "A");
 
         } else {
           this.toastr.error('Unable to add the Deck or Cards to the user.', 'Error!')
         }
-      } else if( flagAddOrRemove === "R"){
-        
+
+      })
+
+
+    }
+
+    removeSetToUserCollection(event:any) {
+      let qtdCardManeged:number;
+      let setId = event.target.name;
+      
+      this.service.removeSetToUsersCollection(setId).subscribe(data => {
+        qtdCardManeged = data;
+
         if(qtdCardManeged > 0){
 
           this.toastr.warning('The Deck has been removed from your collection! Plus ' + qtdCardManeged + ' cards of this deck.', 'Success!');
-          this.manegeQuantity(deckId, flagAddOrRemove);
+          this.manegeQuantity(setId, "R");
 
         } else {
           this.toastr.error('Unable to remove the Deck or Cards to the user collection.', 'Error!')
         }
-      }
-
-    })
-
-  }
+      })
+    }
 
   manegeQuantity(deckId:string, flagAddOrRemove:string){
   
@@ -200,7 +211,7 @@ export class DeckComponent implements OnInit {
   addDeckToCollection(e){
     const deckId = e.target.name;
     
-    console.log(deckId, this.user)
+    //console.log(deckId, this.user)
    this.toastr.success('The Deck has been added to your collection!', 'Success!')
   }
 }

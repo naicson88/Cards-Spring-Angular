@@ -43,7 +43,7 @@ public class CardServiceImpl implements CardDetailService {
 		Query query = em.createNativeQuery("SELECT *\r\n" + 
 				" FROM tab_decks deck \r\n" + 
 				"inner join TAB_REL_DECK_CARDS decks on deck.id = decks.deck_id\r\n" + 
-				"where decks.card_numero = :cardNumero", Deck.class);
+				"where decks.card_numero = :cardNumero and deck.is_konami_deck = 'S'", Deck.class);
 		
 		List<Deck> decks_set = (List<Deck>) query.setParameter("cardNumero", cardNumero).getResultList();
 		return decks_set;

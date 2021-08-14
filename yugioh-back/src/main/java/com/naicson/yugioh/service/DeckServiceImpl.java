@@ -1,17 +1,13 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.ErrorManager;
-import java.util.stream.IntStream;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
-import javax.validation.Validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,22 +17,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.naicson.yugioh.dao.DeckDAO;
 import com.naicson.yugioh.dto.DeckDTO;
+import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
-import com.naicson.yugioh.entity.User;
+import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.util.ErrorMessage;
 
 @Service
 public class DeckServiceImpl implements DeckDetailService {
 
-	// @Autowired
+
 	@PersistenceContext
 	EntityManager em;
-
+	
 	@Autowired
 	DeckDAO dao;
+	
+	@Autowired
+	DeckRepository deckRepository;
 
 	public Deck deck(Integer deckId) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId", Deck.class);
@@ -102,15 +102,92 @@ public class DeckServiceImpl implements DeckDetailService {
 		return null;
 	}
 
-	@Transactional(rollbackFor = Exception.class)
-	public int manegerCardsToUserCollection(Integer deckId, String flagAddOrRemove) throws SQLException, ErrorMessage {
+	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
+	public int addSetToUserCollection(Integer originalDeckId) throws SQLException, ErrorMessage, Exception {
+		try {
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+
+			// Consulta o deck pelo Id
+			Optional<Deck> dk = deckRepository.findById(originalDeckId);
+			
+			if(dk == null) {
+				throw new ErrorMessage("No Set found with this code.");
+			}
+			
+			Deck deckOrigem = dk.get();
+
+			if (user != null) {
+				
+				// Cria um novo deck que será inserido como do usuário
+				Deck newDeck = new Deck();
+				newDeck.setImagem(deckOrigem.getImagem());
+				newDeck.setNome(deckOrigem.getNome());
+				newDeck.setNomePortugues(deckOrigem.getNomePortugues());
+				newDeck.setSetType("UD");
+				newDeck.setQtd_cards(deckOrigem.getQtd_cards());
+				newDeck.setQtd_comuns(deckOrigem.getQtd_comuns());
+				newDeck.setQtd_raras(deckOrigem.getQtd_raras());
+				newDeck.setQtd_secret_raras(deckOrigem.getQtd_secret_raras());
+				newDeck.setQtd_super_raras(deckOrigem.getQtd_super_raras());
+				newDeck.setQtd_ulta_raras(deckOrigem.getQtd_ulta_raras());
+				newDeck.setIsKonamiDeck("N");
+				newDeck.setDt_criacao(new Date());
+				newDeck.setCopiedFromDeck(deckOrigem.getId());
+				if(newDeck.getCopiedFromDeck() == null) {
+					throw new ErrorMessage("Erro null");
+				}
+				newDeck.setUserId(user.getId());				
+				
+				if (newDeck != null) {
+					
+					Integer generatedDeckId = dao.addDeck(newDeck);
+
+					if (generatedDeckId == null || generatedDeckId == 0) {
+						throw new ErrorMessage("It was not possible add Deck to user.");
+					}
+					
+					//Adiciona os cards do Deck original ao novo Deck.
+					int addCardsOnNewDeck = this.addCardsToDeck(originalDeckId, generatedDeckId);
+					
+					if(addCardsOnNewDeck <= 0) {
+						throw new ErrorMessage("It was not possible add cards to the new Deck.");
+					}
+					
+					//Adiciona os cards a coleção do usuário.
+					 int addCardsToUsersCollection = this.addOrRemoveCardsToUserCollection(originalDeckId, user.getId(), "A");
+
+					if (addCardsToUsersCollection < 1) {
+						throw new ErrorMessage("Unable to include Cards for User!");
+					}
+
+					return addCardsToUsersCollection;
+
+				} else {
+					throw new ErrorMessage("It was not possible find de Deck!");
+				}
+			} else {
+				throw new ErrorMessage("It was not able found user!");
+			}
+
+		} catch (ErrorMessage msg) {
+			throw msg;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
+	public int ImanegerCardsToUserCollection(Integer originalDeckId, String flagAddOrRemove)
+			throws SQLException, ErrorMessage {
 
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 			int itemAtualizado;
 
-			Integer alreadyHasThisDeck = dao.verifyIfUserAleadyHasTheDeck(deckId, user.getId());
+			Integer alreadyHasThisDeck = dao.verifyIfUserAleadyHasTheDeck(originalDeckId, user.getId());
 
 			// Se o usuário não tiver o Deck e for passado parametro para remover esse deck.
 			if (alreadyHasThisDeck != null && alreadyHasThisDeck == 0 && flagAddOrRemove.equals("R")) {
@@ -118,21 +195,22 @@ public class DeckServiceImpl implements DeckDetailService {
 			}
 
 			if (alreadyHasThisDeck != null && alreadyHasThisDeck == 0) {
-				itemAtualizado = dao.addDeckToUserCollection(deckId, user.getId());
+				itemAtualizado = dao.addDeckToUserCollection(originalDeckId, user.getId());
 
 				if (itemAtualizado < 1) {
 					throw new ErrorMessage("Unable to include Deck for User!");
 				}
 
 			} else {
-				itemAtualizado = dao.changeQuantitySpecificDeckUserHas(deckId, user.getId(), flagAddOrRemove);
+				itemAtualizado = dao.changeQuantitySpecificDeckUserHas(originalDeckId, user.getId(), flagAddOrRemove);
 
 				if (itemAtualizado < 1) {
 					throw new ErrorMessage("Unable to manege Deck for User!");
 				}
 			}
 
-			int qtdAddedOrRemoved = this.addOrRemoveCardsToUserCollection(deckId, user.getId(), flagAddOrRemove);
+			int qtdAddedOrRemoved = this.addOrRemoveCardsToUserCollection(originalDeckId, user.getId(),
+					flagAddOrRemove);
 
 			if (qtdAddedOrRemoved < 1) {
 				throw new ErrorMessage("Unable to include Cards for User!");
@@ -147,7 +225,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		}
 	}
 
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	private int addOrRemoveCardsToUserCollection(Integer deckId, int userId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage {
 		try {
@@ -177,8 +255,14 @@ public class DeckServiceImpl implements DeckDetailService {
 						} else {
 							// Caso o usuário não tenha o Card, simplesmente da um insert desse card na
 							// coleção do usuário.
-							int insertCard = dao.insertCardToUserCollection(userId, relation.getCard_set_code(),
-									relation.getCard_numero());
+							RelUserCardsDTO rel = new RelUserCardsDTO();
+							rel.setUserId(userId);
+							rel.setCardNumero(relation.getCard_numero());
+							rel.setCardSetCode(relation.getCard_set_code());
+							rel.setQtd(1);
+							rel.setDtCriacao(new Date());
+							
+							int insertCard = dao.insertCardToUserCollection(rel);
 
 							if (insertCard < 1) {
 								throw new ErrorMessage(
@@ -193,9 +277,7 @@ public class DeckServiceImpl implements DeckDetailService {
 					throw new ErrorMessage("Check the Add or Remove parameter sent!");
 				}
 
-			} else {
-				throw new ErrorMessage("No Cards related to this Deck were found!");
-			}
+			} 
 
 			return qtdCardsAddedOrRemoved;
 
@@ -205,38 +287,98 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw ex;
 		}
 	}
-	
-	public List<RelUserDeckDTO> searchForDecksUserHave(int[] decksIds) throws SQLException, ErrorMessage {		
+
+	public List<RelUserDeckDTO> searchForDecksUserHave(int[] decksIds) throws SQLException, ErrorMessage {
 		try {
-			
+
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
-			
-			if(user.getId() == 0) {
+
+			if (user.getId() == 0) {
 				throw new ErrorMessage("Unable to query user decks, user ID not entered");
 			}
-			
-			if(decksIds == null || decksIds.length == 0) {
+
+			if (decksIds == null || decksIds.length == 0) {
 				throw new ErrorMessage("Unable to query user decks, decks IDs not entered");
 			}
-			 
-		     String decksIdsString = "";
-		     
-		     for(int id: decksIds) {
-		    	 decksIdsString += id;
-		    	 decksIdsString += ",";
-		     }	     
-		     decksIdsString += "0";
-		     
+
+			String decksIdsString = "";
+
+			for (int id : decksIds) {
+				decksIdsString += id;
+				decksIdsString += ",";
+			}
+			decksIdsString += "0";
+
 			List<RelUserDeckDTO> relUserDeckList = dao.searchForDecksUserHave(user.getId(), decksIdsString);
-			
+
 			return relUserDeckList;
-			
-		}catch(ErrorMessage em) {
+
+		} catch (ErrorMessage em) {
 			throw em;
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
+	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
+	public int addDeck(Deck deck) throws SQLException, ErrorMessage {
+		int id = 0;
+
+		if (deck != null) {
+			dao = new DeckDAO();
+			id = dao.addDeck(deck);
+		} else {
+			throw new ErrorMessage("O deck informado não é válido.");
+		}
+
+		return id;
+	}
+	
+	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
+	public int addCardsToDeck(Integer originalDeckId, Integer generatedDeckId) throws SQLException, Exception, ErrorMessage {
+		try {			
+			if (originalDeckId == null && generatedDeckId == null) {
+				throw new ErrorMessage("Original deck or generated deck is null");
+			}			
+			int cardsAddedToDeck = dao.addCardsToDeck(generatedDeckId, originalDeckId);
+			
+			return cardsAddedToDeck;
+			
+		}catch(ErrorMessage em) {
+			throw em;
+		}
+	}
+
+	public int removeSetFromUsersCollection(Integer setId) throws SQLException, ErrorMessage, Exception {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+
+		
+		// Consulta o deck pelo Id
+		Optional<Deck> dk = deckRepository.findById(setId);
+		
+		if(dk.isEmpty()) {
+			throw new ErrorMessage("No Set found with this code.");
+		}
+		
+		Deck setOrigem = dk.get();
+		//Não pode remover um Set que é da Konami.
+		if(setOrigem.getIsKonamiDeck().equals("S")) {
+			throw new ErrorMessage("Konami Set cannot be deleted!");
+		}
+		
+		//Remove os cards da coleção do usuário. 
+		int qtdRemoved = this.addOrRemoveCardsToUserCollection(setId, user.getId(), "R");
+		
+		//Remove os Cards do Set.
+		dao.removeCardsFromSet(setId);
+		
+		//Remove o Set.
+		deckRepository.deleteById(setOrigem.getId());
+		
+		return qtdRemoved;
+		
+	}
 }

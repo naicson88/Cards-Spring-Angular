@@ -10,4 +10,6 @@ import { Component, HostBinding  } from '@angular/core';
 
 export class AppComponent {
   title = 'yugioh-front';
+
+ 
 }

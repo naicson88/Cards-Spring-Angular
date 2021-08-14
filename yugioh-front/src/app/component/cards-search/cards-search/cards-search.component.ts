@@ -22,6 +22,7 @@ export class CardsSearchComponent implements OnInit {
    }
  
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.loadRandomCards();
   }
 
@@ -35,6 +36,8 @@ export class CardsSearchComponent implements OnInit {
   leftTp;
   imgTooltip: string;
   isShowTooltip: boolean = false;
+  isRandomCards : boolean = true;
+  cardsFoundQtd: number;
 
 
   panelOpenState = false;
@@ -148,6 +151,8 @@ export class CardsSearchComponent implements OnInit {
 
        this.relUserCard = GeneralFunctions.relUserCards(this.cardsFound, this.cardService);
 
+       this.isRandomCards = false;
+       this.cardsFoundQtd = this.cardsFound.length;
        /* for(var i = 0; i < this.cardsFound.length; i++){
           if(this.cardsFound[i]['numero'] != null){cardNumbers.push(this.cardsFound[i]['numero'] )}
          }
@@ -372,5 +377,20 @@ export class CardsSearchComponent implements OnInit {
       esconderImgToolTip(){
         this.isShowTooltip = false;
       }
+
+      openCardDetail(event:any){
+      
+        const cardNumber = event.target.name;
+        if(cardNumber != null && cardNumber != ""){
+          console.log(cardNumber)
+          this.cardService.setCardNumber(cardNumber);
+        
+        } else {
+           console.log("Unable to consult this card, try again later.");
+           return false;
+        }
+        
+      }
+
 
 }

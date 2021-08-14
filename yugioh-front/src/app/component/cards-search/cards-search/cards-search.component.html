@@ -3,7 +3,7 @@
     <div id="search-div">
 
         <mat-expansion-panel (opened)="panelOpenState = true"
-        (closed)="panelOpenState = false" style="background-color: #d2dbf5;">
+        (closed)="panelOpenState = false" style="background-color: whitesmoke;">
             <mat-expansion-panel-header style="background-color: #63b175 !important;">
             <mat-panel-title>
                 <h4 style="font-family: 'Arvo'; font-weight: 700; color: white; font-size: 26px;">Search filters
@@ -213,7 +213,7 @@
 
     <div id="painel-cards">
         
-        <div id="cards-filter" >
+       <!-- <div id="cards-filter" >
             <label for="sort">Sort By:</label> &nbsp;&nbsp;
             <mat-form-field appearance="fill" >
                 <mat-label>Choose one</mat-label>
@@ -247,22 +247,37 @@
                    <mat-option value="dont"> I Don't have</mat-option> 
                 </mat-select>
             </mat-form-field>
-        </div>
+        </div> -->
 
 
         <div id="cards-header">
             Cards
-        </div>
+           </div>
         <mat-spinner *ngIf="!loading"></mat-spinner>
+        <span style="margin-left: 80%; font-family: 
+            SegoeProBlack, Segoe UI,SegoeUI,Helvetica,Arial,sans-serif; 
+            color: #054b16; font-weight: 900;" *ngIf="isRandomCards">
+            Random cards</span>
+        
+         <span style="margin-left: 80%; font-family: 
+            SegoeProBlack, Segoe UI,SegoeUI,Helvetica,Arial,sans-serif; 
+            color: silver; font-weight: 900;" *ngIf="!isRandomCards">
+            <span style="color: red;"> {{cardsFoundQtd}} </span>cards found!</span>
+        
         <div id="cards-body" style="padding-left: 3%;">
             
             <div id="imgGeneral" *ngFor="let card of cardsFound"    
                 style="margin-left: 1%; margin-bottom: 1%; cursor: pointer; " class="imgCard">
-                    <img [src]='cardImagem(card.numero)' alt="" width="160px" height="219px"
-                    (mouseover)="mostrarImgToolTip(card.imagem, $event)"
-                    (mousemove)="mostrarImgToolTip(card.imagem, $event)"
-                    (mouseout)="esconderImgToolTip()"
-                    style="margin: -2px;" > <br>
+                    
+                    <a [routerLink]="['/card-detail/', card.nome]" name="{{card.numero}}" (click)="openCardDetail($event)">  
+                        <img [src]='cardImagem(card.numero)' alt="" width="160px" height="219px" name="{{card.numero}}"
+                        (mouseover)="mostrarImgToolTip(card.imagem, $event)"
+                        (mousemove)="mostrarImgToolTip(card.imagem, $event)"
+                        (mouseout)="esconderImgToolTip()"
+                        style="margin: -2px;" >
+                    </a>
+                     <br>
+
                     <span style="font-size: small;
                     font-family: 'Roboto', 'Helvetica Neue', 'sans-serif'; font-weight: 600;color: rgb(163, 159, 159);">
                         Total you have: 
@@ -280,7 +295,7 @@
         </div>
     </div>
 </div>
-<div style="margin-top: 10%;">
+<div style="margin-top: 8%;">
     <app-footer></app-footer>
 </div>
 

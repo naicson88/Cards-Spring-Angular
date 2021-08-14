@@ -4,6 +4,8 @@ import { CardServiceService } from "../service/card-service/card-service.service
 
 export abstract class GeneralFunctions  {
 
+    public static cardImagem:string = 'https://storage.googleapis.com/ygoprodeck.com/pics/';
+
     public static relUserCards(cardsFound: Cards[], service: CardServiceService) {
 
         let cardNumbers = [];
