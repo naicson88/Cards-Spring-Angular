@@ -109,4 +109,21 @@ export  class Imagens {
     public ritual_img:string = '/../../assets/img/outras/ritualIcon.png'
 
     
+    
+   public  mapCardsIcons(){
+        let mapCardsIcons = new Map();
+        mapCardsIcons.set("Monster", '/../../assets/img/outras/monsterIcon.png')
+        mapCardsIcons.set("Spell", '/../../assets/img/outras/magicIcon.png')
+        mapCardsIcons.set("Trap", '/../../assets/img/outras/trapIcon.png')
+        mapCardsIcons.set("Pendulum", '/../../assets/img/outras/pendulumIcon.png')
+        mapCardsIcons.set("XYZ", '/../../assets/img/outras/xyzIcon.png')
+        mapCardsIcons.set("Synchron", '/../../assets/img/outras/syncronIcon.png')
+        mapCardsIcons.set("Fusion", '/../../assets/img/outras/fusionIcon.png')
+        mapCardsIcons.set("Link", '/../../assets/img/outras/linkIcon.png')
+        mapCardsIcons.set("Ritual", '/../../assets/img/outras/ritualIcon.png')
+
+        return mapCardsIcons;
+    }
+
+    
 }

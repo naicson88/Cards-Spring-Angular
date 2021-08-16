@@ -138,21 +138,33 @@ export class DeckComponent implements OnInit {
     }
 
     removeSetToUserCollection(event:any) {
+      debugger
       let qtdCardManeged:number;
-      let setId = event.target.name;
+      let setId = event.target.id
+
+      let conf= confirm("Are you sure you want to delete from your collection?")
       
-      this.service.removeSetToUsersCollection(setId).subscribe(data => {
-        qtdCardManeged = data;
+      if(setId == null || setId == undefined || setId == "")
+        alert("It was not possible remove this set. Try again later.")
 
-        if(qtdCardManeged > 0){
+      if(conf){
 
-          this.toastr.warning('The Deck has been removed from your collection! Plus ' + qtdCardManeged + ' cards of this deck.', 'Success!');
-          this.manegeQuantity(setId, "R");
+        this.service.removeSetToUsersCollection(setId).subscribe(data => {
+          qtdCardManeged = data;
+  
+          if(qtdCardManeged > 0){
+  
+            this.toastr.warning('The Deck has been removed from your collection! Plus ' + qtdCardManeged + ' cards of this deck.', 'Success!');
+            this.manegeQuantity(setId, "R");
 
-        } else {
-          this.toastr.error('Unable to remove the Deck or Cards to the user collection.', 'Error!')
-        }
-      })
+          } else {
+            this.toastr.error('Unable to remove the Deck or Cards to the user collection.', 'Error!')
+          }
+        })
+
+      } else {
+          return false;
+      }
     }
 
   manegeQuantity(deckId:string, flagAddOrRemove:string){

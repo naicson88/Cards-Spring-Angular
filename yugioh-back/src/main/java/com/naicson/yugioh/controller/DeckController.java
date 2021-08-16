@@ -27,7 +27,9 @@ import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
+import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.GeneralFunctions;
 
 @RestController
 @RequestMapping({ "yugiohAPI/decks" })
@@ -39,6 +41,8 @@ public class DeckController {
 	@Autowired
 	DeckServiceImpl deckService;
 
+	Page<Deck> deckList = null;
+
 	@GetMapping("/todos")
 	public List<Deck> consultar() {
 		return deckRepository.findAll();
@@ -48,10 +52,16 @@ public class DeckController {
 	public ResponseEntity<Page<Deck>> deckPagination(
 			@PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 			@RequestParam String setType) {
-		Page<Deck> deckList =
-				// deckRepository.findAll(pageable);
 
-				deckRepository.findAllBySetType(setType, pageable);
+		if (!setType.equals("") && setType != null && !setType.equals("UD"))
+			deckList = deckRepository.findAllBySetType(setType, pageable);
+
+		else if (setType.equals("UD")) {
+			UserDetailsImpl user = GeneralFunctions.userLogged();
+
+			deckList = deckRepository.findAllByUserId(user.getId(), pageable);
+		}
+
 		if (deckList.isEmpty()) {
 
 			return new ResponseEntity<Page<Deck>>(HttpStatus.NOT_FOUND);
@@ -91,26 +101,22 @@ public class DeckController {
 	 */
 
 	@GetMapping(path = { "/add-deck-to-user-collection/{deckId}" })
-	public int addSetToUserCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {			
-		if(deckId != null && deckId > 0) {
+	public int addSetToUserCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {
+		if (deckId != null && deckId > 0) {
 			return deckService.addSetToUserCollection(deckId);
-		}
-		else {
+		} else {
 			throw new ErrorMessage("The deck informed is not valid!");
 		}
 	}
-	
+
 	@GetMapping(path = { "/remove-set-to-user-collection/{deckId}" })
-	public int removeSetFromUsersCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {			
-		if(deckId != null && deckId > 0) {
+	public int removeSetFromUsersCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {
+		if (deckId != null && deckId > 0) {
 			return deckService.removeSetFromUsersCollection(deckId);
-		}
-		else {
+		} else {
 			throw new ErrorMessage("The deck informed is not valid!");
 		}
 	}
-	
-	
 
 	@GetMapping("/rel-user-decks")
 	public List<RelUserDeckDTO> searchForDecksUserHave(@RequestParam int[] decksIds) throws SQLException, ErrorMessage {

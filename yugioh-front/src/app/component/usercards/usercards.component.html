@@ -1,0 +1,66 @@
+<div class="container" id="main-div" style="margin-top: 30px; border: solid red">
+    <div class="set-header">  
+        User's Cards Collection
+    </div>
+    
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+        <li class="nav-item" *ngFor="let icon of arrIcons">
+          <a class="nav-link " id="Monster-tab" data-toggle="tab" href="#{{icon.tipo}}" role="tab"
+           aria-controls="Monster" aria-selected="true" name="{{icon.tipo}}">
+            <img [src]='icon.img' alt="" width="28px" height="40px">&nbsp; {{icon.tipo}}</a>
+        </li>
+
+        <!-- <li class="nav-item">
+            <a class="nav-link " id="Spell-tab" data-toggle="tab" href="#Spell" role="tab" aria-controls="Spell" aria-selected="false">
+              <img [src]='arrIcons[1].img' alt="" width="28px" height="40px"> Spell</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="Trap-tab" data-toggle="tab" href="#Trap" role="tab" aria-controls="Trap" aria-selected="false">
+              <img [src]='arrIcons[2].img' alt="" width="28px" height="40px"> Trap</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="Pendulum-tab" data-toggle="tab" href="#Pendulum" role="tab" aria-controls="Pendulum" aria-selected="false">
+              <img [src]='arrIcons[3].img' alt="" width="28px" height="40px"> Pendulum</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="XYZ-tab" data-toggle="tab" href="#XYZ" role="tab" aria-controls="XYZ" aria-selected="false">
+              <img [src]='arrIcons[4].img' alt="" width="28px" height="40px"> XYZ</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="Synchron-tab" data-toggle="tab" href="#Synchron" role="tab" aria-controls="Synchron" aria-selected="false">
+              <img [src]='arrIcons[5].img' alt="" width="28px" height="40px"> Synchron</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="Fusion-tab" data-toggle="tab" href="#Fusion" role="tab" aria-controls="Fusion" aria-selected="false">
+              <img [src]='arrIcons[6].img' alt="" width="28px" height="40px"> Fusion</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="Link-tab" data-toggle="tab" href="#Fusion" role="tab" aria-controls="Link" aria-selected="false">
+              <img [src]='arrIcons[7].img' alt="" width="28px" height="40px"> Link</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " id="Fusion-tab" data-toggle="tab" href="#Ritual" role="tab" aria-controls="Ritual" aria-selected="false">
+              <img [src]='arrIcons[6].img' alt="" width="28px" height="40px"> Ritual</a>
+        </li> -->
+
+      </ul>
+      
+      <div class="tab-content" id="myTabContent">
+         <div id="filter-div" style="border: solid blue; margin-top: 20px;"> 
+             filter div
+         </div>
+
+         <div id="cards" style="border: solid green;margin-top: 20px;">
+               mostrar cards 
+         </div>
+      </div>
+
+</div>

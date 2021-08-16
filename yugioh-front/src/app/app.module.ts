@@ -16,29 +16,23 @@ import { DeckDetailComponent } from './component/deck-detail/deck-detail.compone
 import { CardDetailComponent } from './component/card-detail/card-detail/card-detail.component';
 import { IndexComponent } from './component/index/index.component';
 import { LoginComponent } from './component/index/login/login.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { RegisterComponent } from './component/index/register/register.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { authStrategyProvider } from './service/auth-service/auth.strategy';
 import { AuthInterceptor } from './service/auth-service/AuthInterceptor';
-import {MatMenuModule} from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { ArchetypeDetailsComponent } from './component/archetype-details/archetype-details/archetype-details.component';
 import { ImageToolTip } from './Util/ImageToolTip';
-import { MatExpansionModule, MatSelectModule, MatSpinner } from '@angular/material';
+import {  MatSpinner } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
-import { SessionAuthStrategy } from './service/auth-service/session-auth.strategy';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SpinnerComponent } from './component/spinner/spinner.component';
 import { SpinnerService } from './service/spinner.service';
 import { CardsSearchComponent } from './component/cards-search/cards-search/cards-search.component';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Imagens } from './classes/Imagens';
+import { MaterialModule } from './Util/materialModule/material/material.module';
+import { UsercardsComponent } from './component/usercards/usercards.component';
 
 
 @NgModule({
@@ -57,7 +51,8 @@ import { Imagens } from './classes/Imagens';
     ArchetypeDetailsComponent,
     SpinnerComponent,
     MatSpinner,
-    CardsSearchComponent
+    CardsSearchComponent,
+    UsercardsComponent
 
   ],
   imports: [
@@ -70,19 +65,8 @@ import { Imagens } from './classes/Imagens';
     FilterPipeModule,
     FormsModule,
     ReactiveFormsModule ,
-    MatToolbarModule,
-    MatCardModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatIconModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatExpansionModule,
-   
     NgxSpinnerModule,
-
+    MaterialModule,
     ToastrModule.forRoot()
 
   ],

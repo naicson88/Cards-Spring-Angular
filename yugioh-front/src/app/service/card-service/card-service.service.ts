@@ -38,6 +38,13 @@ export class CardServiceService {
     )
   }
 
+  public getCardsUserCollection(cardType: string){
+      return this.http.get<Card[]>(this.base_url+`/cards/usercollection/${cardType}`)
+      .pipe(
+        catchError(HandleErros.handleError)
+      )
+  }
+
   public getCardDetails(id:any) {
     return this.http.get<any[]>(this.base_url+`/cards/number/${id}`)
     .pipe(
