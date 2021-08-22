@@ -33,6 +33,7 @@ import { CardsSearchComponent } from './component/cards-search/cards-search/card
 import { Imagens } from './classes/Imagens';
 import { MaterialModule } from './Util/materialModule/material/material.module';
 import { UsercardsComponent } from './component/usercards/usercards.component';
+import { SideCardsearchComponent } from './component/cards-search/side-cardsearch/side-cardsearch.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { UsercardsComponent } from './component/usercards/usercards.component';
     SpinnerComponent,
     MatSpinner,
     CardsSearchComponent,
-    UsercardsComponent
+    UsercardsComponent,
+    SideCardsearchComponent
 
   ],
   imports: [

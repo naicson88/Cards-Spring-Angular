@@ -1,3 +1,22 @@
+.sidebar2 {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: whitesmoke;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 10px;
+  overflow-y: scroll;
+} 
+
+#main-div {
+    transition: margin-left .5s;
+    padding: 16px;
+  }
+
 .set-header{
     background: rgb(15,117,178);
     background: linear-gradient(146deg, rgba(15,117,178,1) 59%, rgba(59,216,235,1) 78%, rgba(239,241,241,1) 97%, rgba(241,241,241,1) 100%);
@@ -9,3 +28,5 @@
      height: 35px; 
      margin-bottom: 20px;
   }
+
+  

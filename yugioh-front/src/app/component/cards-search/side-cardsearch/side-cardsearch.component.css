@@ -1,0 +1,65 @@
+
+
+
+
+  .sidebar {
+    height: 100%;
+    width: 300px;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: ghostwhite;
+    font-family: "Lato", sans-serif;
+    padding:10px;
+   
+    
+  }
+
+  label {
+      font-size: small;
+      font-weight: 600;
+      color: rgb(170, 170, 170);
+  }
+
+  .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      font-size: 36px;
+      margin-left: 70px;
+      padding: 14px 8px 8px 32px;
+      text-decoration: none;
+      color: #f82626;
+      display: block;
+      transition: 0.3s;
+  }
+
+  .sidebar a:hover {
+    color: rgb(155, 5, 5);
+  }
+
+  #card-found{
+    margin: 15px;
+    position: relative;
+  }
+
+  #card-found img{
+    margin-left: 20%;
+  }
+
+  #card-name {
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 600;
+}
+
+#card-number {
+  color: #f37243;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 600;
+}
+ 

@@ -1,12 +1,19 @@
 package com.naicson.yugioh.dto.cards;
 
+import java.util.List;
+
+import javax.persistence.Transient;
+
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.Deck;
 
 public class CardsSearchDTO {
 	
 	private Integer numero;
 	private String nome;
 	private String imagem;
+	@Transient
+	private List<Deck> decksWithThisCard;
 	
 	public CardsSearchDTO() {
 		
@@ -49,6 +56,14 @@ public class CardsSearchDTO {
 
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
+	}
+
+	public List<Deck> getDecksWithThisCard() {
+		return decksWithThisCard;
+	}
+
+	public void setDecksWithThisCard(List<Deck> decksWithThisCard) {
+		this.decksWithThisCard = decksWithThisCard;
 	}
 	
 	

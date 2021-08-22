@@ -106,7 +106,9 @@ export  class Imagens {
     public synchron_img:string = ' /../../assets/img/outras/syncronIcon.png'
     public fusion_img:string ='/../../assets/img/outras/fusionIcon.png'
     public link_img:string = ' /../../assets/img/outras/linkIcon.png'
-    public ritual_img:string = '/../../assets/img/outras/ritualIcon.png'
+    public ritual_img:string = '/../../assets/img/outras/ritualIcon.png';
+
+    public back_img : string ='/../../assets/img/outras/back.png'
 
     
     

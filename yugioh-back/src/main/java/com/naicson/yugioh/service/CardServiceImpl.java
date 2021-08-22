@@ -1,7 +1,9 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,24 +15,32 @@ import org.springframework.stereotype.Service;
 
 import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
+import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
-import com.naicson.yugioh.entity.Sets;
+import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.CardRepository;
-import com.naicson.yugioh.util.CardSpecification;
+import com.naicson.yugioh.repository.DeckRepository;
+import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.GeneralFunctions;
 
 @Service
 public class CardServiceImpl implements CardDetailService {
 	
 	@Autowired
 	private CardRepository cardRepository;
+	@Autowired
+	private RelDeckCardsRepository relDeckCardsRepository;
+	@Autowired
+	private DeckRepository deckRepository;
 	
 	@Autowired
 	EntityManager em;
 	
 	@Autowired
 	CardDAO dao;
+	
 	
 	//Trazer o card para mostrar os detalhes;
 	public Card cardDetails(Integer id) {
@@ -81,6 +91,62 @@ public class CardServiceImpl implements CardDetailService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+	
+	@Override
+	public CardAndSetsDTO findCardToAddToUserCollection (Long cardNumber) throws SQLException, ErrorMessage {
+		
+		Card card = cardRepository.findByNumero(cardNumber.intValue());
+		
+		if(card == null)
+			throw new ErrorMessage("It was not possible find a card to add to user's collection ");
+		
+		//Procura os decks e os set codes desse card
+		List<RelDeckCards> rels = relDeckCardsRepository.findCardByNumberAndIsKonamiDeck(cardNumber);
+		
+		if(rels == null)
+			throw new ErrorMessage(" There is no deck associate with this card. ");
+		
+		int[] arraySetsIds = new int[rels.size()];
+		//Coloca em um array pra poder buscar os decks com esse id
+		for(int i = 0; i < rels.size(); i++) {
+			arraySetsIds[i] = rels.get(i).getDeck_id();
+		}
+		
+		List<Deck> sets = deckRepository.findAllByIdIn(arraySetsIds);
+		
+			if(sets == null)
+				throw new ErrorMessage(" Zero deck was found.");
+			
+		Map <String, String> mapImgSetcode = new HashMap<>();
+		
+		for(RelDeckCards rel: rels ) {
+			Deck setAux =  sets.stream().filter(set -> rel.getDeck_id() == set.getId()).findAny().orElse(null);
+			
+			if(setAux != null)
+			mapImgSetcode.put(rel.getCard_set_code(), setAux.getImagem());
+		}
+		
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		List<Deck> usersSets = deckRepository.findAllByUserId(user.getId());
+		
+		Map<Integer, String> mapUsersSets = new HashMap<>();
+		
+		if(usersSets != null && usersSets.size() > 0) {
+			for(Deck userSet: usersSets) {
+				mapUsersSets.put(userSet.getId(), userSet.getNome());
+			}
+		}		
+		
+		CardAndSetsDTO dto = new CardAndSetsDTO();
+		
+		dto.setNumero(card.getNumero());
+		dto.setNome(card.getNome());
+		dto.setImagem(card.getImagem());
+		dto.setMapDeckSetcode(mapImgSetcode);
+		dto.setMapSetsOfUser(mapUsersSets);
+		
+		return dto;
 	}
 	
 	@Override

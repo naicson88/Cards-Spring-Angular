@@ -1,4 +1,18 @@
+
+ <div id="mySidebar" class="sidebar2">
+  <app-side-cardsearch ></app-side-cardsearch>
+ <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+<a href="#">About</a>
+<a href="#">Services</a>
+<a href="#">Clients</a>
+<a href="#">Contact</a>-->
+</div> 
 <div class="container" id="main-div" style="margin-top: 30px; border: solid red">
+ 
+     <button mat-raised-button color="accent" style="margin-bottom: 10px; background-color: #04AA6D;" id="btnNew" (click)="openSide()">
+        <mat-icon >fiber_new</mat-icon>
+        Card
+    </button>
     <div class="set-header">  
         User's Cards Collection
     </div>
@@ -10,6 +24,7 @@
            aria-controls="Monster" aria-selected="true" name="{{icon.tipo}}">
             <img [src]='icon.img' alt="" width="28px" height="40px">&nbsp; {{icon.tipo}}</a>
         </li>
+        
 
         <!-- <li class="nav-item">
             <a class="nav-link " id="Spell-tab" data-toggle="tab" href="#Spell" role="tab" aria-controls="Spell" aria-selected="false">

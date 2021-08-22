@@ -15,4 +15,17 @@ public abstract class GeneralFunctions {
 		
 		return user;
 	}
+	
+	public static String transformArrayInString(int[] array) {
+		
+		String str = "";
+
+		for (int ints : array) {
+			str += ints;
+			str += ",";
+		}
+		str += "0";
+		
+		return str;
+	}
 }

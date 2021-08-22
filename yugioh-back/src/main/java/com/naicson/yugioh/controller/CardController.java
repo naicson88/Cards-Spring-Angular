@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.RelUserDeckDTO;
+import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
@@ -133,7 +134,7 @@ public class CardController {
 		
 		return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
 	}
-	//46986414,53129443
+	
 	@GetMapping(path = {"/rel-user-cards"})
 	@ResponseBody
 	public ResponseEntity<List<RelUserCardsDTO>> searchForCardsUserHave(@RequestParam int[] cardsNumbers) throws SQLException, ErrorMessage {
@@ -150,19 +151,20 @@ public class CardController {
 		}
 	}
 	
-	/*@PostMapping(path = {"/searchCard"})
+	@GetMapping(path = {"/add-card-to-user"})
 	@ResponseBody
-	public List<Card> search(@RequestBody List<SearchCriteria> criterias){
-		CardSpecification spec = new CardSpecification();
+	public ResponseEntity<CardAndSetsDTO> findCardToAddToUserCollection(@RequestParam Long cardNumber) throws SQLException, ErrorMessage {
 		
-		for(SearchCriteria criterio: criterias) {
-			spec.add(new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue()));
+		if(cardNumber <= 0)
+			throw new ErrorMessage(" The card number is invalid!");
+		
+		CardAndSetsDTO dto = cardService.findCardToAddToUserCollection(cardNumber);
+		
+		if(dto != null ) {
+			return new ResponseEntity<CardAndSetsDTO>(dto, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<CardAndSetsDTO>(dto, HttpStatus.NO_CONTENT);
 		}
-		
-		List<Card> list = cardRepository.findAll(spec);
-		
-		return list;
-	}*/
-	
+	}
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.util.CardSpecification;
 

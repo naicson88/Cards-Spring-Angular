@@ -25,4 +25,6 @@ public class CardDAO {
 		
 		return relList;
 	}
+	
+	
 }

@@ -1,6 +1,7 @@
 import { stringify } from '@angular/compiler/src/util';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Imagens } from 'src/app/classes/Imagens';
+import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 
 @Component({
   selector: 'app-usercards',
@@ -8,8 +9,9 @@ import { Imagens } from 'src/app/classes/Imagens';
   styleUrls: ['./usercards.component.css']
 })
 export class UsercardsComponent implements OnInit {
+  @ViewChild('btnNew',  { static: false }) btnNew: ElementRef;
 
-  constructor(private img: Imagens) { }
+  constructor(private img: Imagens, private service: CardServiceService) { }
 
   iconsMap:any;
   arrIcons = new Array();
@@ -27,9 +29,20 @@ export class UsercardsComponent implements OnInit {
     console.log(this.arrIcons);
   }
 
+  listCards(event:any) {
+    let type = event.target.name;
+
+    if(type != null && type != undefined && type != ""){
+        
+    }
+
+  }
+
+  openSide(){
+    let sideBar = (<HTMLInputElement>document.getElementById("mySidebar"));
+    sideBar.style.width = "300px";
+  }
   
 }
-function obj(obj: any): any {
-  throw new Error('Function not implemented.');
-}
+
 
