@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.naicson.yugioh.dto.RelUserCardsDTO;
+import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.Sets;
@@ -29,4 +30,6 @@ public interface CardDetailService {
 	List<Card> encontrarPorArchetype(int archId);
 	
 	List<RelUserCardsDTO> searchForCardsUserHave(int[] cardsNumbers) throws SQLException, ErrorMessage;
+	
+	CardAndSetsDTO findCardToAddToUserCollection(Long cardNumber) throws SQLException, ErrorMessage;
 }

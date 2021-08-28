@@ -10,12 +10,14 @@ import { HomeComponent } from './component/home/home.component';
 import { IndexComponent } from './component/index/index.component';
 import { LoginComponent } from './component/index/login/login.component';
 import { RegisterComponent } from './component/index/register/register.component';
+import { UsercardsComponent } from './component/usercards/usercards.component';
 
 const routes: Routes = [
   { path: 'decks', component: DeckComponent , data : {set_type: 'D'}},
   { path: 'tins', component: DeckComponent , data : {set_type: 'T'}},
   { path: 'boxes', component: DeckComponent , data : {set_type: 'B'}},
-  { path: 'usercollection', component: DeckComponent , data : {set_type: 'U'}},
+  { path: 'usercollection', component: DeckComponent , data : {set_type: 'UD'}},
+  { path: 'usercollection/cards', component: UsercardsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'deck-details/:deckName', component: DeckDetailComponent},
   { path: 'card-detail/:cardName', component: CardDetailComponent },

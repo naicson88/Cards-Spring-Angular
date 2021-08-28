@@ -1,0 +1,92 @@
+<div id="mySidebar" class="sidebar" >
+    
+    
+    <form [formGroup]="searchForm" style="box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;padding: 15px;" autocomplete="off">
+
+      <a href="javascript:void(0)"  class="closebtn" (click)="closeNav()" >
+        <mat-icon>cancel</mat-icon>
+     </a>
+
+      <div class="form-group" style="margin-bottom: 30px;">
+          <label for="inputCardName">Card full name</label>
+          <input type="text" placeholder="Ex: Dark Magician" class="form-control form-control-sm" formControlName="cardName"
+           id="inputCardName" aria-describedby="cardName" style="width: 250px;" minlength="3" maxlength="40">
+           
+           <span *ngIf="searchForm.controls['cardName'].invalid && searchForm.controls['cardName'].touched && searchForm.controls['cardName'].value != '' " 
+            class="form-text text-muted" >
+               <small style="color: red;"> <i> At least 3 three letters</i>  </small>
+           </span>
+
+        </div>
+
+        <div class="form-group">
+          <label for="cardNumber">Card number</label>
+          <input oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          type = "number"
+          maxlength = "10" class="form-control form-control-sm" id="cardNumber"
+          placeholder="Number" style="width: 150px;">
+        </div>
+        
+        <div style="margin-top: 20px; margin-left: 25%;">
+            <button mat-raised-button color="primary" type="submit" (click)="findCardToAddToUserCollection()">Search
+                <mat-icon>search</mat-icon>
+            </button> <br><br>
+        </div>
+      </form>
+
+      <div id="card-found">
+        <span>
+          <img *ngIf="cardFound.numero == undefined" [src]="back_img" alt="" style="width: 128px;" height="180px">
+
+          <img *ngIf="cardFound.numero != undefined && cardFound.numero > 0" [src]="cardImagem(cardFound.numero)" alt="" style="width: 128px;" height="180px">
+        </span>
+      </div>
+
+      <div id="card-found-detail" style="padding: 5px;">
+
+        <div class="form-group">
+          <label for="card-name">Name: </label>
+          <span id="card-name"> {{cardFound.nome}}</span>
+          <br>
+          <label for="card-name">Number: </label>
+          <span id="card-number"> {{cardFound.numero}}</span>
+        </div>
+
+        <div class="form-group">
+          <label for="select">Select card's collection</label> <br>
+          <mat-select [(value)]="selected" [ngClass]="selected" style="width: 200px !important;  background-color: white;">
+            <mat-option>Select set...</mat-option>
+            <mat-option value="{{set.key}}" *ngFor="let set of arrSets | keyvalue">
+              <img with="30" height="40" [src]="set.value" />
+             {{set.key}}
+            </mat-option>      
+          </mat-select>
+        </div>
+
+        <div class="form-group">
+          <label for="select">Select where card will be inserted</label> <br>
+          <mat-select  style="width: 200px !important; background-color: white;">
+            <mat-option>Select set...</mat-option>
+            <mat-option value="{{uset.key}}" *ngFor="let uset of arrUserSets | keyvalue">
+              {{uset.key}} - {{uset.value}}
+            </mat-option>      
+          </mat-select>
+        </div>
+
+        <div class="form-group">
+          <label>Quantity: </label>
+          <input oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+          type = "number"
+          maxlength = "1" max="3" class="form-control form-control-sm" id="quantity"
+          style="width: 70px;">
+        </div>
+
+        <div style="margin-top: 20px; margin-left: 30%;"> 
+          <button mat-raised-button type="submit" style="background-color: #1861bf; color: white;" 
+          title="Add card to your collection" >Add Card
+           
+          </button> 
+      </div>
+      <br><br>
+      </div>
+  </div>

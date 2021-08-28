@@ -17,6 +17,11 @@ public interface DeckRepository extends JpaRepository<Deck, Integer> {
 	List<Deck> findByNomeContaining(String nomeDeck);
 	
 	Page<Deck> findAllBySetType(String setType, Pageable pageable);
+	Page<Deck> findAllByUserId(int userId, Pageable pageable);
+	
+	List<Deck> findAllByIdIn(int[] ids);
+	
+	List<Deck> findAllByUserId(int userId);
 	
 	
 }
