@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.util.CardSpecification;
 
@@ -37,5 +38,7 @@ public interface CardRepository extends JpaRepository<Card, Integer>, JpaSpecifi
 			+ " where deck.user_id = :userId and cards.generic_type = :type ",
 			nativeQuery = true)
 	Page<Card> findCardsByTypeAndUser(String type, int userId, Pageable page);
+	
+	Page<Card> findAllByGenericType (Pageable page, String genericType);
 	
 }

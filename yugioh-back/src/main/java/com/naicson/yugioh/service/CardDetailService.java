@@ -9,7 +9,7 @@ import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
-import com.naicson.yugioh.entity.Sets;
+import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.ErrorMessage;
 

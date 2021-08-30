@@ -8,7 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +34,8 @@ import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
-import com.naicson.yugioh.entity.Sets;
+import com.naicson.yugioh.entity.sets.GenericTypesCards;
+import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
@@ -166,5 +171,33 @@ public class CardController {
 			return new ResponseEntity<CardAndSetsDTO>(dto, HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@GetMapping(path = {"/load-cards-userscollection"})
+	@ResponseBody
+	public ResponseEntity<List<CardsSearchDTO>> loadCardsUserHave(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable,
+			@RequestParam String genericType) throws SQLException, ErrorMessage{
+		
+		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		
+		try {
+			if(genericType == null)
+				throw new ErrorMessage(" No generic type was informed.");
+			
+			Page<Card> list = cardRepository.findAllByGenericType(pageable, genericType);
+			
+			for(Card card : list.getContent()) {
+				if(list != null) 
+					dtoList.add(CardsSearchDTO.transformInDTO(card));
+			}
+			
+			return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
+						
+		}catch (ErrorMessage me) {
+			throw me;
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+	
 	
 }

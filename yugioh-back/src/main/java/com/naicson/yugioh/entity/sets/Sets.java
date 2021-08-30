@@ -1,9 +1,11 @@
-package com.naicson.yugioh.entity;
+package com.naicson.yugioh.entity.sets;
 
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+
+import com.naicson.yugioh.entity.Deck;
 
 public class Sets {
 	@Transient

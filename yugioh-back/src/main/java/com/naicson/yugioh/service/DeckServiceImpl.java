@@ -22,7 +22,10 @@ import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.sets.DeckUsers;
+import com.naicson.yugioh.entity.sets.SetType;
 import com.naicson.yugioh.repository.DeckRepository;
+import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.util.ErrorMessage;
 
 @Service
@@ -37,6 +40,8 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	@Autowired
 	DeckRepository deckRepository;
+	@Autowired 
+	DeckUsersRepository deckUserRepository;
 
 	public Deck deck(Integer deckId) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId", Deck.class);
@@ -121,35 +126,27 @@ public class DeckServiceImpl implements DeckDetailService {
 			if (user != null) {
 				
 				// Cria um novo deck que será inserido como do usuário
-				Deck newDeck = new Deck();
+				
+				DeckUsers newDeck = new DeckUsers();
 				newDeck.setImagem(deckOrigem.getImagem());
 				newDeck.setNome(deckOrigem.getNome());
-				newDeck.setNomePortugues(deckOrigem.getNomePortugues());
-				newDeck.setSetType("UD");
-				newDeck.setQtd_cards(deckOrigem.getQtd_cards());
-				newDeck.setQtd_comuns(deckOrigem.getQtd_comuns());
-				newDeck.setQtd_raras(deckOrigem.getQtd_raras());
-				newDeck.setQtd_secret_raras(deckOrigem.getQtd_secret_raras());
-				newDeck.setQtd_super_raras(deckOrigem.getQtd_super_raras());
-				newDeck.setQtd_ulta_raras(deckOrigem.getQtd_ulta_raras());
-				newDeck.setIsKonamiDeck("N");
-				newDeck.setDt_criacao(new Date());
-				newDeck.setCopiedFromDeck(deckOrigem.getId());
-				if(newDeck.getCopiedFromDeck() == null) {
-					throw new ErrorMessage("Erro null");
-				}
-				newDeck.setUserId(user.getId());				
+				newDeck.setKonamiDeckCopied(deckOrigem.getId());
+				
+				newDeck.setUserId(user.getId());
+				newDeck.setDtCriacao(new Date());
+				newDeck.setSetType(deckOrigem.getSetType());
+							
 				
 				if (newDeck != null) {
 					
-					Integer generatedDeckId = dao.addDeck(newDeck);
+					DeckUsers generatedDeckId = deckUserRepository.save(newDeck);
 
-					if (generatedDeckId == null || generatedDeckId == 0) {
+					if (generatedDeckId == null) {
 						throw new ErrorMessage("It was not possible add Deck to user.");
 					}
 					
 					//Adiciona os cards do Deck original ao novo Deck.
-					int addCardsOnNewDeck = this.addCardsToDeck(originalDeckId, generatedDeckId);
+					int addCardsOnNewDeck = this.addCardsToUserDeck(originalDeckId, generatedDeckId.getId());
 					
 					if(addCardsOnNewDeck <= 0) {
 						throw new ErrorMessage("It was not possible add cards to the new Deck.");
@@ -336,12 +333,12 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 	
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	public int addCardsToDeck(Integer originalDeckId, Integer generatedDeckId) throws SQLException, Exception, ErrorMessage {
+	public int addCardsToUserDeck(Integer originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage {
 		try {			
 			if (originalDeckId == null && generatedDeckId == null) {
 				throw new ErrorMessage("Original deck or generated deck is null");
 			}			
-			int cardsAddedToDeck = dao.addCardsToDeck(generatedDeckId, originalDeckId);
+			int cardsAddedToDeck = dao.addCardsToDeck(originalDeckId, generatedDeckId);
 			
 			return cardsAddedToDeck;
 			

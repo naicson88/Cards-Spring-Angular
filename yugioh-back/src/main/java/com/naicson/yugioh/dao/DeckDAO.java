@@ -161,10 +161,10 @@ public class DeckDAO {
 
 	public List<RelUserDeckDTO> searchForDecksUserHave(Integer userId, String decksIds) {		
 		Query query = em.createNativeQuery(
-				" SELECT DK.id, DK.user_id, COPIED_FROM_DECK AS deck_id, COUNT(COPIED_FROM_DECK) AS qtd " +
-				" FROM TAB_DECKS DK " + 
-				" WHERE USER_ID = :userId and COPIED_FROM_DECK IN (" +  decksIds + ")" +
-				" GROUP BY (COPIED_FROM_DECK) ", RelUserDeckDTO.class)
+				" SELECT DK.id, DK.user_id, KONAMI_DECK_COPIED AS deck_id, COUNT(KONAMI_DECK_COPIED) AS qtd " +
+				" FROM TAB_DECK_USERS DK " + 
+				" WHERE USER_ID = :userId and KONAMI_DECK_COPIED IN (" +  decksIds + ")" +
+				" GROUP BY (KONAMI_DECK_COPIED) ", RelUserDeckDTO.class)
 				
 				.setParameter("userId", userId);
 		
@@ -174,11 +174,11 @@ public class DeckDAO {
 		return relList;
 	}
 
-	public int addCardsToDeck(Integer generatedDeckId, Integer originalDeckId) {
+	public int addCardsToDeck(Integer generatedDeckId, Long originalDeckId) {
 		int result = 0;
 		
 		if(generatedDeckId != null && originalDeckId != null) {
-			Query query = em.createNativeQuery(" INSERT INTO TAB_REL_DECK_CARDS (DECK_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
+			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECKUSER_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
 											  " SELECT " + generatedDeckId + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
 											  " where deck_id = " + originalDeckId  );
 			

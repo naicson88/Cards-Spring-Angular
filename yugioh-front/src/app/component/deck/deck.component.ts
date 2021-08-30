@@ -74,8 +74,6 @@ export class DeckComponent implements OnInit {
         if(this.deck[i]['id'] != null){decksIds.push(this.deck[i]['id'] )}
        }
 
-       console.log(this.deck);
-
       this.service.relUserDeck(decksIds).subscribe(rel => {
        this.relUserDeck = rel;
        console.log(this.relUserDeck);
@@ -133,8 +131,6 @@ export class DeckComponent implements OnInit {
         }
 
       })
-
-
     }
 
     removeSetToUserCollection(event:any) {

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.naicson.yugioh.entity.Box;
-import com.naicson.yugioh.repository.BoxRepository;
+import com.naicson.yugioh.entity.sets.Box;
+import com.naicson.yugioh.repository.sets.BoxRepository;
 
 @RestController
 @RequestMapping({"yugiohAPI/Boxes"})

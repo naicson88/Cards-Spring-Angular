@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.naicson.yugioh.entity.sets.Sets;
+
 @Entity
 @Table(name = "tab_cards")
 public class Card extends Sets {
@@ -44,7 +46,7 @@ public class Card extends Sets {
 	private String qtd_link;
 	@Transient
 	private Sets sets;
-	private String generic_type;
+	private String genericType;
 	@Column(name = "cod_archetype")
 	private int codArchetype;
 
@@ -78,7 +80,7 @@ public class Card extends Sets {
 		this.arquetipo = arquetipo;
 		this.qtd_link = qtd_link;
 		this.sets = sets;
-		this.generic_type = generic_type;
+		this.genericType = generic_type;
 	}
 	
 	//Construtor para CardsSearchDTO
@@ -91,11 +93,11 @@ public class Card extends Sets {
 	
 	
 	public String getGeneric_type() {
-		return generic_type;
+		return genericType;
 	}
 
 	public void setGeneric_type(String generic_type) {
-		this.generic_type = generic_type;
+		this.genericType = generic_type;
 	}
 
 	public String getNomePortugues() {
@@ -324,7 +326,7 @@ public class Card extends Sets {
 				+ ", descricao=" + descricao + ", descricaoPortugues=" + descricaoPortugues + ", imagem=" + imagem
 				+ ", raridade=" + raridade + ", escala=" + escala + ", descr_pendulum=" + descr_pendulum
 				+ ", descr_pendulum_pt=" + descr_pendulum_pt + ", arquetipo=" + arquetipo + ", qtd_link=" + qtd_link
-				+ ", sets=" + sets + ", generic_type=" + generic_type + ", codArchetype=" + codArchetype + "]";
+				+ ", sets=" + sets + ", generic_type=" + genericType + ", codArchetype=" + codArchetype + "]";
 	}
 	
 	

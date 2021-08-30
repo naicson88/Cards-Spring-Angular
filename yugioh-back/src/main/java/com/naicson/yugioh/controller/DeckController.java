@@ -25,7 +25,9 @@ import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.sets.DeckUsers;
 import com.naicson.yugioh.repository.DeckRepository;
+import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.util.ErrorMessage;
@@ -40,8 +42,11 @@ public class DeckController {
 	DeckRepository deckRepository;
 	@Autowired
 	DeckServiceImpl deckService;
+	@Autowired
+	DeckUsersRepository deckUserRepository;
 
 	Page<Deck> deckList = null;
+	Page<DeckUsers> deckListUser = null;
 
 	@GetMapping("/todos")
 	public List<Deck> consultar() {
@@ -54,13 +59,7 @@ public class DeckController {
 			@RequestParam String setType) {
 
 		if (!setType.equals("") && setType != null && !setType.equals("UD"))
-			deckList = deckRepository.findAllBySetType(setType, pageable);
-
-		else if (setType.equals("UD")) {
-			UserDetailsImpl user = GeneralFunctions.userLogged();
-
-			deckList = deckRepository.findAllByUserId(user.getId(), pageable);
-		}
+			deckList = deckRepository.findAll(pageable);
 
 		if (deckList.isEmpty()) {
 
@@ -69,6 +68,26 @@ public class DeckController {
 
 		return new ResponseEntity<>(deckList, HttpStatus.OK);
 
+	}
+
+	@GetMapping("/deckUser")
+	public ResponseEntity<Page<DeckUsers>> deckOfUser(
+			@PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+			@RequestParam String setType) {
+
+		if (setType.equals("UD")) {
+			UserDetailsImpl user = GeneralFunctions.userLogged();
+
+			deckListUser = deckUserRepository.findAllByUserId(user.getId(), pageable);
+
+		}
+
+		if (deckList.isEmpty()) {
+
+			return new ResponseEntity<Page<DeckUsers>>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(deckListUser, HttpStatus.OK);
 	}
 
 	@GetMapping(path = { "/{id}" })
