@@ -39,9 +39,11 @@ import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
+import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.CardSpecificationBuilder;
 import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.SearchCriteria;
 
 
@@ -183,7 +185,9 @@ public class CardController {
 			if(genericType == null)
 				throw new ErrorMessage(" No generic type was informed.");
 			
-			Page<Card> list = cardRepository.findAllByGenericType(pageable, genericType);
+			UserDetailsImpl user = GeneralFunctions.userLogged(); 
+			
+			Page<Card> list = cardRepository.getByGenericType(pageable, genericType, user.getId());
 			
 			for(Card card : list.getContent()) {
 				if(list != null) 

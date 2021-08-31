@@ -1,3 +1,4 @@
+import { UsercardsModule } from './component/usercards/usercards.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -69,6 +70,7 @@ import { SideCardsearchComponent } from './component/cards-search/side-cardsearc
     ReactiveFormsModule ,
     NgxSpinnerModule,
     MaterialModule,
+    UsercardsModule,
     ToastrModule.forRoot()
 
   ],
