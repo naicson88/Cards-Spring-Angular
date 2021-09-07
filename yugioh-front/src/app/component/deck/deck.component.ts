@@ -58,6 +58,7 @@ export class DeckComponent implements OnInit {
     
 
     this.service.getDecks(params, this.set_type).subscribe(data => {
+      console.log("entrou")
      const {content, totalElements} = data;
       //this.deck = data
       this.deck = content;

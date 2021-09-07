@@ -21,6 +21,7 @@ export class DeckService {
   } */
 
     public getDecks(params, set_type:string): Observable<any>{
+      debugger
     return  this.http.get(this.base_url+`/decks/pagination?size=${params.size}&page=${params.page}&setType=${set_type}`)
     .pipe(
       catchError(HandleErros.handleError)

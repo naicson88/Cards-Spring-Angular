@@ -1,4 +1,4 @@
-package com.naicson.yugioh.dto;
+package com.naicson.yugioh.dto.set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +20,7 @@ public class DeckDTO {
 	private String card_raridade;
 	private String card_set_code;
 	private Double card_price;
+	
 	public int getId() {
 		return id;
 	}

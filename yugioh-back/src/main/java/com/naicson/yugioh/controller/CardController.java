@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
@@ -37,6 +38,7 @@ import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.entity.sets.GenericTypesCards;
 import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.repository.CardRepository;
+import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
@@ -58,6 +60,8 @@ public class CardController {
 	DeckServiceImpl deckService;
 	@Autowired
 	CardRepository cardRepository;
+	@Autowired
+	RelDeckCardsRepository relDeckCardsRepository;
 	
 	@GetMapping
 	public List<Card> listar(){
@@ -75,24 +79,23 @@ public class CardController {
 	}
 	
 	@GetMapping(path = {"num/{numero}"})
-	public Card listarNumero(@PathVariable("numero") Integer numero) {
+	public Card listarNumero(@PathVariable("numero") Long numero) {
 		return cardService.listarNumero(numero);
 	}
 	
 	@GetMapping(path = {"number/{cardNumero}"})
-	public Card procuraPorCardNumero(@PathVariable("cardNumero") Integer cardNumero) {
+	public Card procuraPorCardNumero(@PathVariable("cardNumero") Long cardNumero) {
 		List<Deck> deck_set = cardService.cardDecks(cardNumero);
 		
 		Card card = cardService.encontrarPorNumero(cardNumero);
 		card.setSet_decks(deck_set);
 		
 		for(Deck rel : deck_set) {
-			List<RelDeckCards> rels = deckService.relDeckAndCards(rel.getId(), cardNumero);
+			//List<RelDeckCards> rels = deckService.relDeckAndCards(rel.getId(), cardNumero);
+			List<RelDeckCards> rels = relDeckCardsRepository.findByDeckIdAndCardNumber(rel.getId(), cardNumero);
 			rel.setRel_deck_cards(rels);
-		}
-		
-		return card;
-		
+		}		
+		return card;		
 	}
 	
 	@PutMapping(path = {"editar/{id}"})
@@ -203,5 +206,25 @@ public class CardController {
 		}
 	}
 	
+	@GetMapping(path = {"/card-user-details"})
+	@ResponseBody
+	public ResponseEntity<CardOfUserDetailDTO> cardOfUserDetails(@RequestParam Long cardNumber) throws ErrorMessage, SQLException, Exception {
+		try {
+			if(cardNumber == null || cardNumber == 0)
+				throw new ErrorMessage("Card number invalid.");
+			
+			CardOfUserDetailDTO cardDetailDTO = cardService.cardOfUserDetails(cardNumber);	
+			
+			return new ResponseEntity<CardOfUserDetailDTO>(cardDetailDTO, HttpStatus.OK);
+			
+		}catch(ErrorMessage me){
+			throw me;
+		}catch(SQLException sql) {
+			throw sql;
+		}catch (Exception ex) {
+			throw ex;
+		}
+		
+	}
 	
 }

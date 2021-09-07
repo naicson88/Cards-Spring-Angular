@@ -20,7 +20,7 @@ public class Card extends Sets {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Integer numero;
+	private Long numero;
 	private String categoria;
 	private String nome;
 	private String nomePortugues;
@@ -55,7 +55,7 @@ public class Card extends Sets {
 		super();
 	}
 
-	public Card(Integer id, Integer numero, String categoria, String nome, String nomePortgues, String atributo,
+	public Card(Integer id, Long numero, String categoria, String nome, String nomePortgues, String atributo,
 			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
 			String descricao, String imagem, String raridade, Integer escala, 
 			String descr_pendulum, String arquetipo, String qtd_link, Sets sets, String generic_type) {
@@ -84,7 +84,7 @@ public class Card extends Sets {
 	}
 	
 	//Construtor para CardsSearchDTO
-	public Card(Integer numero, String nome, String imagem) {
+	public Card(Long numero, String nome, String imagem) {
 		this.numero = numero;
 		this.nome = nome;
 		this.imagem = imagem;
@@ -140,11 +140,11 @@ public class Card extends Sets {
 		this.id = id;
 	}
 
-	public Integer getNumero() {
+	public Long getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(Long numero) {
 		this.numero = numero;
 	}
 

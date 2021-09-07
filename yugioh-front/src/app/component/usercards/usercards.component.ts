@@ -50,12 +50,12 @@ export class UsercardsComponent implements OnInit {
   
   cardsByGenericType(genericType:string){
     this.genericTypeAtual = genericType;
-    const params = this.getRequestParam(this.pageSize, this.page);
+    const params = this.getRequestParam(this.pageSize, 0);
 
     if(genericType != null && genericType != " "){
       this.service.getCardsByGenericType(params, genericType).subscribe(data => {
         this.arrCards = data;
-        this.page = this.page + 1;
+        this.page = 2;
       })
     }
   }
@@ -83,6 +83,7 @@ export class UsercardsComponent implements OnInit {
 
     onScroll(){
       const params = this.getRequestParam(this.pageSize, this.page);
+    
       this.service.getCardsByGenericType(params, this.genericTypeAtual).subscribe(newCards => {
         this.arrCardsFromScroll = newCards;
 
@@ -93,6 +94,25 @@ export class UsercardsComponent implements OnInit {
         this.page = this.page + 1;
       })
     
+    }
+
+    isShowTooltip: boolean = false;
+    imgTooltip: string;
+    topTp;
+    leftTp;
+ 
+    mostrarImgToolTip(e){
+        console.log("e 2")
+        this.leftTp =  e.pageX + 15 + "px";
+        this.topTp = + e.pageY + 15 + "px";
+   
+        //this.imgTooltip = img; se necessario coloca mais um argumento, o caminho da imagem
+        this.imgTooltip = e.target.src;
+        this.isShowTooltip = true;
+     }
+   
+     esconderImgToolTip(){
+      this.isShowTooltip = false;
     }
 
 }

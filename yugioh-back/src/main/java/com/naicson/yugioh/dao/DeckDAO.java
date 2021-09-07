@@ -13,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.naicson.yugioh.dto.DeckDTO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.RelUserDeckDTO;
+import com.naicson.yugioh.dto.set.DeckDTO;
+import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.util.ErrorMessage;
@@ -198,6 +199,19 @@ public class DeckDAO {
 				.setParameter("setId", setId);	
 		
 		query.executeUpdate();
+	}
+	
+	// Traz informações completas dos cards contidos num deck
+	@Transactional
+	public List<Card> cardsOfDeck(Integer deckId) {
+		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n"
+				+ "(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + "order by case\r\n"
+				+ "when categoria LIKE 'link monster' then 1\r\n" + "when categoria like 'XYZ Monster' then 2\r\n"
+				+ "when categoria like 'Fusion Monster' then 3\r\n" + "when categoria like '%Synchro%' then 4\r\n"
+				+ "when categoria LIKE '%monster%' then 5\r\n" + "when categoria = 'Spell Card' then 6\r\n"
+				+ "ELSE    7\r\n" + "END", Card.class);
+		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
+		return cards;
 	}
 		
 }

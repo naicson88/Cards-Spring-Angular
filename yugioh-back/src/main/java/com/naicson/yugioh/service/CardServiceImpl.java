@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
@@ -33,13 +34,13 @@ public class CardServiceImpl implements CardDetailService {
 	@Autowired
 	private RelDeckCardsRepository relDeckCardsRepository;
 	@Autowired
-	private DeckRepository deckRepository;
-	
+	private DeckRepository deckRepository;	
 	@Autowired
-	EntityManager em;
-	
+	EntityManager em;	
 	@Autowired
 	CardDAO dao;
+	@Autowired
+	CardOfUserDetailDTO cardUserDTO;
 	
 	
 	//Trazer o card para mostrar os detalhes;
@@ -96,7 +97,7 @@ public class CardServiceImpl implements CardDetailService {
 	@Override
 	public CardAndSetsDTO findCardToAddToUserCollection (Long cardNumber) throws SQLException, ErrorMessage {
 		
-		Card card = cardRepository.findByNumero(cardNumber.intValue());
+		Card card = cardRepository.findByNumero(cardNumber.longValue());
 		
 		if(card == null)
 			throw new ErrorMessage("It was not possible find a card to add to user's collection ");
@@ -110,7 +111,7 @@ public class CardServiceImpl implements CardDetailService {
 		int[] arraySetsIds = new int[rels.size()];
 		//Coloca em um array pra poder buscar os decks com esse id
 		for(int i = 0; i < rels.size(); i++) {
-			arraySetsIds[i] = rels.get(i).getDeck_id();
+			arraySetsIds[i] = rels.get(i).getDeckId();
 		}
 		
 		List<Deck> sets = deckRepository.findAllByIdIn(arraySetsIds);
@@ -121,7 +122,7 @@ public class CardServiceImpl implements CardDetailService {
 		Map <String, String> mapImgSetcode = new HashMap<>();
 		
 		for(RelDeckCards rel: rels ) {
-			Deck setAux =  sets.stream().filter(set -> rel.getDeck_id() == set.getId()).findAny().orElse(null);
+			Deck setAux =  sets.stream().filter(set -> rel.getDeckId() == set.getId()).findAny().orElse(null);
 			
 			if(setAux != null)
 			mapImgSetcode.put(rel.getCard_set_code(), setAux.getImagem());
@@ -185,12 +186,7 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public Card encontrarPorNumero(Integer numero) {
-		return cardRepository.findByNumero(numero);
-	}
-
-	@Override
-	public Card listarNumero(Integer numero) {
+	public Card listarNumero(Long numero) {
 		return cardRepository.findByNumero(numero);
 	}
 
@@ -198,8 +194,36 @@ public class CardServiceImpl implements CardDetailService {
 	public List<Card> encontrarPorArchetype(int archId) {
 		return cardRepository.findByArchetype(archId);
 	}
-	
+
+	@Override
+	public CardOfUserDetailDTO cardOfUserDetails(Long cardNumber) throws ErrorMessage, SQLException, Exception{
+		
+		try {
+			Card card = cardRepository.findByNumero(cardNumber);
+			cardUserDTO.setCardImage(card.getImagem());
+			cardUserDTO.setCardName(card.getNome());
+			cardUserDTO.setCardNumber(card.getNumero());
+			
+			return cardUserDTO;
+			
+		}catch (Exception ex) {
+			throw ex;
+		}
+	}
 	
 
+	@Override
+	public List<Deck> cardDecks(Long cardNumero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Card encontrarPorNumero(Long cardNumero) {
+		Card card = cardRepository.findByNumero(cardNumero);
+		
+		return card;
+	}
+	
 	
 }

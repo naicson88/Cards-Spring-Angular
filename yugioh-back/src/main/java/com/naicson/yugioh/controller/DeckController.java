@@ -2,6 +2,7 @@ package com.naicson.yugioh.controller;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -91,33 +92,21 @@ public class DeckController {
 	}
 
 	@GetMapping(path = { "/{id}" })
-	public Deck deckAndCards(@PathVariable("id") Integer id) {
+	public Deck deckAndCards(@PathVariable("id") Integer id) throws ErrorMessage {
 		List<Card> cardList = deckService.cardsOfDeck(id);
-		List<RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
-		Deck deck = deckService.deck(id);
-		deck.setCards(cardList);
-		deck.setRel_deck_cards(rel_deck_cards);
+	//	List<RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
+		List<RelDeckCards> relDeckCards = deckService.relDeckCards(id);
+		Optional<Deck> deck = deckService.findById(id);
+		deck.get().setCards(cardList);
+		deck.get().setRel_deck_cards(relDeckCards);
 
-		return deck;
-		// return deckRepository.findById(id);
+		return deck.get();
 	}
 
 	@GetMapping("/por-nome")
 	public List<Deck> consultarPorNome(String nomeDeck) {
 		return deckRepository.findByNomeContaining(nomeDeck);
 	}
-
-	/*
-	 * @GetMapping(path = {
-	 * "/add-deck-to-user-collection/{deckId}/{flagAddOrRemove}" }) public int
-	 * addDeckToUserCollection(@PathVariable("deckId") Integer deckId,
-	 * 
-	 * @PathVariable("flagAddOrRemove") String flagAddOrRemove) throws SQLException,
-	 * ErrorMessage { return deckService.manegerCardsToUserCollection(deckId,
-	 * flagAddOrRemove);
-	 * 
-	 * }
-	 */
 
 	@GetMapping(path = { "/add-deck-to-user-collection/{deckId}" })
 	public int addSetToUserCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {

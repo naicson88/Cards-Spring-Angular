@@ -16,15 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.naicson.yugioh.dao.DeckDAO;
-import com.naicson.yugioh.dto.DeckDTO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.RelUserDeckDTO;
+import com.naicson.yugioh.dto.set.DeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.entity.sets.DeckUsers;
 import com.naicson.yugioh.entity.sets.SetType;
 import com.naicson.yugioh.repository.DeckRepository;
+import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.util.ErrorMessage;
 
@@ -42,70 +43,92 @@ public class DeckServiceImpl implements DeckDetailService {
 	DeckRepository deckRepository;
 	@Autowired 
 	DeckUsersRepository deckUserRepository;
+	@Autowired
+	RelDeckCardsRepository relDeckCardsRepository;
 
-	public Deck deck(Integer deckId) {
-		Query query = em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId", Deck.class);
-		Deck deck = (Deck) query.setParameter("deckId", deckId).getSingleResult();
-		return deck;
-	}
+	/*
+	 * public Deck deck(Integer deckId) { Query query =
+	 * em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId",
+	 * Deck.class); Deck deck = (Deck) query.setParameter("deckId",
+	 * deckId).getSingleResult(); return deck; }
+	 */
 
-	// Traz informações completas dos cards contidos num deck
-	@Transactional
-	public List<Card> cardsOfDeck(Integer deckId) {
-		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n"
-				+ "(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + "order by case\r\n"
-				+ "when categoria LIKE 'link monster' then 1\r\n" + "when categoria like 'XYZ Monster' then 2\r\n"
-				+ "when categoria like 'Fusion Monster' then 3\r\n" + "when categoria like '%Synchro%' then 4\r\n"
-				+ "when categoria LIKE '%monster%' then 5\r\n" + "when categoria = 'Spell Card' then 6\r\n"
-				+ "ELSE    7\r\n" + "END", Card.class);
-		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
-		return cards;
+	@Override
+	public Optional<Deck> findById(Integer Id) throws ErrorMessage {
+		
+		try{
+			if(Id == null || Id == 0)
+				throw new ErrorMessage("The deck id cant by find.");
+			
+			return deckRepository.findById(Id);
+			
+		}catch(ErrorMessage e) {
+			throw e;
+		} catch(Exception ex) {
+			throw ex;
+		}
+		
 	}
 
 	// Traz informações da relação entre o deck e os cards
-	@Transactional
-	public List<RelDeckCards> relDeckAndCards(Integer deck_id) {
-		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
-				RelDeckCards.class);
-		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).getResultList();
-
-		return rel;
+//	@Transactional
+//	public List<RelDeckCards> relDeckAndCards(Integer deck_id) {
+//		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
+//				RelDeckCards.class);
+//		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).getResultList();
+//
+//		return rel;
+//	}
+	
+	public List<RelDeckCards> relDeckCards(Integer deckId) throws ErrorMessage {
+		
+		try{
+			if(deckId == null || deckId == 0)
+				throw new ErrorMessage("The deck id cant by find.");
+			
+			List<RelDeckCards> relation = relDeckCardsRepository.findByDeckId(deckId);
+			
+			return relation;
+			
+		}catch(ErrorMessage e) {
+			throw e;
+		} catch(Exception ex) {
+			throw ex;
+		}			
 	}
+	
+	
+	/*
+	 * // Preenche o deck apenas com a relação de card que contenha esse card number
+	 * e
+	 * 
+	 * @Transactional public List<RelDeckCards> relDeckAndCards(Integer deck_id,
+	 * Integer card_number) { Query query = em.createNativeQuery(
+	 * " select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number"
+	 * , RelDeckCards.class); List<RelDeckCards> rel = (List<RelDeckCards>)
+	 * query.setParameter("deck_id", deck_id) .setParameter("card_number",
+	 * card_number).getResultList();
+	 * 
+	 * return rel; }
+	 */
+	
 
-	// Preenche o deck apenas com a relação de card que contenha esse card number e
-	// mostra na tela de detalhes do Card
-	@Transactional
-	public List<RelDeckCards> relDeckAndCards(Integer deck_id, Integer card_number) {
-		Query query = em.createNativeQuery(
-				" select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number",
-				RelDeckCards.class);
-		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id)
-				.setParameter("card_number", card_number).getResultList();
+//	@Override
+//	@Transactional
+//	public int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,
+//			String card_price) throws SQLException {
+//
+//		Query query = em.createNativeQuery(
+//				"INSERT INTO tab_rel_deck_cards VALUES (:deck_id,:card_numero,:card_raridade,:card_set_code,:card_price)")
+//				.setParameter("deck_id", deck_id).setParameter("card_numero", card_numero)
+//				.setParameter("card_raridade", card_raridade).setParameter("card_set_code", card_set_code)
+//				.setParameter("card_price", Double.parseDouble(card_price));
+//
+//		return query.executeUpdate();
+//	}
+	
+	
 
-		return rel;
-	}
-
-	@Override
-	@Transactional
-	public int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,
-			String card_price) throws SQLException {
-
-		Query query = em.createNativeQuery(
-				"INSERT INTO tab_rel_deck_cards VALUES (:deck_id,:card_numero,:card_raridade,:card_set_code,:card_price)")
-				.setParameter("deck_id", deck_id).setParameter("card_numero", card_numero)
-				.setParameter("card_raridade", card_raridade).setParameter("card_set_code", card_set_code)
-				.setParameter("card_price", Double.parseDouble(card_price));
-
-		System.out.println(query);
-
-		return query.executeUpdate();
-	}
-
-	@Override
-	public List<Deck> findByNomeContaining(String nomeDeck) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	public int addSetToUserCollection(Integer originalDeckId) throws SQLException, ErrorMessage, Exception {
@@ -377,5 +400,19 @@ public class DeckServiceImpl implements DeckDetailService {
 		
 		return qtdRemoved;
 		
+	}
+
+
+	@Override
+	public List<Card> cardsOfDeck(Integer deckId) {
+		List<Card> listCards = dao.cardsOfDeck(deckId);
+		
+		return listCards;
+	}
+
+	@Override
+	public List<Deck> findByNomeContaining(String nomeDeck) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

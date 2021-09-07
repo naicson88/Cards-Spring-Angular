@@ -80,12 +80,20 @@
 
                 <div class="card-img" style="margin-left: 5%; margin-top: -5px;">
                   <!-- <img src="../../../assets/SummonedSkull-SDY-NA-C-1E.jpg" alt="" width="165px" height="220px"> -->
-                  <img [src]="cardImagem(card.numero)" alt="" width="165px" height="220px" style="cursor: pointer;" title="{{card.nome}}"> 
+                  <img [src]="cardImagem(card.numero)" alt="" width="165px" height="220px" style="cursor: pointer;" title="{{card.nome}}"
+                  (mouseover)="mostrarImgToolTip($event)"
+                (mousemove)="mostrarImgToolTip($event)"
+                (mouseout)="esconderImgToolTip()"> 
                 </div>
 
-                <button  style="height: 30px; width: 75px; font-size: 12px; color: white;
-                background-color: #03A9F4; border: solid thin silver; margin-left:30%; margin-top:10px; border-radius: 5px; font-weight: 400;">
-                Manage 
+                     <!--Div que será mostrada quando o mouse passar sobre a carta -->
+                     <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+                      <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+                      class="imgTooltip" >
+                      </div>
+
+                <button class="manageBtn" data-toggle="modal" data-target=".manageCard">
+                Details 
               </button>
             </div>
 
@@ -104,7 +112,215 @@
           </div>
       </div>
 
+      <div class="modal fade manageCard" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content" style="padding: 5px;">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <!--Div do corpo do modal-->
+              <div>
+                  <!--Div parte de cima-->
+                  <div id="top-part" style="border: solid thin red; height: 221px; margin-top: 10px;" class="row">
+                      <div id="modal-card-img" style="max-width: 168px; " class="col-md-3">
+                        <img src="../../../assets/SummonedSkull-SDY-NA-C-1E.jpg" alt="" width="165px" height="220px">
+                      </div>   
+                      
+                  
+                    <div id="modal-card-detail" style="border: solid thin green;display: inline; margin-left: 1%; height: 220px;" class="col-md-8">
+                      <div id="modal-card-name"  >
+                        4-Starred Ladybug of Doom
+                      </div>
+                      <div id="modal-card-details">
+                            <label for="total-card">Total Card you have:</label> 3
+                           
+                      </div>
+                      <div id="modal-card-details-table">
+                            <table style="border-collapse: separate; border-spacing: 3px 0; font-weight: 400; text-align: center; padding: 10px; width: 100%;">
+                              <thead>
+                                <tr>
+                                  <th  class="table-primary" width="25%">Common</th>
+                                  <th  class="table-info" width="25%">Rare</th>
+                                  <th class="table-success" width="25%">Super Rare</th>
+                                  <th class="table-warning" width="25%">Ultra Rare</th>
+                                </tr>
+                               
+                              </thead>
+                              <tbody>
+                                <tr style="background-color: ghostwhite;">
+                                  <td >4</td>
+                                  <td>1</td>
+                                  <td>1</td>
+                                  <td>0</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                      </div>
+                    </div>
+                  </div>  
+                        <!--Div parte de baixo-->
+                        <div id="down-part" style="border: solid thin blue; width: 100%; margin-top: 6px; height: 400px;">
+                            <div id="modal-header-down" style="width: 100%; background-color: skyblue; color: white; height: 20px;">
+                                Your Sets that contains this card
+                            </div>
+                            <div id="div-table-contains" style=" max-height: 190px; overflow:scroll; overflow-x: hidden;">
+                                <table id="table-contains" style="width: 100%; text-align: center;">
+                                    <thead>
+                                      <tr>
+                                        <th width="40%">Set Name</th>
+                                        <th width="20%">Card Set Code</th>
+                                        <th width="5%">Rarity</th>
+                                        <th width="20%">Card Price</th>
+                                        <th width="15%">Quantity</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="table-contains-body">
+                                      <tr>
+                                        <td>
+                                          <a href=""> Blue eyes with dragon</a>
+                                        </td>
+                                        <td>BLEY-1299</td>
+                                        <td>R</td>
+                                        <td>U$ 10,224.66</td>
+                                        <td>3</td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <a href=""> Blue eyes with dragon</a>
+                                        </td>
+                                        <td>BLEY-1299</td>
+                                        <td>R</td>
+                                        <td>U$ 10,224.66</td>
+                                        <td>3</td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <a href=""> Blue eyes with dragon</a>
+                                        </td>
+                                        <td>BLEY-1299</td>
+                                        <td>R</td>
+                                        <td>U$ 10,224.66</td>
+                                        <td>3</td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <a href=""> Blue eyes with dragon</a>
+                                        </td>
+                                        <td>BLEY-1299</td>
+                                        <td>R</td>
+                                        <td>U$ 10,224.66</td>
+                                        <td>3</td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <a href=""> Blue eyes with dragon</a>
+                                        </td>
+                                        <td>BLEY-1299</td>
+                                        <td>R</td>
+                                        <td>U$ 10,224.66</td>
+                                        <td>3</td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <a href=""> Blue eyes with dragon</a>
+                                        </td>
+                                        <td>BLEY-1299</td>
+                                        <td>R</td>
+                                        <td>U$ 10,224.66</td>
+                                        <td>3</td>
+                                      </tr>
+                            
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="modal-header-down" style="width: 100%; background-color: #E74C3C; color: white; height: 20px;">
+                             Collections with this card that you don't have
+                          </div>
+                          <div id="div-table-contains" style=" max-height: 200px; overflow:scroll; overflow-x: hidden;">
+                              <table id="table-contains" style="width: 100%; text-align: center;">
+                                  <thead>
+                                    <tr style="color: #f7341e;">
+                                      <th width="40%">Set Name</th>
+                                      <th width="20%">Card Set Code</th>
+                                      <th width="5%">Rarity</th>
+                                      <th width="20%">Card Price</th>
+                                      <th width="15%">Quantity</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="table-contains-body">
+                                    <tr>
+                                      <td>
+                                        <a href=""> Blue eyes with dragon</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <a href=""> Blue eyes with dragon</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <a href=""> Blue eyes with dragon</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <a href=""> Blue eyes with dragon</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <a href=""> Blue eyes with dragon</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <a href=""> Blue eyes with dragon</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                          
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                  
+
+              </div>
+          </div>
+        </div>
+      </div>
 
 <div style="margin-top: 60px;">
   <app-footer></app-footer>
 </div>
+
