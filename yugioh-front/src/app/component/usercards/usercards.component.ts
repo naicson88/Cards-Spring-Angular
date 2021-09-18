@@ -26,6 +26,8 @@ export class UsercardsComponent implements OnInit {
   arrIcons = new Array();
   arrCards = new Array();
   arrCardsFromScroll = new Array();
+  
+  arrCardsDetails:[] = [];
 
   genericTypeAtual: string = 'MONSTER'
 
@@ -102,7 +104,6 @@ export class UsercardsComponent implements OnInit {
     leftTp;
  
     mostrarImgToolTip(e){
-        console.log("e 2")
         this.leftTp =  e.pageX + 15 + "px";
         this.topTp = + e.pageY + 15 + "px";
    
@@ -114,7 +115,50 @@ export class UsercardsComponent implements OnInit {
      esconderImgToolTip(){
       this.isShowTooltip = false;
     }
+    
+    qtdTotal:number = 0;
+    
+    cardOfUserDetails(cardNumber) {
 
+        if(cardNumber == null || cardNumber == undefined)
+            alert("It was not possible consult, Try again later.")
+
+        this.service.cardOfUserDetails(cardNumber).subscribe(data =>{
+          let qtd = 0;
+          this.arrCardsDetails = data;
+ 
+          this.arrCardsDetails['setsWithThisCard'].forEach(element => {
+            qtd += element.quantity 
+          });
+
+          this.setQtdRarity();
+
+          this.qtdTotal = qtd;
+          console.log(this.arrCardsDetails)
+        
+        })
+    }
+
+    qtdCommon: number = 0;
+    qtdRare: number = 0;
+    qtdSuperRare:number = 0;
+    qtdUltraRare: number = 0;
+
+    setQtdRarity(){
+       if(this.arrCardsDetails['rarity']['Common'] != null && this.arrCardsDetails['rarity']['Common'] != undefined)
+           this.qtdCommon = this.arrCardsDetails['rarity']['Common'];
+
+       if(this.arrCardsDetails['rarity']['Rare'] != null && this.arrCardsDetails['rarity']['Rare'] != undefined)
+          this.qtdRare = this.arrCardsDetails['rarity']['Rare'];
+
+        if(this.arrCardsDetails['rarity']['Ultra Rare'] != null && this.arrCardsDetails['rarity']['Ultra Rare'] != undefined)
+          this.qtdUltraRare = this.arrCardsDetails['rarity']['Ultra Rare'];
+        
+          if(this.arrCardsDetails['rarity']['Super Rare'] != null && this.arrCardsDetails['rarity']['Super Rare'] != undefined)
+          this.qtdSuperRare = this.arrCardsDetails['rarity']['Super Rare'];
+
+      
+    }
 }
 
 

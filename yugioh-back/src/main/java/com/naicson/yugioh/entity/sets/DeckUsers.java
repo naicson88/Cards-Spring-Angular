@@ -21,11 +21,26 @@ public class DeckUsers {
 	private Long id;
 	private String nome;
 	private String imagem;
+	@Column(name = "konami_deck_copied")
 	private Integer konamiDeckCopied;
 	private Integer userId;
 	private Date dtCriacao;
 	private String setType;
 	
+	
+	
+	public DeckUsers(Long id, String nome, String imagem, Integer konamiDeckCopied, Integer userId, Date dtCriacao,
+			String setType) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.imagem = imagem;
+		this.konamiDeckCopied = konamiDeckCopied;
+		this.userId = userId;
+		this.dtCriacao = dtCriacao;
+		this.setType = setType;
+	}
+
 	public DeckUsers() {}
 	
 	public Long getId() {

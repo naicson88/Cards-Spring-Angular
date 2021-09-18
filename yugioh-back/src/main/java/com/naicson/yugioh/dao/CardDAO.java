@@ -1,10 +1,13 @@
 package com.naicson.yugioh.dao;
 
+import java.lang.annotation.Native;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +27,30 @@ public class CardDAO {
 		List<RelUserCardsDTO> relList = query.getResultList();
 		
 		return relList;
+	}
+	/*
+	 * @Query(value =
+	 * "select du.nome as setName, rel.card_set_code as cardSetCode, rel.card_raridade as rarity,\r\n"
+	 * + " rel.card_price as price, count(rel.card_set_code) as quantity\r\n" +
+	 * "from tab_deck_users du\r\n" +
+	 * "inner join tab_rel_deckusers_cards rel on rel.deckuser_id = du.id\r\n" +
+	 * "where rel.card_numero = :cardNumber and du.user_id = :userId") List<Tuple>
+	 * listCardOfUserDetails(Long cardNumber, Integer userId);
+	 */
+	
+	public List<Tuple> listCardOfUserDetails(Long cardNumber, Integer userId) throws SQLException, Exception {
+		Query query = em.createNativeQuery("select du.nome , rel.card_set_code , rel.card_raridade as rarity,\r\n"
+			+ " rel.card_price as price, count(rel.card_set_code) as quantity\r\n"
+			+ "from tab_deck_users du \r\n"
+			+ "inner join tab_rel_deckusers_cards rel on rel.deckuser_id = du.id \r\n"
+			+ "where rel.card_numero = :cardNumber and du.user_id = :userId", Tuple.class)
+				.setParameter("cardNumber", cardNumber)
+				.setParameter("userId", userId);
+		
+		@SuppressWarnings("unchecked")
+		List<Tuple> resultCards = query.getResultList();
+		
+		return resultCards;
 	}
 	
 	

@@ -80,5 +80,12 @@ export class CardServiceService {
     )
   } 
 
+  public cardOfUserDetails(cardNumber:number) {
+    return this.http.get<any>(this.base_url+`/cards/card-user-details?cardNumber=${cardNumber}`)
+    .pipe(
+        catchError(HandleErros.handleError)
+      )
+  }
+
 
 }

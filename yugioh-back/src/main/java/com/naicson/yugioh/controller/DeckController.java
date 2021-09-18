@@ -47,7 +47,7 @@ public class DeckController {
 	DeckUsersRepository deckUserRepository;
 
 	Page<Deck> deckList = null;
-	Page<DeckUsers> deckListUser = null;
+	Page<DeckUsers> deckUserList = null;
 
 	@GetMapping("/todos")
 	public List<Deck> consultar() {
@@ -61,34 +61,29 @@ public class DeckController {
 
 		if (!setType.equals("") && setType != null && !setType.equals("UD"))
 			deckList = deckRepository.findAll(pageable);
-
+		
 		if (deckList.isEmpty()) {
-
 			return new ResponseEntity<Page<Deck>>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<>(deckList, HttpStatus.OK);
 
 	}
 
-	@GetMapping("/deckUser")
-	public ResponseEntity<Page<DeckUsers>> deckOfUser(
+	@GetMapping("/sets-of-user")
+	public ResponseEntity<Page<DeckUsers>> setsOfUser(
 			@PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 			@RequestParam String setType) {
 
-		if (setType.equals("UD")) {
 			UserDetailsImpl user = GeneralFunctions.userLogged();
+			
+			deckUserList = deckUserRepository.findAllByUserIdAndSetType(user.getId(), setType, pageable);
 
-			deckListUser = deckUserRepository.findAllByUserId(user.getId(), pageable);
-
-		}
-
-		if (deckList.isEmpty()) {
+		if (deckUserList == null) {
 
 			return new ResponseEntity<Page<DeckUsers>>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(deckListUser, HttpStatus.OK);
+		return new ResponseEntity<>(deckUserList, HttpStatus.OK);
 	}
 
 	@GetMapping(path = { "/{id}" })

@@ -1,12 +1,15 @@
 package com.naicson.yugioh.service;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,6 +20,7 @@ import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
+import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
@@ -197,12 +201,47 @@ public class CardServiceImpl implements CardDetailService {
 
 	@Override
 	public CardOfUserDetailDTO cardOfUserDetails(Long cardNumber) throws ErrorMessage, SQLException, Exception{
-		
+				
 		try {
+
+			UserDetailsImpl user = GeneralFunctions.userLogged();
+						
 			Card card = cardRepository.findByNumero(cardNumber);
 			cardUserDTO.setCardImage(card.getImagem());
 			cardUserDTO.setCardName(card.getNome());
 			cardUserDTO.setCardNumber(card.getNumero());
+			
+			List<Tuple> cardsDetails = dao.listCardOfUserDetails(cardNumber, user.getId());
+			
+			if(cardsDetails != null) {
+				//Mapeia o Tuple e preenche o objeto de acordo com as colunas da query
+				List<CardsOfUserSetsDTO> listCardsSets = cardsDetails.stream().map(c -> new CardsOfUserSetsDTO(
+						c.get(0, String.class),
+						c.get(1, String.class),
+						c.get(2, String.class),
+						c.get(3, Double.class),
+						c.get(4, BigInteger.class)
+						)).collect(Collectors.toList());
+				
+				Map<String, Integer> mapRarity = new HashMap<>();
+						
+					listCardsSets.stream().forEach(r ->{
+					//Verifica se ja tem essa raridade inserida no map
+						if(!mapRarity.containsKey(r.getRarity())) {
+							mapRarity.put(r.getRarity(), 1);
+						} 
+						else {
+							//... se tiver acrescenta mais um 
+							mapRarity.merge(r.getRarity(), 1, Integer::sum);
+						}
+				});
+				
+				cardUserDTO.setRarity(mapRarity);
+				cardUserDTO.setSetsWithThisCard(listCardsSets);
+	
+			}
+			
+			
 			
 			return cardUserDTO;
 			

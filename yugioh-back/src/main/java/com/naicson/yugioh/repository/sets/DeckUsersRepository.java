@@ -11,5 +11,5 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 @Repository
 public interface DeckUsersRepository extends JpaRepository<DeckUsers, Long>{
 	
-	Page<DeckUsers> findAllByUserId(int userId, Pageable pageable);
+	Page<DeckUsers> findAllByUserIdAndSetType(int userId, String setType, Pageable pageable);
 }

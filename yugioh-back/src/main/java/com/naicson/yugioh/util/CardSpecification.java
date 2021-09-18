@@ -16,29 +16,7 @@ import com.naicson.yugioh.entity.Card;
 public class CardSpecification implements Specification<Card> {
 
 	private static final long serialVersionUID = 1L;
-	/*
-	 * private SearchCriteria criteria;
-	 * 
-	 * public CardSpecification(SearchCriteria searchCriteria) { super();
-	 * this.criteria = searchCriteria; }
-	 * 
-	 * @Override public Predicate toPredicate(Root<Card> root, CriteriaQuery<?>
-	 * query, CriteriaBuilder builder) {
-	 * 
-	 * if (criteria.getOperation().equalsIgnoreCase(">")) { return
-	 * builder.greaterThanOrEqualTo( root.<String>get(criteria.getKey()),
-	 * criteria.getValue().toString()); } else if
-	 * (criteria.getOperation().equalsIgnoreCase(":")) { if
-	 * (root.get(criteria.getKey()).getJavaType() == String.class) { return
-	 * builder.like( root.<String>get(criteria.getKey()), "%" + criteria.getValue()
-	 * + "%"); } } else if(criteria.getOperation().equalsIgnoreCase(";")) {
-	 * 
-	 * return builder.in( root.get(criteria.getKey()).in(criteria.getValues()) ); }
-	 * else { return builder.equal(root.get(criteria.getKey()),
-	 * criteria.getValue()); }
-	 * 
-	 * return null; }
-	 */
+
 	
 	private List<SearchCriteria> list;
 	

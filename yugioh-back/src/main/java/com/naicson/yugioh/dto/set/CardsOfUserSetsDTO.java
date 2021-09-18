@@ -1,17 +1,30 @@
 package com.naicson.yugioh.dto.set;
 
+import java.math.BigInteger;
+
 public class CardsOfUserSetsDTO {
 	
 	private String setName;
 	private String cardSetCode;
 	private String rarity;
 	private Double price;
-	private Integer quantity;
+	private BigInteger quantity;
 	
 	public CardsOfUserSetsDTO() {
 		
 	}
 	
+	
+	public CardsOfUserSetsDTO(String setName, String cardSetCode, String rarity, Double price, BigInteger quantity) {
+		super();
+		this.setName = setName;
+		this.cardSetCode = cardSetCode;
+		this.rarity = rarity;
+		this.price = price;
+		this.quantity = quantity;
+	}
+
+
 	public String getSetName() {
 		return setName;
 	}
@@ -36,10 +49,10 @@ public class CardsOfUserSetsDTO {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public Integer getQuantity() {
+	public BigInteger getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(BigInteger quantity) {
 		this.quantity = quantity;
 	}
 	

@@ -21,11 +21,20 @@ export class DeckService {
   } */
 
     public getDecks(params, set_type:string): Observable<any>{
-      debugger
-    return  this.http.get(this.base_url+`/decks/pagination?size=${params.size}&page=${params.page}&setType=${set_type}`)
-    .pipe(
-      catchError(HandleErros.handleError)
-    )
+      if(set_type == "D" || set_type == "T" || set_type == "B"){ // Se for Konami set
+         
+        return  this.http.get(this.base_url+`/decks/pagination?size=${params.size}&page=${params.page}&setType=${set_type}`)
+        .pipe(
+          catchError(HandleErros.handleError)
+        )
+      } else if (set_type == "UD" || set_type == "UT" || set_type == "UB"){ //Se forem sets do usuário
+            set_type.substr(1);
+          return  this.http.get(this.base_url+`/decks/sets-of-user?size=${params.size}&page=${params.page}&setType=${set_type}`)
+          .pipe(
+            catchError(HandleErros.handleError)
+          )
+      }
+   
   } 
 
   public getDeckDetails(id:any) {
