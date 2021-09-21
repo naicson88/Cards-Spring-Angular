@@ -1,12 +1,15 @@
 package com.naicson.yugioh.service;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
+import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
@@ -33,13 +38,13 @@ public class CardServiceImpl implements CardDetailService {
 	@Autowired
 	private RelDeckCardsRepository relDeckCardsRepository;
 	@Autowired
-	private DeckRepository deckRepository;
-	
+	private DeckRepository deckRepository;	
 	@Autowired
-	EntityManager em;
-	
+	EntityManager em;	
 	@Autowired
 	CardDAO dao;
+	@Autowired
+	CardOfUserDetailDTO cardUserDTO;
 	
 	
 	//Trazer o card para mostrar os detalhes;
@@ -96,7 +101,7 @@ public class CardServiceImpl implements CardDetailService {
 	@Override
 	public CardAndSetsDTO findCardToAddToUserCollection (Long cardNumber) throws SQLException, ErrorMessage {
 		
-		Card card = cardRepository.findByNumero(cardNumber.intValue());
+		Card card = cardRepository.findByNumero(cardNumber.longValue());
 		
 		if(card == null)
 			throw new ErrorMessage("It was not possible find a card to add to user's collection ");
@@ -110,7 +115,7 @@ public class CardServiceImpl implements CardDetailService {
 		int[] arraySetsIds = new int[rels.size()];
 		//Coloca em um array pra poder buscar os decks com esse id
 		for(int i = 0; i < rels.size(); i++) {
-			arraySetsIds[i] = rels.get(i).getDeck_id();
+			arraySetsIds[i] = rels.get(i).getDeckId();
 		}
 		
 		List<Deck> sets = deckRepository.findAllByIdIn(arraySetsIds);
@@ -121,7 +126,7 @@ public class CardServiceImpl implements CardDetailService {
 		Map <String, String> mapImgSetcode = new HashMap<>();
 		
 		for(RelDeckCards rel: rels ) {
-			Deck setAux =  sets.stream().filter(set -> rel.getDeck_id() == set.getId()).findAny().orElse(null);
+			Deck setAux =  sets.stream().filter(set -> rel.getDeckId() == set.getId()).findAny().orElse(null);
 			
 			if(setAux != null)
 			mapImgSetcode.put(rel.getCard_set_code(), setAux.getImagem());
@@ -185,12 +190,7 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public Card encontrarPorNumero(Integer numero) {
-		return cardRepository.findByNumero(numero);
-	}
-
-	@Override
-	public Card listarNumero(Integer numero) {
+	public Card listarNumero(Long numero) {
 		return cardRepository.findByNumero(numero);
 	}
 
@@ -198,8 +198,71 @@ public class CardServiceImpl implements CardDetailService {
 	public List<Card> encontrarPorArchetype(int archId) {
 		return cardRepository.findByArchetype(archId);
 	}
+
+	@Override
+	public CardOfUserDetailDTO cardOfUserDetails(Long cardNumber) throws ErrorMessage, SQLException, Exception{
+				
+		try {
+
+			UserDetailsImpl user = GeneralFunctions.userLogged();
+						
+			Card card = cardRepository.findByNumero(cardNumber);
+			cardUserDTO.setCardImage(card.getImagem());
+			cardUserDTO.setCardName(card.getNome());
+			cardUserDTO.setCardNumber(card.getNumero());
+			
+			List<Tuple> cardsDetails = dao.listCardOfUserDetails(cardNumber, user.getId());
+			
+			if(cardsDetails != null) {
+				//Mapeia o Tuple e preenche o objeto de acordo com as colunas da query
+				List<CardsOfUserSetsDTO> listCardsSets = cardsDetails.stream().map(c -> new CardsOfUserSetsDTO(
+						c.get(0, String.class),
+						c.get(1, String.class),
+						c.get(2, String.class),
+						c.get(3, Double.class),
+						c.get(4, BigInteger.class)
+						)).collect(Collectors.toList());
+				
+				Map<String, Integer> mapRarity = new HashMap<>();
+						
+					listCardsSets.stream().forEach(r ->{
+					//Verifica se ja tem essa raridade inserida no map
+						if(!mapRarity.containsKey(r.getRarity())) {
+							mapRarity.put(r.getRarity(), 1);
+						} 
+						else {
+							//... se tiver acrescenta mais um 
+							mapRarity.merge(r.getRarity(), 1, Integer::sum);
+						}
+				});
+				
+				cardUserDTO.setRarity(mapRarity);
+				cardUserDTO.setSetsWithThisCard(listCardsSets);
 	
+			}
+			
+			
+			
+			return cardUserDTO;
+			
+		}catch (Exception ex) {
+			throw ex;
+		}
+	}
 	
 
+	@Override
+	public List<Deck> cardDecks(Long cardNumero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Card encontrarPorNumero(Long cardNumero) {
+		Card card = cardRepository.findByNumero(cardNumero);
+		
+		return card;
+	}
+	
 	
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.naicson.yugioh.entity.Tin;
+import com.naicson.yugioh.entity.sets.Tin;
 import com.naicson.yugioh.repository.TinRepository;
 
 @RestController

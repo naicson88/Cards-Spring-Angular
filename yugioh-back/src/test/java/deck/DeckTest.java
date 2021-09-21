@@ -94,7 +94,7 @@ public class DeckTest {
 		    Deck dk = deckRepository.save(newDeck);
 		    
 		    RelDeckCards rel = new RelDeckCards();		   
-		    rel.setDeck_id(dk.getId());
+		    rel.setDeckId(dk.getId());
 		    rel.setCard_numero(555);
 		    rel.setCard_price(1.99);
 		    rel.setCard_raridade("Common");
@@ -102,7 +102,7 @@ public class DeckTest {
 		    rel.setDt_criacao(new Date());   
 		    
 		    RelDeckCards rel2 = new RelDeckCards();		   
-		    rel2.setDeck_id(dk.getId());
+		    rel2.setDeckId(dk.getId());
 		    rel2.setCard_numero(444);
 		    rel2.setCard_price(1.00);
 		    rel2.setCard_raridade("Rare");
@@ -149,7 +149,7 @@ public class DeckTest {
 		    Deck dk = deckRepository.save(newDeck);
 		    
 		    RelDeckCards rel = new RelDeckCards();		   
-		    rel.setDeck_id(dk.getId());
+		    rel.setDeckId(dk.getId());
 		    rel.setCard_numero(555);
 		    rel.setCard_price(1.99);
 		    rel.setCard_raridade("Common");

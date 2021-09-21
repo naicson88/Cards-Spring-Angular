@@ -102,7 +102,7 @@ public class UtilitariosServiceImpl implements UtilitariosService {
 	
 	
 	@Transactional
-	public int adicionarCardsTAB_CARDS(Integer card_numero, String imagem_url, boolean isPt, String URL) throws SQLException {
+	public int adicionarCardsTAB_CARDS(Long card_numero, String imagem_url, boolean isPt, String URL) throws SQLException {
 		int count = 0;
 		
 		try {
@@ -135,7 +135,7 @@ public class UtilitariosServiceImpl implements UtilitariosService {
 					if(isPt == false) {	
 						Card card = new Card();
 						
-						card.setNumero((Integer)    obj.get("id"));
+						card.setNumero((Long)    obj.get("id"));
 						card.setNome((String) 		obj.get("name"));
 						card.setCategoria((String)  obj.get("type"));
 						card.setDescricao((String)  obj.get("desc"));

@@ -43,7 +43,7 @@ public class UtilitariosController {
 		int qtdCardsInseridos = 0;
 		
 		boolean isPt = true;
-		Integer card_numero = 11050416;
+		Long card_numero = 11050416L;
 		String URL = "https://db.ygoprodeck.com/api/v7/cardinfo.php?id="+card_numero;
 		String imagem_url = "..\\\\..\\\\assets\\\\img\\\\monsters\\\\Token\\\\"+card_numero+".jpg";
 		

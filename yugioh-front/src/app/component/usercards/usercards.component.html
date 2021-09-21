@@ -19,10 +19,10 @@
     
     <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-        <li class="nav-item" *ngFor="let icon of arrIcons">
+        <li class="nav-item" *ngFor="let icon of arrIcons" (click)="cardsByGenericType(icon.tipo)">
           <a class="nav-link " id="Monster-tab" data-toggle="tab" href="#{{icon.tipo}}" role="tab"
            aria-controls="Monster" aria-selected="true" name="{{icon.tipo}}">
-            <img [src]='icon.img' alt="" width="28px" height="40px">&nbsp; {{icon.tipo}}</a>
+            <img [src]='icon.img' alt="" width="28px" height="40px" >&nbsp; {{icon.tipo}}</a>
         </li>
         
 
@@ -72,10 +72,166 @@
          <div id="filter-div" style="border: solid blue; margin-top: 20px;"> 
              filter div
          </div>
+         <!--Inicio da div que mostra os cards-->
+          <div id="cards" style="border: solid green;margin-top: 20px; padding: 5px;">
+      
+              <div class="div-cards" *ngFor="let card of arrCards">
+                <p class="card-name">{{card.nome}}</p> 
 
-         <div id="cards" style="border: solid green;margin-top: 20px;">
-               mostrar cards 
+                <div class="card-img" style="margin-left: 5%; margin-top: -5px;">
+                  <!-- <img src="../../../assets/SummonedSkull-SDY-NA-C-1E.jpg" alt="" width="165px" height="220px"> -->
+                  <img [src]="cardImagem(card.numero)" alt="" width="165px" height="220px" style="cursor: pointer;" title="{{card.nome}}"
+                  (mouseover)="mostrarImgToolTip($event)"
+                (mousemove)="mostrarImgToolTip($event)"
+                (mouseout)="esconderImgToolTip()"> 
+                </div>
+
+                     <!--Div que será mostrada quando o mouse passar sobre a carta -->
+                     <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+                      <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
+                      class="imgTooltip" >
+                      </div>
+
+                <button class="manageBtn" data-toggle="modal" data-target=".manageCard"  (click)="cardOfUserDetails(card.numero)">
+                Details 
+              </button>
+            </div>
+
          </div>
+          <!--Fim da div que mostra os cards-->
+
+          <div
+          infiniteScroll
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="1000"
+          [infiniteScrollContainer]="selector"
+          [fromRoot]="true"
+          (scrolled)="onScroll()"
+        ></div>
+
+          </div>
       </div>
 
+      <div class="modal fade manageCard" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content" style="padding: 5px;">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <!--Div do corpo do modal-->
+              <div>
+                  <!--Div parte de cima-->
+                  <div id="top-part" style=" height: 221px; margin-top: 10px;" class="row" >
+                      <div id="modal-card-img" style="max-width: 168px; " class="col-md-3">
+                        <img  [src]="cardImagem(arrCardsDetails.cardNumber)" alt="" width="165px" height="220px">
+                      </div>   
+                      
+                  
+                    <div id="modal-card-detail" style="display: inline; margin-left: 1%; height: 220px;" class="col-md-8">
+                      <div id="modal-card-name"  >
+                        {{arrCardsDetails.cardName}}
+                      </div>
+                      <div id="modal-card-details">
+                            <label for="total-card">Total Card you have:</label> {{qtdTotal}}
+                           
+                      </div>
+                      <div id="modal-card-details-table">
+                            <table style="border-collapse: separate; border-spacing: 3px 0; font-weight: 400; text-align: center; padding: 10px; width: 100%;">
+                              <thead>
+                                <tr>
+                                  <th  class="table-primary" width="25%">Common</th>
+                                  <th  class="table-info" width="25%">Rare</th>
+                                  <th class="table-success" width="25%">Super Rare</th>
+                                  <th class="table-warning" width="25%">Ultra Rare</th>
+                                </tr>
+                               
+                              </thead>
+                              <tbody>
+                                <tr style="background-color: ghostwhite;">
+                                  <td >{{qtdCommon}}</td>
+                                  <td>{{qtdRare}}</td>
+                                  <td>{{qtdSuperRare}}</td>
+                                  <td>{{qtdUltraRare}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                      </div>
+                    </div>
+                  </div>  
+                        <!--Div parte de baixo-->
+                        <div id="down-part" style="border: solid thin blue; width: 100%; margin-top: 6px; height: 400px;">
+                            <div id="modal-header-down" style="width: 100%; background-color: skyblue; color: white; height: 20px;">
+                                Your Sets that contains this card
+                            </div>
+                            <div id="div-table-contains" style=" max-height: 190px; min-height: 190px; overflow:scroll; overflow-x: hidden;">
+                                <table id="table-contains" style="width: 100%; text-align: center;">
+                                    <thead>
+                                      <tr>
+                                        <th width="40%">Set Name</th>
+                                        <th width="20%">Card Set Code</th>
+                                        <th width="5%">Rarity</th>
+                                        <th width="20%">Card Price</th>
+                                        <th width="15%">Quantity</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="table-contains-body">
+                                      <tr *ngFor="let sets of arrCardsDetails.setsWithThisCard">
+                                        <td>
+                                          <a href="">{{sets.setName}}</a>
+                                        </td>
+                                        <td>{{sets.cardSetCode}}</td>
+                                        <td>{{sets.rarity}}</td>
+                                        <td>{{sets.price | currency}}</td>
+                                        <td>{{sets.quantity}}</td>
+                                      </tr>
+                     
+                            
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="modal-header-down" style="width: 100%; background-color: #E74C3C; color: white; height: 20px;">
+                             Collections with this card that you don't have
+                          </div>
+                          <div id="div-table-contains" style=" max-height: 200px; overflow:scroll; overflow-x: hidden;">
+                              <table id="table-contains" style="width: 100%; text-align: center;">
+                                  <thead>
+                                    <tr style="color: #f7341e;">
+                                      <th width="40%">Set Name</th>
+                                      <th width="20%">Card Set Code</th>
+                                      <th width="5%">Rarity</th>
+                                      <th width="20%">Card Price</th>
+                                      <th width="15%">Quantity</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="table-contains-body">
+                                    <tr >
+                                      <td>
+                                        <a href=""> teste</a>
+                                      </td>
+                                      <td>BLEY-1299</td>
+                                      <td>R</td>
+                                      <td>U$ 10,224.66</td>
+                                      <td>3</td>
+                                    </tr>
+                          
+                                  </tbody>
+                              </table>
+                          </div>
+                        </div>
+                  
+
+              </div>
+          </div>
+        </div>
+      </div>
+
+<div style="margin-top: 60px;">
+  <app-footer></app-footer>
 </div>
+

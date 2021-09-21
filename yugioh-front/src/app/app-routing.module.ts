@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'decks', component: DeckComponent , data : {set_type: 'D'}},
   { path: 'tins', component: DeckComponent , data : {set_type: 'T'}},
   { path: 'boxes', component: DeckComponent , data : {set_type: 'B'}},
-  { path: 'usercollection', component: DeckComponent , data : {set_type: 'UD'}},
+  { path: 'usercollection/decks', component: DeckComponent , data : {set_type: 'UD'}},
   { path: 'usercollection/cards', component: UsercardsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'deck-details/:deckName', component: DeckDetailComponent},

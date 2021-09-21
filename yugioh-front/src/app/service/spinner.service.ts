@@ -8,16 +8,17 @@ import { finalize } from 'rxjs/operators';
   providedIn: 'root'
 })
 //O interceptor permite esconder e mostrar o spinner toda vez que tiver uma requisição http 
-export class SpinnerService implements HttpInterceptor {
+export class SpinnerService  implements HttpInterceptor{
 
   constructor(private spinner: NgxSpinnerService)  { }
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.show();
 
-    return next.handle(req).pipe(
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+   //this.show();
+   
+     return next.handle(req).pipe(
       finalize( ()=> this.hide())
-    );
-  }
+   );
+   }
 
   public show(){
     this.spinner.show();

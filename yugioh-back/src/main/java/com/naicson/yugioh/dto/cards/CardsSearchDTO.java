@@ -9,7 +9,7 @@ import com.naicson.yugioh.entity.Deck;
 
 public class CardsSearchDTO {
 	
-	private Integer numero;
+	private Long numero;
 	private String nome;
 	private String imagem;
 	@Transient
@@ -19,7 +19,7 @@ public class CardsSearchDTO {
 		
 	}	
 	
-	public CardsSearchDTO(Integer numero, String nome, String imagem) {
+	public CardsSearchDTO(Long numero, String nome, String imagem) {
 		super();
 		this.numero = numero;
 		this.nome = nome;
@@ -34,11 +34,11 @@ public class CardsSearchDTO {
 		return new Card(numero, nome, imagem);
 	}
 
-	public Integer getNumero() {
+	public Long getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(Long numero) {
 		this.numero = numero;
 	}
 

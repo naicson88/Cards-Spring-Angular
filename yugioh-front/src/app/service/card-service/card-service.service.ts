@@ -73,5 +73,19 @@ export class CardServiceService {
     );
   }
 
+  public getCardsByGenericType(params, genericType: string): Observable<any>{
+    return  this.http.get<any[]>(this.base_url+`/cards/load-cards-userscollection?size=${params.size}&page=${params.page}&genericType=${genericType}`)
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+  } 
+
+  public cardOfUserDetails(cardNumber:number) {
+    return this.http.get<any>(this.base_url+`/cards/card-user-details?cardNumber=${cardNumber}`)
+    .pipe(
+        catchError(HandleErros.handleError)
+      )
+  }
+
 
 }

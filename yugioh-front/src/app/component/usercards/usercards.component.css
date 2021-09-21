@@ -29,4 +29,78 @@
      margin-bottom: 20px;
   }
 
-  
+  .div-cards{
+    display: inline-block;
+    width: 190px;
+    height: 310px;
+    border:  1px solid #ceefff;
+    box-shadow: 0 1px 4px 0 rgb(21 180 255 / 50%);
+    background-color: white;
+    padding: 5px 3px 5px 3px;
+    margin-left: 2%;
+    margin-top: 5px;
+  }
+  .card-name {
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    margin-left: 4%;
+
+  }
+  .manageBtn{
+    height: 30px;
+    width: 75px; 
+    font-size: 12px; 
+    color: white;
+    background-color: #03A9F4;
+     border: solid thin silver; 
+     margin-left:30%;
+      margin-top:10px; 
+      border-radius: 5px; 
+      font-weight: 400;
+  }
+  .divTooltip{
+    position: absolute;
+    margin: 0;
+    z-index: 9999;
+    display: block;
+  }
+
+  #table-contains{
+    font-family: Mija, -apple-system, BlinkMacSystemFont, Roboto, "Roboto Slab", "Droid Serif", "Segoe UI", system-ui, Arial, sans-serif;
+    
+    font-size: 14px;
+    line-height: 21px;
+    display: table;
+    border-bottom : 2px solid  #6678B1;
+
+
+  }
+
+  #modal-card-name{
+   border: solid thin silver;
+    font-family:" New Century Schoolbook", TeX Gyre Schola, 
+    serif; 
+    letter-spacing: 2px;
+    font-size: 32px;
+    font-weight: 600;
+    color: #444;
+  text-shadow: 
+    1px 0px 1px #ccc, 0px 1px 1px #eee, 
+    2px 1px 1px #ccc, 1px 2px 1px #eee,
+    3px 2px 1px #ccc, 2px 3px 1px #eee,
+    4px 3px 1px #ccc, 3px 4px 1px #eee,
+    5px 4px 1px #ccc, 4px 5px 1px #eee,
+    6px 5px 1px #ccc, 5px 6px 1px #eee,
+    7px 6px 1px #ccc;
+  }
+
+  #table-contains-body tr:nth-child(odd) {
+    background-color: #f7f7f7;
+  }

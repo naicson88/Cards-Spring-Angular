@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.naicson.yugioh.entity.sets.Sets;
+
 @Entity
 @Table(name = "tab_cards")
 public class Card extends Sets {
@@ -18,7 +20,7 @@ public class Card extends Sets {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Integer numero;
+	private Long numero;
 	private String categoria;
 	private String nome;
 	private String nomePortugues;
@@ -44,7 +46,7 @@ public class Card extends Sets {
 	private String qtd_link;
 	@Transient
 	private Sets sets;
-	private String generic_type;
+	private String genericType;
 	@Column(name = "cod_archetype")
 	private int codArchetype;
 
@@ -53,7 +55,7 @@ public class Card extends Sets {
 		super();
 	}
 
-	public Card(Integer id, Integer numero, String categoria, String nome, String nomePortgues, String atributo,
+	public Card(Integer id, Long numero, String categoria, String nome, String nomePortgues, String atributo,
 			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
 			String descricao, String imagem, String raridade, Integer escala, 
 			String descr_pendulum, String arquetipo, String qtd_link, Sets sets, String generic_type) {
@@ -78,11 +80,11 @@ public class Card extends Sets {
 		this.arquetipo = arquetipo;
 		this.qtd_link = qtd_link;
 		this.sets = sets;
-		this.generic_type = generic_type;
+		this.genericType = generic_type;
 	}
 	
 	//Construtor para CardsSearchDTO
-	public Card(Integer numero, String nome, String imagem) {
+	public Card(Long numero, String nome, String imagem) {
 		this.numero = numero;
 		this.nome = nome;
 		this.imagem = imagem;
@@ -91,11 +93,11 @@ public class Card extends Sets {
 	
 	
 	public String getGeneric_type() {
-		return generic_type;
+		return genericType;
 	}
 
 	public void setGeneric_type(String generic_type) {
-		this.generic_type = generic_type;
+		this.genericType = generic_type;
 	}
 
 	public String getNomePortugues() {
@@ -138,11 +140,11 @@ public class Card extends Sets {
 		this.id = id;
 	}
 
-	public Integer getNumero() {
+	public Long getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(Long numero) {
 		this.numero = numero;
 	}
 
@@ -324,7 +326,7 @@ public class Card extends Sets {
 				+ ", descricao=" + descricao + ", descricaoPortugues=" + descricaoPortugues + ", imagem=" + imagem
 				+ ", raridade=" + raridade + ", escala=" + escala + ", descr_pendulum=" + descr_pendulum
 				+ ", descr_pendulum_pt=" + descr_pendulum_pt + ", arquetipo=" + arquetipo + ", qtd_link=" + qtd_link
-				+ ", sets=" + sets + ", generic_type=" + generic_type + ", codArchetype=" + codArchetype + "]";
+				+ ", sets=" + sets + ", generic_type=" + genericType + ", codArchetype=" + codArchetype + "]";
 	}
 	
 	

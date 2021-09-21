@@ -1,6 +1,8 @@
-package com.naicson.yugioh.repository;
+ package com.naicson.yugioh.repository;
 
 import java.util.List;
+
+import javax.persistence.Tuple;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,16 +12,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
+import com.naicson.yugioh.dto.cards.CardsSearchDTO;
+import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.util.CardSpecification;
 
 @Repository
-public interface CardRepository extends JpaRepository<Card, Integer>, JpaSpecificationExecutor<Card> {
+public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificationExecutor<Card> {
 	
 	List<Card> findAll();
 	Card findById(int id);
 	Card save (Card card);
-	Card findByNumero(Integer numero);
+	Card findByNumero(Long numero);
 	
 	void delete (Card card);
 	
@@ -37,5 +42,15 @@ public interface CardRepository extends JpaRepository<Card, Integer>, JpaSpecifi
 			+ " where deck.user_id = :userId and cards.generic_type = :type ",
 			nativeQuery = true)
 	Page<Card> findCardsByTypeAndUser(String type, int userId, Pageable page);
+	
+	@Query(value = " SELECT DISTINCT * FROM YUGIOH.TAB_CARDS CARDS "
+			+ " INNER JOIN TAB_REL_DECKUSERS_CARDS UCARDS ON UCARDS.CARD_NUMERO = CARDS.NUMERO "
+			+ " INNER JOIN TAB_DECK_USERS DUSERS ON DUSERS.ID = UCARDS.DECKUSER_ID "
+			+ " WHERE CARDS.GENERIC_TYPE = :genericType AND DUSERS.USER_ID = :userId "
+			+ " GROUP BY CARDS.NUMERO ",
+			countQuery = "SELECT count(*) FROM yugioh.tab_cards",
+			nativeQuery=true)
+	Page<Card> getByGenericType (Pageable page, String genericType, Integer userId);
+	
 	
 }

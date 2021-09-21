@@ -15,5 +15,25 @@ public interface RelDeckCardsRepository extends JpaRepository<RelDeckCards, Inte
 			+ " where card_numero = :cardNumber and deck.is_konami_deck = 'S'",			
 			nativeQuery = true)
 	List<RelDeckCards> findCardByNumberAndIsKonamiDeck(Long cardNumber);
+
+	List<RelDeckCards> findByDeckId(Integer deckId);
+	
+	List<RelDeckCards> findByDeckIdAndCardNumber(Integer deckId, Long cardNumero);
+
+	/*
+	 * * // Preenche o deck apenas com a relação de card que contenha esse card
+	 * numbere
+	 * 
+	 * 
+	 * @Transactional public List<RelDeckCards> relDeckAndCards(Integer deck_id,
+	 * Integer card_number) { Query query = em.createNativeQuery(
+	 * " select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number"
+	 * , RelDeckCards.class); List<RelDeckCards> rel = (List<RelDeckCards>)
+	 * query.setParameter("deck_id", deck_id) .setParameter("card_number",
+	 * card_number).getResultList();
+	 * 
+	 * return rel; }s
+	 */
+	 
 	
 }

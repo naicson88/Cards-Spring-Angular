@@ -1,4 +1,4 @@
-package com.naicson.yugioh.entity;
+package com.naicson.yugioh.entity.sets;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

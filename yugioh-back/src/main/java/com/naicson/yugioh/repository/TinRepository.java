@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.naicson.yugioh.entity.Tin;
+import com.naicson.yugioh.entity.sets.Tin;
 
 @Repository
 public interface TinRepository extends JpaRepository<Tin, Integer>{

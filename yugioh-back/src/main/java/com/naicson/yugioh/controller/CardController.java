@@ -8,7 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,17 +30,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
-import com.naicson.yugioh.entity.Sets;
+import com.naicson.yugioh.entity.sets.GenericTypesCards;
+import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.repository.CardRepository;
+import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
+import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.CardSpecificationBuilder;
 import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.SearchCriteria;
 
 
@@ -51,6 +60,8 @@ public class CardController {
 	DeckServiceImpl deckService;
 	@Autowired
 	CardRepository cardRepository;
+	@Autowired
+	RelDeckCardsRepository relDeckCardsRepository;
 	
 	@GetMapping
 	public List<Card> listar(){
@@ -68,24 +79,23 @@ public class CardController {
 	}
 	
 	@GetMapping(path = {"num/{numero}"})
-	public Card listarNumero(@PathVariable("numero") Integer numero) {
+	public Card listarNumero(@PathVariable("numero") Long numero) {
 		return cardService.listarNumero(numero);
 	}
 	
 	@GetMapping(path = {"number/{cardNumero}"})
-	public Card procuraPorCardNumero(@PathVariable("cardNumero") Integer cardNumero) {
+	public Card procuraPorCardNumero(@PathVariable("cardNumero") Long cardNumero) {
 		List<Deck> deck_set = cardService.cardDecks(cardNumero);
 		
 		Card card = cardService.encontrarPorNumero(cardNumero);
 		card.setSet_decks(deck_set);
 		
 		for(Deck rel : deck_set) {
-			List<RelDeckCards> rels = deckService.relDeckAndCards(rel.getId(), cardNumero);
+			//List<RelDeckCards> rels = deckService.relDeckAndCards(rel.getId(), cardNumero);
+			List<RelDeckCards> rels = relDeckCardsRepository.findByDeckIdAndCardNumber(rel.getId(), cardNumero);
 			rel.setRel_deck_cards(rels);
-		}
-		
-		return card;
-		
+		}		
+		return card;		
 	}
 	
 	@PutMapping(path = {"editar/{id}"})
@@ -165,6 +175,56 @@ public class CardController {
 		} else {
 			return new ResponseEntity<CardAndSetsDTO>(dto, HttpStatus.NO_CONTENT);
 		}
+	}
+	
+	@GetMapping(path = {"/load-cards-userscollection"})
+	@ResponseBody
+	public ResponseEntity<List<CardsSearchDTO>> loadCardsUserHave(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable,
+			@RequestParam String genericType) throws SQLException, ErrorMessage{
+		
+		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		
+		try {
+			if(genericType == null)
+				throw new ErrorMessage(" No generic type was informed.");
+			
+			UserDetailsImpl user = GeneralFunctions.userLogged(); 
+			
+			Page<Card> list = cardRepository.getByGenericType(pageable, genericType, user.getId());
+			
+			for(Card card : list.getContent()) {
+				if(list != null) 
+					dtoList.add(CardsSearchDTO.transformInDTO(card));
+			}
+			
+			return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
+						
+		}catch (ErrorMessage me) {
+			throw me;
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@GetMapping(path = {"/card-user-details"})
+	@ResponseBody
+	public ResponseEntity<CardOfUserDetailDTO> cardOfUserDetails(@RequestParam Long cardNumber) throws ErrorMessage, SQLException, Exception {
+		try {
+			if(cardNumber == null || cardNumber == 0)
+				throw new ErrorMessage("Card number invalid.");
+			
+			CardOfUserDetailDTO cardDetailDTO = cardService.cardOfUserDetails(cardNumber);	
+			
+			return new ResponseEntity<CardOfUserDetailDTO>(cardDetailDTO, HttpStatus.OK);
+			
+		}catch(ErrorMessage me){
+			throw me;
+		}catch(SQLException sql) {
+			throw sql;
+		}catch (Exception ex) {
+			throw ex;
+		}
+		
 	}
 	
 }

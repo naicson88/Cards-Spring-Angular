@@ -58,7 +58,6 @@ export class ArchetypeDetailsComponent  implements OnInit  {
   }
    
    mostraImagem(e){
-     console.log(e);
      this.tool.mostrarImgToolTip(e);
    }
 
@@ -68,7 +67,6 @@ export class ArchetypeDetailsComponent  implements OnInit  {
     leftTp;
  
     mostrarImgToolTip(e){
-        console.log("e 2")
         this.leftTp =  e.pageX + 15 + "px";
         this.topTp = + e.pageY + 15 + "px";
    
