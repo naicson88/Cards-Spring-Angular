@@ -20,7 +20,7 @@ public class RelDeckCards {
 	@Column(name = "deck_id")
 	private Integer deckId;
 	@Column(name = "card_numero")
-	private Integer cardNumber;
+	private Long cardNumber;
 	private String card_set_code;
 	private Double card_price;
 	private String card_raridade;
@@ -38,10 +38,10 @@ public class RelDeckCards {
 	public void setDeckId(Integer deck_id) {
 		this.deckId = deck_id;
 	}
-	public Integer getCard_numero() {
+	public Long getCard_numero() {
 		return cardNumber ;
 	}
-	public void setCard_numero(Integer card_numero) {
+	public void setCard_numero(Long card_numero) {
 		this.cardNumber = card_numero;
 	}
 	public String getCard_set_code() {

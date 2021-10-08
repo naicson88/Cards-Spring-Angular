@@ -39,97 +39,46 @@ public class DeckServiceImpl implements DeckDetailService {
 	@Autowired
 	DeckDAO dao;
 	
-	@Autowired
 	DeckRepository deckRepository;
+	
 	@Autowired 
 	DeckUsersRepository deckUserRepository;
+	
 	@Autowired
 	RelDeckCardsRepository relDeckCardsRepository;
-
-	/*
-	 * public Deck deck(Integer deckId) { Query query =
-	 * em.createNativeQuery("SELECT * FROM TAB_DECKS WHERE ID = :deckId",
-	 * Deck.class); Deck deck = (Deck) query.setParameter("deckId",
-	 * deckId).getSingleResult(); return deck; }
-	 */
-
-	@Override
-	public Optional<Deck> findById(Integer Id) throws ErrorMessage {
-		
-		try{
-			if(Id == null || Id == 0)
-				throw new ErrorMessage("The deck id cant by find.");
-			
-			return deckRepository.findById(Id);
-			
-		}catch(ErrorMessage e) {
-			throw e;
-		} catch(Exception ex) {
-			throw ex;
-		}
-		
+	
+	public DeckServiceImpl(DeckRepository deckRepository, RelDeckCardsRepository relDeckCardsRepository) {
+		this.deckRepository = deckRepository;
+		this.relDeckCardsRepository = relDeckCardsRepository;
 	}
 
-	// Traz informações da relação entre o deck e os cards
-//	@Transactional
-//	public List<RelDeckCards> relDeckAndCards(Integer deck_id) {
-//		Query query = em.createNativeQuery(" select * from tab_rel_deck_cards where deck_id= :deck_id",
-//				RelDeckCards.class);
-//		List<RelDeckCards> rel = (List<RelDeckCards>) query.setParameter("deck_id", deck_id).getResultList();
-//
-//		return rel;
-//	}
+	public DeckServiceImpl() {
 	
-	public List<RelDeckCards> relDeckCards(Integer deckId) throws ErrorMessage {
-		
-		try{
+	}
+
+	@Override
+	public Optional<Deck> findById(Integer Id) {		
+			if(Id == null || Id == 0)
+				throw new IllegalArgumentException("Deck Id informed is invalid.");
+			
+			return deckRepository.findById(Id);					
+	}
+
+	//Traz informações da relação entre o deck e os cards
+	@Override
+	public List<RelDeckCards> relDeckCards(Integer deckId) {
+
 			if(deckId == null || deckId == 0)
-				throw new ErrorMessage("The deck id cant by find.");
+				throw new IllegalArgumentException("Deck Id informed is invalid.");
 			
 			List<RelDeckCards> relation = relDeckCardsRepository.findByDeckId(deckId);
 			
 			return relation;
-			
-		}catch(ErrorMessage e) {
-			throw e;
-		} catch(Exception ex) {
-			throw ex;
-		}			
+		
 	}
-	
-	
-	/*
-	 * // Preenche o deck apenas com a relação de card que contenha esse card number
-	 * e
-	 * 
-	 * @Transactional public List<RelDeckCards> relDeckAndCards(Integer deck_id,
-	 * Integer card_number) { Query query = em.createNativeQuery(
-	 * " select * from tab_rel_deck_cards where deck_id= :deck_id AND card_numero = :card_number"
-	 * , RelDeckCards.class); List<RelDeckCards> rel = (List<RelDeckCards>)
-	 * query.setParameter("deck_id", deck_id) .setParameter("card_number",
-	 * card_number).getResultList();
-	 * 
-	 * return rel; }
-	 */
-	
-
-//	@Override
-//	@Transactional
-//	public int InsertOnSets(Integer deck_id, Integer card_numero, String card_raridade, String card_set_code,
-//			String card_price) throws SQLException {
-//
-//		Query query = em.createNativeQuery(
-//				"INSERT INTO tab_rel_deck_cards VALUES (:deck_id,:card_numero,:card_raridade,:card_set_code,:card_price)")
-//				.setParameter("deck_id", deck_id).setParameter("card_numero", card_numero)
-//				.setParameter("card_raridade", card_raridade).setParameter("card_set_code", card_set_code)
-//				.setParameter("card_price", Double.parseDouble(card_price));
-//
-//		return query.executeUpdate();
-//	}
-	
-	
 
 
+	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	public int addSetToUserCollection(Integer originalDeckId) throws SQLException, ErrorMessage, Exception {
 		try {
@@ -197,7 +146,9 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw e;
 		}
 	}
+	
 
+	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	public int ImanegerCardsToUserCollection(Integer originalDeckId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage {
@@ -244,6 +195,7 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw ex;
 		}
 	}
+	
 
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	private int addOrRemoveCardsToUserCollection(Integer deckId, int userId, String flagAddOrRemove)
@@ -307,7 +259,9 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw ex;
 		}
 	}
+	
 
+	@Override
 	public List<RelUserDeckDTO> searchForDecksUserHave(int[] decksIds) throws SQLException, ErrorMessage {
 		try {
 
@@ -340,7 +294,9 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw e;
 		}
 	}
+	
 
+	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	public int addDeck(Deck deck) throws SQLException, ErrorMessage {
 		int id = 0;
@@ -355,6 +311,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		return id;
 	}
 	
+	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	public int addCardsToUserDeck(Integer originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage {
 		try {			
@@ -369,7 +326,9 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw em;
 		}
 	}
+	
 
+	@Override
 	public int removeSetFromUsersCollection(Integer setId) throws SQLException, ErrorMessage, Exception {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

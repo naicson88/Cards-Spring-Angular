@@ -25,8 +25,8 @@ public interface CardDetailService {
 	Card deletar (int id);
 	
 	Card cardDetails(Integer id);
+	
 	List<Deck> cardDecks(Long cardNumero);	
-
 	
 	List<Card> encontrarPorArchetype(int archId);
 	
@@ -37,4 +37,5 @@ public interface CardDetailService {
 	CardOfUserDetailDTO cardOfUserDetails(Long cardNumber) throws ErrorMessage, SQLException, Exception;
 	
 	Card encontrarPorNumero(Long cardNumero);
+	
 }
