@@ -73,6 +73,12 @@ public class DeckController {
 	public ResponseEntity<Page<DeckUsers>> setsOfUser(
 			@PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 			@RequestParam String setType) {
+		
+			switch(setType) {
+				case "UD": setType =  "D"; break;
+				case "UB": setType =  "B"; break;
+				case "UT": setType =  "T"; break;				
+			}
 
 			UserDetailsImpl user = GeneralFunctions.userLogged();
 			

@@ -46,6 +46,7 @@ export class CardServiceService {
   }
 
   public getCardDetails(id:any) {
+    debugger
     return this.http.get<any[]>(this.base_url+`/cards/number/${id}`)
     .pipe(
       catchError(HandleErros.handleError)
