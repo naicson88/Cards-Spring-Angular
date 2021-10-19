@@ -13,7 +13,7 @@ import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.sets.DeckUsers;
 
 @Repository
-public interface DeckRepository extends JpaRepository<Deck, Integer> {
+public interface DeckRepository extends JpaRepository<Deck, Long> {
 
 
 	List<Deck> findByNomeContaining(String nomeDeck);
@@ -21,7 +21,7 @@ public interface DeckRepository extends JpaRepository<Deck, Integer> {
 	Page<Deck> findAllBySetType(String setType, Pageable pageable);
 	Page<Deck> findAllByUserId(int userId, Pageable pageable);
 	
-	List<Deck> findAllByIdIn(int[] ids);
+	List<Deck> findAllByIdIn(Long[] arraySetsIds);
 	
 	List<Deck> findAllByUserId(int userId);
 	

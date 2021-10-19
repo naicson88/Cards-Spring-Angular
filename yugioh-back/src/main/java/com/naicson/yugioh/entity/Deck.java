@@ -21,7 +21,7 @@ public class Deck {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nome;
 	private String imagem;
 	private String nomePortugues;
@@ -52,7 +52,7 @@ public class Deck {
 		
 	}
 	
-	public Deck(Integer id, String nome, String imagem, String nomePortugues, Integer qtd_cards, Integer qtd_comuns,
+	public Deck(Long id, String nome, String imagem, String nomePortugues, Integer qtd_cards, Integer qtd_comuns,
 			Integer qtd_raras, Integer qtd_super_raras, Integer qtd_ulta_raras, Integer qtd_secret_raras,
 			Integer lancamento, List<Card> cards, String card_set_code, Float card_price, String isKonamiDeck) {
 		
@@ -81,11 +81,11 @@ public class Deck {
 		this.rel_deck_cards = rel_deck_cards;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

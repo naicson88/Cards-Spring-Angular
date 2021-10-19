@@ -9,7 +9,7 @@ public class CardAndSetsDTO {
 	private String imagem;
 	
 	private Map<String, String> mapDeckSetcode;
-	private Map<Integer, String> mapSetsOfUser;
+	private Map<Long, String> mapSetsOfUser;
 	
 	public CardAndSetsDTO() {
 		
@@ -47,11 +47,11 @@ public class CardAndSetsDTO {
 		this.mapDeckSetcode = mapDeckSetcode;
 	}
 
-	public Map<Integer, String> getMapSetsOfUser() {
+	public Map<Long, String> getMapSetsOfUser() {
 		return mapSetsOfUser;
 	}
 
-	public void setMapSetsOfUser(Map<Integer, String> mapSetsOfUser) {
+	public void setMapSetsOfUser(Map<Long, String> mapSetsOfUser) {
 		this.mapSetsOfUser = mapSetsOfUser;
 	}
 	

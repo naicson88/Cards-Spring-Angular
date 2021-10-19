@@ -57,7 +57,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	@Override
-	public Optional<Deck> findById(Integer Id) {		
+	public Optional<Deck> findById(Long Id) {		
 			if(Id == null || Id == 0)
 				throw new IllegalArgumentException("Deck Id informed is invalid.");
 			
@@ -66,7 +66,7 @@ public class DeckServiceImpl implements DeckDetailService {
 
 	//Traz informações da relação entre o deck e os cards
 	@Override
-	public List<RelDeckCards> relDeckCards(Integer deckId) {
+	public List<RelDeckCards> relDeckCards(Long deckId) {
 
 			if(deckId == null || deckId == 0)
 				throw new IllegalArgumentException("Deck Id informed is invalid.");
@@ -80,20 +80,15 @@ public class DeckServiceImpl implements DeckDetailService {
 
 	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	public int addSetToUserCollection(Integer originalDeckId) throws SQLException, ErrorMessage, Exception {
+	public int addSetToUserCollection(Long originalDeckId) throws SQLException, ErrorMessage, Exception {
 		try {
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 
 			// Consulta o deck pelo Id
-			Optional<Deck> dk = deckRepository.findById(originalDeckId);
+			Deck deckOrigem = deckRepository.findById(originalDeckId).orElseThrow(() -> new ErrorMessage("No Set found with this code."));			
 			
-			if(dk == null) {
-				throw new ErrorMessage("No Set found with this code.");
-			}
-			
-			Deck deckOrigem = dk.get();
 
 			if (user != null) {
 				
@@ -150,7 +145,7 @@ public class DeckServiceImpl implements DeckDetailService {
 
 	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	public int ImanegerCardsToUserCollection(Integer originalDeckId, String flagAddOrRemove)
+	public int ImanegerCardsToUserCollection(Long originalDeckId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage {
 
 		try {
@@ -198,12 +193,12 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	private int addOrRemoveCardsToUserCollection(Integer deckId, int userId, String flagAddOrRemove)
+	public int addOrRemoveCardsToUserCollection(Long originalDeckId, int userId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage {
 		try {
 			int qtdCardsAddedOrRemoved = 0;
 
-			List<DeckDTO> relDeckAndCards = dao.relationDeckAndCards(deckId);
+			List<DeckDTO> relDeckAndCards = dao.relationDeckAndCards(originalDeckId);
 
 			if (relDeckAndCards != null && relDeckAndCards.size() > 0) {
 				if (flagAddOrRemove.equals("A") || flagAddOrRemove.equals("R")) {
@@ -262,7 +257,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 
 	@Override
-	public List<RelUserDeckDTO> searchForDecksUserHave(int[] decksIds) throws SQLException, ErrorMessage {
+	public List<RelUserDeckDTO> searchForDecksUserHave(Long[] decksIds) throws SQLException, ErrorMessage {
 		try {
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -278,7 +273,7 @@ public class DeckServiceImpl implements DeckDetailService {
 
 			String decksIdsString = "";
 
-			for (int id : decksIds) {
+			for (Long id : decksIds) {
 				decksIdsString += id;
 				decksIdsString += ",";
 			}
@@ -298,8 +293,8 @@ public class DeckServiceImpl implements DeckDetailService {
 
 	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	public int addDeck(Deck deck) throws SQLException, ErrorMessage {
-		int id = 0;
+	public Long addDeck(Deck deck) throws SQLException, ErrorMessage {
+		Long id = 0L;
 
 		if (deck != null) {
 			dao = new DeckDAO();
@@ -313,7 +308,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	public int addCardsToUserDeck(Integer originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage {
+	public int addCardsToUserDeck(Long originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage {
 		try {			
 			if (originalDeckId == null && generatedDeckId == null) {
 				throw new ErrorMessage("Original deck or generated deck is null");
@@ -329,7 +324,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 
 	@Override
-	public int removeSetFromUsersCollection(Integer setId) throws SQLException, ErrorMessage, Exception {
+	public int removeSetFromUsersCollection(Long setId) throws SQLException, ErrorMessage, Exception {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
@@ -361,17 +356,18 @@ public class DeckServiceImpl implements DeckDetailService {
 		
 	}
 
-
-	@Override
-	public List<Card> cardsOfDeck(Integer deckId) {
-		List<Card> listCards = dao.cardsOfDeck(deckId);
-		
-		return listCards;
-	}
-
 	@Override
 	public List<Deck> findByNomeContaining(String nomeDeck) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Card> cardsOfDeck(Long deckId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 }

@@ -1,8 +1,15 @@
 package deck;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,13 +23,20 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.naicson.yugioh.dao.DeckDAO;
+import com.naicson.yugioh.dto.RelUserCardsDTO;
+import com.naicson.yugioh.dto.set.DeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.sets.DeckUsers;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
+import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.DeckDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
+import com.naicson.yugioh.service.UserDetailsImpl;
+import com.naicson.yugioh.util.ErrorMessage;
 
 /*@ExtendWith(SpringExtension.class)
 @DataJpaTest*/
@@ -37,6 +51,10 @@ public class DeckServiceImplTest {
 	DeckRepository deckRepository;
 	@MockBean
 	RelDeckCardsRepository relDeckCardsRepository;
+	@MockBean
+	DeckUsersRepository deckUserRepository;
+	@MockBean
+	DeckDAO dao;
 	
 	@BeforeEach
 	public void setUp() {
@@ -47,7 +65,7 @@ public class DeckServiceImplTest {
 	@Test
 	public void findADeckByTheId() {
 		Deck deck = this.generateValidDeck();
-		deck.setId(1);
+		deck.setId(1L);
 		
 		Mockito.when(deckRepository.findById(deck.getId())).thenReturn(Optional.of(deck));
 		
@@ -63,11 +81,11 @@ public class DeckServiceImplTest {
 		
 		List<RelDeckCards> rels = new ArrayList<>();		
 		RelDeckCards rel = this.generateRelDeckCards();	
-		rel.setId(1);
+		rel.setId(1L);
 		rels.add(rel);
 		
 		Deck deck = this.generateValidDeck();
-		deck.setId(1);
+		deck.setId(1L);
 		
 		Mockito.when(relDeckCardsRepository.findByDeckId(deck.getId())).thenReturn(rels);
 		
@@ -80,9 +98,129 @@ public class DeckServiceImplTest {
 		
 	}
 
+	@Test
+	public void addSetToUsersCollection() throws SQLException, ErrorMessage, Exception {
+		DeckServiceImpl serviceMock = mock(DeckServiceImpl.class);
+		
+		Long originalDeckId = 1L;
+		
+		Deck deckOrigem = this.generateValidDeck();
+		deckOrigem.setId(1L);
+		
+		DeckUsers newDeck = new DeckUsers();
+		newDeck.setId(2L);
+		
+		DeckUsers generatedDeckId = new DeckUsers();
+		generatedDeckId.setId(2L);
+		;		
+		UserDetailsImpl user = this.generateValidUser();
+		
+		Mockito.when(deckRepository.findById(originalDeckId)).thenReturn(Optional.of(deckOrigem));
+		Mockito.when(deckUserRepository.save(newDeck)).thenReturn(generatedDeckId);
+		Mockito.when(serviceMock.addCardsToUserDeck(originalDeckId, generatedDeckId.getId())).thenReturn(1);
+		Mockito.when(serviceMock.addOrRemoveCardsToUserCollection(originalDeckId, user.getId(), "A")).thenReturn(40);
+		
+		int qtdCardsAdded = deckService.addSetToUserCollection(originalDeckId);
+		
+		assertThat(qtdCardsAdded == 40);
+		
+	}
+	
+	@Test
+	public void addingCardToUserCollection() throws SQLException, ErrorMessage {
+		DeckServiceImpl serviceMock = mock(DeckServiceImpl.class);	
+		
+		
+		UserDetailsImpl user = this.generateValidUser();
+		Long originalDeckid = 1L;
+		int itemAtualizado = 1;
+		
+		Mockito.when(dao.verifyIfUserAleadyHasTheDeck(originalDeckid, user.getId())).thenReturn(0);
+		Mockito.when(dao.addDeckToUserCollection(originalDeckid, user.getId())).thenReturn(itemAtualizado);
+		Mockito.when(serviceMock.addOrRemoveCardsToUserCollection(originalDeckid, user.getId(), "A")).thenReturn(1);
+		
+		
+		int retorno = deckService.ImanegerCardsToUserCollection(originalDeckid, "A");
+		
+		assertThat(retorno >= 1);
+		
+	}
+	
+	@Test
+	public void validUserDontHaveDeckAndFlagAreRemove() throws SQLException, ErrorMessage {
+		
+		UserDetailsImpl user = this.generateValidUser();
+		Long originalDeckid = 1L;
+		
+		Mockito.when(dao.verifyIfUserAleadyHasTheDeck(originalDeckid, user.getId())).thenReturn(0);
+		
+		int retorno = deckService.ImanegerCardsToUserCollection(originalDeckid, "R");
+		
+		assertThat(retorno == 0);		
+		
+	}
+	
+	@Test
+	public void addCardToUserCollectionHavingCardFalse() throws SQLException, ErrorMessage {
+		DeckServiceImpl service = new DeckServiceImpl();
+		
+		Long originalDeckId = 1L;
+		UserDetailsImpl user = this.generateValidUser();
+		
+		List<DeckDTO> listDeckDTO = new ArrayList<>();
+		
+		DeckDTO deckOne = this.generateValidDeckDTO(1);		
+		DeckDTO deckTwo = this.generateValidDeckDTO(2);
+		
+		listDeckDTO.add(deckOne);
+		listDeckDTO.add(deckTwo);
+		
+		Mockito.when(dao.relationDeckAndCards(originalDeckId)).thenReturn(listDeckDTO);
+		Mockito.when(dao.verifyIfUserAleadyHasTheCard(user.getId(), anyString())).thenReturn(false);
+		Mockito.when(dao.insertCardToUserCollection(any())).thenReturn(1);
+		
+		int qtdCardsAddedOrRemoved = service.addOrRemoveCardsToUserCollection(originalDeckId, user.getId(), "A");
+		
+		assertThat(qtdCardsAddedOrRemoved == 2);
+		
+	}
+	
+	@Test
+	public void addCardToUserCollectionHavingCardTrue() throws SQLException, ErrorMessage {
+		DeckServiceImpl service = new DeckServiceImpl();
+		
+		Long originalDeckId = 1L;
+		UserDetailsImpl user = this.generateValidUser();
+		
+		List<DeckDTO> listDeckDTO = new ArrayList<>();
+		
+		DeckDTO deckOne = this.generateValidDeckDTO(1);		
+		DeckDTO deckTwo = this.generateValidDeckDTO(2);
+		
+		listDeckDTO.add(deckOne);
+		listDeckDTO.add(deckTwo);
+		
+		Mockito.when(dao.relationDeckAndCards(originalDeckId)).thenReturn(listDeckDTO);
+		Mockito.when(dao.verifyIfUserAleadyHasTheCard(user.getId(), anyString())).thenReturn(true);
+		Mockito.when(dao.changeQuantityOfEspecifCardUserHas(user.getId(), anyString(), "A")).thenReturn(1);
+		
+		int qtdCardsAddedOrRemoved = service.addOrRemoveCardsToUserCollection(originalDeckId, user.getId(), "A");
+		
+		assertThat(qtdCardsAddedOrRemoved == 2);
+		
+	}
 	
 	
-	
+	private DeckDTO generateValidDeckDTO(Integer id) {
+		DeckDTO dto = new DeckDTO();
+		dto.setId(id);
+		dto.setCard_numero(123456);
+		dto.setCard_price(1.99);
+		dto.setCard_raridade("Rare");
+		dto.setCard_set_code("000-yyyy");
+		
+		return dto;
+	}
 	
 	private Deck generateValidDeck() {
 		
@@ -129,9 +267,19 @@ public class DeckServiceImplTest {
 		relDeckCards.setCard_price(90.58);
 		relDeckCards.setCard_raridade("R");
 		relDeckCards.setCard_set_code("YYYY-1111");
-		relDeckCards.setDeckId(1);
+		relDeckCards.setDeckId(1L);
 		relDeckCards.setDt_criacao(new Date());
 		
 		return relDeckCards;
+	}
+	
+	private UserDetailsImpl generateValidUser() {
+		UserDetailsImpl user = new UserDetailsImpl();
+		user.setEmail("usertest@hotmail.com");
+		user.setId(1);
+		user.setPassword("123456");
+		user.setUsername("Alan Naicson");
+		
+		return user;
 	}
 }

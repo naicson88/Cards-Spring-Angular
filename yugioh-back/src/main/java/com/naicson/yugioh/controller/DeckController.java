@@ -93,7 +93,7 @@ public class DeckController {
 	}
 
 	@GetMapping(path = { "/{id}" })
-	public Deck deckAndCards(@PathVariable("id") Integer id) throws ErrorMessage {
+	public Deck deckAndCards(@PathVariable("id") Long id) throws ErrorMessage {
 		List<Card> cardList = deckService.cardsOfDeck(id);
 	//	List<RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
 		List<RelDeckCards> relDeckCards = deckService.relDeckCards(id);
@@ -110,7 +110,7 @@ public class DeckController {
 	}
 
 	@GetMapping(path = { "/add-deck-to-user-collection/{deckId}" })
-	public int addSetToUserCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {
+	public int addSetToUserCollection(@PathVariable("deckId") Long deckId) throws Exception, ErrorMessage {
 		if (deckId != null && deckId > 0) {
 			return deckService.addSetToUserCollection(deckId);
 		} else {
@@ -119,7 +119,7 @@ public class DeckController {
 	}
 
 	@GetMapping(path = { "/remove-set-to-user-collection/{deckId}" })
-	public int removeSetFromUsersCollection(@PathVariable("deckId") Integer deckId) throws Exception, ErrorMessage {
+	public int removeSetFromUsersCollection(@PathVariable("deckId") Long deckId) throws Exception, ErrorMessage {
 		if (deckId != null && deckId > 0) {
 			return deckService.removeSetFromUsersCollection(deckId);
 		} else {
@@ -128,7 +128,7 @@ public class DeckController {
 	}
 
 	@GetMapping("/rel-user-decks")
-	public List<RelUserDeckDTO> searchForDecksUserHave(@RequestParam int[] decksIds) throws SQLException, ErrorMessage {
+	public List<RelUserDeckDTO> searchForDecksUserHave(@RequestParam Long[] decksIds) throws SQLException, ErrorMessage {
 		List<RelUserDeckDTO> rel = null;
 
 		if (decksIds != null && decksIds.length > 0) {
