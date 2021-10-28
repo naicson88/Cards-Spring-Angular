@@ -47,9 +47,11 @@ public class DeckServiceImpl implements DeckDetailService {
 	@Autowired
 	RelDeckCardsRepository relDeckCardsRepository;
 	
-	public DeckServiceImpl(DeckRepository deckRepository, RelDeckCardsRepository relDeckCardsRepository) {
+	public DeckServiceImpl(DeckRepository deckRepository, RelDeckCardsRepository relDeckCardsRepository, DeckDAO dao, DeckUsersRepository deckUserRepo) {
 		this.deckRepository = deckRepository;
 		this.relDeckCardsRepository = relDeckCardsRepository;
+		this.dao = dao;
+		this.deckUserRepository = deckUserRepo;
 	}
 
 	public DeckServiceImpl() {
@@ -191,7 +193,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		}
 	}
 	
-
+	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
 	public int addOrRemoveCardsToUserCollection(Long originalDeckId, int userId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage {

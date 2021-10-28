@@ -36,4 +36,9 @@ public interface DeckDetailService {
 	int addCardsToUserDeck(Long originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage;
 
 	int removeSetFromUsersCollection(Long setId) throws SQLException, ErrorMessage, Exception;
+	
+	int addOrRemoveCardsToUserCollection(Long originalDeckId, int userId, String flagAddOrRemove)
+			throws SQLException, ErrorMessage;
+	
+	
 }
