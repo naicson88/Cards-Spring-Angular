@@ -6,7 +6,6 @@ pipeline {
 			steps{
 				withMaven(maven: 'Maven3.8.3'){
 					sh 'mvn clean compile'
-					sh 'mvn -f ("C://Users//USER//Documents//workspace-spring-tool-suite-4-4.12.0.RELEASE//Cards-Spring-Angular//yugioh-back//pom.xml")'
 					
 				}
 			}
