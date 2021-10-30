@@ -19,21 +19,26 @@ public interface DeckDetailService {
 	
 	List<Deck> findByNomeContaining(String nomeDeck);
 	
-	List<Card> cardsOfDeck(Integer deckId);
+	List<Card> cardsOfDeck(Long deckId);
 	 
-	 Optional<Deck> findById(Integer Id);
+	 Optional<Deck> findById(Long Id);
 
-	List<RelDeckCards> relDeckCards(Integer deckId);
+	List<RelDeckCards> relDeckCards(Long deckId);
 
-	int addSetToUserCollection(Integer originalDeckId) throws SQLException, ErrorMessage, Exception;
+	int addSetToUserCollection(Long originalDeckId) throws SQLException, ErrorMessage, Exception;
 
-	int ImanegerCardsToUserCollection(Integer originalDeckId, String flagAddOrRemove) throws SQLException, ErrorMessage;
+	int ImanegerCardsToUserCollection(Long originalDeckId, String flagAddOrRemove) throws SQLException, ErrorMessage;
 
-	List<RelUserDeckDTO> searchForDecksUserHave(int[] decksIds) throws SQLException, ErrorMessage;
+	List<RelUserDeckDTO> searchForDecksUserHave(Long[] decksIds) throws SQLException, ErrorMessage;
 
-	int addDeck(Deck deck) throws SQLException, ErrorMessage;
+	Long addDeck(Deck deck) throws SQLException, ErrorMessage;
 
-	int addCardsToUserDeck(Integer originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage;
+	int addCardsToUserDeck(Long originalDeckId, Long generatedDeckId) throws SQLException, Exception, ErrorMessage;
 
-	int removeSetFromUsersCollection(Integer setId) throws SQLException, ErrorMessage, Exception;
+	int removeSetFromUsersCollection(Long setId) throws SQLException, ErrorMessage, Exception;
+	
+	int addOrRemoveCardsToUserCollection(Long originalDeckId, int userId, String flagAddOrRemove)
+			throws SQLException, ErrorMessage;
+	
+	
 }

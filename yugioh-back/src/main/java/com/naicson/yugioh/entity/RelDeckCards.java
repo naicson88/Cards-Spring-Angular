@@ -16,9 +16,9 @@ public class RelDeckCards {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "deck_id")
-	private Integer deckId;
+	private Long deckId;
 	@Column(name = "card_numero")
 	private Long cardNumber;
 	private String card_set_code;
@@ -26,16 +26,16 @@ public class RelDeckCards {
 	private String card_raridade;
 	private Date dt_criacao;
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getDeckId() {
+	public Long getDeckId() {
 		return deckId;
 	}
-	public void setDeckId(Integer deck_id) {
+	public void setDeckId(Long deck_id) {
 		this.deckId = deck_id;
 	}
 	public Long getCard_numero() {

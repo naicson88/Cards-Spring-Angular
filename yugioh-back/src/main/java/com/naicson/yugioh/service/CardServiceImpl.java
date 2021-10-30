@@ -47,6 +47,11 @@ public class CardServiceImpl implements CardDetailService {
 	CardOfUserDetailDTO cardUserDTO;
 	
 	
+	public CardServiceImpl(CardRepository cardRepository, CardDAO dao) {
+		this.cardRepository = cardRepository;
+		this.dao = dao;
+	}
+
 	//Trazer o card para mostrar os detalhes;
 	public Card cardDetails(Integer id) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE ID = :deckId", Card.class);
@@ -112,7 +117,7 @@ public class CardServiceImpl implements CardDetailService {
 		if(rels == null)
 			throw new ErrorMessage(" There is no deck associate with this card. ");
 		
-		int[] arraySetsIds = new int[rels.size()];
+		Long[] arraySetsIds = new Long[rels.size()];
 		//Coloca em um array pra poder buscar os decks com esse id
 		for(int i = 0; i < rels.size(); i++) {
 			arraySetsIds[i] = rels.get(i).getDeckId();
@@ -135,7 +140,7 @@ public class CardServiceImpl implements CardDetailService {
 		UserDetailsImpl user = GeneralFunctions.userLogged();
 		List<Deck> usersSets = deckRepository.findAllByUserId(user.getId());
 		
-		Map<Integer, String> mapUsersSets = new HashMap<>();
+		Map<Long, String> mapUsersSets = new HashMap<>();
 		
 		if(usersSets != null && usersSets.size() > 0) {
 			for(Deck userSet: usersSets) {

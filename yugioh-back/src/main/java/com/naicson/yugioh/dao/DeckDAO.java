@@ -32,12 +32,21 @@ public class DeckDAO {
 	 
 	 @Autowired
 	 DeckRepository deckRepository;
-	
+	 
+	 
+	public DeckDAO() {
+		
+	}
+	 
+	 public DeckDAO(EntityManager em) {
+		 this.em = em;
+		
+	 }
 
-	public int addDeckToUserCollection(Integer deckId, int userId) throws SQLException {
+	public int addDeckToUserCollection(Long originalDeckId, int userId) throws SQLException {
 		Query query = em.createNativeQuery("INSERT INTO TAB_REL_USER_DECK (user_id, deck_id, qtd) values(:user_id, :deck_id, 1)")
 				.setParameter("user_id", userId)
-				.setParameter("deck_id", deckId);
+				.setParameter("deck_id", originalDeckId);
 		
 		BigInteger inserted = (BigInteger) query.getSingleResult();
 		int id = (int) inserted.longValue();
@@ -46,7 +55,7 @@ public class DeckDAO {
 		
 	}
 	
-	public int addDeck(Deck deck) throws SQLException, ErrorMessage {
+	public Long addDeck(Deck deck) throws SQLException, ErrorMessage {
 		
 		if(deck == null) {
 			throw new ErrorMessage("Deck is null.");
@@ -59,12 +68,12 @@ public class DeckDAO {
 			
 	}
 	
-	public List<DeckDTO> relationDeckAndCards(Integer deckId) throws SQLException {
+	public List<DeckDTO> relationDeckAndCards(Long originalDeckId) throws SQLException {
 		
 		Query query = em.createNativeQuery("SELECT * FROM tab_rel_deck_cards WHERE DECK_ID = :deckId", DeckDTO.class)
-				.setParameter("deckId", deckId);
+				.setParameter("deckId", originalDeckId);
 		
-		List<DeckDTO> relationDeckAndCards = (List<DeckDTO>) query.setParameter("deckId", deckId).getResultList();
+		List<DeckDTO> relationDeckAndCards = (List<DeckDTO>) query.setParameter("deckId", originalDeckId).getResultList();
 		return relationDeckAndCards;			
 	}
 	
@@ -82,11 +91,11 @@ public class DeckDAO {
 			return false;	
 	}
 	
-	public int verifyIfUserAleadyHasTheDeck(Integer deckId, int userId) {
+	public int verifyIfUserAleadyHasTheDeck(Long originalDeckId, int userId) {
 		Integer has = null;
 		Query query = em.createNativeQuery(" SELECT qtd FROM tab_rel_user_deck WHERE deck_id = :deckId AND USER_ID = :userId ")
 				.setParameter("userId", userId)
-				.setParameter("deckId", deckId);
+				.setParameter("deckId", originalDeckId);
 		
 		try {
 			//Quando ele não acha nada, acusa um exception, este try catch é só pra ignorar. 
@@ -138,20 +147,20 @@ public class DeckDAO {
 		return query.executeUpdate();
 	}
 
-	public int changeQuantitySpecificDeckUserHas(Integer deckId, int userId, String flagAddOrRemove) {
+	public int changeQuantitySpecificDeckUserHas(Long originalDeckId, int userId, String flagAddOrRemove) {
 	
 		int changed;
 		
 		if(flagAddOrRemove.equals("A")) {
 			Query query = em.createNativeQuery(" UPDATE tab_rel_user_deck set qtd = qtd + 1 WHERE deck_id = :deckId AND USER_ID = :userId ")
-					.setParameter("deckId", deckId)
+					.setParameter("deckId", originalDeckId)
 					.setParameter("userId", userId);
 			
 			changed = query.executeUpdate();
 			
 		} else {		
 			Query query = em.createNativeQuery(" UPDATE tab_rel_user_deck set qtd = qtd - 1 WHERE deck_id = :deckId AND USER_ID = :userId ")
-					.setParameter("deckId", deckId)
+					.setParameter("deckId", originalDeckId)
 					.setParameter("userId", userId);
 			
 			changed = query.executeUpdate();
@@ -175,12 +184,12 @@ public class DeckDAO {
 		return relList;
 	}
 
-	public int addCardsToDeck(Integer generatedDeckId, Long originalDeckId) {
+	public int addCardsToDeck(Long originalDeckId2, Long originalDeckId) {
 		int result = 0;
 		
-		if(generatedDeckId != null && originalDeckId != null) {
+		if(originalDeckId2 != null && originalDeckId != null) {
 			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECKUSER_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
-											  " SELECT " + generatedDeckId + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
+											  " SELECT " + originalDeckId2 + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
 											  " where deck_id = " + originalDeckId  );
 			
 			 result = query.executeUpdate();
@@ -190,7 +199,7 @@ public class DeckDAO {
 	}
 
 	
-	public void removeCardsFromSet(Integer setId) throws SQLException, Exception, ErrorMessage {
+	public void removeCardsFromSet(Long setId) throws SQLException, Exception, ErrorMessage {
 		
 		if(setId == null || setId == 0) {
 			throw new ErrorMessage("Set id was not informed.");

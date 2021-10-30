@@ -14,5 +14,7 @@ public class YugiohApplication {
 		SpringApplication.run(YugiohApplication.class, args);
 
 	}
+	
+	
 
 }
