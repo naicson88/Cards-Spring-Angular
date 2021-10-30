@@ -32,7 +32,16 @@ public class DeckDAO {
 	 
 	 @Autowired
 	 DeckRepository deckRepository;
-	
+	 
+	 
+	public DeckDAO() {
+		
+	}
+	 
+	 public DeckDAO(EntityManager em) {
+		 this.em = em;
+		
+	 }
 
 	public int addDeckToUserCollection(Long originalDeckId, int userId) throws SQLException {
 		Query query = em.createNativeQuery("INSERT INTO TAB_REL_USER_DECK (user_id, deck_id, qtd) values(:user_id, :deck_id, 1)")

@@ -47,6 +47,11 @@ public class CardServiceImpl implements CardDetailService {
 	CardOfUserDetailDTO cardUserDTO;
 	
 	
+	public CardServiceImpl(CardRepository cardRepository, CardDAO dao) {
+		this.cardRepository = cardRepository;
+		this.dao = dao;
+	}
+
 	//Trazer o card para mostrar os detalhes;
 	public Card cardDetails(Integer id) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE ID = :deckId", Card.class);
