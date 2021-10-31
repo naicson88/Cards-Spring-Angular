@@ -39,6 +39,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	@Autowired
 	DeckDAO dao;
 	
+	@Autowired
 	DeckRepository deckRepository;
 	
 	@Autowired 
@@ -59,11 +60,13 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	@Override
-	public Optional<Deck> findById(Long Id) {		
+	public Deck findById(Long Id) throws Exception {		
 			if(Id == null || Id == 0)
 				throw new IllegalArgumentException("Deck Id informed is invalid.");
-			
-			return deckRepository.findById(Id);					
+					
+			 Deck deck =  deckRepository.findById(Id).orElseThrow(() -> new Exception("Deck not found."));	
+			 
+			 return deck;
 	}
 
 	//Traz informações da relação entre o deck e os cards
@@ -365,9 +368,14 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	@Override
-	public List<Card> cardsOfDeck(Long deckId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Card> cardsOfDeck(Long deckId) throws ErrorMessage {
+		
+		List<Card> cards = dao.cardsOfDeck(deckId);
+		
+		if(cards == null || cards.size() == 0)
+			throw new ErrorMessage("Can't find cards of this Set.");
+		
+		return cards;
 	}
 
 

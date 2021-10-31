@@ -93,15 +93,15 @@ public class DeckController {
 	}
 
 	@GetMapping(path = { "/{id}" })
-	public Deck deckAndCards(@PathVariable("id") Long id) throws ErrorMessage {
+	public Deck deckAndCards(@PathVariable("id") Long id) throws Exception {
 		List<Card> cardList = deckService.cardsOfDeck(id);
 	//	List<RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
 		List<RelDeckCards> relDeckCards = deckService.relDeckCards(id);
-		Optional<Deck> deck = deckService.findById(id);
-		deck.get().setCards(cardList);
-		deck.get().setRel_deck_cards(relDeckCards);
+		Deck deck = deckService.findById(id);
+		deck.setCards(cardList);
+		deck.setRel_deck_cards(relDeckCards);
 
-		return deck.get();
+		return deck;
 	}
 
 	@GetMapping("/por-nome")

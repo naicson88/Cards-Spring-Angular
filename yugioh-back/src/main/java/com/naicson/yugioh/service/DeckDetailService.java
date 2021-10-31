@@ -19,9 +19,9 @@ public interface DeckDetailService {
 	
 	List<Deck> findByNomeContaining(String nomeDeck);
 	
-	List<Card> cardsOfDeck(Long deckId);
+	List<Card> cardsOfDeck(Long deckId) throws ErrorMessage;
 	 
-	 Optional<Deck> findById(Long Id);
+	Deck findById(Long Id) throws Exception;
 
 	List<RelDeckCards> relDeckCards(Long deckId);
 
