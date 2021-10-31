@@ -192,10 +192,15 @@ public class CardController {
 			
 			Page<Card> list = cardRepository.getByGenericType(pageable, genericType, user.getId());
 			
-			for(Card card : list.getContent()) {
-				if(list != null) 
+//			for(Card card : list.getContent()) {
+//				if(list != null) 
+//					dtoList.add(CardsSearchDTO.transformInDTO(card));
+//			}
+			
+			list.stream().forEach(card -> {
+				if(card != null)
 					dtoList.add(CardsSearchDTO.transformInDTO(card));
-			}
+			} );
 			
 			return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
 						

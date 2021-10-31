@@ -65,13 +65,13 @@ public class DeckServiceImplTest {
 	
 	
 	@Test
-	public void findADeckByTheId() {
+	public void findADeckByTheId() throws Exception {
 		Deck deck = this.generateValidDeck();
 		deck.setId(1L);
 		
 		Mockito.when(deckRepository.findById(deck.getId())).thenReturn(Optional.of(deck));
 		
-		Deck deckFound = deckService.findById(deck.getId()).get();
+		Deck deckFound = deckService.findById(deck.getId());
 		
 		assertThat(deckFound).isNotNull();
 		assertThat(deck.getId()).isEqualTo(deck.getId());

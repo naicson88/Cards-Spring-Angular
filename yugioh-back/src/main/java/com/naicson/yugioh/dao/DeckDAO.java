@@ -212,7 +212,7 @@ public class DeckDAO {
 	
 	// Traz informações completas dos cards contidos num deck
 	@Transactional
-	public List<Card> cardsOfDeck(Integer deckId) {
+	public List<Card> cardsOfDeck(Long deckId) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n"
 				+ "(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + "order by case\r\n"
 				+ "when categoria LIKE 'link monster' then 1\r\n" + "when categoria like 'XYZ Monster' then 2\r\n"
