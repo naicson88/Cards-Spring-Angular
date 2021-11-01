@@ -39,7 +39,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 			nativeQuery = true)
 	Page<Card> findCardsByTypeAndUser(String type, int userId, Pageable page);
 	
-	@Query(value = " SELECT DISTINCT * FROM tab_cards CARDS "
+	@Query(value = " SELECT DISTINCT * FROM yugioh.tab_cards CARDS "
 			+ " INNER JOIN TAB_REL_DECKUSERS_CARDS UCARDS ON UCARDS.CARD_NUMERO = CARDS.NUMERO "
 			+ " INNER JOIN TAB_DECK_USERS DUSERS ON DUSERS.ID = UCARDS.DECKUSER_ID "
 			+ " WHERE CARDS.GENERIC_TYPE = :genericType AND DUSERS.USER_ID = :userId "

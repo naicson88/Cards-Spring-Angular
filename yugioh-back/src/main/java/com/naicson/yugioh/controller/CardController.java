@@ -190,12 +190,7 @@ public class CardController {
 			
 			UserDetailsImpl user = GeneralFunctions.userLogged(); 
 			
-			Page<Card> list = cardRepository.getByGenericType(pageable, genericType, user.getId());
-			
-//			for(Card card : list.getContent()) {
-//				if(list != null) 
-//					dtoList.add(CardsSearchDTO.transformInDTO(card));
-//			}
+			Page<Card> list = cardService.getByGenericType(pageable, genericType, user.getId());
 			
 			list.stream().forEach(card -> {
 				if(card != null)

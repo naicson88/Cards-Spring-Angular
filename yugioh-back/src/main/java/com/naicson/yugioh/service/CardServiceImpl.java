@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,8 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -47,9 +50,11 @@ public class CardServiceImpl implements CardDetailService {
 	CardOfUserDetailDTO cardUserDTO;
 	
 	
-	public CardServiceImpl(CardRepository cardRepository, CardDAO dao) {
+	public CardServiceImpl(CardRepository cardRepository, CardDAO dao, RelDeckCardsRepository relDeckCardsRepository, DeckRepository deckRepository) {
 		this.cardRepository = cardRepository;
 		this.dao = dao;
+		this.relDeckCardsRepository = relDeckCardsRepository;
+		this.deckRepository = deckRepository;
 	}
 
 	//Trazer o card para mostrar os detalhes;
@@ -109,13 +114,13 @@ public class CardServiceImpl implements CardDetailService {
 		Card card = cardRepository.findByNumero(cardNumber.longValue());
 		
 		if(card == null)
-			throw new ErrorMessage("It was not possible find a card to add to user's collection ");
+			throw new NoSuchElementException("It was not possible find a card to add to user's collection ");
 		
 		//Procura os decks e os set codes desse card
 		List<RelDeckCards> rels = relDeckCardsRepository.findCardByNumberAndIsKonamiDeck(cardNumber);
 		
 		if(rels == null)
-			throw new ErrorMessage(" There is no deck associate with this card. ");
+			throw new NoSuchElementException(" There is no deck associate with this card. ");
 		
 		Long[] arraySetsIds = new Long[rels.size()];
 		//Coloca em um array pra poder buscar os decks com esse id
@@ -126,7 +131,7 @@ public class CardServiceImpl implements CardDetailService {
 		List<Deck> sets = deckRepository.findAllByIdIn(arraySetsIds);
 		
 			if(sets == null)
-				throw new ErrorMessage(" Zero deck was found.");
+				throw new NoSuchElementException(" Zero deck was found.");
 			
 		Map <String, String> mapImgSetcode = new HashMap<>();
 		
@@ -261,6 +266,21 @@ public class CardServiceImpl implements CardDetailService {
 		Card card = cardRepository.findByNumero(cardNumero);
 		
 		return card;
+	}
+
+	@Override
+	public Page<Card> getByGenericType(Pageable page, String genericType, int userId) {
+		
+		if(page == null || genericType == null || userId == 0)
+			throw new IllegalArgumentException("Page, Generic Type or User Id is invalid.");
+		
+		Page<Card> list = cardRepository.getByGenericType(page, genericType, userId);
+		
+		if( list == null || list.isEmpty())
+			throw new NoSuchElementException("No elements found with this parameters");
+		
+		return list;		
+		
 	}
 	
 	
