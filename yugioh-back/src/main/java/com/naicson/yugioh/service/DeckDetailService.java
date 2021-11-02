@@ -12,7 +12,7 @@ import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
-import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
 public interface DeckDetailService {

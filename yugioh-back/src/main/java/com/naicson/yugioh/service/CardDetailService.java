@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
+import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
-import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.CardSpecification;
+import com.naicson.yugioh.util.SearchCriteria;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
 public interface CardDetailService {
@@ -43,6 +46,12 @@ public interface CardDetailService {
 	
 	Card encontrarPorNumero(Long cardNumero);
 	
-	Page<Card> getByGenericType(Pageable page, String getByGenericType, int userId);
+	List<CardsSearchDTO> getByGenericType(Pageable page, String getByGenericType, int userId);
+	
+	List<Card> findAll(CardSpecification spec);
+
+	List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join);
+
+	List<CardsSearchDTO> cardSearchByNameUserCollection(String cardName, Pageable pageable);
 	
 }

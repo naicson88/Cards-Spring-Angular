@@ -36,8 +36,8 @@ import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.DeckDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
-import com.naicson.yugioh.util.ErrorMessage;
 import com.naicson.yugioh.util.ValidObjects;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 
 @ActiveProfiles("test")

@@ -36,8 +36,8 @@ import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.CardServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
-import com.naicson.yugioh.util.ErrorMessage;
 import com.naicson.yugioh.util.ValidObjects;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)

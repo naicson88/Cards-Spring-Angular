@@ -2,10 +2,12 @@ package com.naicson.yugioh.service;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -23,6 +25,7 @@ import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
+import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
@@ -30,8 +33,10 @@ import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
-import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.GeneralFunctions;
+import com.naicson.yugioh.util.SearchCriteria;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
 public class CardServiceImpl implements CardDetailService {
@@ -251,8 +256,6 @@ public class CardServiceImpl implements CardDetailService {
 	
 			}
 			
-			
-			
 			return cardUserDTO;
 			
 		}catch (Exception ex) {
@@ -269,7 +272,7 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public Page<Card> getByGenericType(Pageable page, String genericType, int userId) {
+	public List<CardsSearchDTO> getByGenericType(Pageable page, String genericType, int userId) {
 		
 		if(page == null || genericType == null || userId == 0)
 			throw new IllegalArgumentException("Page, Generic Type or User Id is invalid.");
@@ -279,9 +282,64 @@ public class CardServiceImpl implements CardDetailService {
 		if( list == null || list.isEmpty())
 			throw new NoSuchElementException("No elements found with this parameters");
 		
-		return list;		
+		List<CardsSearchDTO> dtoList = list.stream()
+				.filter(card -> card != null)
+				.map(card -> CardsSearchDTO.transformInDTO(card))
+				.collect(Collectors.toList());
+				
+		return dtoList;		
 		
 	}
+
+	@Override
+	public List<Card> findAll(CardSpecification spec) {
+		if(spec == null )
+			throw new IllegalArgumentException("No specification for card search");
+		
+		List<Card> list = cardRepository.findAll(spec);
+		
+		return list;
+	}
 	
+	// Testar quando o list for null
+	@Override
+	public List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join) {
+		
+		CardSpecification spec = new CardSpecification();
+		
+		 criterias.stream().forEach(criterio -> 
+			spec.add( new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue())));
+		 			
+		List<Card> list = this.findAll(spec);
+		
+		List<CardsSearchDTO> dtoList = list.stream()
+				.filter(card -> card != null)
+				.map(card -> CardsSearchDTO.transformInDTO(card))
+				.collect(Collectors.toList());
+		
+		return dtoList;
+			
+	}
+	
+	@Override
+	public List<CardsSearchDTO> cardSearchByNameUserCollection(String cardName, Pageable pageable) {
+		
+		if(cardName == null || cardName.isEmpty())
+			throw new IllegalArgumentException("Card name invalid for search");
+		
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		
+		Page<Card> cardsList = cardRepository.cardSearchByNameUserCollection(cardName, user.getId(), pageable);
+		
+		if( cardsList == null || cardsList.isEmpty())
+			throw new NoSuchElementException("No elements found with this parameters");
+		
+		List<CardsSearchDTO> dtoList = cardsList.stream()
+				.filter(card -> card != null)
+				.map(card -> CardsSearchDTO.transformInDTO(card))
+				.collect(Collectors.toList());
+		
+		return dtoList;
+	}
 	
 }

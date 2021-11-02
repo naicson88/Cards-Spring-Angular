@@ -46,6 +46,7 @@ public class Card extends Sets {
 	private String qtd_link;
 	@Transient
 	private Sets sets;
+	@Column(name = "generic_type")
 	private String genericType;
 	@Column(name = "cod_archetype")
 	private int codArchetype;

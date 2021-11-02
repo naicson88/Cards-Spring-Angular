@@ -91,7 +91,7 @@ public class CardSpecification implements Specification<Card> {
                 predicates.add(builder.not(root.get(criteria.getKey())).in(criteria.getValue()));
             }
         }
-
+		
         return builder.and(predicates.toArray(new Predicate[0]));
     }
 			

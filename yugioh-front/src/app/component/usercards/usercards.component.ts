@@ -6,6 +6,7 @@ import { CardServiceService } from 'src/app/service/card-service/card-service.se
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import * as _ from 'lodash'
 import { BehaviorSubject } from 'rxjs';
+import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class UsercardsComponent implements OnInit {
   arrCardsDetails:[] = [];
 
   genericTypeAtual: string = 'MONSTER'
+
+  cardname = '';
 
   ngOnInit() {
     this.map();
@@ -159,6 +162,39 @@ export class UsercardsComponent implements OnInit {
 
       
     }
+
+    searchCardsByName(){
+        if(this.cardname != null && this.cardname != ""){
+          this.service.searchCardsByName(this.cardname).subscribe(data=>{
+            console.log(data)
+            if(data != null )
+              this.arrCards = data;
+            else
+              alert("No card found")
+          })
+
+        }else {
+          alert("Fill a card name")
+          return false;
+        }
+    }
+
+    storedCardId(event){
+      /*  const id = event.target.name;
+        console.log(id);
+        localStorage.setItem("idCard", id);*/
+    
+        const cardNumber = event.target.name;
+        if(cardNumber != null && cardNumber != ""){
+          console.log(cardNumber)
+          this.service.setCardNumber(cardNumber);
+        
+        } else {
+           console.log("Unable to consult this card, try again later.");
+           return false;
+        }
+       
+      }
 }
 
 

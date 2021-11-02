@@ -69,14 +69,29 @@
       </ul>
       
       <div class="tab-content" id="myTabContent">
-         <div id="filter-div" style="border: solid blue; margin-top: 20px;"> 
-             filter div
+
+         <div id="filter-div" style=" margin-top: 20px;"> 
+          <!--Filter-->
+            <div class="wrap">
+              <div class="search">
+                <input type="text" class="searchTerm" placeholder="Search card..."  [(ngModel)]="cardname" name="cardname">
+                <button type="submit" class="searchButton">
+                  <i class="fa fa-search" (click)="searchCardsByName()"></i>
+                </button>
+              </div>
+          </div>
          </div>
+
          <!--Inicio da div que mostra os cards-->
           <div id="cards" style="border: solid green;margin-top: 20px; padding: 5px;">
       
               <div class="div-cards" *ngFor="let card of arrCards">
-                <p class="card-name">{{card.nome}}</p> 
+                <p class="card-name">
+                    <a [routerLink]="['/card-detail/', card.nome]"  name="{{card.numero}}" (click)="storedCardId($event)"  >
+                      {{card.nome}}
+                    
+                  </a>
+                </p> 
 
                 <div class="card-img" style="margin-left: 5%; margin-top: -5px;">
                   <!-- <img src="../../../assets/SummonedSkull-SDY-NA-C-1E.jpg" alt="" width="165px" height="220px"> -->
@@ -112,7 +127,8 @@
           </div>
       </div>
 
-      <div class="modal fade manageCard" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal fade manageCard" tabindex="-1" role="dialog"
+       aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content" style="padding: 5px;">
 
@@ -126,7 +142,7 @@
             <!--Div do corpo do modal-->
               <div>
                   <!--Div parte de cima-->
-                  <div id="top-part" style=" height: 221px; margin-top: 10px;" class="row" >
+                  <div id="top-part" style=" height: 221px; margin-top: 10px; padding: 10px; margin-bottom: 5px;" class="row" >
                       <div id="modal-card-img" style="max-width: 168px; " class="col-md-3">
                         <img  [src]="cardImagem(arrCardsDetails.cardNumber)" alt="" width="165px" height="220px">
                       </div>   
@@ -164,7 +180,7 @@
                     </div>
                   </div>  
                         <!--Div parte de baixo-->
-                        <div id="down-part" style="border: solid thin blue; width: 100%; margin-top: 6px; height: 400px;">
+                        <div id="down-part" style=" width: 100%; margin-top: 6px; height: 400px; padding: 5px;">
                             <div id="modal-header-down" style="width: 100%; background-color: skyblue; color: white; height: 20px;">
                                 Your Sets that contains this card
                             </div>

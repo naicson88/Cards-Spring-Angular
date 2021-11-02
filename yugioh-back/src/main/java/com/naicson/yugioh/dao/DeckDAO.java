@@ -19,7 +19,7 @@ import com.naicson.yugioh.dto.set.DeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.repository.DeckRepository;
-import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Repository
 @Transactional

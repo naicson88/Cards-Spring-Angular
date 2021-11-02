@@ -44,9 +44,9 @@ import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.CardSpecificationBuilder;
-import com.naicson.yugioh.util.ErrorMessage;
 import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.SearchCriteria;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 
 @RestController
@@ -112,22 +112,11 @@ public class CardController {
 	//Transforma as cartas encontradas no DTO para passar menos parametros
 	@PostMapping(path = {"/searchCard"})
 	@ResponseBody
-	public ResponseEntity<List<CardsSearchDTO>> cardSearch(@RequestBody List<SearchCriteria> criterias){
-		List<CardsSearchDTO> dtoList = new ArrayList<>();
+	public ResponseEntity<List<CardsSearchDTO>> cardSearch(@RequestBody List<SearchCriteria> criterias, String join){
+			
+		List<CardsSearchDTO> list = cardService.cardSearch(criterias, join);
 		
-		CardSpecification spec = new CardSpecification();	
-		for(SearchCriteria criterio: criterias) {
-			spec.add(new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue()));
-		}
-		
-		List<Card> list = cardRepository.findAll(spec);
-		
-		for(Card card : list) {
-			if(list != null && list.size() > 0) 
-				dtoList.add(CardsSearchDTO.transformInDTO(card));
-		}
-		
-		return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
+		return new ResponseEntity<List<CardsSearchDTO>>(list, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = {"/randomCards"})
@@ -182,22 +171,15 @@ public class CardController {
 	public ResponseEntity<List<CardsSearchDTO>> loadCardsUserHave(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable,
 			@RequestParam String genericType) throws SQLException, ErrorMessage{
 		
-		List<CardsSearchDTO> dtoList = new ArrayList<>();
-		
 		try {
 			if(genericType == null)
 				throw new ErrorMessage(" No generic type was informed.");
 			
 			UserDetailsImpl user = GeneralFunctions.userLogged(); 
 			
-			Page<Card> list = cardService.getByGenericType(pageable, genericType, user.getId());
+			List<CardsSearchDTO> list = cardService.getByGenericType(pageable, genericType, user.getId());
 			
-			list.stream().forEach(card -> {
-				if(card != null)
-					dtoList.add(CardsSearchDTO.transformInDTO(card));
-			} );
-			
-			return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
+			return new ResponseEntity<List<CardsSearchDTO>>(list, HttpStatus.OK);
 						
 		}catch (ErrorMessage me) {
 			throw me;
@@ -224,6 +206,17 @@ public class CardController {
 		}catch (Exception ex) {
 			throw ex;
 		}
+		
+	}
+	
+	@GetMapping(path = {"/cardname-usercollection"})
+	public ResponseEntity<List<CardsSearchDTO>> cardSearchByNameUserCollection(
+			@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC)
+			Pageable pageable, @RequestParam String cardName) {
+		
+		List<CardsSearchDTO> cardList = cardService.cardSearchByNameUserCollection(cardName, pageable);
+		
+		return new ResponseEntity<List<CardsSearchDTO>>(cardList, HttpStatus.OK);
 		
 	}
 	
