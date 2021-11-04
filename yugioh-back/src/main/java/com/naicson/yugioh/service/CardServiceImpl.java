@@ -3,6 +3,8 @@ package com.naicson.yugioh.service;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +35,10 @@ import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
-import com.naicson.yugioh.util.CardSpecification;
 import com.naicson.yugioh.util.GeneralFunctions;
-import com.naicson.yugioh.util.SearchCriteria;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
+import com.naicson.yugioh.util.search.CardSpecification;
+import com.naicson.yugioh.util.search.SearchCriteria;
 
 @Service
 public class CardServiceImpl implements CardDetailService {
@@ -331,13 +333,19 @@ public class CardServiceImpl implements CardDetailService {
 		
 		Page<Card> cardsList = cardRepository.cardSearchByNameUserCollection(cardName, user.getId(), pageable);
 		
-		if( cardsList == null || cardsList.isEmpty())
-			throw new NoSuchElementException("No elements found with this parameters");
-		
-		List<CardsSearchDTO> dtoList = cardsList.stream()
-				.filter(card -> card != null)
-				.map(card -> CardsSearchDTO.transformInDTO(card))
-				.collect(Collectors.toList());
+		/*
+		 * if(cardsList == null || cardsList.isEmpty()) throw new
+		 * NoSuchElementException("No elements found with this parameters");
+		 */
+		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		if(cardsList != null && !cardsList.isEmpty()) {
+			dtoList = cardsList.stream()
+					.filter(card -> card != null)
+					.map(card -> CardsSearchDTO.transformInDTO(card))
+					.collect(Collectors.toList());
+		} else {
+			dtoList = Collections.emptyList();
+		}
 		
 		return dtoList;
 	}

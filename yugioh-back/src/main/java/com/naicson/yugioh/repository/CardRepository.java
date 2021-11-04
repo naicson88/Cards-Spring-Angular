@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.entity.Card;
-import com.naicson.yugioh.util.CardSpecification;
+import com.naicson.yugioh.util.search.CardSpecification;
 
 
 @Repository

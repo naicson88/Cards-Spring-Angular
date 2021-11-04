@@ -13,9 +13,9 @@ import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
-import com.naicson.yugioh.util.CardSpecification;
-import com.naicson.yugioh.util.SearchCriteria;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
+import com.naicson.yugioh.util.search.CardSpecification;
+import com.naicson.yugioh.util.search.SearchCriteria;
 
 @Service
 public interface CardDetailService {

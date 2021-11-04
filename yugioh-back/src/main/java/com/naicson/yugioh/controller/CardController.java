@@ -42,11 +42,11 @@ import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
-import com.naicson.yugioh.util.CardSpecification;
-import com.naicson.yugioh.util.CardSpecificationBuilder;
 import com.naicson.yugioh.util.GeneralFunctions;
-import com.naicson.yugioh.util.SearchCriteria;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
+import com.naicson.yugioh.util.search.CardSpecification;
+import com.naicson.yugioh.util.search.CardSpecificationBuilder;
+import com.naicson.yugioh.util.search.SearchCriteria;
 
 
 @RestController

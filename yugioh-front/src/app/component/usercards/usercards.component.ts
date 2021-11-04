@@ -7,6 +7,8 @@ import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import * as _ from 'lodash'
 import { BehaviorSubject } from 'rxjs';
 import { SearchCriteria } from 'src/app/classes/SearchCriteria';
+import { MatDialog } from '@angular/material';
+import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 export class UsercardsComponent implements OnInit {
   @ViewChild('btnNew',  { static: false }) btnNew: ElementRef;
 
-  constructor(private img: Imagens, private service: CardServiceService) { }
+  constructor(private img: Imagens, private service: CardServiceService, private dialog: MatDialog) { }
 
   cardsFromScroll = new BehaviorSubject([]);
   page: number = 1; 
@@ -166,17 +168,26 @@ export class UsercardsComponent implements OnInit {
     searchCardsByName(){
         if(this.cardname != null && this.cardname != ""){
           this.service.searchCardsByName(this.cardname).subscribe(data=>{
-            console.log(data)
-            if(data != null )
+            console.log(typeof data)
+            if(Object.keys(data).length > 0 )
               this.arrCards = data;
-            else
-              alert("No card found")
+            else{
+                this.errorDialog("Mensagem passada")
+            }
+            
           })
 
         }else {
-          alert("Fill a card name")
+          this.errorDialog("Falhou!")
+
           return false;
         }
+    }
+
+    errorDialog(errorMessage:string){
+      this.dialog.open(ErrorDialogComponent, {
+        data: errorMessage
+      })
     }
 
     storedCardId(event){

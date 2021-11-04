@@ -3,8 +3,7 @@ import { Archetype } from 'src/app/classes/Archetype';
 import { AchetypeService } from 'src/app/service/archetype-service/achetype.service';
 
 import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import { ImageToolTip } from 'src/app/Util/ImageToolTip';
+
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { CardServiceService } from 'src/app/service/card-service/card-service.se
 export class ArchetypeDetailsComponent  implements OnInit  {
   archetype: Archetype[] = [];
 
-  constructor(private archService: AchetypeService, private tool: ImageToolTip, private cardService: CardServiceService) {
+  constructor(private archService: AchetypeService, private cardService: CardServiceService) {
    
   }
   
@@ -56,10 +55,7 @@ export class ArchetypeDetailsComponent  implements OnInit  {
      
     })
   }
-   
-   mostraImagem(e){
-     this.tool.mostrarImgToolTip(e);
-   }
+  
 
    isShowTooltip: boolean = false;
     imgTooltip: string;
