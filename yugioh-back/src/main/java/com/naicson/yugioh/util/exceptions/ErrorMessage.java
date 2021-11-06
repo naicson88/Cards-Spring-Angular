@@ -1,4 +1,4 @@
-package com.naicson.yugioh.util;
+package com.naicson.yugioh.util.exceptions;
 
 public class ErrorMessage extends Exception {
 	

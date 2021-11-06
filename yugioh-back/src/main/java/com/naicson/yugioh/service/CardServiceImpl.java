@@ -2,9 +2,14 @@ package com.naicson.yugioh.service;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -12,6 +17,8 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +27,7 @@ import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
+import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
@@ -27,8 +35,10 @@ import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
-import com.naicson.yugioh.util.ErrorMessage;
 import com.naicson.yugioh.util.GeneralFunctions;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
+import com.naicson.yugioh.util.search.CardSpecification;
+import com.naicson.yugioh.util.search.SearchCriteria;
 
 @Service
 public class CardServiceImpl implements CardDetailService {
@@ -47,9 +57,11 @@ public class CardServiceImpl implements CardDetailService {
 	CardOfUserDetailDTO cardUserDTO;
 	
 	
-	public CardServiceImpl(CardRepository cardRepository, CardDAO dao) {
+	public CardServiceImpl(CardRepository cardRepository, CardDAO dao, RelDeckCardsRepository relDeckCardsRepository, DeckRepository deckRepository) {
 		this.cardRepository = cardRepository;
 		this.dao = dao;
+		this.relDeckCardsRepository = relDeckCardsRepository;
+		this.deckRepository = deckRepository;
 	}
 
 	//Trazer o card para mostrar os detalhes;
@@ -109,13 +121,13 @@ public class CardServiceImpl implements CardDetailService {
 		Card card = cardRepository.findByNumero(cardNumber.longValue());
 		
 		if(card == null)
-			throw new ErrorMessage("It was not possible find a card to add to user's collection ");
+			throw new NoSuchElementException("It was not possible find a card to add to user's collection ");
 		
 		//Procura os decks e os set codes desse card
 		List<RelDeckCards> rels = relDeckCardsRepository.findCardByNumberAndIsKonamiDeck(cardNumber);
 		
 		if(rels == null)
-			throw new ErrorMessage(" There is no deck associate with this card. ");
+			throw new NoSuchElementException(" There is no deck associate with this card. ");
 		
 		Long[] arraySetsIds = new Long[rels.size()];
 		//Coloca em um array pra poder buscar os decks com esse id
@@ -126,7 +138,7 @@ public class CardServiceImpl implements CardDetailService {
 		List<Deck> sets = deckRepository.findAllByIdIn(arraySetsIds);
 		
 			if(sets == null)
-				throw new ErrorMessage(" Zero deck was found.");
+				throw new NoSuchElementException(" Zero deck was found.");
 			
 		Map <String, String> mapImgSetcode = new HashMap<>();
 		
@@ -246,8 +258,6 @@ public class CardServiceImpl implements CardDetailService {
 	
 			}
 			
-			
-			
 			return cardUserDTO;
 			
 		}catch (Exception ex) {
@@ -262,6 +272,82 @@ public class CardServiceImpl implements CardDetailService {
 		
 		return card;
 	}
+
+	@Override
+	public List<CardsSearchDTO> getByGenericType(Pageable page, String genericType, int userId) {
+		
+		if(page == null || genericType == null || userId == 0)
+			throw new IllegalArgumentException("Page, Generic Type or User Id is invalid.");
+		
+		Page<Card> list = cardRepository.getByGenericType(page, genericType, userId);
+		
+		if( list == null || list.isEmpty())
+			throw new NoSuchElementException("No elements found with this parameters");
+		
+		List<CardsSearchDTO> dtoList = list.stream()
+				.filter(card -> card != null)
+				.map(card -> CardsSearchDTO.transformInDTO(card))
+				.collect(Collectors.toList());
+				
+		return dtoList;		
+		
+	}
+
+	@Override
+	public List<Card> findAll(CardSpecification spec) {
+		if(spec == null )
+			throw new IllegalArgumentException("No specification for card search");
+		
+		List<Card> list = cardRepository.findAll(spec);
+		
+		return list;
+	}
 	
+	// Testar quando o list for null
+	@Override
+	public List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join) {
+		
+		CardSpecification spec = new CardSpecification();
+		
+		 criterias.stream().forEach(criterio -> 
+			spec.add( new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue())));
+		 			
+		List<Card> list = this.findAll(spec);
+		
+		List<CardsSearchDTO> dtoList = list.stream()
+				.filter(card -> card != null)
+				.map(card -> CardsSearchDTO.transformInDTO(card))
+				.collect(Collectors.toList());
+		
+		return dtoList;
+			
+	}
+	
+	@Override
+	public List<CardsSearchDTO> cardSearchByNameUserCollection(String cardName, Pageable pageable) {
+		
+		if(cardName == null || cardName.isEmpty())
+			throw new IllegalArgumentException("Card name invalid for search");
+		
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		
+		Page<Card> cardsList = cardRepository.cardSearchByNameUserCollection(cardName, user.getId(), pageable);
+		
+		/*
+		 * if(cardsList == null || cardsList.isEmpty()) throw new
+		 * NoSuchElementException("No elements found with this parameters");
+		 */
+		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		if(cardsList != null && !cardsList.isEmpty()) {
+			dtoList = cardsList.stream()
+					.filter(card -> card != null)
+					.map(card -> CardsSearchDTO.transformInDTO(card))
+					.collect(Collectors.toList());
+		} else {
+			dtoList = Collections.emptyList();
+		}
+		
+		return dtoList;
+	}
 	
 }

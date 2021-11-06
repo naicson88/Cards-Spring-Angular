@@ -1,0 +1,46 @@
+.set-header{
+    background: rgb(15,117,178);
+    background: linear-gradient(146deg, rgba(15,117,178,1) 59%, rgba(59,216,235,1) 78%, rgba(239,241,241,1) 97%, rgba(241,241,241,1) 100%);
+    color: white;
+     font-size: 1.5em;
+     text-align: center;
+     vertical-align: center;
+     text-transform: uppercases;
+     height: 35px; 
+     margin-bottom: 20px;
+  }
+
+  #deckContainer{
+      display: flex;
+
+  }
+
+  #deckStructure {
+      padding: 2px;
+      margin: 0 5px 0 0px;
+      min-width: 70%;
+
+  }
+
+  .structure {
+      margin-bottom: 5px;
+      min-height: 96px;
+  }
+
+  #cardsSearch{
+      padding: 1px;
+      width: 30%;
+      height: 500px;
+      overflow-y: scroll;
+    }
+
+    .cardItemSearch{
+      
+        height: 95px;
+        font-family: "open sans";
+        border: dotted thin silver;
+        text-align: left;
+        letter-spacing: 0;
+        font-size: 15px;
+        
+    }

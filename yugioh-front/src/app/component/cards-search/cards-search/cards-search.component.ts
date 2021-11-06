@@ -176,6 +176,7 @@ export class CardsSearchComponent implements OnInit {
     
   }
 
+
       inputFilters(){
 
         if(this.cardname != null && this.cardname != ''){
@@ -277,7 +278,7 @@ export class CardsSearchComponent implements OnInit {
               }
 
               if(param != null && param.length > 0){
-                criterio.criterios('generic_type', 'IN', param);
+                criterio.criterios('genericType', 'IN', param);
                 this.criterios.push(criterio);
               }
               

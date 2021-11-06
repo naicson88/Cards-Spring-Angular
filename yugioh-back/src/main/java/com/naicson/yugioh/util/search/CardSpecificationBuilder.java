@@ -1,4 +1,4 @@
-package com.naicson.yugioh.util;
+package com.naicson.yugioh.util.search;
 
 import java.util.ArrayList;
 import java.util.List;

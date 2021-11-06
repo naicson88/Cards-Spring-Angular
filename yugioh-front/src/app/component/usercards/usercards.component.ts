@@ -6,6 +6,10 @@ import { CardServiceService } from 'src/app/service/card-service/card-service.se
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import * as _ from 'lodash'
 import { BehaviorSubject } from 'rxjs';
+import { SearchCriteria } from 'src/app/classes/SearchCriteria';
+import { MatDialog } from '@angular/material';
+import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
+import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
 
 
 @Component({
@@ -16,7 +20,7 @@ import { BehaviorSubject } from 'rxjs';
 export class UsercardsComponent implements OnInit {
   @ViewChild('btnNew',  { static: false }) btnNew: ElementRef;
 
-  constructor(private img: Imagens, private service: CardServiceService) { }
+  constructor(private img: Imagens, private service: CardServiceService, private dialog: MatDialog) { }
 
   cardsFromScroll = new BehaviorSubject([]);
   page: number = 1; 
@@ -30,6 +34,8 @@ export class UsercardsComponent implements OnInit {
   arrCardsDetails:[] = [];
 
   genericTypeAtual: string = 'MONSTER'
+
+  cardname = '';
 
   ngOnInit() {
     this.map();
@@ -159,6 +165,55 @@ export class UsercardsComponent implements OnInit {
 
       
     }
+
+    searchCardsByName(){
+
+        if(this.cardname != null && this.cardname != ""){
+          this.service.searchCardsByName(this.cardname).subscribe(data=>{
+            console.log(typeof data)
+            if(Object.keys(data).length > 0 )
+              this.arrCards = data;
+            else{
+                this.errorDialog("No cards found with this name!")
+            }
+            
+          })
+
+        }else {
+          this.warningDialog("Fill the field with a card name!")
+
+          return false;
+        }
+    }
+
+    errorDialog(errorMessage:string){
+      this.dialog.open(ErrorDialogComponent, {
+        data: errorMessage
+      })
+    }
+
+    warningDialog(warningMessage:string){
+      this.dialog.open(WarningDialogComponent, {
+        data: warningMessage
+      })
+    }
+
+    storedCardId(event){
+      /*  const id = event.target.name;
+        console.log(id);
+        localStorage.setItem("idCard", id);*/
+    
+        const cardNumber = event.target.name;
+        if(cardNumber != null && cardNumber != ""){
+          console.log(cardNumber)
+          this.service.setCardNumber(cardNumber);
+        
+        } else {
+           console.log("Unable to consult this card, try again later.");
+           return false;
+        }
+       
+      }
 }
 
 

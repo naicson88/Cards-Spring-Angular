@@ -27,7 +27,7 @@ import com.naicson.yugioh.entity.sets.SetType;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
-import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
 public class DeckServiceImpl implements DeckDetailService {

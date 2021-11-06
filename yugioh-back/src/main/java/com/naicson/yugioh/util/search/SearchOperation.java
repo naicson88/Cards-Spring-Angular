@@ -1,4 +1,4 @@
-package com.naicson.yugioh.util;
+package com.naicson.yugioh.util.search;
 
 public enum SearchOperation {
     GREATER_THAN,

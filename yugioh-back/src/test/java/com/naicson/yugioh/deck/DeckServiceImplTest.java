@@ -36,10 +36,9 @@ import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.DeckDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
-import com.naicson.yugioh.util.ErrorMessage;
+import com.naicson.yugioh.util.ValidObjects;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
-/*@ExtendWith(SpringExtension.class)
-@DataJpaTest*/
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -66,7 +65,7 @@ public class DeckServiceImplTest {
 	
 	@Test
 	public void findADeckByTheId() throws Exception {
-		Deck deck = this.generateValidDeck();
+		Deck deck = ValidObjects.generateValidDeck();
 		deck.setId(1L);
 		
 		Mockito.when(deckRepository.findById(deck.getId())).thenReturn(Optional.of(deck));
@@ -82,11 +81,11 @@ public class DeckServiceImplTest {
 	public void returnCardsOfaDeck() {
 		
 		List<RelDeckCards> rels = new ArrayList<>();		
-		RelDeckCards rel = this.generateRelDeckCards();	
+		RelDeckCards rel = ValidObjects.generateRelDeckCards();
 		rel.setId(1L);
 		rels.add(rel);
 		
-		Deck deck = this.generateValidDeck();
+		Deck deck = ValidObjects.generateValidDeck();
 		deck.setId(1L);
 		
 		Mockito.when(relDeckCardsRepository.findByDeckId(deck.getId())).thenReturn(rels);
@@ -105,7 +104,7 @@ public class DeckServiceImplTest {
 		
 		Long originalDeckId = 1L;
 		
-		Deck deckOrigem = this.generateValidDeck();
+		Deck deckOrigem = ValidObjects.generateValidDeck();
 		deckOrigem.setId(1L);
 		
 		DeckUsers newDeck = new DeckUsers();
@@ -131,7 +130,7 @@ public class DeckServiceImplTest {
 	@Test
 	public void addingCardToUserCollection() throws SQLException, ErrorMessage {		
 		
-		UserDetailsImpl user = this.generateValidUser();
+		UserDetailsImpl user = ValidObjects.generateValidUser();
 		Long originalDeckId = 1L;
 		int itemAtualizado = 1;
 		
@@ -162,12 +161,12 @@ public class DeckServiceImplTest {
 	public void addCardToUserCollectionHavingCardFalse() throws SQLException, ErrorMessage {
 	
 		Long originalDeckId = 1L;
-		UserDetailsImpl user = this.generateValidUser();
+		UserDetailsImpl user = ValidObjects.generateValidUser();
 		
 		List<DeckDTO> listDeckDTO = new ArrayList<>();
 		
-		DeckDTO deckOne = this.generateValidDeckDTO(1);		
-		DeckDTO deckTwo = this.generateValidDeckDTO(2);
+		DeckDTO deckOne = ValidObjects.generateValidDeckDTO(1);		
+		DeckDTO deckTwo = ValidObjects.generateValidDeckDTO(2);
 		
 		listDeckDTO.add(deckOne);
 		listDeckDTO.add(deckTwo);
@@ -186,12 +185,12 @@ public class DeckServiceImplTest {
 	public void addCardToUserCollectionHavingCardTrue() throws SQLException, ErrorMessage {
 	
 		Long originalDeckId = 1L;
-		UserDetailsImpl user = this.generateValidUser();
+		UserDetailsImpl user = ValidObjects.generateValidUser();
 		
 		List<DeckDTO> listDeckDTO = new ArrayList<>();
 		
-		DeckDTO deckOne = this.generateValidDeckDTO(1);		
-		DeckDTO deckTwo = this.generateValidDeckDTO(2);
+		DeckDTO deckOne = ValidObjects.generateValidDeckDTO(1);		
+		DeckDTO deckTwo = ValidObjects.generateValidDeckDTO(2);
 		
 		listDeckDTO.add(deckOne);
 		listDeckDTO.add(deckTwo);
@@ -208,81 +207,8 @@ public class DeckServiceImplTest {
 	}
 	
 	
-	private DeckDTO generateValidDeckDTO(Integer id) {
-		DeckDTO dto = new DeckDTO();
-		dto.setId(id);
-		dto.setCard_numero(123456);
-		dto.setCard_price(1.99);
-		dto.setCard_raridade("Rare");
-		dto.setCard_set_code("000-yyyy");
-		
-		return dto;
-	}
-	
-	private Deck generateValidDeck() {
-		
-		Deck newDeck = new Deck();
-		   
-		newDeck.setImagem("Imagem Deck");
-		newDeck.setNome("Deck Teste");
-		newDeck.setNomePortugues("Deck teste Portugues");
-		newDeck.setSetType("UD");
-		newDeck.setQtd_cards(10);
-		newDeck.setQtd_comuns(5);
-		newDeck.setQtd_raras(11);
-		newDeck.setQtd_secret_raras(15);
-		newDeck.setQtd_super_raras(10);
-		newDeck.setQtd_ulta_raras(2);
-		newDeck.setIsKonamiDeck("N");
-		newDeck.setDt_criacao(new Date());
-		newDeck.setCopiedFromDeck(10);
-		newDeck.setUserId(2); 			  		  
-	  
-	  return newDeck;  
-
-	}
-	
-	private Card generateValidCard() {
-		Card card = new Card();
-		
-		card.setArquetipo("Arquetipo Teste");
-		card.setAtk(2000);
-		card.setAtributo("EARTH");
-		card.setCategoria("Monster");
-		card.setCodArchetype(10);
-		card.setDef(1500);
-		card.setDescr_pendulum("Descricao Pendulum Teste");
-		card.setEscala(8);
-		
-		return card;
-	}
-	
-	private RelDeckCards generateRelDeckCards() {
-		RelDeckCards relDeckCards = new RelDeckCards();
-		
-		relDeckCards.setCard_numero(9999999L);
-		relDeckCards.setCard_price(90.58);
-		relDeckCards.setCard_raridade("R");
-		relDeckCards.setCard_set_code("YYYY-1111");
-		relDeckCards.setDeckId(1L);
-		relDeckCards.setDt_criacao(new Date());
-		
-		return relDeckCards;
-	}
-	
-	private UserDetailsImpl generateValidUser() {
-		UserDetailsImpl user = new UserDetailsImpl();
-		user.setEmail("usertest@hotmail.com");
-		user.setId(1);
-		user.setPassword("123456");
-		user.setUsername("Alan Naicson");
-		
-		return user;
-	}
-	
-	
 	private void mockAuth() {
-		UserDetailsImpl user = this.generateValidUser();
+		UserDetailsImpl user = ValidObjects.generateValidUser();
 		
 		Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);

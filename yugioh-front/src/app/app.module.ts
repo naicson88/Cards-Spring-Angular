@@ -24,7 +24,6 @@ import { authStrategyProvider } from './service/auth-service/auth.strategy';
 import { AuthInterceptor } from './service/auth-service/AuthInterceptor';
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { ArchetypeDetailsComponent } from './component/archetype-details/archetype-details/archetype-details.component';
-import { ImageToolTip } from './Util/ImageToolTip';
 import {  MatSpinner } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -35,6 +34,8 @@ import { Imagens } from './classes/Imagens';
 import { MaterialModule } from './Util/materialModule/material/material.module';
 import { UsercardsComponent } from './component/usercards/usercards.component';
 import { SideCardsearchComponent } from './component/cards-search/side-cardsearch/side-cardsearch.component';
+import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUser.module';
+import { DialogModule } from './component/dialogs/dialogs.module';
 
 
 @NgModule({
@@ -56,7 +57,7 @@ import { SideCardsearchComponent } from './component/cards-search/side-cardsearc
     CardsSearchComponent,
     UsercardsComponent,
     SideCardsearchComponent
-
+  
   ],
   imports: [
     BrowserModule,
@@ -71,6 +72,8 @@ import { SideCardsearchComponent } from './component/cards-search/side-cardsearc
     NgxSpinnerModule,
     MaterialModule,
     UsercardsModule,
+    DeckDetailUserModule,
+    DialogModule,
     ToastrModule.forRoot()
 
   ],
@@ -79,7 +82,7 @@ import { SideCardsearchComponent } from './component/cards-search/side-cardsearc
   {provide: HTTP_INTERCEPTORS,
   useClass: AuthInterceptor,
   multi: true},
-  ImageToolTip,
+
   {provide: HTTP_INTERCEPTORS,useClass: SpinnerService, multi: true },
   Imagens
 ],

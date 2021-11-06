@@ -31,8 +31,8 @@ import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
-import com.naicson.yugioh.util.ErrorMessage;
 import com.naicson.yugioh.util.GeneralFunctions;
+import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @RestController
 @RequestMapping({ "yugiohAPI/decks" })

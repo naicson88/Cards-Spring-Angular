@@ -2,8 +2,9 @@
 
 <div id="mainDiv" class="container"> 
    <div class="set-header">  
-      Konami's Decks
-     </div>
+      <span *ngIf="set_type == 'UD' ">User's Decks</span> 
+      <span *ngIf="set_type != 'UD' ">Konami's Decks</span> 
+   </div>
 
    <div id="header-main">
       <div style="
@@ -69,21 +70,42 @@
                   </div>
                </div>
           
-               <div class="deckuct-info smart-form" style="margin-left: 65%;" >
+               <div class="deckuct-info smart-form"  >
                   <div class="row">
-                     <div class="col-md-6"> 
+                     <div class="col-md-6"  > 
                     <!--    <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>-->
-                    <span style="font-size:x-small; color: #ccc; font-weight: bold;">Total you have:</span><br>
-                    <div class="clearfix quantity r_corners d_inline_middle f_size_medium color_dark" style="display: inline-block;">
-                     
-                        <!-- <button class="bg_tr d_block f_left" data-direction="down" name="{{deck.id}}"
-                        (click)="removeSetToUserCollection($event)"  >-</button> -->
+                    <span style="font-size:x-small; color: #ccc; font-weight: bold;" *ngIf="set_type != 'UD'">Total you have:</span><br>
+
+                    <div class="clearfix quantity r_corners d_inline_middle f_size_medium color_dark" style="display: inline-block; margin-left: 22%;">
+                     <span *ngIf="set_type != 'UD'">
                         
-                           <input type="text" name="input_qtde" id="inp_{{deck.id}}"
-                           value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" >
+                        <input type="text" name="input_qtde" id="inp_{{deck.id}}"
+                        value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" >
                      
                         <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}" 
                         (click)="addSetToUserCollection($event)" >+</button>
+
+                     </span>
+                      
+
+                     <span *ngIf="set_type == 'UD'"> 
+                        <!--Opções que só aparecem se for deck de usuário-->
+                        &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
+                        <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
+
+                        &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
+                        <a   [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId($event)" name="{{deck.id}}">
+                           <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp; 
+                        </a>
+                        
+
+                       <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"> 
+
+                          <mat-icon style="color: red; cursor: pointer;" title="Delete from your collection"
+                          id="{{deck.id}}" (click)="removeSetToUserCollection($event)">delete_forever</mat-icon>
+
+                       </span>&nbsp;
+                    </span>         
                      
                  </div>
                            
@@ -127,6 +149,7 @@
       
                         <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">You have:</span> &nbsp;<span>200</span>
                         
+                        <span *ngIf="set_type == 'UD'"> 
                             <!--Opções que só aparecem se for deck de usuário-->
                             &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
                             <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
@@ -140,7 +163,7 @@
                               id="{{decklist.id}}" (click)="removeSetToUserCollection($event)">delete_forever</mat-icon>
 
                            </span>&nbsp;
-
+                        </span>         
                               <!-- <button type="button" class="btn btn-info btn-sm" style="background-color: #138496 !important; margin-left: 20px;" >Manege</button> -->               
                       </div>
                   </div>
