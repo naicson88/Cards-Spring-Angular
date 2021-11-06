@@ -36,7 +36,6 @@ import { UsercardsComponent } from './component/usercards/usercards.component';
 import { SideCardsearchComponent } from './component/cards-search/side-cardsearch/side-cardsearch.component';
 import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUser.module';
 import { DialogModule } from './component/dialogs/dialogs.module';
-import { ErrorDialogComponent } from './component/dialogs/error-dialog/error-dialog.component';
 
 
 @NgModule({

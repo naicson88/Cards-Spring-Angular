@@ -94,7 +94,10 @@
                         <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
 
                         &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
-                        <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp; 
+                        <a   [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId($event)" name="{{deck.id}}">
+                           <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp; 
+                        </a>
+                        
 
                        <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"> 
 

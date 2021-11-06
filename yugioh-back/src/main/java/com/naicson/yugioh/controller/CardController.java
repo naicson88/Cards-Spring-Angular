@@ -91,7 +91,6 @@ public class CardController {
 		card.setSet_decks(deck_set);
 		
 		for(Deck rel : deck_set) {
-			//List<RelDeckCards> rels = deckService.relDeckAndCards(rel.getId(), cardNumero);
 			List<RelDeckCards> rels = relDeckCardsRepository.findByDeckIdAndCardNumber(rel.getId(), cardNumero);
 			rel.setRel_deck_cards(rels);
 		}		

@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 import { MatDialog } from '@angular/material';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
+import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
 
 
 @Component({
@@ -166,19 +167,20 @@ export class UsercardsComponent implements OnInit {
     }
 
     searchCardsByName(){
+
         if(this.cardname != null && this.cardname != ""){
           this.service.searchCardsByName(this.cardname).subscribe(data=>{
             console.log(typeof data)
             if(Object.keys(data).length > 0 )
               this.arrCards = data;
             else{
-                this.errorDialog("Mensagem passada")
+                this.errorDialog("No cards found with this name!")
             }
             
           })
 
         }else {
-          this.errorDialog("Falhou!")
+          this.warningDialog("Fill the field with a card name!")
 
           return false;
         }
@@ -187,6 +189,12 @@ export class UsercardsComponent implements OnInit {
     errorDialog(errorMessage:string){
       this.dialog.open(ErrorDialogComponent, {
         data: errorMessage
+      })
+    }
+
+    warningDialog(warningMessage:string){
+      this.dialog.open(WarningDialogComponent, {
+        data: warningMessage
       })
     }
 
