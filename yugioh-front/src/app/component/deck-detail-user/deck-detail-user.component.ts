@@ -63,16 +63,11 @@ sideDeckCards = new Array()
     }
 
     if(!event.isPointerOverContainer){
-      event.item.getRootElement().remove()
+      event.container.data.splice(event.previousIndex,1)
+      console.log(event.item.getRootElement())
     }
-      
   }
 
-    remove(event: CdkDragExit<any>){
-    if(event.item.released != event.item.started){
-      console.log("Entrou")
-    }
-  }
 }
 
 
