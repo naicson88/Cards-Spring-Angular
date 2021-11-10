@@ -15,6 +15,5 @@ export abstract class HandleErros  {
         
         return throwError('Something bad happened, please try again later.');
     }
-
-    
+   
 }
