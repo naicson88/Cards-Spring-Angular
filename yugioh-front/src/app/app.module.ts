@@ -57,6 +57,7 @@ import { DialogModule } from './component/dialogs/dialogs.module';
     MatSpinner,
     CardsSearchComponent,
     UsercardsComponent,
+    DeckDetailComponent,
     SideCardsearchComponent
   
   ],

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {CdkDragDrop, CdkDragExit, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Card } from 'src/app/classes/Card';
-
+import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 
 
 @Component({
@@ -10,8 +10,8 @@ import { Card } from 'src/app/classes/Card';
   styleUrls: ['./deck-detail-user.component.css']
 })
 export class DeckDetailUserComponent implements OnInit {
-
-  constructor() { }
+  @ViewChild('btnSpan',{static: false})span:ElementRef;
+  constructor(private render: Renderer2, private cardService: CardServiceService) { }
 
    card = {
       image:"/../../assets/img/outras/ex.jpg",
@@ -31,7 +31,7 @@ card3 = {
   type: "Fiend"
 }
   
-arrayCards = new Array(this.card, this.card2, this.card3)
+arrayCards = new Array();
  
 mainDeckCards = new Array(this.card)
 
@@ -43,9 +43,7 @@ sideDeckCards = new Array()
 
   ngOnInit() {
      
-    
-      console.log(this.arrayCards, this.mainDeckCards)
-      
+    this.loadRandomCards()
 
   }
 
@@ -64,9 +62,29 @@ sideDeckCards = new Array()
 
     if(!event.isPointerOverContainer){
       event.container.data.splice(event.previousIndex,1)
-      console.log(event.item.getRootElement())
     }
+
+    console.log(this.arrayCards, this.mainDeckCards)  
   }
+
+  btnSearch(event){
+    
+  }
+
+  loadRandomCards(){
+    this.arrayCards = [];
+
+    this.cardService.randomCards().subscribe( data =>{
+      this.arrayCards = data;
+    })
+}
+
+cardImagem(cardId: any){
+  let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
+  return urlimg;
+}
+  
+
 
 }
 

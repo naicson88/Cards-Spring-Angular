@@ -10,6 +10,19 @@
      margin-bottom: 20px;
   }
 
+  #searchedCardsBar{
+    border-bottom: dotted thin silver;
+    margin-bottom: 2px;
+    background: #007bff;
+    font-weight: 700;
+    vertical-align: center;
+    text-align: center;
+    height: 25px;
+    color: white;
+    font-weight: 700;
+  }
+ 
+
   #deckContainer{
       display: flex;
 
@@ -18,8 +31,11 @@
   #deckStructure {
       padding: 2px;
       margin: 0 5px 0 0px;
-      min-width: 70%;
-
+      width: 75%;
+      border: 1px solid #ffb091;
+      box-shadow:  rgb(187, 187, 187) 0px 0px 3.84px 0px;
+      padding: 10px;
+      background:#FDF5E6
   }
 
   .structure {
@@ -29,9 +45,14 @@
 
   #cardsSearch{
       padding: 1px;
-      width: 30%;
+      width: 25%;
       height: 500px;
       overflow-y: scroll;
+      border: 1px solid #ffb091;
+      box-shadow:  rgb(187, 187, 187) 0px 0px 3.84px 0px;
+      padding: 10px;
+      background: #f8f8f8;
+     
     }
 
     .cardItemSearch{
@@ -134,3 +155,4 @@
     color: #333333;
     margin-top: 3px;
 }
+
