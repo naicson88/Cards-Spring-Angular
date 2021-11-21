@@ -92,18 +92,15 @@ public class DeckController {
 		return new ResponseEntity<>(deckUserList, HttpStatus.OK);
 	}
 
-	@GetMapping(path = { "/{id}" })
-	public Deck deckAndCards(@PathVariable("id") Long id) throws Exception {
-		List<Card> cardList = deckService.cardsOfDeck(id);
-	//	List<RelDeckCards> rel_deck_cards = deckService.relDeckAndCards(id);
-		List<RelDeckCards> relDeckCards = deckService.relDeckCards(id);
-		Deck deck = deckService.findById(id);
-		deck.setCards(cardList);
-		deck.setRel_deck_cards(relDeckCards);
-
-		return deck;
+	@GetMapping
+	public ResponseEntity<Deck> deckAndCards(@RequestParam Long id, @RequestParam String deckType) throws Exception {
+		Deck deck;	
+		
+		deck = deckService.deckAndCards(id, deckType);	
+		
+		return new ResponseEntity<>(deck, HttpStatus.OK) ;
 	}
-
+	
 	@GetMapping("/por-nome")
 	public List<Deck> consultarPorNome(String nomeDeck) {
 		return deckRepository.findByNomeContaining(nomeDeck);

@@ -127,7 +127,6 @@ export class CardsSearchComponent implements OnInit {
 
       this.cardService.randomCards().subscribe(data =>{
         this.cardsFound = data;
-        console.log(data);
       })
   }
 

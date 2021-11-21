@@ -38,6 +38,7 @@ import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUse
 import { DialogModule } from './component/dialogs/dialogs.module';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +57,7 @@ import { DialogModule } from './component/dialogs/dialogs.module';
     MatSpinner,
     CardsSearchComponent,
     UsercardsComponent,
+    DeckDetailComponent,
     SideCardsearchComponent
   
   ],

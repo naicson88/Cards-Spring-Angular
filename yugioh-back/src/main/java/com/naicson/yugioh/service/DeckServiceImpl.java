@@ -1,13 +1,15 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,7 +25,6 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.entity.sets.DeckUsers;
-import com.naicson.yugioh.entity.sets.SetType;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
@@ -60,11 +61,11 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	@Override
-	public Deck findById(Long Id) throws Exception {		
+	public Deck findById(Long Id) {		
 			if(Id == null || Id == 0)
 				throw new IllegalArgumentException("Deck Id informed is invalid.");
 					
-			 Deck deck =  deckRepository.findById(Id).orElseThrow(() -> new Exception("Deck not found."));	
+			 Deck deck =  deckRepository.findById(Id).orElseThrow(() -> new NoSuchElementException("Deck not found."));	
 			 
 			 return deck;
 	}
@@ -73,12 +74,12 @@ public class DeckServiceImpl implements DeckDetailService {
 	@Override
 	public List<RelDeckCards> relDeckCards(Long deckId) {
 
-			if(deckId == null || deckId == 0)
-				throw new IllegalArgumentException("Deck Id informed is invalid.");
-			
-			List<RelDeckCards> relation = relDeckCardsRepository.findByDeckId(deckId);
-			
-			return relation;
+		if(deckId == null || deckId == 0)
+			throw new IllegalArgumentException("Deck Id informed is invalid.");
+		
+		List<RelDeckCards> relation = relDeckCardsRepository.findByDeckId(deckId);
+		
+		return relation;
 		
 	}
 
@@ -368,16 +369,96 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	@Override
-	public List<Card> cardsOfDeck(Long deckId) throws ErrorMessage {
+	public List<Card> cardsOfDeck(Long deckId) {
 		
 		List<Card> cards = dao.cardsOfDeck(deckId);
 		
 		if(cards == null || cards.size() == 0)
-			throw new ErrorMessage("Can't find cards of this Set.");
+			throw new IllegalArgumentException("Can't find cards of this Set.");
 		
 		return cards;
 	}
+	
 
+	@Override
+	public Deck deckAndCards(Long deckId, String setType) throws Exception {
+		Deck deck = new Deck();
+		deck = this.findById(deckId);
+		
+		List<Card> cardList = null;
+				
+		if(setType.equalsIgnoreCase("Konami")) {
+			
+			cardList = this.cardsOfDeck(deckId);
+			List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
+		
+			deck.setCards(cardList);
+			deck.setRel_deck_cards(relDeckCards);
+		}
+		
+		else if(setType.equalsIgnoreCase("User")) {
+			
+			cardList = this.consultMainDeck(deckId);
+			List<Card> sideDeckCards = dao.consultSideDeckCards(deckId, setType);
+			List<Card> extraDeck = this.consultExtraDeckCards(deckId, "User");
+			
+			deck.setCards(cardList);
+			deck.setExtraDeck(extraDeck);
+			deck.setSideDeckCards(sideDeckCards);
+			
+		} else {
+			throw new IllegalArgumentException("Invalid deckType.");
+		}
+		
+		
+		return deck;
+	}
+	
+	@Override
+	public List<Card> consultMainDeck(Long deckId) {
+		if(deckId == null || deckId == 0)
+			throw new IllegalArgumentException("Invalid Deck ID");
+		
+		List<Card> mainDeck = dao.consultMainDeck(deckId);
+		
+		if(mainDeck == null || mainDeck.isEmpty())
+			throw new NoSuchElementException("No cards found for Main Deck");
+		
+		mainDeck = this.sortMainDeckCards(mainDeck);
+		
+		return mainDeck;
+		
+	}
+	
+	@Override
+	public List<Card> consultExtraDeckCards(Long deckId, String userOrKonamiDeck) {
+		if(deckId == null || deckId == 0)
+			throw new IllegalArgumentException("Invalid Deck ID");
+		
+		List<Card> extraDeckCards = dao.consultExtraDeckCards(deckId, userOrKonamiDeck);
+		
+		return extraDeckCards;
+	}
+	
+	@Override
+	public List<Card> sortMainDeckCards(List<Card> cardList) {
+		
+		if(cardList != null && cardList.isEmpty())
+			throw new IllegalArgumentException("Card List is empty");
+		
+		List<Card> sortedCardList = new ArrayList<>();
+		
+		//Insere primeiro os cards do tipo Monstro
+		cardList.stream().filter(card -> card.getNivel() != null)
+		.collect(Collectors.toCollection(() -> sortedCardList));
+			
+		//Coloca o restante das cartas
+		cardList.stream().filter(card -> card.getNivel() == null)
+		.sorted((c1, c2) -> c1.getGeneric_type().compareTo(c2.getGeneric_type()))
+		.collect(Collectors.toCollection(() -> sortedCardList));
+				
+		return sortedCardList;
+	}
 
 
 }

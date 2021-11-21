@@ -10,109 +10,144 @@
         <p>
             <mat-form-field appearance="outline">
               <mat-label>Deck name</mat-label>
-              <input matInput placeholder="Placeholder">
+              <input matInput placeholder="Placeholder" [value]="mainDeckCards.nome">
             </mat-form-field>
           </p>
     </div>
 
-    <div id="deckContainer" style="border: solid tomato;">
-          <!-- Deck structure-->
-        <div id="deckStructure" style="border: solid blue; " >
-            <!--Main Deck-->
-            <label>Main Deck</label>
-            <div id="mainDeck" style="border: solid red; background-color: #FFDEAD;" class="structure">
-                <p>Main deck</p>
-            </div>
-
-            <!--Extra Deck-->
-            <label>Extra Deck</label>
-            <div id="extraDeck" style="border: solid yellow; background-color: #D8BFD8 " class="structure">
-                <p>Extra deck</p>
-            </div>
-
-            <!--Side Deck-->
-            <label>Side Deck</label>
-            <div id="sideDeck" style="border:solid  green;" class="structure">
-                <p>Side deck</p>
-            </div>
-            
+    <div id="optionsBtn" style="width: 100%; height: 50px;  margin-top: -25px;">
+        <div id="btnSearch" style="float: right;">
+            <button mat-raised-button color="primary">Search <mat-icon>search</mat-icon></button>
         </div>
 
-        <!--Search side-->
-        <div id="cardsSearch" style="border: solid saddlebrown; " >
+        <div id="btnRearrange" style="float: left;">
+            <button mat-raised-button color="accent" style="margin-bottom: 10px; background-color: #04AA6D;"  (click)="rearrange()">
+                <mat-icon>sort</mat-icon>
+                Rearrange
+            </button>
+        </div>
+      
+    </div>
 
-           <div class="cardItemSearch" >
-                <div class="row">                  
-                    <div class="col-md-3">
-                        <img src="/../../assets/img/outras/ex.jpg" alt="" width="67px" height="92px">
-                    </div>                  
+    <div cdkDropListGroup>
+        <div id="deckContainer" >
+            <!-- Deck structure-->
+            <div id="deckStructure"  >
+                <!--Main Deck-->
+                <div style="font-size: small; font-weight: 500;"> 
+                    <h3 class="titles">Main Deck</h3>
+                    <span style="color: goldenrod;">Monsters: 15</span> / 
+                    <span style="color: green;">Magic: 10</span> /
+                    <span style="color: red;">Trap: 15</span>      
+                </div>
+            <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
+
+            cdkDropList
+            #mainDeck="cdkDropList"
+            [cdkDropListData]="mainDeckCards"
+            [cdkDropListConnectedTo]="[cardItem]"
+            class="example-list"
+            cdkDropListOrientation="horizontal"
+            (cdkDropListDropped)="drop($event)"
+            (cdkDragReleased)="remove($event)">
+
+                <div class="example-box" *ngFor="let item of mainDeckCards.cards;" cdkDrag >
+                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                </div> 
+            </div>
+
+                <!--Extra Deck-->
+                <div style="font-size: small; font-weight: 500;"> 
+                    <h3 class="titles">Extra Deck</h3>
+                    <span style="color: purple;">Fusion: 15</span> / 
+                    <span style="color: black;">XYZ: 10</span> /
+                    <span style="color: silver;">Synchron: 15</span>      
+                </div>
+               
+                <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure"
+                cdkDropList
+                #extraDeck="cdkDropList"
+                [cdkDropListData]="extraDeckCards"
+                class="example-list"
+                cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="drop($event)"
+                >
+                <div class="example-box" *ngFor="let item of extraDeckCards;" cdkDrag >
+                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                </div>
+                </div>
+
+                <!--Side Deck-->
+                <h3 class="titles">Side Deck</h3>
+            <div id="sideDeck" style="border:solid  green;" class="structure"
+                cdkDropList
+                #sideDeck="cdkDropList"
+                [cdkDropListData]="sideDeckCards"
+                class="example-list"
+                cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="drop($event)"
+                >
+                <div class="example-box" *ngFor="let item of sideDeckCards;" cdkDrag >
+                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                </div>
+            </div>
+                
+            </div>
+
+            <!--Search side-->
+            <div id="cardsSearch" 
+            cdkDropList
+            #cardItem="cdkDropList"
+            [cdkDropListData]="arrayCards"
+            [cdkDropListConnectedTo]="[mainDeck]"
+            (cdkDropListDropped)="drop($event)">
+
+            <div id="searchedCardsBar">
+                <h5>Seached Cards</h5>
+            </div>
+
+            <div  *ngFor="let item of arrayCards" cdkDrag  class="example-box" > 
+               
+                <div>
+                    <img  [src]='cardImagem(item.numero)' alt="" width="67px" height="92px">
+                </div>
+
+            </div>
+                
+                <!--<div class="cardItemSearch" *ngFor="let item of arrayCards">
+                
+                    <div class="row">                  
+                        <div class="col-md-3">
+                            <img [src]="item.image" alt="" width="67px" height="92px">
+                        </div>                  
                     <div class="col-md-9">
-                       <p style="font-family:'Courier New', Courier, monospace;">Morphin Jar</p>
-                       <p>Atk: 100 / Def: 200</p>
-                       <p>Fiend</p>
+                        <span class="cardNameSpan">
+                            <a href="#" style="text-decoration: none">
+                            {{item.name}}
+                            </a>
+                            </span> <br>
+                        <span class="atkDefSpan">Atk: 100 / Def: 200</span><br>
+                        <span>{{item.type}}</span><br>
+                        <span class="collectSpan">Collection: <select name="col" id="">
+                            <option value="Teste1">Teste1</option>
+                            <option value="Teste2">Teste2</option>
+                        </select>  
+                        </span>
+                        </div>
                     </div>
-                </div>
-           </div>
+                </div>-->
 
-           <div class="cardItemSearch" >
-            <div class="row">                  
-                <div class="col-md-3">
-                    <img src="/../../assets/img/outras/ex.jpg" alt="" width="67px" height="92px">
-                </div>                  
-                <div class="col-md-9">
-                   <p style="font-family:'Courier New', Courier, monospace;">Morphin Jar</p>
-                   <p>Atk: 100 / Def: 200</p>
-                   <p>Fiend</p>
-                </div>
-            </div>
-       </div>
 
-       <div class="cardItemSearch" >
-        <div class="row">                  
-            <div class="col-md-3">
-                <img src="/../../assets/img/outras/ex.jpg" alt="" width="67px" height="92px">
-            </div>                  
-            <div class="col-md-9">
-               <p style="font-family:'Courier New', Courier, monospace;">Morphin Jar</p>
-               <p>Atk: 100 / Def: 200</p>
-               <p>Fiend</p>
+
             </div>
         </div>
-   </div>
-
-
-   <div class="cardItemSearch" >
-    <div class="row">                  
-        <div class="col-md-3">
-            <img src="/../../assets/img/outras/ex.jpg" alt="" width="67px" height="92px">
-        </div>                  
-        <div class="col-md-9">
-           <p style="font-family:'Courier New', Courier, monospace;">Morphin Jar</p>
-           <p>Atk: 100 / Def: 200</p>
-           <p>Fiend</p>
-        </div>
     </div>
-</div>
-
-<div class="cardItemSearch" >
-    <div class="row">                  
-        <div class="col-md-3">
-            <img src="/../../assets/img/outras/ex.jpg" alt="" width="67px" height="92px">
-        </div>                  
-        <div class="col-md-9">
-           <p style="font-family:'Courier New', Courier, monospace;">Morphin Jar</p>
-           <p>Atk: 100 / Def: 200</p>
-           <p>Fiend</p>
-        </div>
-    </div>
-</div>
-
-
-        </div>
-    </div>
-
+    
 
   </div>
  
-  
+
+ <!-- <div style="margin-top: 60px;">
+    <app-footer></app-footer>
+  </div> -->
   

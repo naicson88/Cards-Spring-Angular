@@ -57,7 +57,7 @@ export class DeckDetailComponent implements OnInit {
 
     const id = localStorage.getItem("idDeckDetails");
     
-    this.service.getDeckDetails(id).subscribe(data => {
+    this.service.getDeckDetails(id, 'Konami').subscribe(data => {
       this.deckDetails = data;
       console.log(this.deckDetails);
 

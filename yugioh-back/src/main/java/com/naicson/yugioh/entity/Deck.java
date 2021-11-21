@@ -36,6 +36,10 @@ public class Deck {
 	@Transient
 	private List<Card> cards;
 	@Transient
+	private List<Card> sideDeckCards;
+	@Transient
+	private List<Card> extraDeck;
+	@Transient
 	private List<RelDeckCards> rel_deck_cards;
 	@Column(name = "is_konami_deck")
 	private String isKonamiDeck;
@@ -71,8 +75,24 @@ public class Deck {
 		this.cards = cards;
 		this.isKonamiDeck = isKonamiDeck;
 
+	}	
+	
+	public List<Card> getExtraDeck() {
+		return extraDeck;
 	}
-		
+
+	public void setExtraDeck(List<Card> extraDeck) {
+		this.extraDeck = extraDeck;
+	}
+
+	public List<Card> getSideDeckCards() {
+		return sideDeckCards;
+	}
+
+	public void setSideDeckCards(List<Card> sideDeckCards) {
+		this.sideDeckCards = sideDeckCards;
+	}
+
 	public List<RelDeckCards> getRel_deck_cards() {
 		return rel_deck_cards;
 	}

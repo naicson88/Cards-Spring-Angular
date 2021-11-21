@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -27,6 +28,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSelectModule,
     MatCheckboxModule,
     MatExpansionModule,
+    DragDropModule,
+   
   ],
   exports: [
     CommonModule,

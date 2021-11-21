@@ -64,6 +64,10 @@ public class CardServiceImpl implements CardDetailService {
 		this.deckRepository = deckRepository;
 	}
 
+	public CardServiceImpl() {
+		
+	}
+
 	//Trazer o card para mostrar os detalhes;
 	public Card cardDetails(Integer id) {
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE ID = :deckId", Card.class);
@@ -224,6 +228,7 @@ public class CardServiceImpl implements CardDetailService {
 			UserDetailsImpl user = GeneralFunctions.userLogged();
 						
 			Card card = cardRepository.findByNumero(cardNumber);
+			cardUserDTO = new CardOfUserDetailDTO();
 			cardUserDTO.setCardImage(card.getImagem());
 			cardUserDTO.setCardName(card.getNome());
 			cardUserDTO.setCardNumber(card.getNumero());
@@ -272,7 +277,7 @@ public class CardServiceImpl implements CardDetailService {
 		
 		return card;
 	}
-
+	
 	@Override
 	public List<CardsSearchDTO> getByGenericType(Pageable page, String genericType, int userId) {
 		
@@ -303,7 +308,6 @@ public class CardServiceImpl implements CardDetailService {
 		return list;
 	}
 	
-	// Testar quando o list for null
 	@Override
 	public List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join) {
 		
@@ -332,13 +336,11 @@ public class CardServiceImpl implements CardDetailService {
 		UserDetailsImpl user = GeneralFunctions.userLogged();
 		
 		Page<Card> cardsList = cardRepository.cardSearchByNameUserCollection(cardName, user.getId(), pageable);
-		
-		/*
-		 * if(cardsList == null || cardsList.isEmpty()) throw new
-		 * NoSuchElementException("No elements found with this parameters");
-		 */
+
 		List<CardsSearchDTO> dtoList = new ArrayList<>();
+		
 		if(cardsList != null && !cardsList.isEmpty()) {
+			
 			dtoList = cardsList.stream()
 					.filter(card -> card != null)
 					.map(card -> CardsSearchDTO.transformInDTO(card))

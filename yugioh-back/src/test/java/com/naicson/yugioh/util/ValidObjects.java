@@ -59,6 +59,7 @@ public abstract class ValidObjects {
 		card.setDescr_pendulum("Descricao Pendulum Teste");
 		card.setEscala(8);
 		card.setNumero(15060L);
+		card.setImagem("mocked imagem");
 		
 		return card;
 	}

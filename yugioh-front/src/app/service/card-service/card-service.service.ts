@@ -92,6 +92,7 @@ export class CardServiceService {
   public searchCardsByName(cardName: string) {
     return this.http.get<any>(this.base_url+`/cards/cardname-usercollection?cardName=${cardName}`)
     .pipe(
+      
       catchError(HandleErros.handleError)
     )
   }
