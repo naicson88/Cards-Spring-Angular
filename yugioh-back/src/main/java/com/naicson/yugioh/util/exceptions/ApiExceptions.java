@@ -19,11 +19,11 @@ public class ApiExceptions {
 		this.time = time;
 	}
 	
-	public ApiExceptions(String msg, HttpStatus httpStatus) {
+	public ApiExceptions(String msg, HttpStatus httpStatus, ZonedDateTime time) {
 		this.msg = msg;
 		this.cause = new Throwable();		
 		this.httpStatus = httpStatus;
-		this.time = null;
+		this.time = time;
 		
 	}
 	

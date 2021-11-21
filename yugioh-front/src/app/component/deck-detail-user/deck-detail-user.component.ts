@@ -2,6 +2,9 @@ import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/co
 import {CdkDragDrop, CdkDragExit, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Card } from 'src/app/classes/Card';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
+import { DeckService } from 'src/app/service/deck.service';
+import { Deck } from 'src/app/classes/deck';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -11,7 +14,7 @@ import { CardServiceService } from 'src/app/service/card-service/card-service.se
 })
 export class DeckDetailUserComponent implements OnInit {
   @ViewChild('btnSpan',{static: false})span:ElementRef;
-  constructor(private render: Renderer2, private cardService: CardServiceService) { }
+  constructor(private render: Renderer2, private cardService: CardServiceService, private deckService: DeckService) { }
 
    card = {
       image:"/../../assets/img/outras/ex.jpg",
@@ -33,9 +36,9 @@ card3 = {
   
 arrayCards = new Array();
  
-mainDeckCards = new Array(this.card)
+mainDeckCards: Deck[] = [];
 
-extraDeckCards = new Array(this.card)
+extraDeckCards = new Array()
 
 sideDeckCards = new Array()
 
@@ -43,7 +46,8 @@ sideDeckCards = new Array()
 
   ngOnInit() {
      
-    this.loadRandomCards()
+    this.loadRandomCards();
+    this.loadDeckCards();
 
   }
 
@@ -78,6 +82,33 @@ sideDeckCards = new Array()
       this.arrayCards = data;
     })
 }
+
+loadDeckCards(){
+  this.deckService.getDeckDetails(2,"User").subscribe(data => {
+    this.mainDeckCards = data;
+    this.extraDeckCards = data['extraDeck'];
+    this.sideDeckCards = data['sideDeckCards'];
+    //console.log(this.mainDeckCards)
+  })
+}
+
+/*filterExtraDeck(data:Object){
+
+      for (var i = data['cards'].length - 1; i >= 0; i--) {
+      
+      let generic = data['cards'][i].generic_type;
+
+      if(generic == "SYNCHRO" || generic == "XYZ" || generic == "FUSION"){
+        //Acrescenta no Array de Extra Deck
+        this.extraDeckCards.push(data['cards'][i]);
+        //Remove do Array de Main Deck
+        data['cards'].splice(i, 1);
+      }
+
+    } 
+    console.log(this.extraDeckCards)
+  }*/
+
 
 cardImagem(cardId: any){
   let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';

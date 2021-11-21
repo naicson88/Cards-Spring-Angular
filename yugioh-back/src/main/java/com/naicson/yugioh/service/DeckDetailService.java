@@ -21,7 +21,7 @@ public interface DeckDetailService {
 	
 	List<Card> cardsOfDeck(Long deckId) throws ErrorMessage;
 	 
-	Deck findById(Long Id) throws Exception;
+	Deck findById(Long Id);
 
 	List<RelDeckCards> relDeckCards(Long deckId);
 
@@ -39,6 +39,14 @@ public interface DeckDetailService {
 	
 	int addOrRemoveCardsToUserCollection(Long originalDeckId, int userId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage;
+	
+	Deck deckAndCards(Long deckId, String setType) throws Exception;
+	
+	List<Card> consultMainDeck(Long deckId);
+	
+	List<Card> consultExtraDeckCards(Long deckId,String userOrKonamiDeck);
+
+	List<Card> sortMainDeckCards(List<Card> cardList);
 	
 	
 }

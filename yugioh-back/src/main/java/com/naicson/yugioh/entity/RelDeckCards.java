@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_rel_deck_cards")
@@ -25,6 +26,7 @@ public class RelDeckCards {
 	private Double card_price;
 	private String card_raridade;
 	private Date dt_criacao;
+	private Boolean isSideDeck;
 	
 	public Long getId() {
 		return id;
@@ -67,6 +69,12 @@ public class RelDeckCards {
 	}
 	public void setDt_criacao(Date dt_criacao) {
 		this.dt_criacao = dt_criacao;
+	}
+	public Boolean getIsSideDeck() {
+		return isSideDeck;
+	}
+	public void setIsSideDeck(Boolean isSideDeck) {
+		this.isSideDeck = isSideDeck;
 	}	
 	
 	

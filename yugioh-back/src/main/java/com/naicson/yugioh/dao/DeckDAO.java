@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -222,5 +223,54 @@ public class DeckDAO {
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		return cards;
 	}
+
+	public List<Card> consultMainDeck(Long deckId) {
+		Query query = null;
+		
+		 query = em.createNativeQuery(
+				  " SELECT * FROM TAB_CARDS CARDS "
+				+ " WHERE NUMERO IN "
+				+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECKUSER_ID = :deckId and (is_sidedeck != 'S' or is_sidedeck is null)) "
+				+ " AND CARDS.GENERIC_TYPE NOT IN ('XYZ', 'SYNCHRO', 'FUSION')", Card.class);
+		
+		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
+		
+		return cards;
+	}
+	
+	public List<Card> consultSideDeckCards(Long deckId, String userOrKonamiDeck) {
+		
+		if(deckId == null || deckId == 0)
+			throw new IllegalArgumentException("Invalid Deck ID");
+		
+		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN "
+					+ "(SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECKUSER_ID = :deckId and is_sidedeck = 'S')", Card.class);
+		
+		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
+		
+		return cards;
+	}
+
+	public List<Card> consultExtraDeckCards(Long deckId, String userOrKonamiDeck) {
+		Query query = null;
+		
+		if(userOrKonamiDeck.equalsIgnoreCase("User")) {
+			 query = em.createNativeQuery(
+			  " SELECT * FROM TAB_CARDS CARDS "
+			+ " WHERE NUMERO IN "
+			+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECKUSER_ID = :deckId and (is_sidedeck != 'S' or is_sidedeck is null)) "
+			+ " AND CARDS.GENERIC_TYPE IN ('XYZ', 'SYNCHRO', 'FUSION') order by cards.generic_type", Card.class);
+			
+		} else if (userOrKonamiDeck.equalsIgnoreCase("Konami")) {
+			
+		}else {
+			throw new IllegalArgumentException("Type of deck not informed");
+		}
+		
+		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
+		
+		return cards;
+	}
+	
 		
 }

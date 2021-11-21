@@ -1,5 +1,6 @@
 package com.naicson.yugioh.util.exceptions;
 
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
@@ -9,10 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @ControllerAdvice
 public class ApiExceptionHandler {
 		
 	ZonedDateTime time =  ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+	
+	Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
 			
 		@ExceptionHandler(value = {Exception.class})
 		public ResponseEntity<ApiExceptions> handleExceptionError(Exception e) {
@@ -22,7 +28,7 @@ public class ApiExceptionHandler {
 		
 		@ExceptionHandler(value = {IllegalArgumentException.class})
 		public ResponseEntity<Object> handleValiationException(IllegalArgumentException e){			
-			ApiExceptions ex = new ApiExceptions(e.getMessage(), e, HttpStatus.BAD_REQUEST, this.time);	
+			ApiExceptions ex = new ApiExceptions(e.getMessage(), e.getCause(), HttpStatus.BAD_REQUEST, this.time);	
 			return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
 		}
 		
@@ -33,5 +39,14 @@ public class ApiExceptionHandler {
 			return new ResponseEntity<>(ex, HttpStatus.NOT_FOUND);
 		}
 		
+		@ExceptionHandler(value = {SQLException.class})
+			public ResponseEntity<Object> handleSQLException(SQLException sql){
+				ApiExceptions ex = new ApiExceptions(sql.getMessage(), sql, HttpStatus.INTERNAL_SERVER_ERROR, this.time);
+				logger.error("SQLException: " + ex.getMsg() + ", " + ex.getCause());
+				
+				return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
 		
-}
+	
+

@@ -10,7 +10,7 @@
         <p>
             <mat-form-field appearance="outline">
               <mat-label>Deck name</mat-label>
-              <input matInput placeholder="Placeholder">
+              <input matInput placeholder="Placeholder" [value]="mainDeckCards.nome">
             </mat-form-field>
           </p>
     </div>
@@ -51,9 +51,9 @@
             (cdkDropListDropped)="drop($event)"
             (cdkDragReleased)="remove($event)">
 
-                <div class="example-box" *ngFor="let item of mainDeckCards;" cdkDrag >
+                <div class="example-box" *ngFor="let item of mainDeckCards.cards;" cdkDrag >
                     <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
-                </div>
+                </div> 
             </div>
 
                 <!--Extra Deck-->
@@ -73,7 +73,7 @@
                 (cdkDropListDropped)="drop($event)"
                 >
                 <div class="example-box" *ngFor="let item of extraDeckCards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="67px" height="92px">
+                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
                 </div>
                 </div>
 
@@ -88,7 +88,7 @@
                 (cdkDropListDropped)="drop($event)"
                 >
                 <div class="example-box" *ngFor="let item of sideDeckCards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="67px" height="92px">
+                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
                 </div>
             </div>
                 
