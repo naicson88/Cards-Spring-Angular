@@ -210,8 +210,8 @@ export class DeckComponent implements OnInit {
    
   }
 
-  storeDeckId(event){
-    const id = event.target.name;
+  storeDeckId(id:any){
+  //  const id = event.target.name;
     localStorage.setItem("idDeckDetails", id);
     console.log(id);
   }

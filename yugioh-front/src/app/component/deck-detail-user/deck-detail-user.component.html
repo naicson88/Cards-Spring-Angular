@@ -36,9 +36,9 @@
                 <!--Main Deck-->
                 <div style="font-size: small; font-weight: 500;"> 
                     <h3 class="titles">Main Deck</h3>
-                    <span style="color: goldenrod;">Monsters: 15</span> / 
-                    <span style="color: green;">Magic: 10</span> /
-                    <span style="color: red;">Trap: 15</span>      
+                    <span style="color: goldenrod;">Monsters: {{typeCard.monster}}</span> / 
+                    <span style="color: green;">Magic: {{typeCard.magic}}</span> /
+                    <span style="color: red;">Trap: {{typeCard.trap}}</span>      
                 </div>
             <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
 
@@ -51,7 +51,7 @@
             (cdkDropListDropped)="drop($event)"
             (cdkDragReleased)="remove($event)">
 
-                <div class="example-box" *ngFor="let item of mainDeckCards.cards;" cdkDrag >
+                <div class="example-box" *ngFor="let item of mainDeckCards;" cdkDrag >
                     <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
                 </div> 
             </div>
@@ -59,9 +59,10 @@
                 <!--Extra Deck-->
                 <div style="font-size: small; font-weight: 500;"> 
                     <h3 class="titles">Extra Deck</h3>
-                    <span style="color: purple;">Fusion: 15</span> / 
-                    <span style="color: black;">XYZ: 10</span> /
-                    <span style="color: silver;">Synchron: 15</span>      
+                    <span style="color: purple;">Fusion: {{typeCard.fusion}}</span> / 
+                    <span style="color: blue;">Link: {{typeCard.link}}</span> /
+                    <span style="color: silver;">Synchron: {{typeCard.synchro}}</span> /     
+                    <span style="color: black;">XYZ: {{typeCard.xyz}}</span>                  
                 </div>
                
                 <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure"

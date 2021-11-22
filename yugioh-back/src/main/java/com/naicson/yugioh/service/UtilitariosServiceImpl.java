@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.controller.CardController;
 import com.naicson.yugioh.controller.DeckController;
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.service.interfaces.UtilitariosService;
 
 @Service
 public class UtilitariosServiceImpl implements UtilitariosService {

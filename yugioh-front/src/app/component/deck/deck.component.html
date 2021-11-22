@@ -50,7 +50,7 @@
                      <h5 class="name" title=" {{deck.nome}}">
                         <!--<a  name="{{deck.id}}"  (click)="deckDetailPage(deck.nome); storeDeckId($event)" >-->
                         
-                           <a  name="{{deck.id}}"  (click)="storeDeckId($event)" [routerLink]="['/deck-details/', deck.nome]" > 
+                           <a  name="{{deck.id}}"  (click)="storeDeckId(deck.id)" [routerLink]="['/deck-details/', deck.nome]" > 
                            <!--(click)="storeDeckId($event)"-->
                            {{deck.nome}}
                         </a><br>
@@ -94,7 +94,7 @@
                         <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
 
                         &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
-                        <a   [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId($event)" name="{{deck.id}}">
+                        <a  name="{{deck.id}}" [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId(deck.id)" >
                            <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp; 
                         </a>
                         

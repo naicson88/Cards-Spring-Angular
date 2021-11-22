@@ -22,6 +22,7 @@ export class Card {
 	 descr_pendulum_pt:string
 	 arquetipo:string
 	 qtd_link:string
+	 generic_type:string
 	 set_decks: Deck[];
 	 
     

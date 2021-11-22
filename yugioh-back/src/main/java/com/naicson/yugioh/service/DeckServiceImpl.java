@@ -28,6 +28,7 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
+import com.naicson.yugioh.service.interfaces.DeckDetailService;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service

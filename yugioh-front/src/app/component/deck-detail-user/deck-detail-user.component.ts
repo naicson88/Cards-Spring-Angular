@@ -5,6 +5,7 @@ import { CardServiceService } from 'src/app/service/card-service/card-service.se
 import { DeckService } from 'src/app/service/deck.service';
 import { Deck } from 'src/app/classes/deck';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { GenericTypeCard } from 'src/app/Util/enums/GenericTypeCards';
 
 
 @Component({
@@ -16,33 +17,23 @@ export class DeckDetailUserComponent implements OnInit {
   @ViewChild('btnSpan',{static: false})span:ElementRef;
   constructor(private render: Renderer2, private cardService: CardServiceService, private deckService: DeckService) { }
 
-   card = {
-      image:"/../../assets/img/outras/ex.jpg",
-      name:"Morphin Jar",
-      type: "Fiend"
-  }
-
-  card2 = {
-    image:"/../../assets/img/outras/trapIcon.png",
-    name:"Morphin Jar",
-    type: "Fiend"
-}
-
-card3 = {
-  image:"/../../assets/img/outras/linkIcon.png",
-  name:"Morphin Jar",
-  type: "Fiend"
-}
+   typeCard = {
+     monster:0,
+     magic:0,
+     trap:0,
+     synchro:0,
+     xyz:0,
+     fusion:0,
+     link:0
+   }
   
 arrayCards = new Array();
  
-mainDeckCards: Deck[] = [];
+mainDeckCards: Card[] = [];
 
-extraDeckCards = new Array()
+extraDeckCards: Card[] = [];
 
-sideDeckCards = new Array()
-
-
+sideDeckCards: Card[] = [];
 
   ngOnInit() {
      
@@ -84,30 +75,35 @@ sideDeckCards = new Array()
 }
 
 loadDeckCards(){
-  this.deckService.getDeckDetails(2,"User").subscribe(data => {
-    this.mainDeckCards = data;
+    const id = localStorage.getItem("idDeckDetails");
+    this.deckService.getDeckDetails(id,"User").subscribe(data => {
+    this.mainDeckCards = data['cards'];
+    this.countTypeCards(this.mainDeckCards, "main");
     this.extraDeckCards = data['extraDeck'];
+    this.countTypeCards(this.extraDeckCards, "extra");
     this.sideDeckCards = data['sideDeckCards'];
-    //console.log(this.mainDeckCards)
+    //this.sendCardsToArray( data['extraDeck'], data['extraDeck']);
   })
 }
 
-/*filterExtraDeck(data:Object){
+countTypeCards(data:Card[], deck:string){
+      if(deck === 'main'){
+       // console.log(data)
+        this.typeCard.monster = data.filter(card => card.nivel != null).length;
+        this.typeCard.magic = data.filter(card => card.generic_type === GenericTypeCard.SPELL).length;
+        this.typeCard.trap = data.filter(card => card.generic_type === GenericTypeCard.TRAP).length;
 
-      for (var i = data['cards'].length - 1; i >= 0; i--) {
-      
-      let generic = data['cards'][i].generic_type;
+      } else if (deck === 'extra'){
+  
+        this.typeCard.synchro = data.filter(card => card.generic_type === GenericTypeCard.SYNCHRO).length;
+        this.typeCard.xyz = data.filter(card => card.generic_type === GenericTypeCard.XYZ).length;
+        this.typeCard.fusion = data.filter(card => card.generic_type === GenericTypeCard.FUSION).length;
+        this.typeCard.link = data.filter(card => card.generic_type === GenericTypeCard.LINK).length;
 
-      if(generic == "SYNCHRO" || generic == "XYZ" || generic == "FUSION"){
-        //Acrescenta no Array de Extra Deck
-        this.extraDeckCards.push(data['cards'][i]);
-        //Remove do Array de Main Deck
-        data['cards'].splice(i, 1);
+      } else {
+        alert("It was not possible count some deck cards. :( ")
       }
-
-    } 
-    console.log(this.extraDeckCards)
-  }*/
+  }
 
 
 cardImagem(cardId: any){
