@@ -8,7 +8,7 @@
 <a href="#">Contact</a>-->
 </div> 
 <div class="container" id="main-div" style="margin-top: 20px; border: solid thin silver">
- 
+  
      <button mat-raised-button color="accent" style="margin-bottom: 10px; background-color: #04AA6D;" id="btnNew" (click)="openSide()">
         <mat-icon >fiber_new</mat-icon>
         Card
@@ -69,7 +69,7 @@
       </ul>
       
       <div class="tab-content" id="myTabContent">
-
+      
          <div id="filter-div" style=" margin-top: 20px;"> 
           <!--Filter-->
             <div class="wrap">
@@ -85,7 +85,7 @@
          <!--Inicio da div que mostra os cards-->
           <div id="cards" style=" margin-top: 20px; padding: 5px;">
       
-              <div class="div-cards" *ngFor="let card of arrCards">
+              <div class="div-cards" *ngFor="let card of arrCards; let i = index">
                 <p class="card-name">
                     <a [routerLink]="['/card-detail/', card.nome]"  name="{{card.numero}}" (click)="storedCardId($event)"  >
                       {{card.nome}}
@@ -96,16 +96,21 @@
                 <div class="card-img" style="margin-left: 5%; margin-top: -5px;">
                   <!-- <img src="../../../assets/SummonedSkull-SDY-NA-C-1E.jpg" alt="" width="165px" height="220px"> -->
                   <img [src]="cardImagem(card.numero)" alt="" width="165px" height="220px" style="cursor: pointer;" title="{{card.nome}}"
-                  (mouseover)="mostrarImgToolTip($event)"
-                (mousemove)="mostrarImgToolTip($event)"
-                (mouseout)="esconderImgToolTip()"> 
+                  (mouseover)="testeTool($event, card.numero)"
+                  (mouseout)="esconderImgToolTip()"
+                  >
+               <!--    (mouseover)="mostrarImgToolTip($event)"
+                  (mousemove)="mostrarImgToolTip($event)"
+                  (mouseout)="esconderImgToolTip()">  -->
                 </div>
 
-                     <!--Div que será mostrada quando o mouse passar sobre a carta -->
+               
+
+                     <!--Div que será mostrada quando o mouse passar sobre a carta 
                      <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
                       <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
                       class="imgTooltip" >
-                      </div>
+                      </div>-->
 
                 <button class="manageBtn" data-toggle="modal" data-target=".manageCard"  (click)="cardOfUserDetails(card.numero)">
                 Details 
@@ -249,5 +254,10 @@
 
 <div style="margin-top: 60px;">
   <app-footer></app-footer>
+</div>
+
+<!-- Mostrar div com informações do card-->
+<div *ngIf="isShowTooltip == true" class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
+  <app-cardinfo [cardImage]="cardImage" [card]="card"></app-cardinfo>
 </div>
 

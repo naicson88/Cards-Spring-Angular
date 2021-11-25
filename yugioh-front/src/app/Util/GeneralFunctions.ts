@@ -1,9 +1,11 @@
+import { Serializer } from "@angular/compiler";
+import { Card } from "../classes/Card";
 import { Cards } from "../classes/Rel_Deck_Cards";
 import { CardServiceService } from "../service/card-service/card-service.service";
 
 
 export abstract class GeneralFunctions  {
-
+  
     public static cardImagem:string = 'https://storage.googleapis.com/ygoprodeck.com/pics/';
 
     public static relUserCards(cardsFound: Cards[], service: CardServiceService) {
@@ -28,4 +30,19 @@ export abstract class GeneralFunctions  {
             return relUserCard;
           });         
     }
+
+    public static findCard(cardNumber:string, service: CardServiceService){
+       let searchedCard:Card;
+
+      service.findByNumero(cardNumber).subscribe(card => {
+        searchedCard = card;   
+  
+      })  
+      
+      return searchedCard;
+      
+    }
+
+
+
 }

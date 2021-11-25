@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.naicson.yugioh.entity.User;
+import com.naicson.yugioh.entity.auth.User;
 
 public class UserDetailsImpl implements UserDetails{
 	

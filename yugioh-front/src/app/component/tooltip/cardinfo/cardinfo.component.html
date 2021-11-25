@@ -1,0 +1,38 @@
+    <!--Div que será mostrada quando o mouse passar sobre a carta -->
+    <div  id="mainDiv">
+       <div  style="float: left;">
+        <img [src]='cardImage'  alt="" width="240px" height="335px"  >    
+       </div>
+       <div style="border: solid thin white; float: right; width: 340px; margin-top: 3px; min-height: 330px; padding: 5px; ">
+        <!--Card name-->
+        <div>
+            <h5 >{{card.nome}}</h5>
+        </div>
+
+        <div class="generalInfo">
+          <p>
+            <img src="..\..\assets\img\tiposMonstros\atk.JPG" alt="" width="30px" height="30px" style="display: inline-block;" > ATK: {{card.atk}} 
+            <img src="..\..\assets\img\tiposMonstros\def.JPG" alt="" width="30px" height="30px" style="display: inline-block;  margin-left: 15px;"> DEF: {{card.def}}
+        </p>
+
+          <p>
+            <img [src]='card.attributeImg.path_img' alt="" width="30px" height="30px" style="display: inline-block; "> {{card.atributo}}
+            <img src="..\..\assets\img\outras\Nivel.png" alt="" width="20px" height="20px" style="display: inline-block;  margin-left: 15px;"> {{card.nivel}}
+          </p>
+          
+          <p *ngIf="card.arquetipo != null">
+              Archetype: <span style="color: skyblue; font-weight: 700;">{{card.arquetipo}}</span>
+          </p>
+
+        </div>
+
+        <div class="cardDescription">
+
+          <p >
+            {{card.descricao}}
+          </p>
+        </div>
+       
+       </div>
+     
+    </div>

@@ -10,6 +10,8 @@ import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 import { MatDialog } from '@angular/material';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
 import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
+import { CardinfoComponent } from '../tooltip/cardinfo/cardinfo.component';
+import { Card } from 'src/app/classes/Card';
 
 
 @Component({
@@ -20,7 +22,7 @@ import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog
 export class UsercardsComponent implements OnInit {
   @ViewChild('btnNew',  { static: false }) btnNew: ElementRef;
 
-  constructor(private img: Imagens, private service: CardServiceService, private dialog: MatDialog) { }
+  constructor(private img: Imagens, private service: CardServiceService, private dialog: MatDialog, private tooltip: CardinfoComponent) { }
 
   cardsFromScroll = new BehaviorSubject([]);
   page: number = 1; 
@@ -36,6 +38,10 @@ export class UsercardsComponent implements OnInit {
   genericTypeAtual: string = 'MONSTER'
 
   cardname = '';
+
+  //Serão enviadas para o tooltip
+  cardImage:string;
+  card:Card;
 
   ngOnInit() {
     this.map();
@@ -108,6 +114,17 @@ export class UsercardsComponent implements OnInit {
     imgTooltip: string;
     topTp;
     leftTp;
+
+    testeTool(e, cardNumber:any){
+
+      this.leftTp =  e.pageX + 15 + "px";
+      this.topTp = + e.pageY + 15 + "px";
+      this.isShowTooltip = true;
+
+      this.cardImage = GeneralFunctions.cardImagem + cardNumber + '.jpg';
+      this.service.findByNumero(cardNumber).subscribe(card => { console.log(this.card); this.card = card  });
+    
+    }
  
     mostrarImgToolTip(e){
         this.leftTp =  e.pageX + 15 + "px";
@@ -197,6 +214,8 @@ export class UsercardsComponent implements OnInit {
         data: warningMessage
       })
     }
+
+
 
     storedCardId(event){
       /*  const id = event.target.name;

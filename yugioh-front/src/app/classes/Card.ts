@@ -24,6 +24,7 @@ export class Card {
 	 qtd_link:string
 	 generic_type:string
 	 set_decks: Deck[];
+	 attributeImg:any;
 	 
     
 }

@@ -36,6 +36,7 @@ import { UsercardsComponent } from './component/usercards/usercards.component';
 import { SideCardsearchComponent } from './component/cards-search/side-cardsearch/side-cardsearch.component';
 import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUser.module';
 import { DialogModule } from './component/dialogs/dialogs.module';
+import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.component';
 
 
 
@@ -58,7 +59,8 @@ import { DialogModule } from './component/dialogs/dialogs.module';
     CardsSearchComponent,
     UsercardsComponent,
     DeckDetailComponent,
-    SideCardsearchComponent
+    SideCardsearchComponent,
+    CardinfoComponent
   
   ],
   imports: [
