@@ -234,3 +234,7 @@
   background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,.3));text-align: center; letter-spacing: 5px;
 
   }
+
+  .box-desc{
+    background: ghostwhite;
+  }

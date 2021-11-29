@@ -11,13 +11,32 @@
 
         <div class="generalInfo">
           <p>
-            <img src="..\..\assets\img\tiposMonstros\atk.JPG" alt="" width="30px" height="30px" style="display: inline-block;" > ATK: {{card.atk}} 
-            <img src="..\..\assets\img\tiposMonstros\def.JPG" alt="" width="30px" height="30px" style="display: inline-block;  margin-left: 15px;"> DEF: {{card.def}}
+            <span *ngIf="card.atk != null ">
+              <img  src="..\..\assets\img\tiposMonstros\atk.JPG" alt="" width="30px" height="30px" style="display: inline-block;" > ATK: {{card.atk}} 
+            </span>
+            
+            <span *ngIf="card.def != null " >
+              <img src="..\..\assets\img\tiposMonstros\def.JPG" alt="" width="30px" height="30px" style="display: inline-block;  margin-left: 15px;"> DEF: {{card.def}}
+            </span>
+
+            <span *ngIf="card.qtd_link != null " >
+              <img src="..\..\assets\img\tiposMonstros\Link.PNG" alt="" width="30px" height="30px" style="display: inline-block;  margin-left: 15px;"> Link - {{card.qtd_link}}
+            </span>
+            
         </p>
 
           <p>
             <img [src]='card.attributeImg.path_img' alt="" width="30px" height="30px" style="display: inline-block; "> {{card.atributo}}
-            <img src="..\..\assets\img\outras\Nivel.png" alt="" width="20px" height="20px" style="display: inline-block;  margin-left: 15px;"> {{card.nivel}}
+
+            <img *ngIf="card.nivel != null " src="..\..\assets\img\outras\Nivel.png" alt="" width="20px" height="20px" style="display: inline-block; 
+             margin-left: 30px;"> {{card.nivel}}
+
+            <span *ngIf="card.escala != null" style="margin-left: 30px;">             
+                <img src="..\..\assets\img\outras\EscalaAzul.png" alt="Blue Scale"> 
+                  <span> {{card.escala}} </span> 
+                <img src="..\..\assets\img\outras\EscalaVermelha.png" alt="Red Scale"> 
+            </span>
+
           </p>
           
           <p *ngIf="card.arquetipo != null">
@@ -32,6 +51,15 @@
             {{card.descricao}}
           </p>
         </div>
+
+        <div class="cardDescription">
+
+          <p >
+            {{card.descr_pendulum}}
+          </p>
+        </div>
+
+
        
        </div>
      

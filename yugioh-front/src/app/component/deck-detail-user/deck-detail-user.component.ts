@@ -56,10 +56,11 @@ sideDeckCards: Card[] = [];
     }
 
     if(!event.isPointerOverContainer){
+      console.log(event.container.data)
       event.container.data.splice(event.previousIndex,1)
     }
 
-    console.log(this.arrayCards, this.mainDeckCards)  
+   // console.log(this.arrayCards, this.mainDeckCards)  
   }
 
   btnSearch(event){
