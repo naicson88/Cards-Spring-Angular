@@ -25,6 +25,7 @@ export class Card {
 	 generic_type:string
 	 set_decks: Deck[];
 	 attributeImg:any;
+	 isExtraDeck:boolean
 	 
     
 }

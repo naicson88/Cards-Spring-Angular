@@ -96,7 +96,7 @@
                 <div class="card-img" style="margin-left: 5%; margin-top: -5px;">
                   <!-- <img src="../../../assets/SummonedSkull-SDY-NA-C-1E.jpg" alt="" width="165px" height="220px"> -->
                   <img [src]="cardImagem(card.numero)" alt="" width="165px" height="220px" style="cursor: pointer;" title="{{card.nome}}"
-                  (mouseover)="testeTool($event, card.numero)"
+                  (mouseover)="mostrarDivCardsInfo($event, card.numero)"
                   (mouseout)="esconderImgToolTip()"
                   >
                <!--    (mouseover)="mostrarImgToolTip($event)"

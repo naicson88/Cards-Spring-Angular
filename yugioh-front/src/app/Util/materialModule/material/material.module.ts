@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatCheckboxModule,
     MatExpansionModule,
     DragDropModule,
+    MatTooltipModule
    
   ],
   exports: [
@@ -44,6 +46,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatSelectModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatTooltipModule
   ],
 
 })

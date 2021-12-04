@@ -133,6 +133,16 @@ public class CardController {
 		return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
 	}
 	
+	@GetMapping(path = {"/randomCardsDetailed"})
+	@ResponseBody
+	public ResponseEntity<List<Card>> randomCardsDetailed(){
+		
+		List<Card> cards = cardService.randomCardsDetailed();
+		
+		return new ResponseEntity<List<Card>>(cards, HttpStatus.OK);
+	}
+	
+	
 	@GetMapping(path = {"/rel-user-cards"})
 	@ResponseBody
 	public ResponseEntity<List<RelUserCardsDTO>> searchForCardsUserHave(@RequestParam int[] cardsNumbers) throws SQLException, ErrorMessage {

@@ -37,6 +37,7 @@ import { SideCardsearchComponent } from './component/cards-search/side-cardsearc
 import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUser.module';
 import { DialogModule } from './component/dialogs/dialogs.module';
 import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.component';
+import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detail-user.component';
 
 
 
@@ -60,7 +61,8 @@ import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.compone
     UsercardsComponent,
     DeckDetailComponent,
     SideCardsearchComponent,
-    CardinfoComponent
+    CardinfoComponent,
+    DeckDetailUserComponent
   
   ],
   imports: [
@@ -81,6 +83,7 @@ import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.compone
     ToastrModule.forRoot()
 
   ],
+  
   providers: [
     authStrategyProvider, 
   {provide: HTTP_INTERCEPTORS,
@@ -88,7 +91,8 @@ import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.compone
   multi: true},
 
   {provide: HTTP_INTERCEPTORS,useClass: SpinnerService, multi: true },
-  Imagens
+  Imagens,
+  
 ],
   bootstrap: [AppComponent]
 })

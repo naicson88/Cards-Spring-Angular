@@ -53,5 +53,7 @@ public interface CardDetailService {
 	List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join);
 
 	List<CardsSearchDTO> cardSearchByNameUserCollection(String cardName, Pageable pageable);
+
+	List<Card> randomCardsDetailed();
 	
 }

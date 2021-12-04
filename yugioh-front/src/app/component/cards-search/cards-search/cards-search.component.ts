@@ -1,6 +1,6 @@
 import { COMPILER_OPTIONS, Component, Directive, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Card } from 'src/app/classes/Card';
 import { Imagens } from 'src/app/classes/Imagens';
-import { Cards } from 'src/app/classes/Rel_Deck_Cards';
 import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
@@ -42,7 +42,7 @@ export class CardsSearchComponent implements OnInit {
 
   panelOpenState = false;
   chosen:string;
-  cardsFound: Cards[] = [];
+  cardsFound: Card[] = [];
   relUserCard: any;
 
   //Cards input field data 

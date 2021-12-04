@@ -29,7 +29,7 @@
       
     </div>
 
-    <div cdkDropListGroup>
+    <div cdkDropListGroup #dropListContainer>
         <div id="deckContainer" >
             <!-- Deck structure-->
             <div id="deckStructure"  >
@@ -40,21 +40,24 @@
                     <span style="color: green;">Magic: {{typeCard.magic}}</span> /
                     <span style="color: red;">Trap: {{typeCard.trap}}</span>      
                 </div>
-            <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
+
+         <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
 
             cdkDropList
             #mainDeck="cdkDropList"
             [cdkDropListData]="mainDeckCards"
             [cdkDropListConnectedTo]="[cardItem]"
-            class="example-list"
-            cdkDropListOrientation="horizontal"
+            
+            cdkDropListOrientation="vertical"
             (cdkDropListDropped)="drop($event)"
             (cdkDragReleased)="remove($event)">
+
 
                 <div class="example-box" *ngFor="let item of mainDeckCards;" cdkDrag >
                     <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
                 </div> 
-            </div>
+            </div> 
+
 
                 <!--Extra Deck-->
                 <div style="font-size: small; font-weight: 500;"> 
@@ -101,18 +104,48 @@
             #cardItem="cdkDropList"
             [cdkDropListData]="arrayCards"
             [cdkDropListConnectedTo]="[mainDeck]"
-            (cdkDropListDropped)="drop($event)">
+            (cdkDropListDropped)="drop($event)"
+            >
 
             <div id="searchedCardsBar">
-                <h5>Seached Cards</h5>
+                <h5> Cards List</h5>
             </div>
 
-            <div  *ngFor="let item of arrayCards" cdkDrag  class="example-box" > 
-               
-                <div>
+            <div  *ngFor="let item of arrayCards; let i = index" cdkDrag style="border: solid thin  silver; height: 93px; align-items: center; width: 99%;  " >  
+
+                <div style="width: 30%;display: inline-block; margin: 0; ">                  
                     <img  [src]='cardImagem(item.numero)' alt="" width="67px" height="92px">
                 </div>
 
+                <div style="width: 70%; display: inline-block; background: ghostwhite; height: 92px;  float: right;  border-collapse:collapse;
+                display : table;" >                  
+                  <span style="font-family: Lato, sans-serif; color: #0056b3; font-size: 14px ; font-weight: 700;" >{{item.nome}}  </span>
+
+                  <div style="  display : table-row;   vertical-align : bottom;  height : 1px; ">
+                
+                    <i class="material-icons card-item-icon" style="margin-left: 35%; color: #f4511e;" 
+                    matTooltipClass="example-tooltip-red"                   
+                    matTooltip="Add Side Deck" 
+                    (click)="addCardSideDeck(i)"> arrow_circle_left </i> &nbsp;
+                    
+                                            
+                    <i *ngIf="item.isExtraDeck == false"
+                    class="material-icons card-item-icon" style=" color: #228B22;"
+                    matTooltipClass="example-tooltip-green"      
+                    matTooltip="Add Main Deck"> arrow_circle_left </i> 
+
+                    <i *ngIf="item.isExtraDeck == true"
+                    class="material-icons card-item-icon" style=" color: purple;"
+                    matTooltipClass="example-tooltip-purple"      
+                    matTooltip="Add Extra Deck"> arrow_circle_left </i> 
+                        
+                    &nbsp;  <mat-icon style="color: #2F4F4F; " class="card-item-icon"
+                    (mouseover)="mostrarDivCardsInfo($event, item.numero)"
+                    (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
+
+                  </div>
+
+                </div> 
             </div>
                 
                 <!--<div class="cardItemSearch" *ngFor="let item of arrayCards">
@@ -148,7 +181,12 @@
   </div>
  
 
- <!-- <div style="margin-top: 60px;">
+<div style="margin-top: 60px;">
     <app-footer></app-footer>
-  </div> -->
+  </div> 
+
+    <!-- Mostrar div com informações do card-->
+ <div *ngIf="isShowTooltip == true" class="divTooltip" >
+    <app-cardinfo [cardImage]="cardImage" [card]="card"></app-cardinfo>
+  </div> 
   

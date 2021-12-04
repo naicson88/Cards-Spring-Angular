@@ -46,6 +46,15 @@ public class ApiExceptionHandler {
 				
 				return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+		
+		@ExceptionHandler(value = {ErrorMessage.class})
+		public ResponseEntity<Object> handleErrorMessage(ErrorMessage em){
+			ApiExceptions ex = new ApiExceptions(em.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, this.time);
+			logger.error("ErrorMessage: " + em.getMessage() + ", " + em.getCause());
+			
+			return new ResponseEntity<Object>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		}
 		
 	

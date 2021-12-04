@@ -1,4 +1,5 @@
-export class Cards {
+export class RelDeckCards {
+    [x: string]: any;
     total: number;
     common: number;
     rare: number;
