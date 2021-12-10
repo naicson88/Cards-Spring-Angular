@@ -53,9 +53,44 @@
             (cdkDragReleased)="remove($event)">
 
 
-                <div class="example-box" *ngFor="let item of mainDeckCards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
-                </div> 
+                <div class="example-box" *ngFor="let item of mainDeckCards;" style="background: transparent;" >
+                   
+                    <div>
+                        <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                    </div>
+
+                    <div class="divSimpleInfo" >
+
+                        <ul class="cardSimpleInfo">
+                            <li>
+                                <span style="color: #228B22; font-weight: 700; top: 0;">$ {{item.price}}</span> 
+                            </li>
+                            <li>
+                                <select name="teste" id="teste" style="font-size: smaller; ">
+
+                                    <option  *ngFor="let setCode of item.set_code" 
+                                    [value]="setCode" >{{setCode}}</option>
+                                  
+                                </select>   
+                            </li>
+                            <li style="margin-top: 3px;">  
+    
+                                    <mat-icon style="color: #2F4F4F; " class="card-item-icon"> remove_red_eye </mat-icon>
+                                    
+                                    <i class="material-icons card-item-icon" style=" color: blue;"  matTooltip="Add Side Deck" >arrow_circle_down</i>
+
+                                    <i class="material-icons"  style="float: right;">mode_edit_outline</i>
+
+                                    <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
+                                        matTooltip="Remove"  >highlight_remove</i></span>
+                                    
+                            </li>
+                        </ul>
+            
+                    </div>
+                </div>  
+
+                
             </div> 
 
 
@@ -76,10 +111,42 @@
                 cdkDropListOrientation="horizontal"
                 (cdkDropListDropped)="drop($event)"
                 >
-                <div class="example-box" *ngFor="let item of extraDeckCards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                <div class="example-box" *ngFor="let item of extraDeckCards;"  style="background-color: transparent;">
+                        <div>
+                            <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                        </div>
+                        
+
+                        <div class="divSimpleInfo" >
+
+                            <ul class="cardSimpleInfo">
+                                <li>
+                                    <span style="color: #228B22; font-weight: 700; top: 0;">$ 190.99</span> 
+                                   
+                                </li>
+                                <li>
+                                    <select name="teste" id="teste" style="font-size: smaller; ">
+                                        <option value="1">AWD-1982</option>
+                                        <option value="1">AWDAS-1982</option>
+                                        <option value="1">AWDDAS-999</option>
+                                    </select>   
+                                </li>
+                                <li style="margin-top: 3px;">  
+
+                                        <mat-icon style="color: #2F4F4F; " class="card-item-icon"> remove_red_eye </mat-icon>
+                                        
+                                        <i class="material-icons card-item-icon" style="margin-left: 15%; color: blue;"  matTooltip="Add Side Deck" >arrow_circle_down</i>
+
+                                        <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
+                                            matTooltip="Remove"  >highlight_remove</i></span>
+                                </li>
+                            </ul>
+                
+                        </div> 
+
+
                 </div>
-                </div>
+            </div>
 
                 <!--Side Deck-->
                 <h3 class="titles">Side Deck</h3>
@@ -93,6 +160,7 @@
                 >
                 <div class="example-box" *ngFor="let item of sideDeckCards;" cdkDrag >
                     <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+
                 </div>
             </div>
                 
@@ -132,12 +200,14 @@
                     <i *ngIf="item.isExtraDeck == false"
                     class="material-icons card-item-icon" style=" color: #228B22;"
                     matTooltipClass="example-tooltip-green"      
-                    matTooltip="Add Main Deck"> arrow_circle_left </i> 
+                    matTooltip="Add Main Deck"
+                    (click)="addCardMainDeck(i)"> arrow_circle_left </i> 
 
                     <i *ngIf="item.isExtraDeck == true"
                     class="material-icons card-item-icon" style=" color: purple;"
                     matTooltipClass="example-tooltip-purple"      
-                    matTooltip="Add Extra Deck"> arrow_circle_left </i> 
+                    matTooltip="Add Extra Deck"
+                    (click)="addCardExtraDeck(i)"> arrow_circle_left </i> 
                         
                     &nbsp;  <mat-icon style="color: #2F4F4F; " class="card-item-icon"
                     (mouseover)="mostrarDivCardsInfo($event, item.numero)"

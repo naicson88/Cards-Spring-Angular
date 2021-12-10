@@ -3,11 +3,10 @@ import {CdkDragDrop, CdkDragEnter, CdkDragExit, CdkDragMove, copyArrayItem, move
 import { Card } from 'src/app/classes/Card';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 import { DeckService } from 'src/app/service/deck.service';
-import { Deck } from 'src/app/classes/deck';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { GenericTypeCard } from 'src/app/Util/enums/GenericTypeCards';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import { DeckDetailUserService } from './deck-detail-user.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -21,7 +20,8 @@ export class DeckDetailUserComponent implements OnInit {
   @ViewChild('btnSpan',{static: false})span:ElementRef;
   @ViewChild('dropListContainer',{static: false}) dropListContainer?: ElementRef;
 
-  constructor(private render: Renderer2, private cardService: CardServiceService, private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService) { }
+  constructor(private render: Renderer2, private cardService: CardServiceService, 
+    private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService) { }
 
   dropListReceiverElement?: HTMLElement;
   dragDropInfo?: {
@@ -47,6 +47,8 @@ extraDeckCards: Card[] = [];
 
 sideDeckCards: Card[] = [];
 
+relDeckCards: any[] = [];
+
   ngOnInit() {
      
     this.loadRandomCards();
@@ -71,8 +73,6 @@ sideDeckCards: Card[] = [];
       console.log(event.container.data)
       event.container.data.splice(event.previousIndex,1)
     }
-
-    console.log(this.arrayCards, this.mainDeckCards)  
   }
 
 
@@ -110,17 +110,23 @@ sideDeckCards: Card[] = [];
 
 loadDeckCards(){
     const id = localStorage.getItem("idDeckDetails");
+    
     this.deckService.getDeckDetails(id,"User").subscribe(data => {
+      console.log(data)
     this.mainDeckCards = data['cards'];
     this.countTypeCards(this.mainDeckCards, "main");
     this.extraDeckCards = data['extraDeck'];
     this.countTypeCards(this.extraDeckCards, "extra");
     this.sideDeckCards = data['sideDeckCards'];
     //this.sendCardsToArray( data['extraDeck'], data['extraDeck']);
+    this.relDeckCards =  data['rel_deck_cards'];
+    this.setRelDeckCards()
+
   })
 }
 
 countTypeCards(data:Card[], deck:string){
+
       if(deck === 'main'){
        // console.log(data)
         this.typeCard.monster = data.filter(card => card.nivel != null).length;
@@ -138,6 +144,25 @@ countTypeCards(data:Card[], deck:string){
         alert("It was not possible count some deck cards. :( ")
       }
   }
+
+setRelDeckCards(){
+
+    this.mainDeckCards.forEach((card, index) => {
+
+     let rel = this.relDeckCards.find(rel => rel.card_numero === card.numero);
+      
+     card.price = rel.card_price;
+     card.raridade = rel.card_raridade;
+     let str: string[] = []
+     str.push(rel.card_set_code)
+     card.set_code = str;
+
+    });{
+
+      console.log(this.mainDeckCards)
+     
+    }
+}
 
 
 cardImagem(cardId: any){
@@ -222,7 +247,59 @@ esconderImgToolTip(){
 addCardSideDeck(index:any){
 
   this.sideDeckCards.unshift(this.arrayCards[index])
-  console.log("o card foi " + this.mainDeckCards);
+  this.toastr.success('Card added in Side Deck');
+
+}
+
+addCardExtraDeck(index:any){
+
+  if(this.extraDeckCards.length >= 15){
+    this.toastr.error("Extra Deck already have 15 cards, can't add more")
+    return false;
+ }
+
+ let isLimitOver:boolean = this.isCardLimitOver(this.arrayCards[index], 'E')
+
+  if(!isLimitOver){
+    this.extraDeckCards.unshift(this.arrayCards[index]);
+    this.toastr.success("Card added in Extra Deck");
+    this.countTypeCards(this.extraDeckCards, 'extra');
+  } else{
+    this.toastr.warning("There are already three copies of this card")
+  }
+ 
+}
+
+addCardMainDeck(index:any){
+
+  if(this.mainDeckCards.length >= 60){
+     this.toastr.error("Deck already have 60 cards, can't add more")
+     return false;
+  }
+
+  let isLimitOver:boolean = this.isCardLimitOver(this.arrayCards[index], 'M')
+ 
+  if(!isLimitOver){
+    this.mainDeckCards.unshift(this.arrayCards[index]);
+    this.toastr.success("Card added in Main Deck");
+    this.countTypeCards(this.mainDeckCards, 'main');
+  } else{
+    this.toastr.warning("There are already three copies of this card")
+  }
+
+}
+
+isCardLimitOver(cardAdded:any, tipoDeck:string){
+
+    let qtdCards = 0;
+    let deckType = tipoDeck == 'M' ? this.mainDeckCards : this.extraDeckCards;
+    
+    for(let card of deckType){
+      if(card.numero === cardAdded.numero)
+        qtdCards++;
+  }
+
+   if(qtdCards >= 3) {return true} else {return false} 
 
 }
 

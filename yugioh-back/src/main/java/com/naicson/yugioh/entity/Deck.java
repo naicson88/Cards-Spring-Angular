@@ -38,7 +38,7 @@ public class Deck {
 	@Transient
 	private List<Card> sideDeckCards;
 	@Transient
-	private List<Card> extraDeck;
+	private List<Card> extraDeckCards;
 	@Transient
 	private List<RelDeckCards> rel_deck_cards;
 	@Column(name = "is_konami_deck")
@@ -78,11 +78,11 @@ public class Deck {
 	}	
 	
 	public List<Card> getExtraDeck() {
-		return extraDeck;
+		return extraDeckCards;
 	}
 
 	public void setExtraDeck(List<Card> extraDeck) {
-		this.extraDeck = extraDeck;
+		this.extraDeckCards = extraDeck;
 	}
 
 	public List<Card> getSideDeckCards() {

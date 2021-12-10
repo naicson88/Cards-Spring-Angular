@@ -48,5 +48,7 @@ public interface DeckDetailService {
 
 	List<Card> sortMainDeckCards(List<Card> cardList);
 	
+    List<RelDeckCards> relDeckUserCards(Long deckUserId);
+	
 	
 }

@@ -20,6 +20,7 @@
     height: 25px;
     color: white;
     font-weight: 700;
+ 
     
   }
  
@@ -208,3 +209,45 @@
   background: rgb(102, 1, 102);
 }
 
+.cardSimpleInfo{
+  list-style: none;
+  display:block;
+  text-align: center;
+  margin-left: -39px;
+  margin-top: 10px ;
+  height: 80px;
+ 
+}
+
+.cardSimpleInfo li {
+  list-style: none;
+  display: block;
+  padding: 3px;
+  position: relative;
+  text-decoration: none;
+  text-align: left;
+  font-family: arvo;
+  height: 33%;
+  margin-bottom: 2p;
+
+}
+
+.divSimpleInfo{
+ width:140px;
+ padding: 5px; height: fit-content;
+ border-radius: 0 5px 5px 0;
+ background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+}
+
+select {
+  border-radius: 3px;
+  box-shadow: 0 1px 3px -2px #9098A9;
+  border: 1px solid #E8EAED;
+  transition: all 150ms ease;
+  padding: 1px;
+}

@@ -19,6 +19,7 @@ import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.dto.set.DeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
@@ -189,7 +190,7 @@ public class DeckDAO {
 		int result = 0;
 		
 		if(originalDeckId2 != null && originalDeckId != null) {
-			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECKUSER_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
+			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECK_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
 											  " SELECT " + originalDeckId2 + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
 											  " where deck_id = " + originalDeckId  );
 			
@@ -230,7 +231,7 @@ public class DeckDAO {
 		 query = em.createNativeQuery(
 				  " SELECT * FROM TAB_CARDS CARDS "
 				+ " WHERE NUMERO IN "
-				+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECKUSER_ID = :deckId and (is_sidedeck != 'S' or is_sidedeck is null)) "
+				+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and (is_side_deck != 'S' or is_side_deck is null)) "
 				+ " AND CARDS.GENERIC_TYPE NOT IN ('XYZ', 'SYNCHRO', 'FUSION')", Card.class);
 		
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
@@ -244,7 +245,7 @@ public class DeckDAO {
 			throw new IllegalArgumentException("Invalid Deck ID");
 		
 		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN "
-					+ "(SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECKUSER_ID = :deckId and is_sidedeck = 'S')", Card.class);
+					+ "(SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and is_side_deck = 'S')", Card.class);
 		
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		
@@ -258,7 +259,7 @@ public class DeckDAO {
 			 query = em.createNativeQuery(
 			  " SELECT * FROM TAB_CARDS CARDS "
 			+ " WHERE NUMERO IN "
-			+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECKUSER_ID = :deckId and (is_sidedeck != 'S' or is_sidedeck is null)) "
+			+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and (is_side_deck != 'S' or is_side_deck is null)) "
 			+ " AND CARDS.GENERIC_TYPE IN ('XYZ', 'SYNCHRO', 'FUSION') order by cards.generic_type", Card.class);
 			
 		} else if (userOrKonamiDeck.equalsIgnoreCase("Konami")) {
@@ -270,6 +271,14 @@ public class DeckDAO {
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		
 		return cards;
+	}
+
+	public List<RelDeckCards> relDeckUserCards(Long deckUserId) {
+		Query query = em.createNativeQuery("select * from tab_rel_deckusers_cards where deck_id = :deckUserId", RelDeckCards.class);
+			
+		List<RelDeckCards> relation = (List<RelDeckCards>) query.setParameter("deckUserId", deckUserId).getResultList();
+		
+		return relation;
 	}
 	
 		
