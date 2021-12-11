@@ -71,7 +71,7 @@
         </ul>
         <div id="myTabContent" class="tab-content"  >
             <!--INFORMACOES CARDS-->
-          <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active container">
+          <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active container" style="background-color: ghostwhite;">
             <div class="card-details-header">
               Card Details
             </div>
@@ -86,8 +86,8 @@
                         (mouseout)="esconderImgToolTip()"
                         alt="" width="160px" height="219px" style="margin: -2px;"> 
                     </div>
-                    
-                         <!--Div que será mostrada quando o mouse passar sobre a carta -->
+
+                         <!-- Div que será mostrada quando o mouse passar sobre a carta  -->
                          <div class="divTooltip" [ngStyle]="{'top': topTp, 'left': leftTp }">
                             <img [src]='imgTooltip'  alt="" width="310px" height="420px" *ngIf="isShowTooltip" 
                             class="imgTooltip" >
@@ -277,7 +277,7 @@
                     <section id="minimal-statistics">
                    
                       <div class="row" >
-                        <div class="col-xl-3 col-sm-6 col-12"> 
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc"> 
                           <div class="card-static" style="border: solid thin BurlyWood;"> 
                             <div class="card-content">
                               <div class="card-body">
@@ -295,7 +295,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border: solid thin green;">
                             <div class="card-content">
                               <div class="card-body">
@@ -313,7 +313,7 @@
                           </div>
                         </div>
 
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border: solid thin red;">
                             <div class="card-content">
                               <div class="card-body">
@@ -332,7 +332,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border: solid thin BurlyWood ;">
                             <div class="card-content">
                               <div class="card-body">
@@ -352,7 +352,7 @@
                       </div>
                     
                       <div class="row">
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border: solid thin ;">
                             <div class="card-content">
                               <div class="card-body">
@@ -369,7 +369,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border: solid thin silver;">
                             <div class="card-content">
                               <div class="card-body">
@@ -390,7 +390,7 @@
                         </div>
                     
                  
-                        <div class="col-xl-3 col-sm-6 col-12" >
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc" >
                           <div class="card-static" style="border: solid thin purple;">
                             <div class="card-content">
                               <div class="card-body">
@@ -408,7 +408,7 @@
                           </div>
                         </div>  
 
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border: solid thin blue;">
                             <div class="card-content">
                               <div class="card-body">
@@ -426,7 +426,7 @@
                           </div>
                         </div>
                          
-                        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="col-xl-3 col-sm-6 col-12 box-desc">
                           <div class="card-static" style="border-color: solid thin green; outline: 1px solid  CornflowerBlue ;">
                             <div class="card-content">
                               <div class="card-body">

@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.naicson.yugioh.entity.imgs.CardAttributeImage;
 import com.naicson.yugioh.entity.sets.Sets;
 
 @Entity
@@ -50,10 +53,13 @@ public class Card extends Sets {
 	private String genericType;
 	@Column(name = "cod_archetype")
 	private int codArchetype;
-
+	@OneToOne(optional = false)
+	@JoinColumn(name = "attribute_img_id", referencedColumnName = "id")
+	private CardAttributeImage attributeImg;
+	
 
 	public Card() {
-		super();
+		
 	}
 
 	public Card(Integer id, Long numero, String categoria, String nome, String nomePortgues, String atributo,
@@ -91,8 +97,14 @@ public class Card extends Sets {
 		this.imagem = imagem;
 	}
 	
-	
-	
+	public CardAttributeImage getAttributeImg() {
+		return attributeImg;
+	}
+
+	public void setAttributeImg(CardAttributeImage attributeImg) {
+		this.attributeImg = attributeImg;
+	}
+
 	public String getGeneric_type() {
 		return genericType;
 	}

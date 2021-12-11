@@ -39,9 +39,9 @@ import com.naicson.yugioh.entity.sets.GenericTypesCards;
 import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
-import com.naicson.yugioh.service.CardDetailService;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
+import com.naicson.yugioh.service.interfaces.CardDetailService;
 import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 import com.naicson.yugioh.util.search.CardSpecification;
@@ -132,6 +132,16 @@ public class CardController {
 		
 		return new ResponseEntity<List<CardsSearchDTO>>(dtoList, HttpStatus.OK);
 	}
+	
+	@GetMapping(path = {"/randomCardsDetailed"})
+	@ResponseBody
+	public ResponseEntity<List<Card>> randomCardsDetailed(){
+		
+		List<Card> cards = cardService.randomCardsDetailed();
+		
+		return new ResponseEntity<List<Card>>(cards, HttpStatus.OK);
+	}
+	
 	
 	@GetMapping(path = {"/rel-user-cards"})
 	@ResponseBody

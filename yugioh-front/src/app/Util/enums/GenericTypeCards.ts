@@ -1,0 +1,12 @@
+export enum GenericTypeCard {
+    MONSTER = "MONSTER",
+	XYZ = "XYZ",
+	FUSION = "FUSION",
+	LINK = "LINK",
+	PENDULUM ="PENDULUM",
+	SPELL = "SPELL",
+	TRAP = "TRAP",
+	SYNCHRO = "SYNCHRO",
+	RITUAL = "RITUAL",
+	TOKEN = "TOKEN"
+}

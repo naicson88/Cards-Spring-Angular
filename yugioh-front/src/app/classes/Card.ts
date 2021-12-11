@@ -22,7 +22,14 @@ export class Card {
 	 descr_pendulum_pt:string
 	 arquetipo:string
 	 qtd_link:string
+	 generic_type:string
 	 set_decks: Deck[];
+	 attributeImg:any;
+	 isExtraDeck:boolean;
+
+	 price:number;
+	 rarity:string;
+	 set_code: string[] = [];
 	 
     
 }

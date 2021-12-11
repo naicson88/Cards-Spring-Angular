@@ -28,6 +28,7 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
+import com.naicson.yugioh.service.interfaces.DeckDetailService;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
@@ -81,6 +82,19 @@ public class DeckServiceImpl implements DeckDetailService {
 		
 		return relation;
 		
+	}
+	
+	@Override
+	public List<RelDeckCards> relDeckUserCards(Long deckUserId){
+		if(deckUserId == null || deckUserId == 0)
+			throw new IllegalArgumentException("Deck User Id informed is invalid");
+		
+		List<RelDeckCards> relation = dao.relDeckUserCards(deckUserId);
+		
+		if(relation.isEmpty())
+			throw new NoSuchElementException("Can't find relation");
+		
+		return relation;
 	}
 
 
@@ -391,7 +405,7 @@ public class DeckServiceImpl implements DeckDetailService {
 			
 			cardList = this.cardsOfDeck(deckId);
 			List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
-		
+			
 			deck.setCards(cardList);
 			deck.setRel_deck_cards(relDeckCards);
 		}
@@ -405,6 +419,8 @@ public class DeckServiceImpl implements DeckDetailService {
 			deck.setCards(cardList);
 			deck.setExtraDeck(extraDeck);
 			deck.setSideDeckCards(sideDeckCards);
+			
+			deck.setRel_deck_cards(this.relDeckUserCards(deckId));
 			
 		} else {
 			throw new IllegalArgumentException("Invalid deckType.");
@@ -459,6 +475,7 @@ public class DeckServiceImpl implements DeckDetailService {
 				
 		return sortedCardList;
 	}
-
+	
+	
 
 }

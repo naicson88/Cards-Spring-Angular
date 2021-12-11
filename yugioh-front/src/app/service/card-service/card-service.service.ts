@@ -3,7 +3,6 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Card } from 'src/app/classes/Card';
 import { SearchCriteria } from 'src/app/classes/SearchCriteria';
-import { Cards } from 'src/app/classes/Rel_Deck_Cards';
 import { catchError } from 'rxjs/operators';
 import { HandleErros } from 'src/app/Util/HandleErros';
 import { Observable } from 'rxjs';
@@ -46,8 +45,16 @@ export class CardServiceService {
       )
   }
 
+  public findByNumero(numero:any) {
+    
+    return this.http.get<Card>(this.base_url+`/cards/num/${numero}`)
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+  }
+
   public getCardDetails(id:any) {
-    debugger
+    
     return this.http.get<any[]>(this.base_url+`/cards/number/${id}`)
     .pipe(
       catchError(HandleErros.handleError)
@@ -55,14 +62,14 @@ export class CardServiceService {
   }
 
   public searchCards(criterios:SearchCriteria[]){
-    return this.http.post<Cards[]>(this.base_url+"/cards/searchCard", criterios)
+    return this.http.post<Card[]>(this.base_url+"/cards/searchCard", criterios)
     .pipe(
       catchError(HandleErros.handleError)
     )
   }
 
   public randomCards(){
-    return this.http.get<Cards[]>(this.base_url+"/cards/randomCards")
+    return this.http.get<Card[]>(this.base_url+"/cards/randomCards")
     .pipe(
       catchError(HandleErros.handleError)
     )

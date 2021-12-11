@@ -1,9 +1,13 @@
-import { Cards } from "./Rel_Deck_Cards";
+import { Card } from "./Card";
+
 
 export class Deck {
     id: number;
     imagem: string;
     nome: string
     nomePortugues: string
-    cards: Cards[];
+    cards: Card[];
+    isKonamiDeck:string;
+    lancamento:Date;
+    setType:string
 }

@@ -36,6 +36,8 @@ import { UsercardsComponent } from './component/usercards/usercards.component';
 import { SideCardsearchComponent } from './component/cards-search/side-cardsearch/side-cardsearch.component';
 import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUser.module';
 import { DialogModule } from './component/dialogs/dialogs.module';
+import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.component';
+import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detail-user.component';
 
 
 
@@ -58,7 +60,9 @@ import { DialogModule } from './component/dialogs/dialogs.module';
     CardsSearchComponent,
     UsercardsComponent,
     DeckDetailComponent,
-    SideCardsearchComponent
+    SideCardsearchComponent,
+    CardinfoComponent,
+    DeckDetailUserComponent
   
   ],
   imports: [
@@ -79,6 +83,7 @@ import { DialogModule } from './component/dialogs/dialogs.module';
     ToastrModule.forRoot()
 
   ],
+  
   providers: [
     authStrategyProvider, 
   {provide: HTTP_INTERCEPTORS,
@@ -86,7 +91,8 @@ import { DialogModule } from './component/dialogs/dialogs.module';
   multi: true},
 
   {provide: HTTP_INTERCEPTORS,useClass: SpinnerService, multi: true },
-  Imagens
+  Imagens,
+  
 ],
   bootstrap: [AppComponent]
 })

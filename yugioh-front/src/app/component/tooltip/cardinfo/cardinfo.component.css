@@ -1,0 +1,48 @@
+#mainDiv{
+    border: solid blue 3px;
+     background-color: #2C3E50; 
+     width: 600px;
+    /*  height: 350px; */
+    height: fit-content;
+      position: absolute;
+       padding: 5px;   
+}
+
+h5 {
+    color:ghostwhite;
+     font-weight: 600;
+      font-size: 17px;
+      background-color: #4b5a69;
+    padding: 2px;
+    margin-bottom: 1px;
+}
+.generalInfo{
+    padding: 5px;
+    margin-top: 10px;
+    border-bottom: solid thin silver;
+}
+p {
+    color: white;
+}
+
+.cardDescription {
+    padding: 5px;
+    background:#506172 ;
+  
+}
+
+.cardDescription p {
+   font-size: 0.7rem;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left; 
+    height: 100%;
+   
+   
+
+}
+
+.cardDescription p::first-letter{
+    font-size: 1rem;
+    font-weight: 600;
+    color: yellow;
+}

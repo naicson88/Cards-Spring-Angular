@@ -6,16 +6,44 @@
     </div>
 
     <!--Deck name-->
-    <div>
-        <p>
-            <mat-form-field appearance="outline">
+    <div style="margin-bottom: 20px;">
+        <span>
+            <mat-form-field appearance="outline" style="width: 35%;">
               <mat-label>Deck name</mat-label>
-              <input matInput placeholder="Placeholder" [value]="mainDeckCards.nome">
+              <input matInput placeholder="Placeholder" [value]="deck.nome" style="width: 500px;">
             </mat-form-field>
-          </p>
+        </span>
+
+    <span style="color: green; margin-left: 10%;" >
+        <span class="material-icons" title="Deck total value" style="cursor: pointer;" > paid </span>   <span style="font-size:xx-large">{{totalDeckValue}}</span>   
+    </span>
+        
+    <div id="tableRarity" >
+    
+        <table style="border-collapse: separate; border-spacing: 3px 0; font-weight: 400; text-align: center; padding: 5px; width: 100%;">
+            <thead>
+              <tr>
+                <th  class="table-primary" width="25%">Common</th>
+                <th  class="table-info" width="25%">Rare</th>
+                <th class="table-success" width="25%">Super Rare</th>
+                <th class="table-warning" width="25%">Ultra Rare</th>
+              </tr>
+             
+            </thead>
+            <tbody>
+              <tr style="background-color: ghostwhite;">
+                <td >1</td>
+                <td>10</td>
+                <td>20</td>
+                <td>100</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
     </div>
 
-    <div id="optionsBtn" style="width: 100%; height: 50px;  margin-top: -25px;">
+
+    <div id="optionsBtn" >
         <div id="btnSearch" style="float: right;">
             <button mat-raised-button color="primary">Search <mat-icon>search</mat-icon></button>
         </div>
@@ -25,43 +53,87 @@
                 <mat-icon>sort</mat-icon>
                 Rearrange
             </button>
+
+            <span style="margin-left: 20px; margin-bottom: -5px;">
+                <mat-checkbox class="example-margin" [(ngModel)]="manage" >To manage</mat-checkbox>
+            </span>
+
         </div>
       
     </div>
 
-    <div cdkDropListGroup>
+    <div cdkDropListGroup #dropListContainer>
         <div id="deckContainer" >
             <!-- Deck structure-->
             <div id="deckStructure"  >
                 <!--Main Deck-->
                 <div style="font-size: small; font-weight: 500;"> 
                     <h3 class="titles">Main Deck</h3>
-                    <span style="color: goldenrod;">Monsters: 15</span> / 
-                    <span style="color: green;">Magic: 10</span> /
-                    <span style="color: red;">Trap: 15</span>      
+                    <span style="color: goldenrod;">Monsters: {{typeCard.monster}}</span> / 
+                    <span style="color: green;">Magic: {{typeCard.magic}}</span> /
+                    <span style="color: red;">Trap: {{typeCard.trap}}</span>      
                 </div>
-            <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
+
+         <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
 
             cdkDropList
             #mainDeck="cdkDropList"
             [cdkDropListData]="mainDeckCards"
             [cdkDropListConnectedTo]="[cardItem]"
-            class="example-list"
-            cdkDropListOrientation="horizontal"
+            
+            cdkDropListOrientation="vertical"
             (cdkDropListDropped)="drop($event)"
             (cdkDragReleased)="remove($event)">
 
-                <div class="example-box" *ngFor="let item of mainDeckCards.cards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
-                </div> 
-            </div>
+
+                <div class="example-box" *ngFor="let item of mainDeckCards; let i = index" style="background: transparent;" >
+                   
+                    <div>
+                        <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                    </div>
+
+                    <div class="divSimpleInfo" *ngIf="manage == true">
+
+                        <ul class="cardSimpleInfo">
+                            <li>
+                                <span style="color: #228B22; font-weight: 700; top: 0;">$ {{item.price}}</span> 
+                            </li>
+                            <li>
+                                <select name="teste" id="teste" style="font-size: smaller; ">
+
+                                    <option  *ngFor="let setCode of item.set_code" 
+                                    [value]="setCode" >{{setCode}}</option>
+                                  
+                                </select>   
+                            </li>
+                            <li style="margin-top: 3px;">  
+    
+                                    <mat-icon style="color: #2F4F4F; " class="card-item-icon"
+                                    (mouseover)="mostrarDivCardsInfo($event, item.numero)"
+                                    (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
+                                    
+                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Add Side Deck" >arrow_circle_down</i>
+
+                                    <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
+                                        matTooltip="Remove" (click)="removeFromArray(mainDeckCards, i,'main')" >highlight_remove</i></span>
+                                    
+                            </li>
+                        </ul>
+            
+                    </div>
+                </div>  
+
+                
+            </div> 
+
 
                 <!--Extra Deck-->
                 <div style="font-size: small; font-weight: 500;"> 
                     <h3 class="titles">Extra Deck</h3>
-                    <span style="color: purple;">Fusion: 15</span> / 
-                    <span style="color: black;">XYZ: 10</span> /
-                    <span style="color: silver;">Synchron: 15</span>      
+                    <span style="color: purple;">Fusion: {{typeCard.fusion}}</span> / 
+                    <span style="color: blue;">Link: {{typeCard.link}}</span> /
+                    <span style="color: silver;">Synchron: {{typeCard.synchro}}</span> /     
+                    <span style="color: black;">XYZ: {{typeCard.xyz}}</span>                  
                 </div>
                
                 <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure"
@@ -72,10 +144,42 @@
                 cdkDropListOrientation="horizontal"
                 (cdkDropListDropped)="drop($event)"
                 >
-                <div class="example-box" *ngFor="let item of extraDeckCards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                <div class="example-box" *ngFor="let item of extraDeckCards;"  style="background-color: transparent;">
+                        <div>
+                            <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                        </div>
+                        
+
+                        <div class="divSimpleInfo" *ngIf="manage == true">
+
+                            <ul class="cardSimpleInfo">
+                                <li>
+                                    <span style="color: #228B22; font-weight: 700; top: 0;">$ 190.99</span> 
+                                   
+                                </li>
+                                <li>
+                                    <select name="teste" id="teste" style="font-size: smaller; ">
+                                        <option value="1">AWD-1982</option>
+                                        <option value="1">AWDAS-1982</option>
+                                        <option value="1">AWDDAS-999</option>
+                                    </select>   
+                                </li>
+                                <li style="margin-top: 3px;">  
+
+                                        <mat-icon style="color: #2F4F4F; " class="card-item-icon"> remove_red_eye </mat-icon>
+                                        
+                                        <i class="material-icons card-item-icon" style="margin-left: 15%; color: blue;"  matTooltip="Add Side Deck" >arrow_circle_down</i>
+
+                                        <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
+                                            matTooltip="Remove"  >highlight_remove</i></span>
+                                </li>
+                            </ul>
+                
+                        </div> 
+
+
                 </div>
-                </div>
+            </div>
 
                 <!--Side Deck-->
                 <h3 class="titles">Side Deck</h3>
@@ -89,6 +193,7 @@
                 >
                 <div class="example-box" *ngFor="let item of sideDeckCards;" cdkDrag >
                     <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+
                 </div>
             </div>
                 
@@ -100,18 +205,50 @@
             #cardItem="cdkDropList"
             [cdkDropListData]="arrayCards"
             [cdkDropListConnectedTo]="[mainDeck]"
-            (cdkDropListDropped)="drop($event)">
+            (cdkDropListDropped)="drop($event)"
+            >
 
             <div id="searchedCardsBar">
-                <h5>Seached Cards</h5>
+                <h5> Cards List</h5>
             </div>
 
-            <div  *ngFor="let item of arrayCards" cdkDrag  class="example-box" > 
-               
-                <div>
+            <div  *ngFor="let item of arrayCards; let i = index" cdkDrag style="border: solid thin  silver; height: 93px; align-items: center; width: 99%;  " >  
+
+                <div style="width: 30%;display: inline-block; margin: 0; ">                  
                     <img  [src]='cardImagem(item.numero)' alt="" width="67px" height="92px">
                 </div>
 
+                <div style="width: 70%; display: inline-block; background: ghostwhite; height: 92px;  float: right;  border-collapse:collapse;
+                display : table;" >                  
+                  <span style="font-family: Lato, sans-serif; color: #0056b3; font-size: 14px ; font-weight: 700;" >{{item.nome}}  </span>
+
+                  <div style="  display : table-row;   vertical-align : bottom;  height : 1px; ">
+                
+                    <i class="material-icons card-item-icon" style="margin-left: 35%; color: #f4511e;" 
+                    matTooltipClass="example-tooltip-red"                   
+                    matTooltip="Add Side Deck" 
+                    (click)="addCardSideDeck(i)"> arrow_circle_left </i> &nbsp;
+                    
+                                            
+                    <i *ngIf="item.isExtraDeck == false"
+                    class="material-icons card-item-icon" style=" color: #228B22;"
+                    matTooltipClass="example-tooltip-green"      
+                    matTooltip="Add Main Deck"
+                    (click)="addCardMainDeck(i)"> arrow_circle_left </i> 
+
+                    <i *ngIf="item.isExtraDeck == true"
+                    class="material-icons card-item-icon" style=" color: purple;"
+                    matTooltipClass="example-tooltip-purple"      
+                    matTooltip="Add Extra Deck"
+                    (click)="addCardExtraDeck(i)"> arrow_circle_left </i> 
+                        
+                    &nbsp;  <mat-icon style="color: #2F4F4F; " class="card-item-icon"
+                    (mouseover)="mostrarDivCardsInfo($event, item.numero)"
+                    (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
+
+                  </div>
+
+                </div> 
             </div>
                 
                 <!--<div class="cardItemSearch" *ngFor="let item of arrayCards">
@@ -147,7 +284,12 @@
   </div>
  
 
- <!-- <div style="margin-top: 60px;">
+<div style="margin-top: 60px;">
     <app-footer></app-footer>
-  </div> -->
+  </div> 
+
+    <!-- Mostrar div com informações do card-->
+ <div *ngIf="isShowTooltip == true" class="divTooltip" >
+    <app-cardinfo [cardImage]="cardImage" [card]="card"></app-cardinfo>
+  </div> 
   

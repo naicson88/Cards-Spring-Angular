@@ -10,9 +10,9 @@
      margin-bottom: 20px;
   }
 
-  #searchedCardsBar{
+  #searchedCardsBar {
     border-bottom: dotted thin silver;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
     background: #007bff;
     font-weight: 700;
     vertical-align: center;
@@ -20,12 +20,13 @@
     height: 25px;
     color: white;
     font-weight: 700;
+ 
+    
   }
  
 
   #deckContainer{
       display: flex;
-
   }
 
   #deckStructure {
@@ -48,7 +49,7 @@
       width: 25%;
       height: 500px;
       overflow-y: scroll;
-      border: 1px solid blue;
+      border: 4px solid #a9eaeb;
       box-shadow:  rgb(187, 187, 187) 0px 0px 3.84px 0px;
       padding: 10px;
       background: #f8f8f8;
@@ -105,11 +106,8 @@
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        cursor: move;
         background: white;
-        font-size: 14px;
-
-        
+        font-size: 14px;    
     }
 
     .example-list {
@@ -156,3 +154,124 @@
     margin-top: 3px;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+ 
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/*daqui pra baixo*/
+
+.divTooltip{
+  position:fixed;
+  top: 40%;
+  left: 10%;
+ /* margin-top: -9em; set to a negative number 1/2 of your height
+  margin-left: -15em;*/
+
+}
+
+.divTooltip:hover{
+  z-index: 1;
+}
+
+.card-item-icon{
+  opacity: 0.6;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card-item-icon:hover{opacity: 1;}
+
+.example-tooltip-red {
+  background: #b71c1c;
+}
+
+.example-tooltip-green {
+  background: #126d12;
+}
+
+.example-tooltip-purple {
+  background: rgb(102, 1, 102);
+}
+
+.cardSimpleInfo{
+  list-style: none;
+  display:block;
+  text-align: center;
+  margin-left: -39px;
+  margin-top: 10px ;
+  height: 80px;
+ 
+}
+
+.cardSimpleInfo li {
+  list-style: none;
+  display: block;
+  padding: 3px;
+  position: relative;
+  text-decoration: none;
+  text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 33%;
+  margin-bottom: 2p;
+
+}
+
+.divSimpleInfo{
+ width:140px;
+ padding: 5px; height: fit-content;
+ border-radius: 0 5px 5px 0;
+ background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+}
+
+select {
+  border-radius: 3px;
+  box-shadow: 0 1px 3px -2px #9098A9;
+  border: 1px solid #E8EAED;
+  transition: all 150ms ease;
+  padding: 1px;
+}
+
+#optionsBtn{
+ width: 100%; 
+ height: 50px;
+   
+    margin-bottom: 10px;
+     border: solid thin silver;
+      padding: 5px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      border-radius: 5px;
+
+}
+
+#tableRarity{
+  width: 35%;
+   float: right;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+    border-radius: 5px ; 
+    border: solid thin silver
+}
