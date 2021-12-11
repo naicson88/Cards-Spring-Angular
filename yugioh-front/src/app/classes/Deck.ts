@@ -7,4 +7,7 @@ export class Deck {
     nome: string
     nomePortugues: string
     cards: Card[];
+    isKonamiDeck:string;
+    lancamento:Date;
+    setType:string
 }

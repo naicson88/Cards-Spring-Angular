@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import {CdkDragDrop, CdkDragEnter, CdkDragExit, CdkDragMove, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Card } from 'src/app/classes/Card';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
@@ -7,6 +7,7 @@ import { GenericTypeCard } from 'src/app/Util/enums/GenericTypeCards';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import { DeckDetailUserService } from './deck-detail-user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Deck } from 'src/app/classes/deck';
 
 
 @Component({
@@ -24,6 +25,9 @@ export class DeckDetailUserComponent implements OnInit {
     private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService) { }
 
   dropListReceiverElement?: HTMLElement;
+
+  manage = false;
+
   dragDropInfo?: {
     dragIndex: number;
     dropIndex: number;
@@ -38,7 +42,9 @@ export class DeckDetailUserComponent implements OnInit {
      fusion:0,
      link:0
    } 
-  
+
+deck:Deck[] = [];   
+
 arrayCards = new Array();
  
 mainDeckCards: Card[] = [];
@@ -113,13 +119,19 @@ loadDeckCards(){
     
     this.deckService.getDeckDetails(id,"User").subscribe(data => {
       console.log(data)
+    this.deck = data
     this.mainDeckCards = data['cards'];
     this.countTypeCards(this.mainDeckCards, "main");
+
     this.extraDeckCards = data['extraDeck'];
     this.countTypeCards(this.extraDeckCards, "extra");
+
     this.sideDeckCards = data['sideDeckCards'];
     //this.sendCardsToArray( data['extraDeck'], data['extraDeck']);
     this.relDeckCards =  data['rel_deck_cards'];
+
+    this.calculateDeckPrice(this.relDeckCards);
+
     this.setRelDeckCards()
 
   })
@@ -225,9 +237,11 @@ isShowTooltip: boolean = false;
 imgTooltip: string;
 topTp;
 leftTp;
+
  //Serão enviadas para o tooltip
  cardImage:string;
  card:Card;
+
 
 mostrarDivCardsInfo(e, cardNumber:any){
 
@@ -236,7 +250,7 @@ mostrarDivCardsInfo(e, cardNumber:any){
   this.isShowTooltip = true;
 
   this.cardImage = GeneralFunctions.cardImagem + cardNumber + '.jpg';
-  this.cardService.findByNumero(cardNumber).subscribe(card => { console.log(this.card); this.card = card  });
+  this.cardService.findByNumero(cardNumber).subscribe(card => { this.card = card  });
 
 }
 
@@ -301,6 +315,29 @@ isCardLimitOver(cardAdded:any, tipoDeck:string){
 
    if(qtdCards >= 3) {return true} else {return false} 
 
+}
+
+removeFromArray(collection:any[], index:any, typeDeck:string){
+
+  try{
+
+    collection.splice(index,1);
+    this.toastr.info("Card removed from Deck.")
+    this.countTypeCards(collection, typeDeck);
+
+  }catch{
+      console.error
+      alert("Sorry, can't remove card. Try again later :( ")
+  }
+}
+
+totalDeckValue:string
+
+calculateDeckPrice(relDeckCards:any[]){
+    let sum: number = 0;
+
+    relDeckCards.forEach(card => sum += card.card_price);
+    this.totalDeckValue = sum.toFixed(2)
 }
 
 }

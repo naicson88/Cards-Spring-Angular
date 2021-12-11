@@ -45,7 +45,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 	
 	@Query(value = " SELECT DISTINCT * FROM yugioh.tab_cards CARDS "
 			+ " INNER JOIN TAB_REL_DECKUSERS_CARDS UCARDS ON UCARDS.CARD_NUMERO = CARDS.NUMERO "
-			+ " INNER JOIN TAB_DECK_USERS DUSERS ON DUSERS.ID = UCARDS.DECKUSER_ID "
+			+ " INNER JOIN TAB_DECK_USERS DUSERS ON DUSERS.ID = UCARDS.DECK_ID "
 			+ " WHERE CARDS.GENERIC_TYPE = :genericType AND DUSERS.USER_ID = :userId "
 			+ " GROUP BY CARDS.NUMERO ",
 			countQuery = "SELECT count(*) FROM tab_cards",
@@ -54,7 +54,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 	
 	@Query(value = " SELECT DISTINCT * FROM yugioh.tab_cards CARDS "
 			+ " INNER JOIN TAB_REL_DECKUSERS_CARDS UCARDS ON UCARDS.CARD_NUMERO = CARDS.NUMERO "
-			+ " INNER JOIN TAB_DECK_USERS DUSERS ON DUSERS.ID = UCARDS.DECKUSER_ID "
+			+ " INNER JOIN TAB_DECK_USERS DUSERS ON DUSERS.ID = UCARDS.DECK_ID "
 			+ " WHERE CARDS.nome like CONCAT('%',:cardName,'%') AND DUSERS.USER_ID = :userId "
 			+ " GROUP BY CARDS.NUMERO ",
 			countQuery = "SELECT count(*) FROM tab_cards",

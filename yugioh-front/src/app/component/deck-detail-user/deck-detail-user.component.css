@@ -183,10 +183,14 @@
 .divTooltip{
   position:fixed;
   top: 40%;
-  left: 40%;
-  margin-top: -9em; /*set to a negative number 1/2 of your height*/
-  margin-left: -15em;
+  left: 10%;
+ /* margin-top: -9em; set to a negative number 1/2 of your height
+  margin-left: -15em;*/
 
+}
+
+.divTooltip:hover{
+  z-index: 1;
 }
 
 .card-item-icon{
@@ -226,7 +230,7 @@
   position: relative;
   text-decoration: none;
   text-align: left;
-  font-family: arvo;
+  font-family: Arial, Helvetica, sans-serif;
   height: 33%;
   margin-bottom: 2p;
 
@@ -250,4 +254,24 @@ select {
   border: 1px solid #E8EAED;
   transition: all 150ms ease;
   padding: 1px;
+}
+
+#optionsBtn{
+ width: 100%; 
+ height: 50px;
+   
+    margin-bottom: 10px;
+     border: solid thin silver;
+      padding: 5px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      border-radius: 5px;
+
+}
+
+#tableRarity{
+  width: 35%;
+   float: right;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+    border-radius: 5px ; 
+    border: solid thin silver
 }
