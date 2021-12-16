@@ -32,10 +32,10 @@
             </thead>
             <tbody>
               <tr style="background-color: ghostwhite;">
-                <td >1</td>
-                <td>10</td>
-                <td>20</td>
-                <td>100</td>
+                <td >{{deck.qtdCommon}}</td>
+                <td>{{deck.qtdRare}}</td>
+                <td>{{deck.qtdSuperRare}}</td>
+                <td>{{deck.qtdUltraRare}}</td>
               </tr>
             </tbody>
           </table>
@@ -112,7 +112,7 @@
                                     (mouseover)="mostrarDivCardsInfo($event, item.numero)"
                                     (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
                                     
-                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Add Side Deck" >arrow_circle_down</i>
+                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
 
                                     <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
                                         matTooltip="Remove" (click)="removeFromArray(mainDeckCards, i,'main')" >highlight_remove</i></span>

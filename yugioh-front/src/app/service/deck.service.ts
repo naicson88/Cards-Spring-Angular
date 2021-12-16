@@ -37,7 +37,7 @@ export class DeckService {
   } 
 
   public getDeckDetails(id:any, deckType:string) {
-    return this.http.get<Deck[]>(this.base_url+`/decks?id=${id}&deckType=${deckType}`)
+    return this.http.get<Deck>(this.base_url+`/decks?id=${id}&deckType=${deckType}`)
     .pipe(
       catchError(HandleErros.handleError)
     )

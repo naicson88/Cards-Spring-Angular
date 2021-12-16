@@ -43,7 +43,7 @@ export class DeckDetailUserComponent implements OnInit {
      link:0
    } 
 
-deck:Deck[] = [];   
+deck:Deck 
 
 arrayCards = new Array();
  
@@ -118,8 +118,10 @@ loadDeckCards(){
     const id = localStorage.getItem("idDeckDetails");
     
     this.deckService.getDeckDetails(id,"User").subscribe(data => {
-      console.log(data)
+    console.log(data)
+   
     this.deck = data
+    console.log("deck: " + this.deck)
     this.mainDeckCards = data['cards'];
     this.countTypeCards(this.mainDeckCards, "main");
 
@@ -132,7 +134,9 @@ loadDeckCards(){
 
     this.calculateDeckPrice(this.relDeckCards);
 
-    this.setRelDeckCards()
+    this.setRelDeckCards();
+
+    this.calculateQtdRarity();
 
   })
 }
@@ -339,6 +343,17 @@ calculateDeckPrice(relDeckCards:any[]){
     relDeckCards.forEach(card => sum += card.card_price);
     this.totalDeckValue = sum.toFixed(2)
 }
+
+ calculateQtdRarity(){
+
+  this.deck.qtdCommon = this.deck['cards'].filter(rel => rel.raridade == 'Common').length;
+  this.deck.qtdRare = this.deck['cards'].filter(rel => rel.raridade == 'Rare').length;
+  this.deck.qtdSuperRare = this.deck['cards'].filter(rel => rel.raridade == 'Super Rare').length;
+  this.deck.qtdUltraRare = this.deck['cards'].filter(rel => rel.raridade == "Ultra Rare").length; 
+
+ } 
+
+
 
 }
 

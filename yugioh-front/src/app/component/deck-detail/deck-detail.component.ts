@@ -15,7 +15,7 @@ import { CardServiceService } from 'src/app/service/card-service/card-service.se
 export class DeckDetailComponent implements OnInit {
   @ViewChild("attrCanvas",{static: true}) elemento: ElementRef;
 
-  deckDetails: Deck[] = [];
+  deckDetails: Deck
   
   quantidadePorTipo = [];
   quantidadePorEstrelas = [];
@@ -80,7 +80,7 @@ export class DeckDetailComponent implements OnInit {
   }
   
   //Traz as propriedades contidas no deck
-  qtdPropriedades(data:Deck[]){
+  qtdPropriedades(data:Deck){
     let propriedades = [];
     for(var i = 0; i < data['cards'].length; i++){
       if(data['cards'][i].propriedade != null){propriedades.push(data['cards'][i].propriedade)}
@@ -104,7 +104,7 @@ export class DeckDetailComponent implements OnInit {
     },{})
   }
 
-  qtdCategoriaCards(data:Deck[]){
+  qtdCategoriaCards(data:Deck){
     let categorias = [];
   
     for(var i = 0; i < data ['cards'].length; i++){
@@ -136,7 +136,7 @@ export class DeckDetailComponent implements OnInit {
     //console.log(this.categoriaCards)
   }
 
-  qtdEstrelas(data:Deck[]){
+  qtdEstrelas(data:Deck){
      let stars = new Array();
     for(var i = 0; i < data['cards'].length; i++){
       if(data['cards'][i].nivel != null){stars.push(data['cards'][i].nivel)}  
@@ -172,7 +172,7 @@ export class DeckDetailComponent implements OnInit {
   }
 
 
-  infoGeralAtkEDef(data:Deck[]){
+  infoGeralAtkEDef(data:Deck){
     for(var i = 0; i < data['cards'].length; i++){
       if(data['cards'][i].atk != null && data['cards'][i].atk != undefined ){
         this.infoGeralAtk.push(data['cards'][i].atk)
@@ -190,7 +190,7 @@ export class DeckDetailComponent implements OnInit {
   }
 
   //Traz o Top 3 de cards mais valioso do deck
-  cardsMaisValiosos(data:Deck[]){
+  cardsMaisValiosos(data:Deck){
     let arrCardsVal = []
 
     for(var i =0; i < data['rel_deck_cards'].length; i++){
