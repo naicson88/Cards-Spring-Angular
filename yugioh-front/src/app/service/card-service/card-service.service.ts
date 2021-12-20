@@ -6,6 +6,7 @@ import { SearchCriteria } from 'src/app/classes/SearchCriteria';
 import { catchError } from 'rxjs/operators';
 import { HandleErros } from 'src/app/Util/HandleErros';
 import { Observable } from 'rxjs';
+import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
 
 
 @Injectable({
@@ -68,6 +69,14 @@ export class CardServiceService {
     )
   }
 
+  
+  public searchCardsDetailed(params:any, criterios:SearchCriteria[]){
+    return this.http.post<Card[]>(this.base_url+`/cards/searchCardDetailed?size=${params.size}&page=${params.page}`, criterios)
+      .pipe(
+        catchError(HandleErros.handleError)
+      )
+  }
+
   public randomCards(){
     return this.http.get<Card[]>(this.base_url+"/cards/randomCards")
     .pipe(
@@ -103,5 +112,12 @@ export class CardServiceService {
       catchError(HandleErros.handleError)
     )
   }
+
+  public findAllRelDeckCardsByCardNumber(cardNumber:any){
+    return this.http.get<RelDeckCards[]>(this.base_url+`/cards/search-cardSetcodes?cardNumber=${cardNumber}`)
+      .pipe(
+        catchError(HandleErros.handleError)
+      )
+  } 
 
 }

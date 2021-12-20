@@ -4,6 +4,7 @@ import { ArchetypeDetailsComponent } from './component/archetype-details/archety
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { CardDetailComponent } from './component/card-detail/card-detail/card-detail.component';
 import { CardsSearchComponent } from './component/cards-search/cards-search/cards-search.component';
+import { SearchBoxComponent } from './component/cards-search/search-box/search-box.component';
 import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detail-user.component';
 import { DeckDetailComponent } from './component/deck-detail/deck-detail.component';
 import { DeckComponent } from './component/deck/deck.component';
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'archetypeDetails/:archId', component: ArchetypeDetailsComponent},
   { path: 'cards-search', component: CardsSearchComponent},
   { path: 'userdeck-details/:deckName', component: DeckDetailUserComponent },
+  {path: 'search-box', component: SearchBoxComponent},
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   
   

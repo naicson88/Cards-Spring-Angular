@@ -8,6 +8,12 @@ import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import { DeckDetailUserService } from './deck-detail-user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Deck } from 'src/app/classes/deck';
+import { MatDialog } from '@angular/material';
+import { SearchBoxComponent } from '../cards-search/search-box/search-box.component';
+import { BehaviorSubject } from 'rxjs';
+import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
+import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
+import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
 
 
 @Component({
@@ -22,11 +28,17 @@ export class DeckDetailUserComponent implements OnInit {
   @ViewChild('dropListContainer',{static: false}) dropListContainer?: ElementRef;
 
   constructor(private render: Renderer2, private cardService: CardServiceService, 
-    private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService) { }
+    private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService, public dialog: MatDialog) { }
 
   dropListReceiverElement?: HTMLElement;
 
   manage = false;
+
+  cardsFromScroll = new BehaviorSubject([]);
+  arrCardsFromScroll = new Array();
+  page: number = 1; 
+  pageSize: number = 30;
+
 
   dragDropInfo?: {
     dragIndex: number;
@@ -53,68 +65,16 @@ extraDeckCards: Card[] = [];
 
 sideDeckCards: Card[] = [];
 
-relDeckCards: any[] = [];
+relDeckCards: RelDeckCards[] = [];
 
   ngOnInit() {
-     
-    this.loadRandomCards();
     this.loadDeckCards();
+    this.loadRandomCards();
+   
 
   }
 
-  drop(event: CdkDragDrop<String[]>) {
-
-      if(event.previousContainer === event.container){
-        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      } else {
-        copyArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-    }
-
-    if(!event.isPointerOverContainer){
-      console.log(event.container.data)
-      event.container.data.splice(event.previousIndex,1)
-    }
-  }
-
-
-  loadRandomCards(){
-    this.arrayCards = [];
-
-    this.deckDetailUSerService.randomCardsDetailed().subscribe( cards => {
-      
-      for(var i = 0; i < cards.length; i++){
-
-        let card:Card = cards[i] ;
-
-        Object.assign(cards[i], {isExtraDeck: null})
-
-          if(card != null && card != undefined){
-
-            let isExtraDeckCard = GeneralFunctions.isExtraDeckCard(card.generic_type);
-
-            if(isExtraDeckCard)
-              card.isExtraDeck = true;
-
-            else {
-                card.isExtraDeck = false
-            }
-
-            this.arrayCards.push(card)
-          } 
-
-         
-       }
-
-    
-    })
-}
-
-loadDeckCards(){
+  loadDeckCards(){
     const id = localStorage.getItem("idDeckDetails");
     
     this.deckService.getDeckDetails(id,"User").subscribe(data => {
@@ -141,6 +101,62 @@ loadDeckCards(){
   })
 }
 
+
+  drop(event: CdkDragDrop<String[]>) {
+
+      if(event.previousContainer === event.container){
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      } else {
+        copyArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+    }
+
+    if(!event.isPointerOverContainer){
+      console.log(event.container.data)
+      event.container.data.splice(event.previousIndex,1)
+    }
+  }
+
+
+  loadRandomCards(){
+    this.arrayCards = [];
+
+    this.deckDetailUSerService.randomCardsDetailed().subscribe( cards => {
+      
+      this.validTypeDeckCard(cards);
+   
+    })
+}
+
+validTypeDeckCard(cards:any){
+  for(var i = 0; i < cards.length; i++){
+
+    let card:Card = cards[i] ;
+
+    Object.assign(cards[i], {isExtraDeck: null})
+
+      if(card != null && card != undefined){
+
+        let isExtraDeckCard = GeneralFunctions.isExtraDeckCard(card.generic_type);
+
+        if(isExtraDeckCard)
+          card.isExtraDeck = true;
+
+        else {
+            card.isExtraDeck = false
+        }
+
+        this.arrayCards.push(card)
+      } 
+   
+   }
+}
+
+
 countTypeCards(data:Card[], deck:string){
 
       if(deck === 'main'){
@@ -161,24 +177,36 @@ countTypeCards(data:Card[], deck:string){
       }
   }
 
-setRelDeckCards(){
+/*setRelDeckCards(){
 
     this.mainDeckCards.forEach((card, index) => {
 
      let rel = this.relDeckCards.find(rel => rel.card_numero === card.numero);
-      
+     
      card.price = rel.card_price;
      card.raridade = rel.card_raridade;
      let str: string[] = []
      str.push(rel.card_set_code)
      card.set_code = str;
 
-    });{
+    })
+}*/
 
-      console.log(this.mainDeckCards)
-     
-    }
+setRelDeckCards(){
+
+  this.mainDeckCards.forEach((card, index) => {
+
+   let rel = this.relDeckCards.find(rel => rel.card_numero === card.numero);
+
+  card.price = rel.card_price;
+  card.relDeckCards = rel
+  let str: string[] = []
+  str.push(rel.card_set_code)
+  card.set_code = str;
+
+  });
 }
+
 
 
 cardImagem(cardId: any){
@@ -353,7 +381,139 @@ calculateDeckPrice(relDeckCards:any[]){
 
  } 
 
+ criterias = new Array();
+ openDialogSearch() {
+  const dialogRef = this.dialog.open(SearchBoxComponent);
 
+  dialogRef.afterClosed().subscribe(result => {
+    if(result.data != null && result.data != undefined){
+      this.arrayCards = [];
+      this.validTypeDeckCard(result.data.content);
+      this.criterias = result.criterias
+    }
+   
+
+  });
+}
+
+getRequestParam(pageSize, page){
+  let params = {}
+
+  if (page) {
+    params[`page`] = page - 1;
+  }
+
+  if (pageSize) {
+    params[`size`] = pageSize;
+  }
+
+  return params;
+
+}
+
+onScroll(){
+  const params = this.getRequestParam(this.pageSize, this.page)
+
+  this.cardService.searchCardsDetailed(params, this.criterias).subscribe( newCards => {
+    console.log(newCards);
+    
+    this.page = this.page + 1;
+  })
+}
+
+cardsSearched = [];
+consultCardSetCode(cardNumber:any){
+    
+  if(cardNumber == null || cardNumber == undefined){
+    this.errorDialog("Sorry, can't consult card's set codes.");
+    return false;
+  }
+
+  let isSeached = this.cardsSearched.includes(cardNumber,0);
+
+  if(!isSeached){
+
+    this.cardService.findAllRelDeckCardsByCardNumber(cardNumber).subscribe(data => {      
+      let relationArray = data; 
+     
+      this.updateCardSetCode(relationArray, cardNumber)
+      this.cardsSearched.push(cardNumber);
+    }) 
+
+  }
+ 
+}
+
+updateCardSetCode(relationArray: RelDeckCards[], cardNumber:any){
+
+  let cardMainDeck:Card = this.mainDeckCards.find(card => card.numero == cardNumber);
+  let cardExtraDeck:Card = this.extraDeckCards.find(card => card.numero == cardNumber);
+  let cardSideDeck:Card = this.extraDeckCards.find(card => card.numero == cardNumber);
+
+  if(cardMainDeck != null && cardMainDeck != undefined)  
+    this.updateCardSetCodeInSpecifDeck(relationArray, cardMainDeck);
+
+  if(cardExtraDeck != null && cardExtraDeck != undefined)
+    this.updateCardSetCodeInSpecifDeck(relationArray, cardExtraDeck); 
+
+  if(cardSideDeck != null && cardSideDeck != undefined)
+    this.updateCardSetCodeInSpecifDeck(relationArray, cardSideDeck); 
+  
+}
+
+updateCardSetCodeInSpecifDeck(relationArray:RelDeckCards[], card:Card){
+
+  card.relDeckCards = relationArray;
+
+  let str: string[] = []
+  relationArray.forEach(rel => {   
+    str.push(rel.card_set_code)
+  })
+  card.set_code = str
+}
+
+onChangeCardSetCode(cardSetCode:string, card:Card){
+  debugger
+ let rel =  card['relDeckCards'].find(set => set.card_set_code == cardSetCode)
+
+ if(card.price != rel.card_price){this.singleCalculateDeckValue(card.price, rel.card_price)}
+
+ card.price = rel.card_price;
+
+ let relIndex = this.relDeckCards.map(function(set){ return set.card_set_code}).indexOf(cardSetCode);
+
+  console.log("index  " + relIndex)
+ if(relIndex != null && relIndex != undefined){
+    this.relDeckCards.splice(relIndex, 1);
+    this.relDeckCards.push(rel);
+
+ }
+}
+
+singleCalculateDeckValue(currentCardValue, newCardValue){
+    let total = Number(this.totalDeckValue);
+
+    if( total > 0){
+      let val = total - currentCardValue;
+      val = val + newCardValue;
+
+      this.totalDeckValue = val.toFixed(2);
+    }
+
+   
+}
+
+errorDialog(errorMessage:string){
+  this.dialog.open(ErrorDialogComponent, {
+    data: errorMessage
+  })
+}
+
+warningDialog(warningMessage:string){
+  this.dialog.open(WarningDialogComponent, {
+    data: warningMessage
+  })
+}
 
 }
 

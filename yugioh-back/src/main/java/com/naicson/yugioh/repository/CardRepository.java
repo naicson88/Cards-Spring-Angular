@@ -20,6 +20,8 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 	
 	List<Card> findAll();
 	
+	Page<Card> findAll(Pageable pageable);
+	
 	Card findById(int id);
 	
 	Card save (Card card);

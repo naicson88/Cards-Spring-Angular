@@ -11,7 +11,7 @@
 
         <div class="generalInfo">
           <p>
-            <span *ngIf="card.atk != null ">
+            <span *ngIf="card.atk != undefined && card.atk != null ">
               <img  src="..\..\assets\img\tiposMonstros\atk.JPG" alt="" width="30px" height="30px" style="display: inline-block;" > ATK: {{card.atk}} 
             </span>
             

@@ -45,7 +45,7 @@
 
     <div id="optionsBtn" >
         <div id="btnSearch" style="float: right;">
-            <button mat-raised-button color="primary">Search <mat-icon>search</mat-icon></button>
+            <button mat-raised-button color="primary" (click)="openDialogSearch()">Search <mat-icon>search</mat-icon></button>
         </div>
 
         <div id="btnRearrange" style="float: left;">
@@ -86,30 +86,29 @@
             (cdkDragReleased)="remove($event)">
 
 
-                <div class="example-box" *ngFor="let item of mainDeckCards; let i = index" style="background: transparent;" >
+                <div class="example-box" *ngFor="let card of mainDeckCards; let i = index" style="background: transparent;" >
                    
                     <div>
-                        <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                        <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
                     </div>
 
                     <div class="divSimpleInfo" *ngIf="manage == true">
 
                         <ul class="cardSimpleInfo">
                             <li>
-                                <span style="color: #228B22; font-weight: 700; top: 0;">$ {{item.price}}</span> 
+                                <span style="color: #228B22; font-weight: 700; top: 0;">$ {{card.price}}</span> 
                             </li>
                             <li>
-                                <select name="teste" id="teste" style="font-size: smaller; ">
+                                <select style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero)" (change)="onChangeCardSetCode(set.value, card)">
 
-                                    <option  *ngFor="let setCode of item.set_code" 
-                                    [value]="setCode" >{{setCode}}</option>
-                                  
+                                    <option  *ngFor="let setCode of card.set_code" 
+                                    [value]="setCode" >{{setCode}}</option>                                 
                                 </select>   
                             </li>
                             <li style="margin-top: 3px;">  
     
                                     <mat-icon style="color: #2F4F4F; " class="card-item-icon"
-                                    (mouseover)="mostrarDivCardsInfo($event, item.numero)"
+                                    (mouseover)="mostrarDivCardsInfo($event, card.numero)"
                                     (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
                                     
                                     <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
@@ -274,9 +273,10 @@
                     </div>
                 </div>-->
 
-
-
+                        
+         
             </div>
+    
         </div>
     </div>
     

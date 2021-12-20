@@ -1,0 +1,34 @@
+#search-div{
+    margin: auto;
+    border: solid thin silver;
+    border-radius: 3px;
+    width: 800px;
+    background-color: ghostwhite;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+h4 {
+    color: #5469d4;
+    text-decoration: unset;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#att-search ul {
+    list-style-type: none; /*to remove bullets*/
+    text-align: center;
+    margin: 0 auto;
+    padding: 0px;
+    
+    display:table;
+    width: 100%;
+
+}
+
+#att-search ul li {
+
+    display:inline-block;
+    padding: 5px;
+    height: 60px;
+    margin-right: 10px ;
+}
