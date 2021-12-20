@@ -100,7 +100,7 @@
                             </li>
                             <li>
                                 <select style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero)" (change)="onChangeCardSetCode(set.value, card)">
-
+                                    <option [value]="0" [selected]="setCode == null || setCode == undefined">SET CODE...</option>
                                     <option  *ngFor="let setCode of card.set_code" 
                                     [value]="setCode" >{{setCode}}</option>                                 
                                 </select>   

@@ -367,7 +367,7 @@ totalDeckValue:string
 
 calculateDeckPrice(relDeckCards:any[]){
     let sum: number = 0;
-
+    
     relDeckCards.forEach(card => sum += card.card_price);
     this.totalDeckValue = sum.toFixed(2)
 }
@@ -438,6 +438,8 @@ consultCardSetCode(cardNumber:any){
      
       this.updateCardSetCode(relationArray, cardNumber)
       this.cardsSearched.push(cardNumber);
+
+      this.onChangeCardSetCode("0", null)
     }) 
 
   }
@@ -473,7 +475,12 @@ updateCardSetCodeInSpecifDeck(relationArray:RelDeckCards[], card:Card){
 }
 
 onChangeCardSetCode(cardSetCode:string, card:Card){
-  debugger
+ debugger
+  if(cardSetCode == "0"){
+    card.price = 0.00
+    return false;
+  }
+
  let rel =  card['relDeckCards'].find(set => set.card_set_code == cardSetCode)
 
  if(card.price != rel.card_price){this.singleCalculateDeckValue(card.price, rel.card_price)}
