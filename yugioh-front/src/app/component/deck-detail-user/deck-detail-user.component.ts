@@ -68,6 +68,10 @@ sideDeckCards: Card[] = [];
 
 relDeckCards: RelDeckCards[] = [];
 
+mapSetCodes: Map<number, RelDeckCards[]> = new Map();
+
+cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consultados
+
   ngOnInit() {
     this.loadDeckCards();
     this.loadRandomCards();
@@ -213,56 +217,6 @@ cardImagem(cardId: any){
   return urlimg;
 }
   
-dragEntered(event: CdkDragEnter<number>) {
-  const drag = event.item;
-  const dropList = event.container;
-  const dragIndex = drag.data;
-  const dropIndex = dropList.data;
-
-  this.dragDropInfo = { dragIndex, dropIndex };
-  console.log('dragEntered', { dragIndex, dropIndex });
-
-  const phContainer = dropList.element.nativeElement;
-  const phElement = phContainer.querySelector('.cdk-drag-placeholder');
-
-  if (phElement) {
-    phContainer.removeChild(phElement);
-    phContainer.parentElement.insertBefore(phElement, phContainer);
-
-    moveItemInArray(this.mainDeckCards, dragIndex, dropIndex);
-  }
-}
-
-dragMoved(event: CdkDragMove<number>) {
-  if (!this.dropListContainer || !this.dragDropInfo) return;
-
-  const placeholderElement =
-    this.dropListContainer.nativeElement.querySelector(
-      '.cdk-drag-placeholder'
-    );
-
-  const receiverElement =
-    this.dragDropInfo.dragIndex > this.dragDropInfo.dropIndex
-      ? placeholderElement.nextElementSibling
-      : placeholderElement.previousElementSibling;
-
-  if (!receiverElement) {
-    return;
-  }
-
-  receiverElement.style.display = 'none';
-  this.dropListReceiverElement = receiverElement;
-}
-
-dragDropped(event: CdkDragDrop<number>) {
-  if (!this.dropListReceiverElement) {
-    return;
-  }
-
-  this.dropListReceiverElement.style.removeProperty('display');
-  this.dropListReceiverElement = undefined;
-  this.dragDropInfo = undefined;
-}
 
 isShowTooltip: boolean = false;
 imgTooltip: string;
@@ -272,7 +226,6 @@ leftTp;
  //Serão enviadas para o tooltip
  cardImage:string;
  card:Card;
-
 
 mostrarDivCardsInfo(e, cardNumber:any){
 
@@ -291,8 +244,9 @@ esconderImgToolTip(){
 
 addCardSideDeck(index:any){
 
-  this.sideDeckCards.unshift(  this.arrayCards[index])
+  this.sideDeckCards.unshift(this.arrayCards[index])
   this.toastr.success('Card added in Side Deck');
+ 
 
 }
 
@@ -326,16 +280,27 @@ addCardMainDeck(index:any){
  
   if(!isLimitOver){
    let card:Card = this.arrayCards[index]
-    card.relDeckCards = [];
+  card.relDeckCards = [];
 
     this.mainDeckCards.unshift(card);
     this.toastr.success("Card added in Main Deck");
     this.countTypeCards(this.mainDeckCards, 'main');
-
+    this.verifyMapSearchedCards(card);
   } else{
     this.toastr.warning("There are already three copies of this card")
   }
 
+ 
+
+}
+
+verifyMapSearchedCards(card:Card){
+  debugger
+  let rel = this.mapSetCodes.get(card.numero);
+
+  if(rel != null && rel != undefined){
+      card.relDeckCards = rel;
+  }
 }
 
 isCardLimitOver(cardAdded:any, tipoDeck:string){
@@ -424,8 +389,8 @@ onScroll(){
   })
 }
 
-cardsSearched = [];
-consultCardSetCode(cardNumber:any, index:string){
+
+consultCardSetCode(cardNumber:any){
     
   if(cardNumber == null || cardNumber == undefined){
     this.errorDialog("Sorry, can't consult card's set codes.");
@@ -463,6 +428,10 @@ updateCardSetCode(relationArray: RelDeckCards[], cardNumber:any){
 
   if(cardSideDeck != null && cardSideDeck != undefined)
     this.updateCardSetCodeInSpecificDeck(relationArray, cardSideDeck); 
+
+    if(!this.mapSetCodes.has(cardNumber)){
+      this.mapSetCodes.set(cardNumber, relationArray);
+      }
   
 }
 
@@ -474,9 +443,8 @@ updateCardSetCodeInSpecificDeck(relationArray:RelDeckCards[], cards:Card[]){
     card.relDeckCards.push(rel)
     })
   })
- 
-
 }
+    
 
 onChangeCardSetCode(cardSetCode:string, array:string, index){
  debugger
