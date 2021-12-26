@@ -32,6 +32,7 @@ export class Card {
 	 rarity:string;
 	 relDeckCards: any
 	 set_code = new Array();
+	 index:number
 	 
     
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import {CdkDragDrop, CdkDragEnter, CdkDragExit, CdkDragMove, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Card } from 'src/app/classes/Card';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
@@ -6,7 +6,7 @@ import { DeckService } from 'src/app/service/deck.service';
 import { GenericTypeCard } from 'src/app/Util/enums/GenericTypeCards';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import { DeckDetailUserService } from './deck-detail-user.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrComponentlessModule, ToastrService } from 'ngx-toastr';
 import { Deck } from 'src/app/classes/deck';
 import { MatDialog } from '@angular/material';
 import { SearchBoxComponent } from '../cards-search/search-box/search-box.component';
@@ -14,6 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
 import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
 import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
+import { DOCUMENT } from '@angular/common';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class DeckDetailUserComponent implements OnInit {
   @ViewChild('btnSpan',{static: false})span:ElementRef;
   @ViewChild('dropListContainer',{static: false}) dropListContainer?: ElementRef;
 
-  constructor(private render: Renderer2, private cardService: CardServiceService, 
+  constructor(private render: Renderer2, private cardService: CardServiceService, @Inject(DOCUMENT) document,
     private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService, public dialog: MatDialog) { }
 
   dropListReceiverElement?: HTMLElement;
@@ -70,18 +71,16 @@ relDeckCards: RelDeckCards[] = [];
   ngOnInit() {
     this.loadDeckCards();
     this.loadRandomCards();
-   
-
   }
+
 
   loadDeckCards(){
     const id = localStorage.getItem("idDeckDetails");
     
     this.deckService.getDeckDetails(id,"User").subscribe(data => {
-    console.log(data)
    
     this.deck = data
-    console.log("deck: " + this.deck)
+
     this.mainDeckCards = data['cards'];
     this.countTypeCards(this.mainDeckCards, "main");
 
@@ -116,7 +115,7 @@ relDeckCards: RelDeckCards[] = [];
     }
 
     if(!event.isPointerOverContainer){
-      console.log(event.container.data)
+
       event.container.data.splice(event.previousIndex,1)
     }
   }
@@ -199,12 +198,12 @@ setRelDeckCards(){
    let rel = this.relDeckCards.find(rel => rel.card_numero === card.numero);
 
   card.price = rel.card_price;
-  card.relDeckCards = rel
-  let str: string[] = []
-  str.push(rel.card_set_code)
-  card.set_code = str;
+  let arr = []
+  arr.push(rel)
+  card.relDeckCards = arr
 
   });
+
 }
 
 
@@ -292,7 +291,7 @@ esconderImgToolTip(){
 
 addCardSideDeck(index:any){
 
-  this.sideDeckCards.unshift(this.arrayCards[index])
+  this.sideDeckCards.unshift(  this.arrayCards[index])
   this.toastr.success('Card added in Side Deck');
 
 }
@@ -319,16 +318,20 @@ addCardExtraDeck(index:any){
 addCardMainDeck(index:any){
 
   if(this.mainDeckCards.length >= 60){
-     this.toastr.error("Deck already have 60 cards, can't add more")
+     this.toastr.error("Deck already has 60 cards")
      return false;
   }
 
   let isLimitOver:boolean = this.isCardLimitOver(this.arrayCards[index], 'M')
  
   if(!isLimitOver){
-    this.mainDeckCards.unshift(this.arrayCards[index]);
+   let card:Card = this.arrayCards[index]
+    card.relDeckCards = [];
+
+    this.mainDeckCards.unshift(card);
     this.toastr.success("Card added in Main Deck");
     this.countTypeCards(this.mainDeckCards, 'main');
+
   } else{
     this.toastr.warning("There are already three copies of this card")
   }
@@ -422,7 +425,7 @@ onScroll(){
 }
 
 cardsSearched = [];
-consultCardSetCode(cardNumber:any){
+consultCardSetCode(cardNumber:any, index:string){
     
   if(cardNumber == null || cardNumber == undefined){
     this.errorDialog("Sorry, can't consult card's set codes.");
@@ -434,67 +437,82 @@ consultCardSetCode(cardNumber:any){
   if(!isSeached){
 
     this.cardService.findAllRelDeckCardsByCardNumber(cardNumber).subscribe(data => {      
-      let relationArray = data; 
+      let relationArray = data;
      
       this.updateCardSetCode(relationArray, cardNumber)
       this.cardsSearched.push(cardNumber);
 
-      this.onChangeCardSetCode("0", null)
     }) 
 
-  }
+  } 
  
 }
 
+
 updateCardSetCode(relationArray: RelDeckCards[], cardNumber:any){
 
-  let cardMainDeck:Card = this.mainDeckCards.find(card => card.numero == cardNumber);
-  let cardExtraDeck:Card = this.extraDeckCards.find(card => card.numero == cardNumber);
-  let cardSideDeck:Card = this.extraDeckCards.find(card => card.numero == cardNumber);
+  let cardMainDeck:Card[] = this.mainDeckCards.filter(card => card.numero == cardNumber)
+  let cardExtraDeck:Card[] = this.extraDeckCards.filter(card => card.numero == cardNumber);
+  let cardSideDeck:Card[] = this.sideDeckCards.filter(card => card.numero == cardNumber);
 
   if(cardMainDeck != null && cardMainDeck != undefined)  
-    this.updateCardSetCodeInSpecifDeck(relationArray, cardMainDeck);
+  this.updateCardSetCodeInSpecificDeck(relationArray, cardMainDeck);
 
   if(cardExtraDeck != null && cardExtraDeck != undefined)
-    this.updateCardSetCodeInSpecifDeck(relationArray, cardExtraDeck); 
+    this.updateCardSetCodeInSpecificDeck(relationArray, cardExtraDeck); 
 
   if(cardSideDeck != null && cardSideDeck != undefined)
-    this.updateCardSetCodeInSpecifDeck(relationArray, cardSideDeck); 
+    this.updateCardSetCodeInSpecificDeck(relationArray, cardSideDeck); 
   
 }
 
-updateCardSetCodeInSpecifDeck(relationArray:RelDeckCards[], card:Card){
+updateCardSetCodeInSpecificDeck(relationArray:RelDeckCards[], cards:Card[]){
 
-  card.relDeckCards = relationArray;
-
-  let str: string[] = []
-  relationArray.forEach(rel => {   
-    str.push(rel.card_set_code)
+  cards.forEach(card => {
+    card.relDeckCards = []
+    relationArray.forEach(rel =>{
+    card.relDeckCards.push(rel)
+    })
   })
-  card.set_code = str
+ 
+
 }
 
-onChangeCardSetCode(cardSetCode:string, card:Card){
+onChangeCardSetCode(cardSetCode:string, array:string, index){
  debugger
+
   if(cardSetCode == "0"){
-    card.price = 0.00
+    this.changePriceAndRarity("", "0", true, null);
     return false;
   }
 
- let rel =  card['relDeckCards'].find(set => set.card_set_code == cardSetCode)
+ let typeArray = this.findTypeDeckArray(array);
+ let card = typeArray[index];
 
+ let rel:RelDeckCards =  card['relDeckCards'].find(set => set.card_set_code == cardSetCode)
+
+ this.changePriceAndRarity(array, index,false, rel);
+ 
  if(card.price != rel.card_price){this.singleCalculateDeckValue(card.price, rel.card_price)}
 
- card.price = rel.card_price;
+}
 
- let relIndex = this.relDeckCards.map(function(set){ return set.card_set_code}).indexOf(cardSetCode);
+changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelDeckCards){
+  let priceId = array+"_"+index;
+  let rarityId =  array+"_r_"+index;
 
-  console.log("index  " + relIndex)
- if(relIndex != null && relIndex != undefined){
-    this.relDeckCards.splice(relIndex, 1);
-    this.relDeckCards.push(rel);
+  let liPrice = document.getElementById(priceId);
+  let liRarity = document.getElementById(rarityId);
 
- }
+  if(isSetCodeZero){
+    liPrice.innerHTML ="$ 0.00";
+    liRarity.innerHTML = "-";
+
+  } else {
+      liPrice.innerHTML="$ "+rel.card_price.toFixed(2);
+      liRarity.innerHTML=rel.card_raridade;
+  }
+     
 }
 
 singleCalculateDeckValue(currentCardValue, newCardValue){
@@ -506,8 +524,15 @@ singleCalculateDeckValue(currentCardValue, newCardValue){
 
       this.totalDeckValue = val.toFixed(2);
     }
+  
+}
 
-   
+findTypeDeckArray(array:string){
+
+  if(array == 'main'){return this.mainDeckCards}
+  else if (array = 'extra'){return this.extraDeckCards}
+  else if(array = 'side'){return this.sideDeckCards}
+
 }
 
 errorDialog(errorMessage:string){
@@ -522,6 +547,8 @@ warningDialog(warningMessage:string){
   })
 }
 
+
 }
+
 
 

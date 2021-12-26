@@ -6,6 +6,7 @@
     </div>
 
     <!--Deck name-->
+
     <div style="margin-bottom: 20px;">
         <span>
             <mat-form-field appearance="outline" style="width: 35%;">
@@ -74,19 +75,10 @@
                     <span style="color: red;">Trap: {{typeCard.trap}}</span>      
                 </div>
 
-         <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" 
-
-            cdkDropList
-            #mainDeck="cdkDropList"
-            [cdkDropListData]="mainDeckCards"
-            [cdkDropListConnectedTo]="[cardItem]"
-            
-            cdkDropListOrientation="vertical"
-            (cdkDropListDropped)="drop($event)"
-            (cdkDragReleased)="remove($event)">
+         <div id="mainDeck"   style="border: solid goldenrod; background-color: #FFDEAD; padding: 3px;" >
 
 
-                <div class="example-box" *ngFor="let card of mainDeckCards; let i = index" style="background: transparent;" >
+                <div class="example-box" *ngFor="let card of mainDeckCards; let i = index; " style="background: transparent;" >
                    
                     <div>
                         <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
@@ -95,14 +87,25 @@
                     <div class="divSimpleInfo" *ngIf="manage == true">
 
                         <ul class="cardSimpleInfo">
-                            <li>
-                                <span style="color: #228B22; font-weight: 700; top: 0;">$ {{card.price}}</span> 
+                            <li>   
+                                <span *ngIf="card.relDeckCards.length == 1 " style="color: #228B22; font-weight: 700; top: 0;" id="main_{{i}}">
+                                $ {{card.relDeckCards[0].card_price}}
+                               </span>
+                                <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="main_{{i}}"> 
+                                    $ 0.00</span>
+
+
+                                 <span id="main_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 ">{{card.relDeckCards[0].card_raridade}}</span> 
+                                 <span id="main_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1 ">
+                                  -
+                                </span> 
                             </li>
                             <li>
-                                <select style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero)" (change)="onChangeCardSetCode(set.value, card)">
-                                    <option [value]="0" [selected]="setCode == null || setCode == undefined">SET CODE...</option>
-                                    <option  *ngFor="let setCode of card.set_code" 
-                                    [value]="setCode" >{{setCode}}</option>                                 
+                                <select  style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero, i)" 
+                                (change)="onChangeCardSetCode(set.value, 'main', i)">
+                                     <option [value]="0" [selected]="card.relDeckCards.length == 0 || card.relDeckCards.length > 1">SET CODE...</option>  
+                                    <option  *ngFor="let setCode of card.relDeckCards" [selected]="card.relDeckCards.length == 1"
+                                    [value]="setCode.card_set_code" >{{setCode.card_set_code}}</option>                                
                                 </select>   
                             </li>
                             <li style="margin-top: 3px;">  
@@ -182,14 +185,7 @@
 
                 <!--Side Deck-->
                 <h3 class="titles">Side Deck</h3>
-            <div id="sideDeck" style="border:solid  green;" class="structure"
-                cdkDropList
-                #sideDeck="cdkDropList"
-                [cdkDropListData]="sideDeckCards"
-                class="example-list"
-                cdkDropListOrientation="horizontal"
-                (cdkDropListDropped)="drop($event)"
-                >
+            <div id="sideDeck" style="border:solid  green;" class="structure"    >
                 <div class="example-box" *ngFor="let item of sideDeckCards;" cdkDrag >
                     <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
 
@@ -199,13 +195,7 @@
             </div>
 
             <!--Search side-->
-            <div id="cardsSearch" 
-            cdkDropList
-            #cardItem="cdkDropList"
-            [cdkDropListData]="arrayCards"
-            [cdkDropListConnectedTo]="[mainDeck]"
-            (cdkDropListDropped)="drop($event)"
-            >
+            <div id="cardsSearch" >
 
             <div id="searchedCardsBar">
                 <h5> Cards List</h5>
