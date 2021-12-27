@@ -81,7 +81,9 @@
                 <div class="example-box" *ngFor="let card of mainDeckCards; let i = index; " style="background: transparent;" >
                    
                     <div>
-                        <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
+                        <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px" >
+                        <input *ngIf="card.relDeckCards.length == 1 " type="hidden"  class="{{card.relDeckCards[0].card_raridade}}" id="main_hidden_{{i}}">
+                        <input *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1" type="hidden"  id="main_hidden_{{i}}">
                     </div>
 
                     <div class="divSimpleInfo" *ngIf="manage == true">
@@ -93,9 +95,9 @@
                                </span>
                                 <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="main_{{i}}"> 
                                     $ 0.00</span>
-
-
-                                 <span id="main_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 ">{{card.relDeckCards[0].card_raridade}}</span> 
+                                 <span id="main_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 " >
+                                    {{card.relDeckCards[0].card_raridade}}
+                                </span> 
                                  <span id="main_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1 ">
                                   -
                                 </span> 
@@ -138,7 +140,7 @@
                     <span style="color: black;">XYZ: {{typeCard.xyz}}</span>                  
                 </div>
                
-        <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure" >
+             <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure" >
                 <div class="example-box" *ngFor="let card of extraDeckCards;"  style="background-color: transparent;">
                         <div>
                             <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
@@ -152,17 +154,18 @@
                                     $ {{card.relDeckCards[0].card_price}}
                                    </span>
                                     <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="extra_{{i}}"> 
-                                        $ 0.00</span>
-    
-    
-                                     <span id="extra_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 ">{{card.relDeckCards[0].card_raridade}}</span> 
+                                        $ 0.00</span>   
+                                     <span id="extra_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 ">
+                                        {{card.relDeckCards[0].card_raridade}}
+                                    </span> 
+
                                      <span id="extra_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1 ">
                                       -
                                     </span> 
                                 </li>
                                 <li>
                                     <select  style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero, i)" 
-                                    (change)="onChangeCardSetCode(set.value, 'main', i)">
+                                    (change)="onChangeCardSetCode(set.value, 'extra', i)">
                                          <option [value]="0" [selected]="card.relDeckCards.length == 0 || card.relDeckCards.length > 1">SET CODE...</option>  
                                         <option  *ngFor="let setCode of card.relDeckCards" [selected]="card.relDeckCards.length == 1"
                                         [value]="setCode.card_set_code" >{{setCode.card_set_code}}</option>                                
@@ -177,7 +180,7 @@
                                         <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
     
                                         <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
-                                            matTooltip="Remove" (click)="removeFromArray(mainDeckCards, i,'main')" >highlight_remove</i></span>
+                                            matTooltip="Remove" (click)="removeFromArray(extraDeckCards, i,'main')" >highlight_remove</i></span>
                                         
                                 </li>
                             </ul>
@@ -190,11 +193,55 @@
 
                 <!--Side Deck-->
                 <h3 class="titles">Side Deck</h3>
-            <div id="sideDeck" style="border:solid  green;" class="structure"    >
-                <div class="example-box" *ngFor="let item of sideDeckCards;" cdkDrag >
-                    <img  [src]='cardImagem(item.numero)' alt="" width="105px" height="136px">
+                 <div id="sideDeck" style="border:solid  green;" class="structure"    >
+                <div class="example-box" *ngFor="let card of sideDeckCards;"  style="background-color: transparent;">
+                    <div>
+                        <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
+                    </div>
+    
+                    <div class="divSimpleInfo" *ngIf="manage == true">
 
-                </div>
+                        <ul class="cardSimpleInfo">
+                            <li>   
+                                <span *ngIf="card.relDeckCards.length == 1 " style="color: #228B22; font-weight: 700; top: 0;" id="side_{{i}}">
+                                $ {{card.relDeckCards[0].card_price}}
+                               </span>
+                                <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="side_{{i}}"> 
+                                 $ 0.00
+                                </span>
+
+
+                                 <span id="side_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 ">{{card.relDeckCards[0].card_raridade}}</span> 
+                                 <span id="side_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1 ">
+                                  -
+                                </span> 
+                            </li>
+                            <li>
+                                <select  style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero, i)" 
+                                (change)="onChangeCardSetCode(set.value, 'side', i)">
+                                     <option [value]="0" [selected]="card.relDeckCards.length == 0 || card.relDeckCards.length > 1">SET CODE...</option>  
+                                    <option  *ngFor="let setCode of card.relDeckCards" [selected]="card.relDeckCards.length == 1"
+                                    [value]="setCode.card_set_code" >{{setCode.card_set_code}}</option>                                
+                                </select>   
+                            </li>
+                            <li style="margin-top: 3px;">  
+    
+                                    <mat-icon style="color: #2F4F4F; " class="card-item-icon"
+                                    (mouseover)="mostrarDivCardsInfo($event, card.numero)"
+                                    (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
+                                    
+                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
+
+                                    <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
+                                        matTooltip="Remove" (click)="removeFromArray(sideDeckCards, i,'main')" >highlight_remove</i></span>
+                                    
+                            </li>
+                        </ul>
+            
+                    </div> 
+
+
+            </div>
             </div>
                 
             </div>
