@@ -14,7 +14,6 @@ import { BehaviorSubject } from 'rxjs';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
 import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
 import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
-import { DOCUMENT } from '@angular/common';
 
 
 @Component({
@@ -77,8 +76,8 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
     this.loadRandomCards();
   }
 
-  ngAfterViewInit(){
-    this.calculateQtdRarity()
+  ngAfterViewInit (){
+    this.setRarityClassAndPriceTitle()
   }
 
 
@@ -143,7 +142,17 @@ validTypeDeckCard(cards:any){
    }
 }
 
+setRarityClassAndPriceTitle(){
+  this.mainDeckCards.forEach((card, index) => {
+    let hiddenRarity = document.getElementById('main_hidden_'+index)
+    let hiddenPrice = document.getElementById('main_hidden_price_'+index);
+    hiddenRarity.className = GeneralFunctions.rarity(card.raridade)   
+    hiddenPrice.title = card.price.toFixed(2);
+  });
+  
+  this.calculateQtdRarity()
 
+}
 countTypeCards(data:Card[], deck:string){
 
       if(deck === 'main'){
@@ -165,8 +174,10 @@ countTypeCards(data:Card[], deck:string){
   }
 
 setRelDeckCards(){
-  this.mainDeckCards.forEach((card) => {
-      this.setRelDeckCardsTypeDeck(card);
+  
+  this.mainDeckCards.forEach((card) => {  
+     this.setRelDeckCardsTypeDeck(card);
+
    });
 
   this.extraDeckCards.forEach((card) => {
@@ -188,11 +199,10 @@ setRelDeckCardsTypeDeck(card:Card){
  arr.push(rel)
  card.relDeckCards = arr;
  card.raridade = rel.card_raridade
+ card.price =rel.card_price
  this.relDeckCards.splice(relIndex, 1); 
-
+ return rel.card_raridade;
 }
-
-
 
 cardImagem(cardId: any){
   let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
@@ -350,31 +360,65 @@ removeFromArray(collection:any[], index:any, typeDeck:string){
     collection.splice(index,1);
     this.toastr.info("Card removed from Deck.")
     this.countTypeCards(collection, typeDeck);
-
+    this.changePriceAndRarity(typeDeck,index,true, null)
   }catch{
       console.error
       alert("Sorry, can't remove card. Try again later :( ")
   }
+
+    this.calculateQtdRarity();
+    this.recalculateDeckPrice();
 }
 
 totalDeckValue:string
 
-calculateDeckPrice(relDeckCards:any[]){
+/*calculateDeckPrice(relDeckCards:any[]){
     let sum: number = 0;
     
     relDeckCards.forEach(card => sum += card.card_price);
     this.totalDeckValue = sum.toFixed(2)
+}*/
+
+calculateDeckPrice(relDeckCards:any[]){
+  let sum: number = 0;
+  relDeckCards.forEach(card => sum += card.card_price);
+  this.totalDeckValue = sum.toFixed(2)
 }
 
- calculateQtdRarity(){
-  debugger
- 
-  this.deck.qtdCommon = document.getElementsByClassName('Common').length  //this.deck['cards'].filter(rel => rel.raridade == 'Common').length;
-  this.deck.qtdRare =  document.getElementsByClassName('Rare').length //this.deck['cards'].filter(rel => rel.raridade == 'Rare').length;
-  this.deck.qtdSuperRare = document.getElementsByClassName('Super').length// this.deck['cards'].filter(rel => rel.raridade == 'Super Rare').length;
-  this.deck.qtdUltraRare = this.deck['cards'].filter(rel => rel.raridade == "Ultra Rare").length; 
 
+
+ calculateQtdRarity(){
+ 
+  this.deck.qtdCommon = document.getElementsByClassName('common').length  //this.deck['cards'].filter(rel => rel.raridade == 'Common').length;
+  this.deck.qtdRare =  document.getElementsByClassName('rare').length //this.deck['cards'].filter(rel => rel.raridade == 'Rare').length;
+  this.deck.qtdSuperRare = document.getElementsByClassName('super_rare').length// this.deck['cards'].filter(rel => rel.raridade == 'Super Rare').length;
+  this.deck.qtdUltraRare = document.getElementsByClassName('ultra_rare').length
+
+  this.recalculateDeckPrice();
  } 
+
+ recalculateDeckPrice(){
+   debugger
+   let unitPrices = document.querySelectorAll<HTMLElement>('.price');
+   let price:number = 0;
+  
+   for(var i = 0; i < unitPrices.length; i++){
+     try{
+        if(!isNaN(Number(unitPrices[i].title))){
+         let val = Number(unitPrices[i].title);
+         price += val;
+        }
+
+     }catch(e){
+       let error:Error = e;
+        console.log(error.message);
+        alert("Error, can't calculate deck price :(" );
+        return false;
+     }
+   }
+
+   this.totalDeckValue = price.toFixed(2);
+ }
 
  criterias = new Array();
  openDialogSearch() {
@@ -386,8 +430,6 @@ calculateDeckPrice(relDeckCards:any[]){
       this.validTypeDeckCard(result.data.content);
       this.criterias = result.criterias
     }
-   
-
   });
 }
 
@@ -476,7 +518,8 @@ updateCardSetCodeInSpecificDeck(relationArray:RelDeckCards[], cards:Card[]){
 onChangeCardSetCode(cardSetCode:string, array:string, index){
 
   if(cardSetCode == "0"){
-    this.changePriceAndRarity("", "0", true, null);
+    this.changePriceAndRarity(array, index, true, null);
+    this.calculateQtdRarity();
     return false;
   }
 
@@ -486,47 +529,39 @@ onChangeCardSetCode(cardSetCode:string, array:string, index){
  let rel:RelDeckCards =  card['relDeckCards'].find(set => set.card_set_code == cardSetCode)
 
  this.changePriceAndRarity(array, index,false, rel);
- 
- if(card.price != rel.card_price){this.singleCalculateDeckValue(card.price, rel.card_price)}
 
- this.calculateQtdRarity()
+ this.calculateQtdRarity();
+
+ this.recalculateDeckPrice();
 
 }
 
 changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelDeckCards){
+
   let priceId = array+"_"+index;
   let rarityId =  array+"_r_"+index;
   let rarityCountId = array+"_hidden_"+index;
+  let priceHidden = array+"_hidden_price_"+index;
 
   let liPrice = document.getElementById(priceId);
   let liRarity = document.getElementById(rarityId);
   let hiddenInputRarity = document.getElementById(rarityCountId);
+  let hiddenInputPrice = document.getElementById(priceHidden);
 
   if(isSetCodeZero){
     liPrice.innerHTML ="$ 0.00";
     liRarity.innerHTML = "-";
-    hiddenInputRarity.className = "";
+    hiddenInputRarity.className = "-";
+    hiddenInputPrice.title = ""
 
   } else {
       liPrice.innerHTML="$ "+rel.card_price.toFixed(2);
       liRarity.innerHTML=rel.card_raridade;
       //liRarity.className = rel.card_raridade;
-      hiddenInputRarity.className = rel.card_raridade;
-     
+      hiddenInputRarity.className = GeneralFunctions.rarity(rel.card_raridade)
+      hiddenInputPrice.title = rel.card_price.toFixed(2);   
   }
      
-}
-
-singleCalculateDeckValue(currentCardValue, newCardValue){
-    let total = Number(this.totalDeckValue);
-
-    if( total > 0){
-      let val = total - currentCardValue;
-      val = val + newCardValue;
-
-      this.totalDeckValue = val.toFixed(2);
-    }
-  
 }
 
 findTypeDeckArray(array:string){

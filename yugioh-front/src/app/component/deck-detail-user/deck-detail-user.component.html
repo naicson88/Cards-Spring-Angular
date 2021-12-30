@@ -46,7 +46,7 @@
 
     <div id="optionsBtn" >
         <div id="btnSearch" style="float: right;">
-            <button mat-raised-button color="primary" (click)="openDialogSearch()">Search <mat-icon>search</mat-icon></button>
+            <button mat-raised-button color="primary" (click)="openDialogSearch()" >Search <mat-icon>search</mat-icon></button>
         </div>
 
         <div id="btnRearrange" style="float: left;">
@@ -82,8 +82,8 @@
                    
                     <div>
                         <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px" >
-                        <input *ngIf="card.relDeckCards.length == 1 " type="hidden"  class="{{card.relDeckCards[0].card_raridade}}" id="main_hidden_{{i}}">
-                        <input *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1" type="hidden"  id="main_hidden_{{i}}">
+                        <input type="hidden" id="main_hidden_{{i}}">
+                        <input type="hidden" id ="main_hidden_price_{{i}}" class="price"/>
                     </div>
 
                     <div class="divSimpleInfo" *ngIf="manage == true">
@@ -104,7 +104,7 @@
                             </li>
                             <li>
                                 <select  style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero, i)" 
-                                (change)="onChangeCardSetCode(set.value, 'main', i)">
+                                (click)="onChangeCardSetCode(set.value, 'main', i)">
                                      <option [value]="0" [selected]="card.relDeckCards.length == 0 || card.relDeckCards.length > 1">SET CODE...</option>  
                                     <option  *ngFor="let setCode of card.relDeckCards" [selected]="card.relDeckCards.length == 1"
                                     [value]="setCode.card_set_code" >{{setCode.card_set_code}}</option>                                

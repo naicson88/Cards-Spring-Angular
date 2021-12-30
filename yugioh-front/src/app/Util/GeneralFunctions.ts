@@ -52,4 +52,19 @@ export abstract class GeneralFunctions  {
       return formatter.format(value);
     }
 
+    public static rarity(raridade:string):string {
+
+        if(raridade == null || raridade == undefined)
+          return null;
+        if(raridade == 'Common')
+            return "common"     
+        if(raridade == 'Rare')
+          return "rare";       
+        if(raridade == 'Super Rare')
+          return "super_rare";    
+        if(raridade == 'Ultra Rare')
+          return "ultra_rare";
+           
+    }
+
 }
