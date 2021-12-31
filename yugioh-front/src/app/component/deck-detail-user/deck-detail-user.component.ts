@@ -95,11 +95,8 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
     this.countTypeCards(this.extraDeckCards, "extra");
 
     this.sideDeckCards = data['sideDeckCards'];
-    //this.sendCardsToArray( data['extraDeck'], data['extraDeck']);
     this.relDeckCards =  data['rel_deck_cards'];
-
     this.calculateDeckPrice(this.relDeckCards);
-
     this.setRelDeckCards();
 
     //this.calculateQtdRarity();
@@ -119,6 +116,7 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
 }
 
 validTypeDeckCard(cards:any){
+  
   for(var i = 0; i < cards.length; i++){
 
     let card:Card = cards[i] ;
@@ -143,16 +141,34 @@ validTypeDeckCard(cards:any){
 }
 
 setRarityClassAndPriceTitle(){
+
   this.mainDeckCards.forEach((card, index) => {
     let hiddenRarity = document.getElementById('main_hidden_'+index)
     let hiddenPrice = document.getElementById('main_hidden_price_'+index);
     hiddenRarity.className = GeneralFunctions.rarity(card.raridade)   
     hiddenPrice.title = card.price.toFixed(2);
   });
+
+  this.extraDeckCards.forEach((card, index) => {
+    let hiddenRarity = document.getElementById('extra_hidden_'+index)
+    let hiddenPrice = document.getElementById('extra_hidden_price_'+index);
+    hiddenRarity.className = GeneralFunctions.rarity(card.raridade)   
+    hiddenPrice.title = card.price.toFixed(2);
+  });
+
+  this.sideDeckCards.forEach((card, index) => {
+    let hiddenRarity = document.getElementById('side_hidden_'+index)
+    let hiddenPrice = document.getElementById('side_hidden_price_'+index);
+    hiddenRarity.className = GeneralFunctions.rarity(card.raridade)   
+    hiddenPrice.title = card.price.toFixed(2);
+  });
   
-  this.calculateQtdRarity()
+  this.calculateQtdRarity();
 
 }
+
+
+
 countTypeCards(data:Card[], deck:string){
 
       if(deck === 'main'){
@@ -292,20 +308,7 @@ addCardMainDeck(index:any){
   }
 
   this.validAndAddCardRespectiveDeck(index, this.mainDeckCards,"Card added in Main Deck", 'main');
-  /*
-  let isLimitOver:boolean = this.isCardLimitOver(this.arrayCards[index], this.mainDeckCards)
- 
-  if(!isLimitOver){
-   let card:Card = this.arrayCards[index]
-   card.relDeckCards = [];
-
-    this.mainDeckCards.unshift(card);
-    this.toastr.success("Card added in Main Deck");
-    this.countTypeCards(this.mainDeckCards, 'main');
-    this.verifyMapSearchedCards(card);
-  } else{
-    this.toastr.warning("There are already three copies of this card")
-  }*/
+  
 }
 
 validAndAddCardRespectiveDeck(index, arrayDeck:Card[], messageToastr:string, typeDeck:string ){
@@ -353,16 +356,23 @@ isCardLimitOver(cardAdded:any, array:Card[]){
 
 }
 
-removeFromArray(collection:any[], index:any, typeDeck:string){
+removeFromArray(collection:Card[], index:any, typeDeck:string){
 
   try{
 
     collection.splice(index,1);
-    this.toastr.info("Card removed from Deck.")
-    this.countTypeCards(collection, typeDeck);
+
+    if(typeDeck != 'side'){
+      this.countTypeCards(collection, typeDeck);
+    }
+    
     this.changePriceAndRarity(typeDeck,index,true, null)
-  }catch{
-      console.error
+    this.toastr.info("Card removed from Deck.");
+    
+  }catch(e){
+     if(e instanceof Error){
+       console.log(e.message)
+     }
       alert("Sorry, can't remove card. Try again later :( ")
   }
 
@@ -372,20 +382,11 @@ removeFromArray(collection:any[], index:any, typeDeck:string){
 
 totalDeckValue:string
 
-/*calculateDeckPrice(relDeckCards:any[]){
-    let sum: number = 0;
-    
-    relDeckCards.forEach(card => sum += card.card_price);
-    this.totalDeckValue = sum.toFixed(2)
-}*/
-
 calculateDeckPrice(relDeckCards:any[]){
   let sum: number = 0;
   relDeckCards.forEach(card => sum += card.card_price);
   this.totalDeckValue = sum.toFixed(2)
 }
-
-
 
  calculateQtdRarity(){
  
@@ -398,7 +399,7 @@ calculateDeckPrice(relDeckCards:any[]){
  } 
 
  recalculateDeckPrice(){
-   debugger
+   
    let unitPrices = document.querySelectorAll<HTMLElement>('.price');
    let price:number = 0;
   
@@ -555,6 +556,7 @@ changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelD
     hiddenInputPrice.title = ""
 
   } else {
+    debugger
       liPrice.innerHTML="$ "+rel.card_price.toFixed(2);
       liRarity.innerHTML=rel.card_raridade;
       //liRarity.className = rel.card_raridade;
@@ -584,6 +586,40 @@ warningDialog(warningMessage:string){
   })
 }
 
+sendToSideDeck(deckType:string, index:number){
+    let deck:Card[] = this.findTypeDeckArray(deckType);
+    let card:Card = deck[index];
+
+    deck.splice(index,1);
+    this.sideDeckCards.unshift(card);
+    this.countTypeCards(deck, deckType);
+
+    this.toastr.success("Card sent to Side Deck!")
+}
+
+sendToMainDeck(index:number){
+  let card = this.sideDeckCards[index];
+  Object.assign(card, {isExtraDeck: null})
+
+  let isExtraDeck = GeneralFunctions.isExtraDeckCard(card.generic_type);
+
+  if(isExtraDeck){
+    this.sideDeckCards.splice(index, 1);
+    this.extraDeckCards.unshift(card);
+    this.countTypeCards(this.extraDeckCards, 'extra');
+
+    this.toastr.success("Card sent to Extra Deck");
+  } else {
+    this.sideDeckCards.splice(index, 1);
+    this.mainDeckCards.unshift(card);
+    this.countTypeCards(this.mainDeckCards, 'main');
+
+    this.toastr.success("Card sent to Main Deck");
+  }
+
+
+
+}
 
 }
 

@@ -116,7 +116,8 @@
                                     (mouseover)="mostrarDivCardsInfo($event, card.numero)"
                                     (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
                                     
-                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
+                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;" (click)="sendToSideDeck('main', i)"
+                                     matTooltip="Send to Side Deck" >arrow_circle_down</i>
 
                                     <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
                                         matTooltip="Remove" (click)="removeFromArray(mainDeckCards, i,'main')" >highlight_remove</i></span>
@@ -140,10 +141,12 @@
                     <span style="color: black;">XYZ: {{typeCard.xyz}}</span>                  
                 </div>
                
-             <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure" >
-                <div class="example-box" *ngFor="let card of extraDeckCards;"  style="background-color: transparent;">
+         <div id="extraDeck" style="border: solid purple; background-color: #9370DB " class="structure" >
+                <div class="example-box" *ngFor="let card of extraDeckCards; let i = index"  style="background-color: transparent;">
                         <div>
                             <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
+                            <input type="hidden" id="extra_hidden_{{i}}">
+                            <input type="hidden" id ="extra_hidden_price_{{i}}" class="price"/>
                         </div>
         
                         <div class="divSimpleInfo" *ngIf="manage == true">
@@ -180,7 +183,7 @@
                                         <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
     
                                         <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
-                                            matTooltip="Remove" (click)="removeFromArray(extraDeckCards, i,'main')" >highlight_remove</i></span>
+                                            matTooltip="Remove" (click)="removeFromArray(extraDeckCards, i,'extra')" >highlight_remove</i></span>
                                         
                                 </li>
                             </ul>
@@ -194,9 +197,11 @@
                 <!--Side Deck-->
                 <h3 class="titles">Side Deck</h3>
                  <div id="sideDeck" style="border:solid  green;" class="structure"    >
-                <div class="example-box" *ngFor="let card of sideDeckCards;"  style="background-color: transparent;">
+                <div class="example-box" *ngFor="let card of sideDeckCards; let i = index"  style="background-color: transparent;">
                     <div>
                         <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px">
+                        <input type="hidden" id="side_hidden_{{i}}">
+                        <input type="hidden" id ="side_hidden_price_{{i}}" class="price"/>
                     </div>
     
                     <div class="divSimpleInfo" *ngIf="manage == true">
@@ -229,11 +234,13 @@
                                     <mat-icon style="color: #2F4F4F; " class="card-item-icon"
                                     (mouseover)="mostrarDivCardsInfo($event, card.numero)"
                                     (mouseout)="esconderImgToolTip()"> remove_red_eye </mat-icon>
-                                    
-                                    <i class="material-icons card-item-icon" style=" color: blue;margin-left: 20%;"  matTooltip="Send to Side Deck" >arrow_circle_down</i>
+        
 
+                                    <i   class="material-icons card-item-icon" style=" color: brown;margin-left: 20%;" (click)="sendToMainDeck(i)"
+                                    matTooltip="Send to Main Deck" >arrow_circle_up</i>
+                                  
                                     <span style="float: right; color:red; font-size: xx-small;"><i class="material-icons card-item-icon"
-                                        matTooltip="Remove" (click)="removeFromArray(sideDeckCards, i,'main')" >highlight_remove</i></span>
+                                        matTooltip="Remove" (click)="removeFromArray(sideDeckCards, i,'side')" >highlight_remove</i></span>
                                     
                             </li>
                         </ul>
@@ -257,6 +264,7 @@
 
                 <div style="width: 30%;display: inline-block; margin: 0; ">                  
                     <img  [src]='cardImagem(item.numero)' alt="" width="67px" height="92px">
+                   
                 </div>
 
                 <div style="width: 70%; display: inline-block; background: ghostwhite; height: 92px;  float: right;  border-collapse:collapse;
