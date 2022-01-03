@@ -11,7 +11,7 @@
         <span>
             <mat-form-field appearance="outline" style="width: 35%;">
               <mat-label>Deck name</mat-label>
-              <input matInput placeholder="Placeholder" [value]="deck.nome" style="width: 500px;">
+              <input matInput placeholder="Placeholder" [value]="deck.nome" style="width: 500px;" #deckName>
             </mat-form-field>
         </span>
 
@@ -56,8 +56,12 @@
             </button>
 
             <span style="margin-left: 20px; margin-bottom: -5px;">
-                <mat-checkbox class="example-margin" [(ngModel)]="manage" >To manage</mat-checkbox>
+                <mat-checkbox class="example-margin" [(ngModel)]="toManage" >To manage</mat-checkbox>
             </span>
+
+            <button mat-raised-button style="background-color:#1E90FF ; color: white; margin-left: 250px;" (click)="saveDeck()">
+                Save 	<mat-icon>save</mat-icon>
+           </button>
 
         </div>
       
@@ -86,7 +90,7 @@
                         <input type="hidden" id ="main_hidden_price_{{i}}" class="price"/>
                     </div>
 
-                    <div class="divSimpleInfo" *ngIf="manage == true">
+                    <div class="divSimpleInfo" [ngStyle]="{display: toManage == true ? 'block' : 'none'}">
 
                         <ul class="cardSimpleInfo">
                             <li>   
@@ -149,7 +153,7 @@
                             <input type="hidden" id ="extra_hidden_price_{{i}}" class="price"/>
                         </div>
         
-                        <div class="divSimpleInfo" *ngIf="manage == true">
+                        <div class="divSimpleInfo" [ngStyle]="{display: toManage == true ? 'block' : 'none'}" >
 
                             <ul class="cardSimpleInfo">
                                 <li>   
@@ -204,7 +208,7 @@
                         <input type="hidden" id ="side_hidden_price_{{i}}" class="price"/>
                     </div>
     
-                    <div class="divSimpleInfo" *ngIf="manage == true">
+                    <div class="divSimpleInfo" [ngStyle]="{display: toManage == true ? 'block' : 'none'}">
 
                         <ul class="cardSimpleInfo">
                             <li>   
@@ -222,12 +226,14 @@
                                 </span> 
                             </li>
                             <li>
+                               
                                 <select  style="font-size: smaller; " #set (click)="consultCardSetCode(card.numero, i)" 
                                 (change)="onChangeCardSetCode(set.value, 'side', i)">
-                                     <option [value]="0" [selected]="card.relDeckCards.length == 0 || card.relDeckCards.length > 1">SET CODE...</option>  
+                                    <option [value]="0" [selected]="card.relDeckCards.length == 0 || card.relDeckCards.length > 1">SET CODE...</option>  
                                     <option  *ngFor="let setCode of card.relDeckCards" [selected]="card.relDeckCards.length == 1"
                                     [value]="setCode.card_set_code" >{{setCode.card_set_code}}</option>                                
-                                </select>   
+                                </select>
+                               
                             </li>
                             <li style="margin-top: 3px;">  
     

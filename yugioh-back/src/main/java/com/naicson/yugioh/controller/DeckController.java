@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -133,6 +134,13 @@ public class DeckController {
 		}
 
 		return rel;
+	}
+	
+	@PostMapping(path = "/save-userdeck")
+	public ResponseEntity<String>saveUserDeck(@RequestBody Deck deck) throws SQLException{
+		this.deckService.saveUserdeck(deck);
+		
+		return new ResponseEntity<String>("Deck saved successfully", HttpStatus.OK);
 	}
 
 }

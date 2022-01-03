@@ -1,7 +1,9 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -11,6 +13,8 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +33,8 @@ import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.interfaces.DeckDetailService;
+import com.naicson.yugioh.util.GeneralFunctions;
+import com.naicson.yugioh.util.exceptions.ApiExceptionHandler;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
@@ -49,6 +55,8 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	@Autowired
 	RelDeckCardsRepository relDeckCardsRepository;
+	
+	Logger logger = LoggerFactory.getLogger(DeckServiceImpl.class);
 	
 	public DeckServiceImpl(DeckRepository deckRepository, RelDeckCardsRepository relDeckCardsRepository, DeckDAO dao, DeckUsersRepository deckUserRepo) {
 		this.deckRepository = deckRepository;
@@ -396,27 +404,28 @@ public class DeckServiceImpl implements DeckDetailService {
 
 	@Override
 	public Deck deckAndCards(Long deckId, String setType) throws Exception {
+		
 		Deck deck = new Deck();
 		deck = this.findById(deckId);
 		
-		List<Card> cardList = null;
+		List<Card> mainDeck = null;
 				
 		if(setType.equalsIgnoreCase("Konami")) {
 			
-			cardList = this.cardsOfDeck(deckId);
+			mainDeck = this.cardsOfDeck(deckId);
 			List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
 			
-			deck.setCards(cardList);
+			deck.setCards(mainDeck);
 			deck.setRel_deck_cards(relDeckCards);
 		}
 		
 		else if(setType.equalsIgnoreCase("User")) {
 			
-			cardList = this.consultMainDeck(deckId);
+			mainDeck = this.consultMainDeck(deckId);
 			List<Card> sideDeckCards = dao.consultSideDeckCards(deckId, setType);
 			List<Card> extraDeck = this.consultExtraDeckCards(deckId, "User");
 			
-			deck.setCards(cardList);
+			deck.setCards(mainDeck);
 			deck.setExtraDeck(extraDeck);
 			deck.setSideDeckCards(sideDeckCards);
 			
@@ -425,8 +434,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		} else {
 			throw new IllegalArgumentException("Invalid deckType.");
 		}
-		
-		
+			
 		return deck;
 	}
 	
@@ -439,7 +447,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		
 		if(mainDeck == null || mainDeck.isEmpty())
 			throw new NoSuchElementException("No cards found for Main Deck");
-		
+	
 		mainDeck = this.sortMainDeckCards(mainDeck);
 		
 		return mainDeck;
@@ -465,7 +473,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		List<Card> sortedCardList = new ArrayList<>();
 		
 		//Insere primeiro os cards do tipo Monstro
-		cardList.stream().filter(card -> card.getNivel() != null)
+		cardList.stream().filter(card -> card.getNivel() != null) //.sorted(Comparator.comparing(Card::getNome))
 		.collect(Collectors.toCollection(() -> sortedCardList));
 			
 		//Coloca o restante das cartas
@@ -476,6 +484,51 @@ public class DeckServiceImpl implements DeckDetailService {
 		return sortedCardList;
 	}
 	
+  @Transactional
+  @Override
+  public void saveUserdeck(Deck deck) throws SQLException {
+	DeckUsers userDeck = new DeckUsers();
 	
-
+	if(deck.getNome() == null || deck.getNome().equals("")) {
+		logger.error("USERDECK NAME IS NULL OR EMPTY");
+		throw new IllegalArgumentException("UserDeck name cannot be null or empty");		
+	}
+	
+	if( deck.getRel_deck_cards() == null ||  deck.getRel_deck_cards().isEmpty()) {
+		logger.error("DECK HAVE NO CARD INSERTED");
+		throw new IllegalArgumentException("There is no card in this deck");	
+	}
+	
+	//Check if it is a new deck or a existing deck
+	if(deck.getId() != null && deck.getId() != 0) {
+		dao.deleteCardsDeckuserByDeckId(deck.getId());
+		userDeck = deckUserRepository.getOne(deck.getId());
+		
+	} else {
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		userDeck.setUserId(user.getId());
+		userDeck.setDtCriacao(new Date());
+		userDeck.setSetType("D");
+	}		
+	
+		//FUTURAMENTE COLOCAR PARA EDITAR IMAGEM DO DECK
+		userDeck.setNome(deck.getNome());
+		userDeck = deckUserRepository.save(userDeck);
+		
+		if(userDeck == null) {
+			logger.error("IT WAS NOT POSSIBLE INSERT A NEW USERDECK");
+			throw new SQLException("It was not possible create/update the Deck");
+		}	
+		
+	for(RelDeckCards rel : deck.getRel_deck_cards()) {
+		int isSaved = dao.saveRelDeckUserCard(rel, userDeck.getId());
+		
+		if(isSaved == 0) {
+			logger.error("IT WAS NOT POSSIBLE SAVE A CARD IN USERDECK");
+			throw new SQLException("It was not possible save the card " + rel.getCard_set_code());
+		}		
+	}
+		
+ }
+  
 }

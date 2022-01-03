@@ -26,13 +26,14 @@ import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
 export class DeckDetailUserComponent implements OnInit, AfterViewInit {
   @ViewChild('btnSpan',{static: false})span:ElementRef;
   @ViewChild('dropListContainer',{static: false}) dropListContainer?: ElementRef;
+  @ViewChild('deckName', {static:false}) deckNome:ElementRef
 
-  constructor(private cardService: CardServiceService, private ref: ElementRef,
+  constructor(private cardService: CardServiceService, private ref: ElementRef, 
     private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService, public dialog: MatDialog) { }
 
   dropListReceiverElement?: HTMLElement;
 
-  manage = false;
+  toManage = false;
 
   cardsFromScroll = new BehaviorSubject([]);
   arrCardsFromScroll = new Array();
@@ -193,7 +194,6 @@ setRelDeckCards(){
   
   this.mainDeckCards.forEach((card) => {  
      this.setRelDeckCardsTypeDeck(card);
-
    });
 
   this.extraDeckCards.forEach((card) => {
@@ -201,6 +201,7 @@ setRelDeckCards(){
   }) 
 
   this.sideDeckCards.forEach((card) => {
+    debugger
     this.setRelDeckCardsTypeDeck(card);
   }) 
 
@@ -215,8 +216,8 @@ setRelDeckCardsTypeDeck(card:Card){
  arr.push(rel)
  card.relDeckCards = arr;
  card.raridade = rel.card_raridade
- card.price =rel.card_price
- this.relDeckCards.splice(relIndex, 1); 
+ card.price = rel.card_price
+this.relDeckCards.splice(relIndex, 1); 
  return rel.card_raridade;
 }
 
@@ -258,23 +259,8 @@ addCardSideDeck(index:any){
  }
 
  this.validAndAddCardRespectiveDeck(index, this.sideDeckCards,"Card added in Side Deck", null)
- /*
-  let isLimitOver:boolean = this.isCardLimitOver(this.arrayCards[index], this.sideDeckCards)
-
-  if(!isLimitOver){
-    let card:Card = this.arrayCards[index]
-    card.relDeckCards = [];
-
-    this.sideDeckCards.unshift(card)
-    this.toastr.success('Card added in Side Deck');
-    
-  } else {
-    this.toastr.warning("There are already three copies of this card")
-  }
-*/
+ this.sideDeckCards[0].relDeckCards.isSideDeck = true
 }
-
-
 
 addCardExtraDeck(index:any){
 
@@ -308,7 +294,7 @@ addCardMainDeck(index:any){
   }
 
   this.validAndAddCardRespectiveDeck(index, this.mainDeckCards,"Card added in Main Deck", 'main');
-  
+
 }
 
 validAndAddCardRespectiveDeck(index, arrayDeck:Card[], messageToastr:string, typeDeck:string ){
@@ -325,7 +311,7 @@ validAndAddCardRespectiveDeck(index, arrayDeck:Card[], messageToastr:string, typ
 
     if(typeDeck != null && typeDeck != undefined){
       this.countTypeCards(this.mainDeckCards, 'main');  
-    }
+    } 
       
   } else {
     this.toastr.warning("There are already three copies of this card")
@@ -491,13 +477,13 @@ updateCardSetCode(relationArray: RelDeckCards[], cardNumber:any){
   let cardSideDeck:Card[] = this.sideDeckCards.filter(card => card.numero == cardNumber);
 
   if(cardMainDeck != null && cardMainDeck != undefined)  
-  this.updateCardSetCodeInSpecificDeck(relationArray, cardMainDeck);
+  this.updateCardSetCodeInSpecificDeck(relationArray, cardMainDeck, false);
 
   if(cardExtraDeck != null && cardExtraDeck != undefined)
-    this.updateCardSetCodeInSpecificDeck(relationArray, cardExtraDeck); 
+    this.updateCardSetCodeInSpecificDeck(relationArray, cardExtraDeck, false); 
 
   if(cardSideDeck != null && cardSideDeck != undefined)
-    this.updateCardSetCodeInSpecificDeck(relationArray, cardSideDeck); 
+    this.updateCardSetCodeInSpecificDeck(relationArray, cardSideDeck,true); 
 
     if(!this.mapSetCodes.has(cardNumber)){
       this.mapSetCodes.set(cardNumber, relationArray);
@@ -505,11 +491,12 @@ updateCardSetCode(relationArray: RelDeckCards[], cardNumber:any){
   
 }
 
-updateCardSetCodeInSpecificDeck(relationArray:RelDeckCards[], cards:Card[]){
+updateCardSetCodeInSpecificDeck(relationArray:RelDeckCards[], cards:Card[], isSideDeck:boolean){
 
   cards.forEach(card => {
     card.relDeckCards = []
     relationArray.forEach(rel =>{
+    rel.isSideDeck = isSideDeck == true ? true : false
     card.relDeckCards.push(rel)
     })
   })
@@ -538,7 +525,7 @@ onChangeCardSetCode(cardSetCode:string, array:string, index){
 }
 
 changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelDeckCards){
-
+  
   let priceId = array+"_"+index;
   let rarityId =  array+"_r_"+index;
   let rarityCountId = array+"_hidden_"+index;
@@ -556,7 +543,7 @@ changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelD
     hiddenInputPrice.title = ""
 
   } else {
-    debugger
+    
       liPrice.innerHTML="$ "+rel.card_price.toFixed(2);
       liRarity.innerHTML=rel.card_raridade;
       //liRarity.className = rel.card_raridade;
@@ -569,8 +556,8 @@ changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelD
 findTypeDeckArray(array:string){
 
   if(array == 'main'){return this.mainDeckCards}
-  else if (array = 'extra'){return this.extraDeckCards}
-  else if(array = 'side'){return this.sideDeckCards}
+  else if (array == 'extra'){return this.extraDeckCards}
+  else if(array == 'side'){return this.sideDeckCards}
 
 }
 
@@ -619,6 +606,74 @@ sendToMainDeck(index:number){
 
 
 
+}
+
+relDeckCardsForSave:RelDeckCards[] = new Array();
+
+saveDeck(){
+  this.relDeckCardsForSave = [];
+
+  let deckEdited:Deck = new Deck();
+  deckEdited.id = this.deck.id;
+  deckEdited.nome = this.deckNome.nativeElement.value.trim();
+  
+  let options = document.querySelectorAll('option:checked');
+
+  this.insertInRelDeckCardForSave(this.mainDeckCards, 0, options, deckEdited.id, false);
+  this.insertInRelDeckCardForSave(this.extraDeckCards, this.mainDeckCards.length, options, deckEdited.id, false);
+  this.insertInRelDeckCardForSave(this.sideDeckCards, (this.mainDeckCards.length + this.extraDeckCards.length), options, deckEdited.id, true);
+
+  deckEdited.rel_deck_cards = this.relDeckCardsForSave;
+  
+  if(deckEdited.nome == "" || deckEdited.nome == null){
+    this.errorDialog("Deck name cannot be empty");
+    return false;
+  }
+  
+  this.deckService.saveUserDeck(deckEdited).subscribe(result => {
+    console.log(result)
+  })
+}
+
+insertInRelDeckCardForSave(array:Card[], indexSum:number, options:NodeListOf<Element>, deckId:number, isSideDeck:boolean){
+  
+  for(var i = 0; i < array.length; i++){ 
+    let rel:RelDeckCards = new RelDeckCards()  
+    let setCode = options[i + indexSum].innerHTML
+
+    if(setCode != "SET CODE..."){
+  
+     // rel = array[i].relDeckCards.find(rel => rel.card_set_code = setCode);
+
+      for(var j = 0; j < array[i].relDeckCards.length; j++){
+        if(array[i].relDeckCards[j].card_set_code == setCode){
+          rel = array[i].relDeckCards[j]
+        }
+      }
+      //Need instantiate another object becaue typescript was replacing objects inside array
+      if(rel != undefined && rel != null){
+        
+         let  rel2:RelDeckCards = new RelDeckCards()
+         rel2.card_raridade = rel.card_raridade
+         rel2.card_set_code = rel.card_set_code
+         rel2.card_numero = rel.card_numero
+         rel2.isSideDeck = isSideDeck
+         rel2.id = rel.id
+         rel2.card_price = rel.card_price
+         rel2.deckId = deckId
+
+          this.relDeckCardsForSave.push(rel2);
+
+      }
+
+    } else {
+      let  rel2:RelDeckCards = new RelDeckCards()
+      rel2.card_numero = array[i].numero
+      rel2.isSideDeck = isSideDeck
+      rel2.deckId = deckId
+      this.relDeckCardsForSave.push(rel2);
+    }   
+  }
 }
 
 }

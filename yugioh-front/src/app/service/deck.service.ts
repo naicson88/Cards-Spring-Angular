@@ -72,4 +72,12 @@ export class DeckService {
     )
   }
 
+  public saveUserDeck(deck:Deck) {
+    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' };
+    return this.http.post<Deck>(this.base_url+`/decks/save-userdeck`, deck, {headers})
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+  }
+
 }
