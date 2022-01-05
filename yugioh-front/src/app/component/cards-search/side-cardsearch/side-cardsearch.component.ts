@@ -37,10 +37,8 @@ export class SideCardsearchComponent implements OnInit {
       console.log(name)
       this.service.findCardToAddToUserCollection(teste).subscribe(data  => {
         this.cardFound = data;
-        console.log(this.cardFound)
         this.arrSets = data.mapDeckSetcode;
         this.arrUserSets = data.mapSetsOfUser;
-        console.log( this.arrUserSets )
        
       })
   }

@@ -34,8 +34,7 @@ export class CardDetailComponent implements OnInit {
       this.service.getCardDetails(id).subscribe(data => {      
         this.card = data;
         
-      })
-    
+      })  
   
   }
 
@@ -142,7 +141,7 @@ export class CardDetailComponent implements OnInit {
   leftTp;
 
   mostrarImgToolTip(e){
-      console.log("e 2")
+
       this.leftTp =  e.pageX + 15 + "px";
       this.topTp = + e.pageY + 15 + "px";
  

@@ -275,7 +275,3 @@ select {
     border-radius: 5px ; 
     border: solid thin silver
 }
-
-button {
-  cursor: pointer;
-}

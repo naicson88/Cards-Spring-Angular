@@ -6,7 +6,7 @@ import { throwError } from 'rxjs';
 export abstract class HandleErros  {
 
     public static handleError(error: HttpErrorResponse) {
-
+        debugger
         if(error.error instanceof ErrorEvent){
             console.log(" An error occurred", error.error.message);
         } else {

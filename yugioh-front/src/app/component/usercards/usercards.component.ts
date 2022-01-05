@@ -177,7 +177,6 @@ export class UsercardsComponent implements OnInit {
         
           if(this.arrCardsDetails['rarity']['Super Rare'] != null && this.arrCardsDetails['rarity']['Super Rare'] != undefined)
           this.qtdSuperRare = this.arrCardsDetails['rarity']['Super Rare'];
-
       
     }
 

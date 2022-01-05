@@ -13,6 +13,7 @@ import { IndexComponent } from './component/index/index.component';
 import { LoginComponent } from './component/index/login/login.component';
 import { RegisterComponent } from './component/index/register/register.component';
 import { UsercardsComponent } from './component/usercards/usercards.component';
+import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
 
 const routes: Routes = [
   { path: 'decks', component: DeckComponent , data : {set_type: 'D'}},
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'cards-search', component: CardsSearchComponent},
   { path: 'userdeck-details/:deckName', component: DeckDetailUserComponent },
   {path: 'search-box', component: SearchBoxComponent},
+  {path: 'error-page', component:ErrorPagesComponent},
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   
   

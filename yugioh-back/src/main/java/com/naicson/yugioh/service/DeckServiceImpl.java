@@ -431,6 +431,11 @@ public class DeckServiceImpl implements DeckDetailService {
 			
 			deck.setRel_deck_cards(this.relDeckUserCards(deckId));
 			
+			int sumDecks = deck.getCards().size() + deck.getExtraDeck().size() + deck.getSideDeckCards().size();
+			
+			if(sumDecks != deck.getRel_deck_cards().size())
+				throw new ErrorMessage("Cards quantity don't match relation quantity");
+			
 		} else {
 			throw new IllegalArgumentException("Invalid deckType.");
 		}
@@ -521,6 +526,10 @@ public class DeckServiceImpl implements DeckDetailService {
 		}	
 		
 	for(RelDeckCards rel : deck.getRel_deck_cards()) {
+		
+		if(rel.getCard_price() == null )
+			rel.setCard_price(0.00);
+		
 		int isSaved = dao.saveRelDeckUserCard(rel, userDeck.getId());
 		
 		if(isSaved == 0) {

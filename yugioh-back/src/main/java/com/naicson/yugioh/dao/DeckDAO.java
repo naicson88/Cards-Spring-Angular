@@ -12,6 +12,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.DeckRepository;
+import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Repository
@@ -36,6 +39,8 @@ public class DeckDAO {
 	 
 	 @Autowired
 	 DeckRepository deckRepository;
+	 
+	 Logger logger = LoggerFactory.getLogger(DeckServiceImpl.class);
 	 
 	 
 	public DeckDAO() {
@@ -294,19 +299,22 @@ public class DeckDAO {
 	}
 
 	public int saveRelDeckUserCard(RelDeckCards rel, Long deckId) {
-		Query query = em.createNativeQuery("insert into tab_rel_deckusers_cards (deck_id, card_numero, card_raridade, card_set_code, card_price, dt_criacao, "
-				+ "is_side_deck) values (:deck_id,:card_numero, :card_raridade, :card_set_code, :card_price, :dt_criacao, :is_side_deck )")
-		.setParameter("deck_id", deckId)
-		.setParameter("card_numero", rel.getCard_numero())
-		.setParameter("card_raridade", rel.getCard_raridade())
-		.setParameter("card_set_code", rel.getCard_set_code())
-		.setParameter("card_price", rel.getCard_price())
-		.setParameter("dt_criacao", new Date())
-		.setParameter("is_side_deck", rel.getIsSideDeck());
+		int id = 0;
 			
-		int id = query.executeUpdate();
-		
+			Query query = em.createNativeQuery("insert into tab_rel_deckusers_cards (deck_id, card_numero, card_raridade, card_set_code, card_price, dt_criacao, "
+					+ "is_side_deck) values (:deck_id,:card_numero, :card_raridade, :card_set_code, :card_price, :dt_criacao, :is_side_deck )")
+			.setParameter("deck_id", deckId)
+			.setParameter("card_numero", rel.getCard_numero())
+			.setParameter("card_raridade", rel.getCard_raridade())
+			.setParameter("card_set_code", rel.getCard_set_code())
+			.setParameter("card_price", rel.getCard_price())
+			.setParameter("dt_criacao", new Date())
+			.setParameter("is_side_deck", rel.getIsSideDeck());
+				
+			 id = query.executeUpdate();	
+			 
 		return id;
+		
 	}
 	
 	

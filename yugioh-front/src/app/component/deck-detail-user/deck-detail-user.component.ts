@@ -10,10 +10,12 @@ import { ToastrComponentlessModule, ToastrService } from 'ngx-toastr';
 import { Deck } from 'src/app/classes/deck';
 import { MatDialog } from '@angular/material';
 import { SearchBoxComponent } from '../cards-search/search-box/search-box.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
 import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
 import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
+import { SuccessDialogComponent } from '../dialogs/success-dialog/success-dialog.component';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 
 @Component({
@@ -82,7 +84,7 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
   }
 
 
-  loadDeckCards(){
+  /*loadDeckCards(){
     const id = localStorage.getItem("idDeckDetails");
     
     this.deckService.getDeckDetails(id,"User").subscribe(data => {
@@ -103,6 +105,29 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
     //this.calculateQtdRarity();
 
   })
+}*/
+
+loadDeckCards(){
+  const id = localStorage.getItem("idDeckDetails");
+  
+  this.deckService.getDeckDetails(id,"User").subscribe(data => {
+ 
+  this.deck = data
+
+  this.mainDeckCards = data['cards'];
+  this.countTypeCards(this.mainDeckCards, "main");
+
+  this.extraDeckCards = data['extraDeck'];
+  this.countTypeCards(this.extraDeckCards, "extra");
+
+  this.sideDeckCards = data['sideDeckCards'];
+  this.relDeckCards =  data['rel_deck_cards'];
+  this.calculateDeckPrice(this.relDeckCards);
+  this.setRelDeckCards();
+
+  //this.calculateQtdRarity();
+
+})
 }
 
 
@@ -168,8 +193,6 @@ setRarityClassAndPriceTitle(){
 
 }
 
-
-
 countTypeCards(data:Card[], deck:string){
 
       if(deck === 'main'){
@@ -212,13 +235,20 @@ setRelDeckCardsTypeDeck(card:Card){
   let rel = this.relDeckCards.find(rel => rel.card_numero === card.numero);
   let relIndex = this.relDeckCards.findIndex(rel => rel.card_numero === card.numero);
 
+  if(rel == undefined || rel == null){
+    this.errorDialog("Sorry, some error happened, try again later!");
+    return false;
+  }
+
  let arr = []
  arr.push(rel)
  card.relDeckCards = arr;
  card.raridade = rel.card_raridade
  card.price = rel.card_price
-this.relDeckCards.splice(relIndex, 1); 
- return rel.card_raridade;
+
+ this.relDeckCards.splice(relIndex, 1); 
+ console.log("reldeckcards " + this.relDeckCards)
+ 
 }
 
 cardImagem(cardId: any){
@@ -573,6 +603,12 @@ warningDialog(warningMessage:string){
   })
 }
 
+successDialog(successMessage:string){
+  this.dialog.open(SuccessDialogComponent,{
+    data: successMessage
+  })
+}
+
 sendToSideDeck(deckType:string, index:number){
     let deck:Card[] = this.findTypeDeckArray(deckType);
     let card:Card = deck[index];
@@ -616,6 +652,7 @@ saveDeck(){
   let deckEdited:Deck = new Deck();
   deckEdited.id = this.deck.id;
   deckEdited.nome = this.deckNome.nativeElement.value.trim();
+  deckEdited.setType = "D";
   
   let options = document.querySelectorAll('option:checked');
 
@@ -630,18 +667,25 @@ saveDeck(){
     return false;
   }
   
+
   this.deckService.saveUserDeck(deckEdited).subscribe(result => {
-    console.log(result)
+   // console.log("result " + JSON.stringify(result.headers))
+      if(result.ok){
+          this.successDialog("Deck has been save!")
+      } else {
+        this.errorDialog("Sorry, can't save deck now, try again later :(")
+      }   
+   
   })
 }
-
+errorMsg:string;
 insertInRelDeckCardForSave(array:Card[], indexSum:number, options:NodeListOf<Element>, deckId:number, isSideDeck:boolean){
   
   for(var i = 0; i < array.length; i++){ 
     let rel:RelDeckCards = new RelDeckCards()  
     let setCode = options[i + indexSum].innerHTML
 
-    if(setCode != "SET CODE..."){
+    if(setCode != "SET CODE..." && setCode != ""){
   
      // rel = array[i].relDeckCards.find(rel => rel.card_set_code = setCode);
 
@@ -652,7 +696,7 @@ insertInRelDeckCardForSave(array:Card[], indexSum:number, options:NodeListOf<Ele
       }
       //Need instantiate another object becaue typescript was replacing objects inside array
       if(rel != undefined && rel != null){
-        
+        if(rel.card_numero == null || rel.card_numero == undefined){debugger}
          let  rel2:RelDeckCards = new RelDeckCards()
          rel2.card_raridade = rel.card_raridade
          rel2.card_set_code = rel.card_set_code

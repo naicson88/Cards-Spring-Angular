@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Deck } from '../classes/deck';
 import { Observable } from 'rxjs';
 import { HandleErros } from '../Util/HandleErros';
 import { catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -72,10 +73,8 @@ export class DeckService {
     )
   }
 
-  public saveUserDeck(deck:Deck) {
-    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' };
-    return this.http.post<Deck>(this.base_url+`/decks/save-userdeck`, deck, {headers})
-    .pipe(
+  public saveUserDeck(deck:Deck): Observable<HttpResponse<Deck>> {
+    return this.http.post<Deck>(this.base_url+`/decks/save-userdeck`, deck, {observe:'response'}).pipe(
       catchError(HandleErros.handleError)
     )
   }
