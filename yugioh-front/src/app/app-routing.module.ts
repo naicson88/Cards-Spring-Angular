@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'cards-search', component: CardsSearchComponent},
   { path: 'userdeck-details/:deckName', component: DeckDetailUserComponent },
   {path: 'search-box', component: SearchBoxComponent},
-  {path: 'error-page', component:ErrorPagesComponent},
+  {path: 'error-page/:code', component:ErrorPagesComponent},
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   
   

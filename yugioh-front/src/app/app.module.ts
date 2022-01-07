@@ -1,6 +1,6 @@
 import { UsercardsModule } from './component/usercards/usercards.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DeckComponent } from './component/deck/deck.component';
@@ -100,4 +100,6 @@ import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.compo
 ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  
+}

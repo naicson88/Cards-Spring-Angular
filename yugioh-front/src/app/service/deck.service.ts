@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Deck } from '../classes/deck';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HandleErros } from '../Util/HandleErros';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ import { map } from 'rxjs/operators';
 export class DeckService {
   deck: Deck
 
-  constructor(private http: HttpClient ) {}
+  constructor(private http: HttpClient, private router: Router ) {}
 
   base_url = "http://localhost:8080/yugiohAPI"
 
@@ -38,9 +40,10 @@ export class DeckService {
   } 
 
   public getDeckDetails(id:any, deckType:string) {
-    return this.http.get<Deck>(this.base_url+`/decks?id=${id}&deckType=${deckType}`)
+
+    return this.http.get<Deck>(this.base_url+`/decks?id=${id}&deckType=${deckType}`) 
     .pipe(
-      catchError(HandleErros.handleError)
+      catchError(this.handleError)
     )
      
   }
@@ -78,5 +81,18 @@ export class DeckService {
       catchError(HandleErros.handleError)
     )
   }
+
+  public  handleError(error: HttpErrorResponse) {
+    
+   // const router = AppModule.injector.get(Router);
+    if(error.error instanceof ErrorEvent){
+        console.log(" An error occurred", error.error.message);
+    } else {
+        console.log(`Backend returned code  ${error.status} ` + ` body was: ${JSON.stringify(error.error)} `); 
+       //this.router.navigateByUrl('/error-code')          
+    }
+  
+    return throwError(error);
+}
 
 }

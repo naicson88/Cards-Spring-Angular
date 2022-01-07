@@ -240,7 +240,7 @@ public class DeckDAO {
 			    + " INNER JOIN tab_rel_deckusers_cards rel on rel.card_numero = cards.numero"	 
 				+ " WHERE NUMERO IN "
 				+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and (is_side_deck != 'S' or is_side_deck is null)) "
-				+ " AND CARDS.GENERIC_TYPE NOT IN ('XYZ', 'SYNCHRO', 'FUSION') and deck_id = :deckId order by cards.nome", Card.class);
+				+ " AND CARDS.GENERIC_TYPE NOT IN ('XYZ', 'SYNCHRO', 'FUSION','LINK') and deck_id = :deckId order by cards.nome", Card.class);
 		
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		
@@ -271,7 +271,7 @@ public class DeckDAO {
 			+ " INNER JOIN tab_rel_deckusers_cards rel on rel.card_numero = cards.numero"	 
 			+ " WHERE NUMERO IN "
 			+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and (is_side_deck = 0 or is_side_deck is null)) "
-			+ " AND CARDS.GENERIC_TYPE IN ('XYZ', 'SYNCHRO', 'FUSION') and deck_id = :deckId order by cards.generic_type", Card.class);
+			+ " AND CARDS.GENERIC_TYPE IN ('XYZ', 'SYNCHRO', 'FUSION', 'LINK') and deck_id = :deckId order by cards.generic_type", Card.class);
 			
 		} else if (userOrKonamiDeck.equalsIgnoreCase("Konami")) {
 			

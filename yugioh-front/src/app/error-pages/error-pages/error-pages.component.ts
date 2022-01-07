@@ -5,33 +5,23 @@ import { AfterContentInit, AfterViewChecked, AfterViewInit, Component, ElementRe
   templateUrl: './error-pages.component.html',
   styleUrls: ['./error-pages.component.css']
 })
-export class ErrorPagesComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class ErrorPagesComponent implements OnInit, AfterViewChecked {
   @ViewChild('img',{static: false})img:HTMLElement;
 
   constructor() { }
 
   ngAfterViewChecked(): void {
-   this.scroll()
+    this.scroll()
   }
 
-  ngAfterContentInit(): void {
-  this.scroll2(this.img)
-  }
 
   ngOnInit() {
    
-  }
-
-  ngAfterViewInit(): void {
-      
   }
 
   scroll(){
    window.scrollTo(0,250)
   }
 
-  scroll2(el: HTMLElement) {
-    el.scrollIntoView();
-}
 
 }

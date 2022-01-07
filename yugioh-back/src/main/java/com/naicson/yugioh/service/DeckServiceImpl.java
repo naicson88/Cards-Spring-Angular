@@ -1,9 +1,7 @@
 package com.naicson.yugioh.service;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -11,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import org.slf4j.Logger;
@@ -34,7 +33,6 @@ import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.repository.sets.DeckUsersRepository;
 import com.naicson.yugioh.service.interfaces.DeckDetailService;
 import com.naicson.yugioh.util.GeneralFunctions;
-import com.naicson.yugioh.util.exceptions.ApiExceptionHandler;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
@@ -406,40 +404,76 @@ public class DeckServiceImpl implements DeckDetailService {
 	public Deck deckAndCards(Long deckId, String setType) throws Exception {
 		
 		Deck deck = new Deck();
-		deck = this.findById(deckId);
 		
-		List<Card> mainDeck = null;
-				
-		if(setType.equalsIgnoreCase("Konami")) {
+		if(("Konami").equalsIgnoreCase(setType)) {
 			
-			mainDeck = this.cardsOfDeck(deckId);
-			List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
-			
-			deck.setCards(mainDeck);
-			deck.setRel_deck_cards(relDeckCards);
+			deck =  this.returnKonamiDeck(deckId);
 		}
-		
-		else if(setType.equalsIgnoreCase("User")) {
+		else if(("User").equalsIgnoreCase(setType)) {
 			
-			mainDeck = this.consultMainDeck(deckId);
-			List<Card> sideDeckCards = dao.consultSideDeckCards(deckId, setType);
-			List<Card> extraDeck = this.consultExtraDeckCards(deckId, "User");
-			
-			deck.setCards(mainDeck);
-			deck.setExtraDeck(extraDeck);
-			deck.setSideDeckCards(sideDeckCards);
-			
-			deck.setRel_deck_cards(this.relDeckUserCards(deckId));
-			
-			int sumDecks = deck.getCards().size() + deck.getExtraDeck().size() + deck.getSideDeckCards().size();
-			
-			if(sumDecks != deck.getRel_deck_cards().size())
-				throw new ErrorMessage("Cards quantity don't match relation quantity");
+			deck = this.returnUserDeck(deckId);
 			
 		} else {
-			throw new IllegalArgumentException("Invalid deckType.");
-		}
-			
+			logger.error("INVALID SETTYPE. SETTYPE WAS = " + setType);
+			throw new IllegalArgumentException("SetType invalid. SetType was = " + setType);			
+		}			
+		
+		return deck;
+	}
+	
+	private Deck returnKonamiDeck(Long deckId) {
+		
+		if(deckId == null || ("").equals(deckId))
+			throw new  IllegalArgumentException("Invalid Deck Id. deckId = " + deckId);
+		
+		Deck deck = new Deck();
+		List<Card> mainDeck = null;
+		deck = this.findById(deckId);
+		
+		mainDeck = this.cardsOfDeck(deckId);
+		List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
+		
+		deck.setCards(mainDeck);
+		deck.setRel_deck_cards(relDeckCards);
+		
+		return deck;
+		
+	}
+	
+	private Deck returnUserDeck(Long deckId) throws ErrorMessage {
+		
+		if(deckId == null || ("").equals(deckId))
+			throw new  IllegalArgumentException("Invalid Deck Id. deckId = " + deckId);
+		
+		Deck deck = new Deck();
+		
+		List<Card> mainDeck = null;
+		DeckUsers deckUser = new DeckUsers();
+		
+		deckUser = this.deckUserRepository.findById(deckId).orElseThrow(() -> new EntityNotFoundException("UserDeck id = " + deckId));
+		
+		deck.setNome(deckUser.getNome());
+		deck.setImagem(deckUser.getImagem());
+		deck.setDt_criacao(deckUser.getDtCriacao());
+		deck.setId(deckUser.getId());
+		
+		mainDeck = this.consultMainDeck(deckId);
+		
+		List<Card> sideDeckCards = dao.consultSideDeckCards(deckId, "User");
+		List<Card> extraDeck = this.consultExtraDeckCards(deckId, "User");
+		
+		deck.setCards(mainDeck);
+		deck.setExtraDeck(extraDeck);
+		deck.setSideDeckCards(sideDeckCards);
+		
+		deck.setRel_deck_cards(this.relDeckUserCards(deckId));
+		
+		int sumDecks = deck.getCards().size() + deck.getExtraDeck().size() + deck.getSideDeckCards().size();
+		
+		if(sumDecks != deck.getRel_deck_cards().size())
+			throw new ErrorMessage("Cards quantity don't match relation quantity." + 
+					"Param received: deckId = " + deckId + " setType = User");
+		
 		return deck;
 	}
 	

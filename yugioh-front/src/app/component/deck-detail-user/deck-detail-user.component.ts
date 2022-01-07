@@ -1,12 +1,11 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import {CdkDragDrop, CdkDragEnter, CdkDragExit, CdkDragMove, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { Card } from 'src/app/classes/Card';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 import { DeckService } from 'src/app/service/deck.service';
 import { GenericTypeCard } from 'src/app/Util/enums/GenericTypeCards';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 import { DeckDetailUserService } from './deck-detail-user.service';
-import { ToastrComponentlessModule, ToastrService } from 'ngx-toastr';
+import {  ToastrService } from 'ngx-toastr';
 import { Deck } from 'src/app/classes/deck';
 import { MatDialog } from '@angular/material';
 import { SearchBoxComponent } from '../cards-search/search-box/search-box.component';
@@ -15,7 +14,9 @@ import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.compo
 import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
 import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
 import { SuccessDialogComponent } from '../dialogs/success-dialog/success-dialog.component';
-import { catchError } from 'rxjs/internal/operators/catchError';
+import { error } from 'protractor';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -25,12 +26,12 @@ import { catchError } from 'rxjs/internal/operators/catchError';
   encapsulation: ViewEncapsulation.None,
 })
 
-export class DeckDetailUserComponent implements OnInit, AfterViewInit {
+export class DeckDetailUserComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild('btnSpan',{static: false})span:ElementRef;
   @ViewChild('dropListContainer',{static: false}) dropListContainer?: ElementRef;
   @ViewChild('deckName', {static:false}) deckNome:ElementRef
 
-  constructor(private cardService: CardServiceService, private ref: ElementRef, 
+  constructor(private cardService: CardServiceService, private ref: ElementRef, private router :Router,
     private deckService: DeckService, private deckDetailUSerService: DeckDetailUserService,  private toastr: ToastrService, public dialog: MatDialog) { }
 
   dropListReceiverElement?: HTMLElement;
@@ -83,6 +84,10 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
     this.setRarityClassAndPriceTitle()
   }
 
+  ngAfterViewChecked() {
+    
+  }
+
 
   /*loadDeckCards(){
     const id = localStorage.getItem("idDeckDetails");
@@ -108,6 +113,7 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
 }*/
 
 loadDeckCards(){
+  
   const id = localStorage.getItem("idDeckDetails");
   
   this.deckService.getDeckDetails(id,"User").subscribe(data => {
@@ -127,17 +133,25 @@ loadDeckCards(){
 
   //this.calculateQtdRarity();
 
-})
+  },
+  error =>{
+    let errorCode = error.status;
+    this.router.navigate(["/error-page", errorCode]);
+  })
 }
 
 
   loadRandomCards(){
     this.arrayCards = [];
-
+    
     this.deckDetailUSerService.randomCardsDetailed().subscribe( cards => {
       
       this.validTypeDeckCard(cards);
    
+    },
+    error =>{
+      let errorCode = error.status;
+      this.router.navigate(["/error-page", errorCode]);
     })
 }
 
@@ -224,7 +238,7 @@ setRelDeckCards(){
   }) 
 
   this.sideDeckCards.forEach((card) => {
-    debugger
+    
     this.setRelDeckCardsTypeDeck(card);
   }) 
 
@@ -247,7 +261,6 @@ setRelDeckCardsTypeDeck(card:Card){
  card.price = rel.card_price
 
  this.relDeckCards.splice(relIndex, 1); 
- console.log("reldeckcards " + this.relDeckCards)
  
 }
 
@@ -387,9 +400,8 @@ removeFromArray(collection:Card[], index:any, typeDeck:string){
     
   }catch(e){
      if(e instanceof Error){
-       console.log(e.message)
-     }
       alert("Sorry, can't remove card. Try again later :( ")
+     }  
   }
 
     this.calculateQtdRarity();
@@ -442,11 +454,19 @@ calculateDeckPrice(relDeckCards:any[]){
   const dialogRef = this.dialog.open(SearchBoxComponent);
 
   dialogRef.afterClosed().subscribe(result => {
+    
     if(result.data != null && result.data != undefined){
       this.arrayCards = [];
-      this.validTypeDeckCard(result.data.content);
+
+      if(result.data.content.length > 0)
+        this.validTypeDeckCard(result.data.content);
+      else
+        this.warningDialog("No Cards found in this consult")
+
       this.criterias = result.criterias
     }
+  }, error => {
+      this.toastr.error("Sorry, something bad happened, try again later. ERROR " + error.status)
   });
 }
 
@@ -468,9 +488,7 @@ getRequestParam(pageSize, page){
 onScroll(){
   const params = this.getRequestParam(this.pageSize, this.page)
 
-  this.cardService.searchCardsDetailed(params, this.criterias).subscribe( newCards => {
-    console.log(newCards);
-    
+  this.cardService.searchCardsDetailed(params, this.criterias).subscribe( newCards => {   
     this.page = this.page + 1;
   })
 }
@@ -493,6 +511,10 @@ consultCardSetCode(cardNumber:any){
       this.updateCardSetCode(relationArray, cardNumber)
       this.cardsSearched.push(cardNumber);
 
+    },
+    error =>{
+      console.log(error.body)
+      this.errorDialog("ERROR: Something wrong happened, try again later.")
     }) 
 
   } 
@@ -696,7 +718,6 @@ insertInRelDeckCardForSave(array:Card[], indexSum:number, options:NodeListOf<Ele
       }
       //Need instantiate another object becaue typescript was replacing objects inside array
       if(rel != undefined && rel != null){
-        if(rel.card_numero == null || rel.card_numero == undefined){debugger}
          let  rel2:RelDeckCards = new RelDeckCards()
          rel2.card_raridade = rel.card_raridade
          rel2.card_set_code = rel.card_set_code
