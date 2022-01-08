@@ -167,9 +167,9 @@ public class CardServiceImplTest {
 		
 		List<Card> cardList = List.of(ValidObjects.generateValidCard(), ValidObjects.generateValidCard());
 
-		Mockito.doReturn(cardList).when(impl).findAll(any()); 
+		Mockito.doReturn(cardList).when(impl).findAll(any(), any()); 
 		
-		List<CardsSearchDTO> dto = impl.cardSearch(criteriaList, null);
+		List<CardsSearchDTO> dto = impl.cardSearch(criteriaList, null, any());
 		
 		assertThat(!dto.isEmpty());
 		assertEquals(dto.get(0).getNome(), cardList.get(0).getNome());

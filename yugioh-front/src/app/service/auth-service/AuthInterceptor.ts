@@ -28,6 +28,9 @@ export class AuthInterceptor implements HttpInterceptor {
       if (error.status === 401) {
         this.authService.doLogoutAndRedirectToLogin();
       }
+       else if(error.status === 500){
+        this.router.navigate(["/error-page", 500])
+      }
       return throwError(error);
     }));
 

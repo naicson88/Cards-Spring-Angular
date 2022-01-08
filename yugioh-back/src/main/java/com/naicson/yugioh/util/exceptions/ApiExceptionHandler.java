@@ -22,7 +22,7 @@ public class ApiExceptionHandler {
 			
 		@ExceptionHandler(value = {Exception.class})
 		public ResponseEntity<ApiExceptions> handleExceptionError(Exception e) {
-			ApiExceptions ex = new ApiExceptions(e.getMessage(), e.getCause(), HttpStatus.INTERNAL_SERVER_ERROR, this.time);			
+			ApiExceptions ex = new ApiExceptions(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR, this.time);			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex);
 		}
 		
@@ -50,7 +50,7 @@ public class ApiExceptionHandler {
 		@ExceptionHandler(value = {ErrorMessage.class})
 		public ResponseEntity<Object> handleErrorMessage(ErrorMessage em){
 			ApiExceptions ex = new ApiExceptions(em.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, this.time);
-			logger.error("ErrorMessage: " + em.getMessage() + ", " + em.getCause());
+			logger.error("ErrorMessage: " + em.getMessage());
 			
 			return new ResponseEntity<Object>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -1,0 +1,208 @@
+<div id="search-div" >
+
+    <mat-expansion-panel (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false" style="background-color: whitesmoke;" class="teste">
+        <mat-expansion-panel-header style="background-color: #63b175 !important;">
+        <mat-panel-title>
+            <h4 style="font-family: 'Arvo'; font-weight: 700; color: white; font-size: 26px;">Search filters
+                <mat-icon>filter_list</mat-icon> </h4>
+        </mat-panel-title>
+       
+        </mat-expansion-panel-header>
+                
+        <div id="div_inputs" style="border: solid thin white;  margin-top: 15px; padding: 10px;">
+    
+            <mat-expansion-panel (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h4>Inputs</h4>
+                </mat-panel-title>
+                <mat-panel-description>
+               <p *ngIf="panelOpenState == true" style="font-size: small;"> 
+                For input fields like Level, Link, Pendulum you can use "-" as <i>between</i>, Ex: 2-5;
+                </p>
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row">
+                    <div class="col-md-5">
+                        <mat-form-field style="width: 100% !important; " appearance="legacy" >
+                            <mat-label> Name</mat-label>
+                            <input matInput type="text" [(ngModel)]="cardname" name="cardname">
+                            <button *ngIf="cardname" matSuffix mat-icon-button (click)="cardname=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+    
+                    <div class="col-md-3">
+                        <mat-form-field style="width: 100% !important; " appearance="legacy" >
+                            <mat-label>Number</mat-label>
+                            <input matInput type="number" name="number" [(ngModel)]="number">
+                            
+                        </mat-form-field>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <mat-form-field style="width: 30% !important; " appearance="legacy" >
+                            <mat-label>Level</mat-label>                      
+                            <input matInput type="text" name="level" [(ngModel)]="level" maxlength="5">
+                           
+                        </mat-form-field>
+                        <mat-icon>stars</mat-icon>      	
+                    </div>
+                </div>
+                <!--ATTACK ROW-->
+                    <div class="row">
+                        <div >
+                     
+                            <label for="">ATK:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <mat-icon color="warn">arrow_upward</mat-icon>
+                            <mat-form-field style="width: 25% !important; " appearance="legacy" >
+                                <mat-label>More or Equal</mat-label>
+                                <input matInput type="number" max="5000" name="plusatk" [(ngModel)]="plusatk">
+                               
+                            </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <i> AND</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <mat-icon color="primary">arrow_downward</mat-icon>
+                            <mat-form-field style="width: 25% !important; " appearance="legacy" >
+                                <mat-label>Less or Equal</mat-label>
+                                <input matInput type="number" max="5000" name="lessatk" [(ngModel)]="lessatk">
+                            </mat-form-field>
+                        </div> <br>
+                        
+                        <div >
+                            <label for="">DEF:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <mat-icon color="warn">arrow_upward</mat-icon>
+                            <mat-form-field style="width: 25% !important; " appearance="legacy" >
+    
+                                <mat-label>More or Equal</mat-label>
+                                <input matInput type="number" max="5000" name="plusdef" [(ngModel)]="plusdef">
+                            </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <i> AND</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <mat-icon color="primary">arrow_downward</mat-icon>
+                            <mat-form-field style="width: 25% !important; " appearance="legacy" >
+                                <mat-label>Less or Equal</mat-label>
+                                <input matInput type="number" max="5000" name="lessdef" [(ngModel)]="lessdef">
+                            </mat-form-field>
+                        </div>
+    
+                    </div>    
+    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="example-full-width" appearance="legacy" style="width: 300px !important;">
+                                <mat-label>Card description</mat-label>
+                                
+                                <textarea matInput name="description" [(ngModel)]="description"></textarea>
+                               
+                              </mat-form-field>
+            
+                        </div>
+    
+                        <div class="col-md-3">
+                            <img src="..\..\assets\img\tiposMonstros\Link.PNG" alt="" width="30px" height="30px">                       
+                            <mat-form-field style="width: 60% !important; " appearance="legacy" >
+                                <mat-label>Links</mat-label>                      
+                                <input matInput type="text" maxlength="3" name="links" [(ngModel)]="links">      	
+                            </mat-form-field>
+                        </div>
+    
+                        <div class="col-md-3">
+                            <img src="..\..\assets\img\outras\EscalaAzul.png" alt="Blue Scale"> &nbsp;
+                            <mat-form-field style="width: 60% !important; " appearance="legacy" >
+                                <mat-label>Pendulums</mat-label>                      
+                                <input matInput type="text" maxlength="5" name="pendulum" [(ngModel)]="pendulum">      	
+                            </mat-form-field>
+                            <img src="..\..\assets\img\outras\EscalaVermelha.png" alt="Red Scale"> 
+                        </div>
+                    </div>
+            </mat-expansion-panel>  
+
+            </div>
+            <!--Cards filter-->
+        <div style="border: solid thin white;  margin-top: 5px; padding: 10px; " id="att-search">
+
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h4>Cards</h4>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                  
+                    </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <ul>
+                        <li *ngFor="let card of cards">
+                        <mat-checkbox class="example-margin cards" value='{{card.name}}'
+                         #cards>
+                            <img [src]='card.img' alt="card.nome"  width="30" height="40" name>
+                            {{card.name}}
+                            </mat-checkbox>     
+                        </li>
+                    
+                    </ul>
+                </mat-expansion-panel>
+            </div>
+            <!--Attrribute filter-->
+            <div style="border: solid thin white;   margin-top: 5px; padding: 10px; " id="att-search">
+
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h4>Attribute</h4>
+                    </mat-panel-title>
+                    <mat-panel-description>
+
+                    </mat-panel-description>
+                    </mat-expansion-panel-header>
+                   
+                            <ul>
+                                <li *ngFor="let attr of atributos">
+                                <mat-checkbox class="example-margin attr" value='{{attr.name}}'>
+                                    <img [src]='attr.img' alt="attr.nome"  width="40" height="40">
+                                    {{attr.name}}
+                                    </mat-checkbox>     
+                                </li>
+                            
+                            </ul>
+                </mat-expansion-panel>          
+            </div>
+            <!--Types filter-->
+            <div style="border: solid thin white;  margin-top: 5px; padding: 10px; " id="att-search">
+                
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h4>Types</h4>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                   
+                    </mat-panel-description>
+                    </mat-expansion-panel-header>
+                            
+                    <ul>
+                        <li *ngFor="let type of types" >
+                        <mat-checkbox class="example-margin types" value="{{type.name}}">
+                            <img [src]='type.img' alt="type.nome"  width="30" height="30">
+                            {{type.name}}
+                            </mat-checkbox>     
+                        </li>
+                    
+                    </ul>
+                </mat-expansion-panel>        
+            </div>
+    </mat-expansion-panel>     
+
+
+
+        <div style="margin-top: 20px; margin-left: 45%;">
+            <button mat-raised-button color="primary" (click)="searchCards()">Search
+                <mat-icon>search</mat-icon>
+            </button> 
+        </div>
+        
+</div>

@@ -17,3 +17,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
    background: linear-gradient(318deg, rgba(211,211,211,1) 5%, rgba(239,241,241,1) 80%);
    color: #778899;
 }
+
+button {
+    cursor: pointer;
+}

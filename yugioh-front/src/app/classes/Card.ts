@@ -1,8 +1,9 @@
 import { Deck } from "./deck";
+import { RelDeckCards } from "./Rel_Deck_Cards";
 
 export class Card {
     id:number;
-	numero: string;
+	numero: number;
 	categoria: string;
 	nome: string;
 	 nomePortugues:string
@@ -26,10 +27,12 @@ export class Card {
 	 set_decks: Deck[];
 	 attributeImg:any;
 	 isExtraDeck:boolean;
-
+	 
 	 price:number;
 	 rarity:string;
-	 set_code: string[] = [];
+	 relDeckCards: any
+	 set_code = new Array();
+	 index:number
 	 
     
 }

@@ -1,6 +1,7 @@
 package com.naicson.yugioh.entity.sets;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.naicson.yugioh.entity.RelDeckCards;
 
 @Entity
 @Table(name = "tab_deck_users")
@@ -26,8 +30,8 @@ public class DeckUsers {
 	private Integer userId;
 	private Date dtCriacao;
 	private String setType;
-	
-	
+	@Transient
+	private List<RelDeckCards> relDeckCards;
 	
 	public DeckUsers(Long id, String nome, String imagem, Long konamiDeckCopied, Integer userId, Date dtCriacao,
 			String setType) {
@@ -39,6 +43,16 @@ public class DeckUsers {
 		this.userId = userId;
 		this.dtCriacao = dtCriacao;
 		this.setType = setType;
+	}
+	
+	
+	
+	public List<RelDeckCards> getRelDeckCards() {
+		return relDeckCards;
+	}
+
+	public void setRelDeckCards(List<RelDeckCards> relDeckCards) {
+		this.relDeckCards = relDeckCards;
 	}
 
 	public DeckUsers() {}

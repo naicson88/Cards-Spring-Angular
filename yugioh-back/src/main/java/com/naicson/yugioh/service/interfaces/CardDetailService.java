@@ -13,6 +13,7 @@ import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
+import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 import com.naicson.yugioh.util.search.CardSpecification;
 import com.naicson.yugioh.util.search.SearchCriteria;
@@ -48,12 +49,16 @@ public interface CardDetailService {
 	
 	List<CardsSearchDTO> getByGenericType(Pageable page, String getByGenericType, int userId);
 	
-	List<Card> findAll(CardSpecification spec);
+	Page<Card> findAll(CardSpecification spec,  Pageable pageable);
 
-	List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join);
+	List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join, Pageable pageable);
 
 	List<CardsSearchDTO> cardSearchByNameUserCollection(String cardName, Pageable pageable);
 
 	List<Card> randomCardsDetailed();
-	
+
+	Page<Card> searchCardDetailed(List<SearchCriteria> criterias, String join, Pageable pageable);
+
+	List<RelDeckCards> findAllRelDeckCardsByCardNumber(Long cardNumber);
+
 }

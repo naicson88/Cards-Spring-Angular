@@ -4,6 +4,7 @@ import { ArchetypeDetailsComponent } from './component/archetype-details/archety
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { CardDetailComponent } from './component/card-detail/card-detail/card-detail.component';
 import { CardsSearchComponent } from './component/cards-search/cards-search/cards-search.component';
+import { SearchBoxComponent } from './component/cards-search/search-box/search-box.component';
 import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detail-user.component';
 import { DeckDetailComponent } from './component/deck-detail/deck-detail.component';
 import { DeckComponent } from './component/deck/deck.component';
@@ -12,6 +13,7 @@ import { IndexComponent } from './component/index/index.component';
 import { LoginComponent } from './component/index/login/login.component';
 import { RegisterComponent } from './component/index/register/register.component';
 import { UsercardsComponent } from './component/usercards/usercards.component';
+import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
 
 const routes: Routes = [
   { path: 'decks', component: DeckComponent , data : {set_type: 'D'}},
@@ -29,6 +31,8 @@ const routes: Routes = [
   { path: 'archetypeDetails/:archId', component: ArchetypeDetailsComponent},
   { path: 'cards-search', component: CardsSearchComponent},
   { path: 'userdeck-details/:deckName', component: DeckDetailUserComponent },
+  {path: 'search-box', component: SearchBoxComponent},
+  {path: 'error-page/:code', component:ErrorPagesComponent},
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   
   

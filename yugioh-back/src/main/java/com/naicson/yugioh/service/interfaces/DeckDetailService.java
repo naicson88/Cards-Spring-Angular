@@ -12,6 +12,7 @@ import com.naicson.yugioh.dto.RelUserDeckDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.sets.DeckUsers;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
@@ -49,6 +50,8 @@ public interface DeckDetailService {
 	List<Card> sortMainDeckCards(List<Card> cardList);
 	
     List<RelDeckCards> relDeckUserCards(Long deckUserId);
+
+	void saveUserdeck(Deck deck) throws SQLException;
 	
 	
 }

@@ -1,6 +1,6 @@
 import { UsercardsModule } from './component/usercards/usercards.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DeckComponent } from './component/deck/deck.component';
@@ -38,6 +38,8 @@ import { DeckDetailUserModule } from './component/deck-detail-user/deckDetailUse
 import { DialogModule } from './component/dialogs/dialogs.module';
 import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.component';
 import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detail-user.component';
+import { SearchBoxComponent } from './component/cards-search/search-box/search-box.component';
+import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
 
 
 
@@ -62,7 +64,9 @@ import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detai
     DeckDetailComponent,
     SideCardsearchComponent,
     CardinfoComponent,
-    DeckDetailUserComponent
+    DeckDetailUserComponent,
+    SearchBoxComponent,
+    ErrorPagesComponent
   
   ],
   imports: [
@@ -96,4 +100,6 @@ import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detai
 ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  
+}

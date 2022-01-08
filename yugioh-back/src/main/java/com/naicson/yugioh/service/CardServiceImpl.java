@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -299,24 +300,24 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public List<Card> findAll(CardSpecification spec) {
+	public Page<Card> findAll(CardSpecification spec, Pageable pageable) {
 		if(spec == null )
 			throw new IllegalArgumentException("No specification for card search");
 		
-		List<Card> list = cardRepository.findAll(spec);
+		Page<Card> list = cardRepository.findAll(spec, pageable);
 		
 		return list;
 	}
 	
 	@Override
-	public List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join) {
+	public List<CardsSearchDTO> cardSearch(List<SearchCriteria> criterias, String join, Pageable pageable) {
 		
 		CardSpecification spec = new CardSpecification();
 		
 		 criterias.stream().forEach(criterio -> 
 			spec.add( new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue())));
 		 			
-		List<Card> list = this.findAll(spec);
+		Page<Card> list = this.findAll(spec, pageable);
 		
 		List<CardsSearchDTO> dtoList = list.stream()
 				.filter(card -> card != null)
@@ -326,6 +327,19 @@ public class CardServiceImpl implements CardDetailService {
 		return dtoList;
 			
 	}
+	
+	@Override
+	public Page<Card> searchCardDetailed(List<SearchCriteria> criterias, String join, Pageable pageable) {
+		CardSpecification spec = new CardSpecification();
+		
+		criterias.stream().forEach(criterio ->
+		spec.add(new SearchCriteria(criterio.getKey(), criterio.getOperation(), criterio.getValue())));
+		
+		Page<Card> list = this.findAll(spec, pageable);
+		
+		return list;
+	}
+	
 	
 	@Override
 	public List<CardsSearchDTO> cardSearchByNameUserCollection(String cardName, Pageable pageable) {
@@ -362,5 +376,20 @@ public class CardServiceImpl implements CardDetailService {
 	
 		return cards;		
 	}
-	
+
+	@Override
+	public List<RelDeckCards> findAllRelDeckCardsByCardNumber(Long cardNumber) {
+		if(cardNumber == null || cardNumber == 0)
+			throw new IllegalArgumentException("Card number is invalid");
+		
+		List<RelDeckCards> list = this.relDeckCardsRepository.findByCardNumber(cardNumber);
+		
+		if(list == null)
+			list = Collections.emptyList();
+		
+		return list;
+		
+	}
+
+
 }

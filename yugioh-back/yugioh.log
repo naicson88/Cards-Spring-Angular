@@ -1,0 +1,28 @@
+2022-01-08 00:02:12.472 ERROR 2140 --- [http-nio-8080-exec-3] c.n.y.u.exceptions.ApiExceptionHandler   : ErrorMessage: Cards quantity don't match relation quantity.Param received: deckId = 7 setType = User
+2022-01-08 00:04:34.324 ERROR 2140 --- [http-nio-8080-exec-8] c.n.y.u.exceptions.ApiExceptionHandler   : ErrorMessage: Cards quantity don't match relation quantity.Param received: deckId = 7 setType = User
+2022-01-08 00:05:11.719  INFO 21556 --- [main] com.naicson.yugioh.YugiohApplication     : Starting YugiohApplication on DESKTOP-K8HK1IE with PID 21556 (C:\Users\USER\Documents\workspace-spring-tool-suite-4-4.12.0.RELEASE\Cards-Spring-Angular\yugioh-back\target\classes started by USER in C:\Users\USER\Documents\workspace-spring-tool-suite-4-4.12.0.RELEASE\Cards-Spring-Angular\yugioh-back)
+2022-01-08 00:05:11.723  INFO 21556 --- [main] com.naicson.yugioh.YugiohApplication     : No active profile set, falling back to default profiles: default
+2022-01-08 00:05:12.442  INFO 21556 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-01-08 00:05:12.566  INFO 21556 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 111ms. Found 10 JPA repository interfaces.
+2022-01-08 00:05:13.141  INFO 21556 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-01-08 00:05:13.152  INFO 21556 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-01-08 00:05:13.152  INFO 21556 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2022-01-08 00:05:13.273  INFO 21556 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-01-08 00:05:13.273  INFO 21556 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1499 ms
+2022-01-08 00:05:13.348  WARN 21556 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-01-08 00:05:13.513  INFO 21556 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-01-08 00:05:13.576  INFO 21556 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.25.Final
+2022-01-08 00:05:13.737  INFO 21556 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-01-08 00:05:13.865  INFO 21556 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-01-08 00:05:14.073  INFO 21556 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-01-08 00:05:14.091  INFO 21556 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-01-08 00:05:15.220  INFO 21556 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-01-08 00:05:15.230  INFO 21556 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-01-08 00:05:16.210  INFO 21556 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@8a11a19, org.springframework.security.web.context.SecurityContextPersistenceFilter@70dd79f7, org.springframework.security.web.header.HeaderWriterFilter@4b37d1a4, org.springframework.web.filter.CorsFilter@47393345, org.springframework.security.web.authentication.logout.LogoutFilter@2a0881f1, com.naicson.yugioh.security.AuthTokenFilter@2f3c7b24, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@8113ea7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3f31892e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5b16e486, org.springframework.security.web.session.SessionManagementFilter@73c6ae15, org.springframework.security.web.access.ExceptionTranslationFilter@4280b20b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1e041848]
+2022-01-08 00:05:16.349  INFO 21556 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-01-08 00:05:16.678  INFO 21556 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-01-08 00:05:16.690  INFO 21556 --- [main] com.naicson.yugioh.YugiohApplication     : Started YugiohApplication in 5.357 seconds (JVM running for 6.15)
+2022-01-08 00:06:05.000  INFO 21556 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-08 00:06:05.001  INFO 21556 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-01-08 00:06:05.008  INFO 21556 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2022-01-08 00:36:10.105 ERROR 21556 --- [http-nio-8080-exec-8] com.naicson.yugioh.security.JwtUtils     : JWT token is expired: JWT expired at 2021-11-04T21:50:37Z. Current time: 2022-01-08T00:36:10Z, a difference of 5539533105 milliseconds.  Allowed clock skew: 0 milliseconds.

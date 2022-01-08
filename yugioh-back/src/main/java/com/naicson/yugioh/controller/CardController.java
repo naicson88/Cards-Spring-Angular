@@ -111,11 +111,21 @@ public class CardController {
 	//Transforma as cartas encontradas no DTO para passar menos parametros
 	@PostMapping(path = {"/searchCard"})
 	@ResponseBody
-	public ResponseEntity<List<CardsSearchDTO>> cardSearch(@RequestBody List<SearchCriteria> criterias, String join){
+	public ResponseEntity<List<CardsSearchDTO>> cardSearch(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable, 
+			@RequestBody List<SearchCriteria> criterias, String join){
 			
-		List<CardsSearchDTO> list = cardService.cardSearch(criterias, join);
+		List<CardsSearchDTO> list = cardService.cardSearch(criterias, join, pageable);
 		
 		return new ResponseEntity<List<CardsSearchDTO>>(list, HttpStatus.OK);
+	}
+	
+	@PostMapping(path = {"/searchCardDetailed"})
+	@ResponseBody
+	public ResponseEntity<Page<Card>> cardSearchDetailed(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable, 
+			@RequestBody List<SearchCriteria> criterias, String join){
+		Page<Card> listCards = cardService.searchCardDetailed(criterias, join, pageable);
+		
+		return new ResponseEntity<Page<Card>>(listCards, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = {"/randomCards"})
@@ -229,5 +239,11 @@ public class CardController {
 		
 	}
 	
+	@GetMapping(path = {"/search-cardSetcodes"})
+	public ResponseEntity<List<RelDeckCards>> findAllRelDeckCardsByCardNumber(@RequestParam Long cardNumber){
+		List<RelDeckCards> relation = this.cardService.findAllRelDeckCardsByCardNumber(cardNumber);
+		
+		return new ResponseEntity<List<RelDeckCards>>(relation, HttpStatus.OK);
+	}
 }
 

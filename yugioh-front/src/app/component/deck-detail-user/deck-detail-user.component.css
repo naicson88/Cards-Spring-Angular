@@ -47,12 +47,14 @@
   #cardsSearch{
       padding: 1px;
       width: 25%;
+      min-width: 300px;
       height: 500px;
       overflow-y: scroll;
       border: 4px solid #a9eaeb;
       box-shadow:  rgb(187, 187, 187) 0px 0px 3.84px 0px;
       padding: 10px;
       background: #f8f8f8;
+
      
     }
 

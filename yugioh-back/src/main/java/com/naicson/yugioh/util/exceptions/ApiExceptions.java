@@ -23,8 +23,7 @@ public class ApiExceptions {
 		this.msg = msg;
 		this.cause = new Throwable();		
 		this.httpStatus = httpStatus;
-		this.time = time;
-		
+		this.time = time;	
 	}
 	
 	public String getMsg() {
