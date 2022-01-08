@@ -89,28 +89,17 @@ cardsSearched = []; // Guarda o numero dos cards que ja tiveram Setcode consulta
   }
 
 
-  /*loadDeckCards(){
-    const id = localStorage.getItem("idDeckDetails");
-    
-    this.deckService.getDeckDetails(id,"User").subscribe(data => {
-   
-    this.deck = data
+  storedCardId(cardNumber:any){
+  
+      if(cardNumber != null && cardNumber != ""){
+        this.cardService.setCardNumber(cardNumber);
 
-    this.mainDeckCards = data['cards'];
-    this.countTypeCards(this.mainDeckCards, "main");
-
-    this.extraDeckCards = data['extraDeck'];
-    this.countTypeCards(this.extraDeckCards, "extra");
-
-    this.sideDeckCards = data['sideDeckCards'];
-    this.relDeckCards =  data['rel_deck_cards'];
-    this.calculateDeckPrice(this.relDeckCards);
-    this.setRelDeckCards();
-
-    //this.calculateQtdRarity();
-
-  })
-}*/
+      } else {
+         console.log("Unable to consult this card, try again later.");
+         return false;
+      }
+     
+    }
 
 loadDeckCards(){
   
@@ -457,6 +446,7 @@ calculateDeckPrice(relDeckCards:any[]){
     
     if(result.data != null && result.data != undefined){
       this.arrayCards = [];
+      this.page = 0;
 
       if(result.data.content.length > 0)
         this.validTypeDeckCard(result.data.content);
@@ -474,7 +464,7 @@ getRequestParam(pageSize, page){
   let params = {}
 
   if (page) {
-    params[`page`] = page - 1;
+    params[`page`] = page //- 1;
   }
 
   if (pageSize) {
@@ -486,11 +476,28 @@ getRequestParam(pageSize, page){
 }
 
 onScroll(){
-  const params = this.getRequestParam(this.pageSize, this.page)
-
-  this.cardService.searchCardsDetailed(params, this.criterias).subscribe( newCards => {   
+  
+  let div =  document.getElementById('cardsSearch');
+  let scrollY= div.scrollHeight - div.scrollTop;
+  let height = div.offsetHeight
+  let offset = height - scrollY;
+  
+  if (offset == 0 || ( offset > 0 && offset < 20)) {
     this.page = this.page + 1;
-  })
+    const params = this.getRequestParam(this.pageSize, this.page)
+
+    this.cardService.searchCardsDetailed(params, this.criterias).subscribe( newCards => {
+
+      let arrCards:any = newCards.content;
+     
+      this.validTypeDeckCard(arrCards)
+      
+
+    }, error => {
+      this.toastr.error("There was some error in consult cards. ERROR: " + error.status);
+    })
+}
+
 }
 
 
@@ -590,6 +597,7 @@ changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelD
 
   if(isSetCodeZero){
     liPrice.innerHTML ="$ 0.00";
+    liPrice.style.color = 'red';
     liRarity.innerHTML = "-";
     hiddenInputRarity.className = "-";
     hiddenInputPrice.title = ""
@@ -597,6 +605,7 @@ changePriceAndRarity(array:String, index:string, isSetCodeZero:boolean, rel:RelD
   } else {
     
       liPrice.innerHTML="$ "+rel.card_price.toFixed(2);
+      liPrice.style.color = '#228B22'
       liRarity.innerHTML=rel.card_raridade;
       //liRarity.className = rel.card_raridade;
       hiddenInputRarity.className = GeneralFunctions.rarity(rel.card_raridade)
@@ -672,6 +681,7 @@ saveDeck(){
   this.relDeckCardsForSave = [];
 
   let deckEdited:Deck = new Deck();
+
   deckEdited.id = this.deck.id;
   deckEdited.nome = this.deckNome.nativeElement.value.trim();
   deckEdited.setType = "D";
@@ -690,14 +700,15 @@ saveDeck(){
   }
   
 
+
   this.deckService.saveUserDeck(deckEdited).subscribe(result => {
    // console.log("result " + JSON.stringify(result.headers))
-      if(result.ok){
-          this.successDialog("Deck has been save!")
-      } else {
-        this.errorDialog("Sorry, can't save deck now, try again later :(")
-      }   
-   
+      if(result.ok)
+          this.successDialog("Deck was saved successfully!")
+       
+  }, error =>{
+    console.log(JSON.stringify(error.body))
+    this.errorDialog("Sorry, can't save deck now, try again later :(")
   })
 }
 errorMsg:string;
@@ -741,6 +752,62 @@ insertInRelDeckCardForSave(array:Card[], indexSum:number, options:NodeListOf<Ele
   }
 }
 
+rearrengeCards(){
+  try{
+    this.rearrangeMain();
+    this.rearrangeExtra();
+    this.rearrangeSide();
+
+    this.toastr.success("The cards have been rearranged.")
+  } catch(e){
+
+    if(e instanceof Error){
+     alert("Sorry, can't rearrange cards, something bad happened. Try again later :( ")
+    }  
+ }
+   
+}
+
+rearrangeMain(){
+  let auxArray:Card[] = [];
+ 
+  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.MONSTER).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.PENDULUM).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.SPELL).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.TRAP).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.TOKEN).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards = [];
+  this.mainDeckCards.push(...auxArray)
+}
+
+rearrangeExtra(){
+  let auxArray:Card[] = [];
+
+  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.FUSION).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.LINK).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.SYNCHRO).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.XYZ).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+
+  this.extraDeckCards = [];
+  this.extraDeckCards.push(...auxArray)
+}
+
+rearrangeSide(){
+  let auxArray:Card[] = [];
+
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.MONSTER).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.PENDULUM).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.SPELL).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.TRAP).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.TOKEN).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.FUSION).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.LINK).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.SYNCHRO).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.XYZ).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+
+  this.sideDeckCards = [];
+  this.sideDeckCards.push(...auxArray)
+}
 }
 
 

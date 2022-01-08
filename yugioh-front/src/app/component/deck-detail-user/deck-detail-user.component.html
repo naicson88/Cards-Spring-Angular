@@ -11,8 +11,10 @@
         <span>
             <mat-form-field appearance="outline" style="width: 35%;">
               <mat-label>Deck name</mat-label>
-              <input matInput placeholder="Placeholder" [value]="deck.nome" style="width: 500px;" #deckName>
+              <input matInput placeholder="Placeholder" [value]="deck.nome" style="width: 500px;" #deckName maxlength="80">
+              <mat-hint>Deck Code:  <b>{{deck.id}}</b></mat-hint>
             </mat-form-field>
+            
         </span>
 
     <span style="color: green; margin-left: 10%;" >
@@ -50,7 +52,7 @@
         </div>
 
         <div id="btnRearrange" style="float: left;">
-            <button mat-raised-button color="accent" style="margin-bottom: 10px; background-color: #04AA6D;"  (click)="rearrange()">
+            <button mat-raised-button color="accent" style="margin-bottom: 10px; background-color: #04AA6D;"  (click)="rearrengeCards()">
                 <mat-icon>sort</mat-icon>
                 Rearrange
             </button>
@@ -85,7 +87,10 @@
                 <div class="example-box" *ngFor="let card of mainDeckCards; let i = index; " style="background: transparent;" >
                    
                     <div>
-                        <img  [src]='cardImagem(card.numero)' alt="" width="105px" height="136px" >
+                        <a [routerLink]="['/card-detail/', card.nome]"  name="{{card.numero}}" (click)="storedCardId(card.numero)">
+                            <img [src]='cardImagem(card.numero)' alt="" width="105px" height="136px" >
+                        </a>
+                       
                         <input type="hidden" id="main_hidden_{{i}}">
                         <input type="hidden" id ="main_hidden_price_{{i}}" class="price"/>
                     </div>
@@ -97,7 +102,7 @@
                                 <span *ngIf="card.relDeckCards.length == 1 " style="color: #228B22; font-weight: 700; top: 0;" id="main_{{i}}">
                                 $ {{card.relDeckCards[0].card_price}}
                                </span>
-                                <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="main_{{i}}"> 
+                                <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: red; font-weight: 700; top: 0;" id="main_{{i}}"> 
                                     $ 0.00</span>
                                  <span id="main_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 " >
                                     {{card.relDeckCards[0].card_raridade}}
@@ -160,7 +165,7 @@
                                     <span *ngIf="card.relDeckCards.length == 1 " style="color: #228B22; font-weight: 700; top: 0;" id="extra_{{i}}">
                                     $ {{card.relDeckCards[0].card_price}}
                                    </span>
-                                    <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="extra_{{i}}"> 
+                                    <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: red; font-weight: 700; top: 0;" id="extra_{{i}}"> 
                                         $ 0.00</span>   
                                      <span id="extra_r_{{i}}" style="font-size: x-small; float: right;" *ngIf="card.relDeckCards.length == 1 ">
                                         {{card.relDeckCards[0].card_raridade}}
@@ -215,7 +220,7 @@
                                 <span *ngIf="card.relDeckCards.length == 1 " style="color: #228B22; font-weight: 700; top: 0;" id="side_{{i}}">
                                 $ {{card.relDeckCards[0].card_price}}
                                </span>
-                                <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: #228B22; font-weight: 700; top: 0;" id="side_{{i}}"> 
+                                <span *ngIf="card.relDeckCards.length == 0 || card.relDeckCards.length > 1"  style="color: red; font-weight: 700; top: 0;" id="side_{{i}}"> 
                                  $ 0.00
                                 </span>
 
@@ -259,7 +264,7 @@
             </div>
 
             <!--Search side-->
-            <div id="cardsSearch" >
+            <div id="cardsSearch"  (scroll)="onScroll()">
 
             <div id="searchedCardsBar">
                 <h5> Cards List</h5>
@@ -273,8 +278,11 @@
                 </div>
 
                 <div style="width: 70%; display: inline-block; background: ghostwhite; height: 92px;  float: right;  border-collapse:collapse;
-                display : table;" >                  
-                  <span style="font-family: Lato, sans-serif; color: #0056b3; font-size: 14px ; font-weight: 700;" >{{item.nome}}  </span>
+                display : table;" >   
+                 <a [routerLink]="['/card-detail/', item.nome]"   (click)="storedCardId(item.numero)">
+                    <span style="font-family: Lato, sans-serif; color: #0056b3; font-size: 14px ; font-weight: 700;" >{{item.nome}}  </span>
+                 </a>               
+                
 
                   <div style="  display : table-row;   vertical-align : bottom;  height : 1px; ">
                 

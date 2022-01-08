@@ -237,10 +237,11 @@ public class DeckDAO {
 		
 		 query = em.createNativeQuery(
 				  " SELECT * FROM TAB_CARDS CARDS "
-			    + " INNER JOIN tab_rel_deckusers_cards rel on rel.card_numero = cards.numero"	 
+			    + " INNER JOIN tab_rel_deckusers_cards rel on rel.card_numero = cards.numero "	 
 				+ " WHERE NUMERO IN "
-				+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and (is_side_deck != 'S' or is_side_deck is null)) "
-				+ " AND CARDS.GENERIC_TYPE NOT IN ('XYZ', 'SYNCHRO', 'FUSION','LINK') and deck_id = :deckId order by cards.nome", Card.class);
+				+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and is_side_deck != 1 "
+				+ " AND CARDS.GENERIC_TYPE NOT IN ('XYZ', 'SYNCHRO', 'FUSION','LINK')) "
+				+ " and deck_id = :deckId  and is_side_deck = 0 order by cards.nome ", Card.class);
 		
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		
@@ -255,7 +256,7 @@ public class DeckDAO {
 		Query query = em.createNativeQuery(" SELECT * FROM TAB_CARDS cards "
 					+ " INNER JOIN tab_rel_deckusers_cards rel on rel.card_numero = cards.numero "	 
 					+ " WHERE NUMERO IN "
-					+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and is_side_deck = 1) and deck_id = :deckId ", Card.class);
+					+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and is_side_deck = 1) and deck_id = :deckId  and is_side_deck = 1", Card.class);
 		
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		
@@ -271,7 +272,7 @@ public class DeckDAO {
 			+ " INNER JOIN tab_rel_deckusers_cards rel on rel.card_numero = cards.numero"	 
 			+ " WHERE NUMERO IN "
 			+ " (SELECT CARD_NUMERO FROM tab_rel_deckusers_cards WHERE DECK_ID = :deckId and (is_side_deck = 0 or is_side_deck is null)) "
-			+ " AND CARDS.GENERIC_TYPE IN ('XYZ', 'SYNCHRO', 'FUSION', 'LINK') and deck_id = :deckId order by cards.generic_type", Card.class);
+			+ " AND CARDS.GENERIC_TYPE IN ('XYZ', 'SYNCHRO', 'FUSION', 'LINK') and deck_id = :deckId  and is_side_deck = 0 order by cards.generic_type", Card.class);
 			
 		} else if (userOrKonamiDeck.equalsIgnoreCase("Konami")) {
 			

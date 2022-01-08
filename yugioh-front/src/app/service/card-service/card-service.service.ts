@@ -71,7 +71,7 @@ export class CardServiceService {
 
   
   public searchCardsDetailed(params:any, criterios:SearchCriteria[]){
-    return this.http.post<Card[]>(this.base_url+`/cards/searchCardDetailed?size=${params.size}&page=${params.page}`, criterios)
+    return this.http.post<any>(this.base_url+`/cards/searchCardDetailed?size=${params.size}&page=${params.page}`, criterios)
       .pipe(
         catchError(HandleErros.handleError)
       )
