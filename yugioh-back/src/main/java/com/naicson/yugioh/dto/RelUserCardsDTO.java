@@ -17,7 +17,7 @@ public class RelUserCardsDTO {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Integer userId;
+	private long userId;
 	private Integer cardNumero;
 	private String cardSetCode;
 	private Integer qtd;
@@ -46,10 +46,10 @@ public class RelUserCardsDTO {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getUserId() {
+	public long getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 	public Integer getCardNumero() {

@@ -280,7 +280,7 @@ public class CardServiceImpl implements CardDetailService {
 	}
 	
 	@Override
-	public List<CardsSearchDTO> getByGenericType(Pageable page, String genericType, int userId) {
+	public List<CardsSearchDTO> getByGenericType(Pageable page, String genericType, long userId) {
 		
 		if(page == null || genericType == null || userId == 0)
 			throw new IllegalArgumentException("Page, Generic Type or User Id is invalid.");

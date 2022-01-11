@@ -47,7 +47,7 @@ public interface CardDetailService {
 	
 	Card encontrarPorNumero(Long cardNumero);
 	
-	List<CardsSearchDTO> getByGenericType(Pageable page, String getByGenericType, int userId);
+	List<CardsSearchDTO> getByGenericType(Pageable page, String getByGenericType, long userId);
 	
 	Page<Card> findAll(CardSpecification spec,  Pageable pageable);
 

@@ -52,7 +52,7 @@ public class DeckDAO {
 		
 	 }
 
-	public int addDeckToUserCollection(Long originalDeckId, int userId) throws SQLException {
+	public int addDeckToUserCollection(Long originalDeckId, long userId) throws SQLException {
 		Query query = em.createNativeQuery("INSERT INTO TAB_REL_USER_DECK (user_id, deck_id, qtd) values(:user_id, :deck_id, 1)")
 				.setParameter("user_id", userId)
 				.setParameter("deck_id", originalDeckId);
@@ -86,7 +86,7 @@ public class DeckDAO {
 		return relationDeckAndCards;			
 	}
 	
-	public boolean verifyIfUserAleadyHasTheCard(int userId, String cardSetCode) throws SQLException {
+	public boolean verifyIfUserAleadyHasTheCard(long userId, String cardSetCode) throws SQLException {
 		
 		Query query = em.createNativeQuery(" SELECT count(*) FROM tab_rel_user_cards WHERE CARD_SET_CODE = :cardSetCode AND USER_ID = :userId ")
 				.setParameter("cardSetCode", cardSetCode)
@@ -100,7 +100,7 @@ public class DeckDAO {
 			return false;	
 	}
 	
-	public int verifyIfUserAleadyHasTheDeck(Long originalDeckId, int userId) {
+	public int verifyIfUserAleadyHasTheDeck(Long originalDeckId, long userId) {
 		Integer has = null;
 		Query query = em.createNativeQuery(" SELECT qtd FROM tab_rel_user_deck WHERE deck_id = :deckId AND USER_ID = :userId ")
 				.setParameter("userId", userId)
@@ -120,7 +120,7 @@ public class DeckDAO {
 			
 	}
 	
-	public int changeQuantityOfEspecifCardUserHas(int userId, String cardSetCode, String flagAddOrRemove) throws SQLException {
+	public int changeQuantityOfEspecifCardUserHas(long userId, String cardSetCode, String flagAddOrRemove) throws SQLException {
 		
 		int changed;
 		
@@ -156,7 +156,7 @@ public class DeckDAO {
 		return query.executeUpdate();
 	}
 
-	public int changeQuantitySpecificDeckUserHas(Long originalDeckId, int userId, String flagAddOrRemove) {
+	public int changeQuantitySpecificDeckUserHas(Long originalDeckId, long userId, String flagAddOrRemove) {
 	
 		int changed;
 		
@@ -178,7 +178,7 @@ public class DeckDAO {
 		return changed;
 	}
 
-	public List<RelUserDeckDTO> searchForDecksUserHave(Integer userId, String decksIds) {		
+	public List<RelUserDeckDTO> searchForDecksUserHave(long userId, String decksIds) {		
 		Query query = em.createNativeQuery(
 				" SELECT DK.id, DK.user_id, KONAMI_DECK_COPIED AS deck_id, COUNT(KONAMI_DECK_COPIED) AS qtd " +
 				" FROM TAB_DECK_USERS DK " + 

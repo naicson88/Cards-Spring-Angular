@@ -1,55 +1,8 @@
-#mainDivHome{
-   
-    flex-wrap:  wrap;
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-    border: solid thin;
-    height: 100%;
-}
-#DivEsquerda{
-    position: relative;
-    margin: 3% 1%;
-    width:98% ;
-    border:  2px solid white;
-    box-shadow: 0 0 0.3em #999;
-    border-radius: 0.5em 0.5em 0.5em 0.5em;
-    padding: 1px;
-    display: flex;
-    justify-content: space-between;
-    height: 400px;
-}
-
-.containerr .card{
-    display: inline-block;
-    justify-items: auto;
+#header_div{
+    background: #e9ecef;
     height: fit-content;
-    margin-top: 20px;
-    position: relative;
-
-
-}
-
-.card img {
-    max-height: 180px;
-}
-
-#divDireita{
-    width: 45%;
-    height: 35%;
-    border: solid thin;
-   margin-right: 0;
-    margin-top: 5%;
-
-}
-
-#divDireitaHeader{
-    margin:2px;
-    background-color: red;
-    height: 30px;
-    width: 100%;
-    position: relative;
-
+    padding: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .my-card
@@ -59,3 +12,162 @@
     top:-20px;
     border-radius:50%;
 }
+
+#title_h {
+    margin: 0em 0 1.5em 0;
+
+    position: relative;
+    
+    padding: 8px;
+    color: #355681;
+	box-shadow: 
+		inset 0 0 0 1px rgba(53,86,129, 0.4), 
+		inset 0 0 5px rgba(53,86,129, 0.5);
+    background-color: white;
+		
+	border-radius: 0 10px 0 10px;
+}
+
+#title_h h4{
+    font-weight: 600;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 28px;
+    line-height: 40px;
+    margin-left: 30%;
+}
+#second_block{
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    height: fit-content;
+    border: solid thin blue;
+   
+}
+.block {
+    height: 320px;
+    border-radius: 5px;
+    background: ghostwhite;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: block;
+    position: relative;
+   
+}
+
+#slide{
+    width: 22%;
+    margin-left: 3%;
+   
+}
+
+#last_cards{
+    width: 70%;
+    margin-left: 27%;
+    margin-top: -320px;
+   
+}
+
+.block_header{
+    padding:8px 5px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: white;
+    font-weight: 500;
+   letter-spacing: 1px;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+}
+
+#third_block .block {
+    width: 30%;
+    margin: 1%;
+    justify-content: space-around;
+    display: inline-block;
+    vertical-align:top;
+}
+
+#thin_block{
+    width: 100%;
+    height: 130px;
+    margin-top: 10px;
+
+    border: solid brown
+}
+
+#thin_block img{
+    width:100%;
+max-height:100%;
+}
+
+#second_block_body{
+    height: 285px;
+    vertical-align:top;
+}
+
+.last_cards_added{
+    width: 50%;
+    height: 56px;
+    border-top: solid thin silver;
+    border-right: solid thin silver;
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif
+}
+
+.last_img{
+    width: 13%;
+    height: 100%;
+    background: red;
+    display: inline-block;
+    position: relative;
+    vertical-align:top;
+}
+
+.last_desc{
+    display: inline-block;
+    background: white;
+    width: 87%;
+    height: 100%;
+    vertical-align:top;
+}
+
+.card-name {
+   /* color: #21c2f8;*/
+   color: #5d82ff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    margin-left: 2%;
+  }
+
+  table td{
+      font-size: small;
+      padding: 2px;  
+      height: 42px;
+  }
+.slide_icon_name{
+    padding: 3px;
+    width: 100%;
+   background-color: white;
+   text-align: center;
+  
+}
+
+.slide_icon_name h5{
+    font-size: 12px;
+    font-family: 'Open Sans',sans-serif;
+    font-weight: 700;
+    margin-left: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-top: 5px; 
+}
+  
+  /*.table_card_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }*/

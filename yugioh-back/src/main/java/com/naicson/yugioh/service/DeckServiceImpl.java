@@ -219,7 +219,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 	@Override
 	@Transactional(rollbackFor = {Exception.class, ErrorMessage.class, SQLException.class})
-	public int addOrRemoveCardsToUserCollection(Long originalDeckId, int userId, String flagAddOrRemove)
+	public int addOrRemoveCardsToUserCollection(Long originalDeckId, long userId, String flagAddOrRemove)
 			throws SQLException, ErrorMessage {
 		try {
 			int qtdCardsAddedOrRemoved = 0;

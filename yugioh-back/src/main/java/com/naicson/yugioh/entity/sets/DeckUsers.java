@@ -27,7 +27,7 @@ public class DeckUsers {
 	private String imagem;
 	@Column(name = "konami_deck_copied")
 	private Long konamiDeckCopied;
-	private Integer userId;
+	private long userId;
 	private Date dtCriacao;
 	private String setType;
 	@Transient
@@ -81,10 +81,10 @@ public class DeckUsers {
 	public void setKonamiDeckCopied(Long konamiDeckCopied) {
 		this.konamiDeckCopied = konamiDeckCopied;
 	}
-	public Integer getUserId() {
+	public long getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 	public Date getDtCriacao() {
