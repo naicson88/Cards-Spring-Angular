@@ -2,7 +2,8 @@ package com.naicson.yugioh.dto.home;
 
 public class LastAddedDTO {
 	
-	private String deckName;
+	private Long id;
+	private String name;
 	private String setCode;
 	private Double price;
 	private String img;
@@ -11,13 +12,27 @@ public class LastAddedDTO {
 	public LastAddedDTO() {
 		
 	}
-
-	public String getDeckName() {
-		return deckName;
+	
+	
+	
+	public Long getId() {
+		return id;
 	}
 
-	public void setDeckName(String deckName) {
-		this.deckName = deckName;
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getSetCode() {

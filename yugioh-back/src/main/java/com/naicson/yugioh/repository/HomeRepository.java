@@ -1,10 +1,18 @@
 package com.naicson.yugioh.repository;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Tuple;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.dto.home.HomeDTO;
+import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.sets.DeckUsers;
 
 
 @Repository
@@ -18,5 +26,18 @@ public interface HomeRepository extends JpaRepository<HomeDTO, Long>{
 			+ " inner join tab_deck_users du on du.id = rel.deck_id "
 			+ " where du.user_id = :userId ", nativeQuery = true)
 	long returnQuantityCardsUserHave(long userId);
+	
+	@Query(value = "select distinct * from tab_deck_users where user_id = :userId order by dt_criacao desc limit 10", nativeQuery = true)
+	List<Tuple> returnLastSetsAddedToUser(long userId);
+	
+	@Query(value = 	
+			 " select distinct cards.numero, cards.nome, rel.card_set_code, rel.card_price from tab_cards cards "
+			+ " inner join tab_rel_deckusers_cards rel on rel.card_numero = cards.numero "
+			+ " inner join tab_deck_users du on du.id = rel.deck_id "
+			+ " where du.user_id = :userId"
+			+ " order by du.dt_criacao "
+			+ " limit 10 ", nativeQuery = true)
+	List<Tuple> lastCardsAddedToUser(Long userId);
+	
 	
 }

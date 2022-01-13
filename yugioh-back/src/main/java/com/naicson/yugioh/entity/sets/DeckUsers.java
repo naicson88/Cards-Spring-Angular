@@ -27,13 +27,13 @@ public class DeckUsers {
 	private String imagem;
 	@Column(name = "konami_deck_copied")
 	private Long konamiDeckCopied;
-	private long userId;
+	private Long userId;
 	private Date dtCriacao;
 	private String setType;
 	@Transient
 	private List<RelDeckCards> relDeckCards;
 	
-	public DeckUsers(Long id, String nome, String imagem, Long konamiDeckCopied, Integer userId, Date dtCriacao,
+	public DeckUsers(Long id, String nome, String imagem, Long konamiDeckCopied, Long userId, Date dtCriacao,
 			String setType) {
 		super();
 		this.id = id;
