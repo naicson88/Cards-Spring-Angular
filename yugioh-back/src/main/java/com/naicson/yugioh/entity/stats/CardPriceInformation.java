@@ -1,4 +1,6 @@
-package com.naicson.yugioh.entity;
+package com.naicson.yugioh.entity.stats;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tab_card_extra_info")
-public class CardExtraInformation {
+@Table(name = "tab_card_price_info")
+public class CardPriceInformation {
 	
 	@Id
 	@Column
@@ -18,14 +20,14 @@ public class CardExtraInformation {
 	private String cardNumber;
 	@Column(unique=true)
 	private String cardSetCode;
-	private Long weeklyQtdViews;
-	private Long totalQtdViews;
 	private Double currentPrice;
 	private Double price2;
 	private Double price3;
 	private Double price4;
 	private Double price5;
 	private Double weeklyPercentVariable;
+	private LocalDateTime lastUpdate;
+	
 	public Long getId() {
 		return id;
 	}
@@ -43,18 +45,6 @@ public class CardExtraInformation {
 	}
 	public void setCardSetCode(String cardSetCode) {
 		this.cardSetCode = cardSetCode;
-	}
-	public Long getWeeklyQtdViews() {
-		return weeklyQtdViews;
-	}
-	public void setWeeklyQtdViews(Long weeklyQtdViews) {
-		this.weeklyQtdViews = weeklyQtdViews;
-	}
-	public Long getTotalQtdViews() {
-		return totalQtdViews;
-	}
-	public void setTotalQtdViews(Long totalQtdViews) {
-		this.totalQtdViews = totalQtdViews;
 	}
 	public Double getCurrentPrice() {
 		return currentPrice;
@@ -92,5 +82,13 @@ public class CardExtraInformation {
 	public void setWeeklyPercentVariable(Double weeklyPercentVariable) {
 		this.weeklyPercentVariable = weeklyPercentVariable;
 	}
+	public LocalDateTime getLastUpdate() {
+		return lastUpdate;
+	}
+	public void setLastUpdate(LocalDateTime lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+	
+	
 	
 }
