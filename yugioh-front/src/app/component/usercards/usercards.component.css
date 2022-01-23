@@ -12,6 +12,7 @@
   overflow-y: scroll;
 } 
 
+
 #main-div {
     transition: margin-left .5s;
     padding: 16px;
@@ -91,7 +92,7 @@
     font-size: 32px;
     font-weight: 600;
     color: #444;
-  text-shadow: 
+    text-shadow: 
     1px 0px 1px #ccc, 0px 1px 1px #eee, 
     2px 1px 1px #ccc, 1px 2px 1px #eee,
     3px 2px 1px #ccc, 2px 3px 1px #eee,

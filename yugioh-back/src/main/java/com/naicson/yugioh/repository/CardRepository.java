@@ -52,7 +52,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 			+ " GROUP BY CARDS.NUMERO ",
 			countQuery = "SELECT count(*) FROM tab_cards",
 			nativeQuery=true)
-	Page<Card> getByGenericType (Pageable page, String genericType, Integer userId);
+	Page<Card> getByGenericType (Pageable page, String genericType, long userId);
 	
 	@Query(value = " SELECT DISTINCT * FROM yugioh.tab_cards CARDS "
 			+ " INNER JOIN TAB_REL_DECKUSERS_CARDS UCARDS ON UCARDS.CARD_NUMERO = CARDS.NUMERO "
@@ -61,7 +61,7 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 			+ " GROUP BY CARDS.NUMERO ",
 			countQuery = "SELECT count(*) FROM tab_cards",
 			nativeQuery=true)
-	Page<Card> cardSearchByNameUserCollection(String cardName, int userId, Pageable pageable);
+	Page<Card> cardSearchByNameUserCollection(String cardName, long userId, Pageable pageable);
 	
 	
 }

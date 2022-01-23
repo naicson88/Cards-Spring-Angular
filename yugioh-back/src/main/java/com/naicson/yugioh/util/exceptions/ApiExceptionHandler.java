@@ -5,6 +5,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,12 +35,17 @@ public class ApiExceptionHandler {
 		}
 		
 		@ExceptionHandler(value = {NoSuchElementException.class})
-		public ResponseEntity<Object> handleNotFoundlErros(NoSuchElementException e){
-			
+		public ResponseEntity<Object> handleNotFoundlErros(NoSuchElementException e){	
 			ApiExceptions ex = new ApiExceptions(e.getMessage(), e.getCause(), HttpStatus.NOT_FOUND, ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")));	
 			return new ResponseEntity<>(ex, HttpStatus.NOT_FOUND);
 		}
 		
+		@ExceptionHandler(value = {EntityNotFoundException.class})
+		public ResponseEntity<Object> handleEntityNotFoundlErros(EntityNotFoundException e){			
+			ApiExceptions ex = new ApiExceptions(e.getMessage(), e.getCause(), HttpStatus.NOT_FOUND, ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")));	
+			return new ResponseEntity<>(ex, HttpStatus.NOT_FOUND);
+		}
+			
 		@ExceptionHandler(value = {SQLException.class})
 			public ResponseEntity<Object> handleSQLException(SQLException sql){
 				ApiExceptions ex = new ApiExceptions(sql.getMessage(), sql, HttpStatus.INTERNAL_SERVER_ERROR, this.time);

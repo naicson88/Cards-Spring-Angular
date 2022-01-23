@@ -1,100 +1,180 @@
-<div id="mainDivHome">
-
-    <div class="jumbotron">
-        <div class="row w-100">
-                <div class="col-md-3">
-                    <div class="card border-info mx-sm-1 p-3">
-                        <div class="card border-info shadow text-info p-3 my-card" ><span class="fa fa-car" aria-hidden="true"></span></div>
-                        <div class="text-info text-center mt-3"><h4>Your Decks Registered</h4></div>
-                        <div class="text-info text-center mt-2"><h1>234</h1></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card border-success mx-sm-1 p-3">
-                        <div class="card border-success shadow text-success p-3 my-card"><span class="fa fa-eye" aria-hidden="true"></span></div>
-                        <div class="text-success text-center mt-3"><h4>Your Boxes Registered</h4></div>
-                        <div class="text-success text-center mt-2"><h1>9332</h1></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card border-danger mx-sm-1 p-3">
-                        <div class="card border-danger shadow text-danger p-3 my-card" ><span class="fa fa-heart" aria-hidden="true"></span></div>
-                        <div class="text-danger text-center mt-3"><h4>Your Tins Registered</h4></div>
-                        <div class="text-danger text-center mt-2"><h1>346</h1></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card border-warning mx-sm-1 p-3">
-                        <div class="card border-warning shadow text-warning p-3 my-card" ><span class="fa fa-inbox" aria-hidden="true"></span></div>
-                        <div class="text-warning text-center mt-3"><h4>Your Cards Registered</h4></div>
-                        <div class="text-warning text-center mt-2"><h1>346</h1></div>
-                    </div>
-                </div>
-             </div>
+<div id="mainDivHome" class="container" style=" margin-top: 20px;">
+    <div id="header_div">
+        <div id="title_h">
+            <h4> Your Collection's informations</h4>
         </div>
-    <div id="DivEsquerda" class="containerr" >
- 
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="..\..\assets\img\decksHome.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Decks</h5>
-              <p class="card-text">A complete list of all Structural Decks launched so you can add all the cards at once</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div class="row w-100">
+            <div class="col-md-3">
+                <div class="card border-info mx-sm-1 p-3">
+                    <div class="card border-info shadow text-info p-2 my-card" ><img src="../../../assets/img/home/deck.png" alt="" height="30px" width="30px"  ></div>
+                    <div class="text-info text-center mt-3"><h4>Deck: <b>{{infoHome.qtdDeck}}</b> </h4></div>
+                  
+                </div>
             </div>
-          </div>
-          
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="..\..\assets\img\boxHome.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Box</h5>
-              <p class="card-text">List of the box and their respective cards </p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="col-md-3">
+                <div class="card border-success mx-sm-1 p-3">
+                    <div class="card border-success shadow text-success p-2 my-card"><img src="../../../assets/img/home/box.png" alt="" height="30px" width="30px"  ></div>
+                    <div class="text-success text-center mt-3"><h4>Boxes: <b>{{infoHome.qtdBoxes}}</b></h4></div>
+                   
+                </div>
             </div>
-          </div>
-
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="..\..\assets\img\tinHome.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Mega Tins</h5>
-              <p class="card-text">Mega Tin released and their respective cards</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="col-md-3">
+                <div class="card border-danger mx-sm-1 p-3">
+                    <div class="card border-danger shadow text-danger p-2 my-card" ><img src="../../../assets/img/home/tins.jpg" alt="" height="30px" width="30px"  ></div>
+                    <div class="text-danger text-center mt-3"><h4>Tins: <b>{{infoHome.qtdTins}}</b></h4></div>
+                   
+                </div>
             </div>
-          </div>
-
-          <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="..\..\assets\img\cardsHome.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Cards</h5>
-              <p class="card-text">List with separate cards so you can individually add or remove to your collection</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="col-md-3">
+                <div class="card border-warning mx-sm-1 p-3">
+                    <div class="card border-warning shadow text-warning p-2 my-card" ><img src="../../../assets/img/home/cards.jpeg" alt="" height="30px" width="30px"  ></div>
+                    <div class="text-warning text-center mt-3"><h4>Cards: <b>{{infoHome.qtdCards}}</b></h4></div>
+                   
+                </div>
             </div>
-          </div>
+        </div>
 
     </div>
 
-   
+    <div id="second_block" >
+        <div id="slide" class="block" style="border: solid  red;"> 
+           <div id="second_block_header" class="block_header" style="background-color: red;">
+               Hot News on YugiHub &nbsp;&nbsp; <i class="fas fa-fire"></i>
+           </div>
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active" >
+                    <img src="{{infoHome.hotNews[0].img}}" height="245px" class="d-block w-100">  
+                    <div class="slide_icon_name">
+                        <a  (click)="storeDeckId(hot.id)" [routerLink]="['/deck-details/',infoHome.hotNews[0].name]">
+                            <h5>{{infoHome.hotNews[0].name}}</h5>
+                        </a>
+                       
+                    </div>           
+                  </div>  
+                  <div class="carousel-item " *ngFor="let hot of infoHome.hotNews | slice:1; let i = index">
+                    <img src="{{hot.img}}" height="245px" class="d-block w-100">  
+                    <div class="slide_icon_name">
+                        <a  (click)="storeDeckId(hot.id)" [routerLink]="['/deck-details/', hot.name]">
+                            <h5>{{hot.name}}</h5>
+                        </a>
+                       
+                    </div>           
+                  </div> 
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: silver;"></span>
+                  <span class="sr-only" style="background-color: silver;">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+               
+              </div>
 
-    <div id="divDireita">
-        <div id="divDireitaHeader">
+        </div>
+
+       <div id="last_cards" class="block"> 
+        <div id="second_block_header" class="block_header" style="background-color: #9002b3;">
+            Last added in your collection &nbsp;&nbsp;
+        </div>
+            <div id="second_block_body">
+                <div class="last_cards_added" *ngFor="let lasts of infoHome.lastSets">
+                    <div class="last_img">
+                       <img src='{{lasts.img}}' height="55" width="45"   >
+                    </div>
+                    <div class="last_desc">
+                        <a  (click)="storeDeckId(lasts.id)" [routerLink]="['/userdeck-details/', lasts.name]">
+                            <span class="card-name">{{lasts.name}}</span><br>
+                        </a>
+                     
+
+                      <span style="font-size: x-small; margin-left: 2%; color: #9002b3;"> <i>{{lasts.setCode}}</i> </span> &nbsp; <span style="font-size: x-small; color: seagreen;">$ {{lasts.price}}</span>
+                    </div>
+                </div>
 
             </div>
-            <div id="divCarousel">
-             <carousel height="300" loop="true"  cellWidth="100%" adaptiveHeight  style="margin-top: 0; height: fit-content;">
-                <div class="carousel-cell" height="100%">
-                    <img src="..\..\assets\img\banner.png" width="500%"  >
-                    
-                 </div>
-                <div class="carousel-cell">
-                    <img src="..\..\assets\img\monsters\Normal\36821538.jpg" alt="">
-                </div>
-              
-                <div  class="carousel-cell">
-                    <img class="d-block w-100" 
-                    src="https://www.duelshop.com.br/15516-large_default/yu-gi-oh-deck-estrutural-queima-almas.jpg" alt="Third slide">
-                </div>          
-            </carousel>
         </div>
+
+    </div>
+    
+
+    <div id="third_block" class="container" >
+
+        <div class="block" style="margin-left: 3% !important;">
+            <div id="second_block_header" class="block_header" style="background-color: #4db559;">
+                Week High &nbsp;&nbsp; 
+            </div>
+            <div id="second_block_body">
+                <div class="high_body">
+                    <table style="width: 100%;">
+                        <tr style="min-height: 42px;" *ngFor="let highs of infoHome.highCards">
+                            <td style="color: #44a44f; width: 20%; text-align: left;" >
+                                <i class="fas fa-sort-up"></i> {{highs.percentVariable}}%
+                            </td>
+                            <td class="table_card_name" style="width: 60%; margin-left:1px; ">
+                               {{highs.cardName}} ({{highs.setCode}})
+                            </td>
+                            <td style="color: #44a44f; width: 20%; text-align: center;" >
+                                {{highs.cardPrice | currency}}
+                            </td>
+                        </tr>
+             
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="block">
+            <div id="second_block_header" class="block_header" style="background-color: #e63655;">
+                Week Low &nbsp;&nbsp; <img src="../../../assets/img/home/chart_down.png" alt="" width="15" height="15">
+            </div>
+            <div class="low_body">
+                <table style="width: 100%;">
+                    <tr style="min-height: 42px;" *ngFor="let lows of infoHome.lowCards">
+                        <td style="color: #e31f42; width: 20%; text-align: left;" >
+                            <i class="fas fa-sort-down"></i> {{lows.percentVariable}}%
+                        </td>
+                        <td class="table_card_name" style="width: 60%; margin-left:1px; ">
+                            {{lows.cardName}} ({{lows.setCode}})
+                        </td>
+                        <td style="color: #44a44f; width: 20%; text-align: center;" >
+                            {{lows.cardPrice | currency }}
+                        </td>
+                    </tr>
+
+                </table>
+                </div>
+
+        </div>
+
+        <div class="block">
+            <div id="second_block_header" class="block_header" style="background-color: #3850b0;">
+                Most view of the week &nbsp;&nbsp; <i class="fas fa-fire"></i>
+            </div>
+            <div class="mos_vw_body">
+                <table style="width: 100%;">
+                    <tr style="min-height: 42px;" *ngFor="let views of infoHome.weeklyMostView">
+                        <td style="color: silver; width: 20%; text-align: center;" >
+                            <i class="fas fa-eye"></i> {{views.qtdViewsWeekly}}
+                        </td>
+                        <td class="table_card_name" style="width: 60%; margin-left:1px; vertical-align: middle;">
+                           {{views.cardName}} 
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="thin_block">
+      <img src="../../../assets/img/home/banner.jpg" alt="">
     </div>
 </div>
-
-<app-footer></app-footer>
+<div style="margin-top: 60px;">
+    <app-footer></app-footer>
+</div> 

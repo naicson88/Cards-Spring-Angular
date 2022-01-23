@@ -23,7 +23,7 @@ public interface DeckRepository extends JpaRepository<Deck, Long> {
 	
 	List<Deck> findAllByIdIn(Long[] arraySetsIds);
 	
-	List<Deck> findAllByUserId(int userId);
+	List<Deck> findAllByUserId(long userId);
 	
 	@Query(value = "Select * from TAB_DECK_USERS where user_id = :userId", countQuery = "SELECT count(*) FROM yugioh.tab_cards", nativeQuery = true)
 	Page<DeckUsers> listDeckUser(Pageable page, Long userId);

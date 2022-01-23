@@ -19,7 +19,7 @@ public class CardDAO {
 	@PersistenceContext
 	 EntityManager em;
 	
-	public List<RelUserCardsDTO> searchForCardsUserHave(Integer userId, String cardsNumbers) {		
+	public List<RelUserCardsDTO> searchForCardsUserHave(long userId, String cardsNumbers) {		
 		Query query = em.createNativeQuery(" SELECT * FROM tab_rel_user_cards WHERE user_id = :userId and card_numero in (" + cardsNumbers + ")", RelUserCardsDTO.class)
 				.setParameter("userId", userId);
 		
@@ -29,7 +29,7 @@ public class CardDAO {
 		return relList;
 	}
 	
-	public List<Tuple> listCardOfUserDetails(Long cardNumber, Integer userId) throws SQLException, Exception {
+	public List<Tuple> listCardOfUserDetails(Long cardNumber, long userId) throws SQLException, Exception {
 		Query query = em.createNativeQuery("select du.nome , rel.card_set_code , rel.card_raridade as rarity,\r\n"
 			+ " rel.card_price as price, count(rel.card_set_code) as quantity\r\n"
 			+ "from tab_deck_users du \r\n"

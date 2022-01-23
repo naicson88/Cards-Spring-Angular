@@ -4,6 +4,8 @@ nav {
 height: fit-content;
 margin-top: 0;
 border-bottom: solid thin blue;
+z-index: 2;
+position: relative;
 
 }
 nav.primary-navigation {

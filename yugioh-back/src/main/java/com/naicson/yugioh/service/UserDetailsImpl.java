@@ -16,7 +16,7 @@ import com.naicson.yugioh.entity.auth.User;
 public class UserDetailsImpl implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private long id;
 	private String username;
 	private String email;
 	@JsonIgnore
@@ -27,7 +27,7 @@ public class UserDetailsImpl implements UserDetails{
 		
 	}
 
-	public UserDetailsImpl(int id, String userName, String email, String password,
+	public UserDetailsImpl(long id, String userName, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.id = id;
@@ -46,7 +46,7 @@ public class UserDetailsImpl implements UserDetails{
 		return new UserDetailsImpl(user.getId(), user.getUserName(), user.getEmail(), user.getPassword(), authorities);
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
