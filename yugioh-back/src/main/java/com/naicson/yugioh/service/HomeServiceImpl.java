@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.persistence.Tuple;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dto.home.HomeDTO;
 import com.naicson.yugioh.dto.home.LastAddedDTO;
 import com.naicson.yugioh.dto.home.RankingForHomeDTO;
+import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.sets.SetType;
 
 import com.naicson.yugioh.repository.HomeRepository;
@@ -49,14 +51,12 @@ public class HomeServiceImpl implements HomeDetailService{
 		homeDto.setQtdDeck(homeRepository.returnQuantitySetType(SetType.DECK.getType(), user.getId()));
 		homeDto.setQtdBoxes(homeRepository.returnQuantitySetType(SetType.BOX.getType(), user.getId()));
 		homeDto.setQtdTins(homeRepository.returnQuantitySetType(SetType.TIN.getType(), user.getId()));
-		homeDto.setQtdCards(homeRepository.returnQuantityCardsUserHave(user.getId()));
+		homeDto.setQtdCards(homeRepository.returnQuantityCardsUserHave(user.getId()));	
+
+		homeDto.setLastSets(this.lastSetsAddedToUser(homeRepository.returnLastSetsAddedToUser(user.getId())));
+		homeDto.setLastCards(this.lastCardsAddedToUsuer(homeRepository.lastCardsAddedToUser(user.getId())));
+		homeDto.setHotNews(this.hotNews(homeRepository.getHotNews()));	
 		
-		List<Tuple> lastSets = homeRepository.returnLastSetsAddedToUser(user.getId());
-		List<Tuple> lastCardsAdded = homeRepository.lastCardsAddedToUser(user.getId());
-		
-		homeDto.setLastSets(this.lastSetsAddedToUser(lastSets));
-		homeDto.setLastCards(this.lastCardsAddedToUsuer(lastCardsAdded));
-		//Thid map will bring the high, low and view as key
 		homeDto.setHighCards(this.cardInfoService.getWeeklyHighStats());
 		homeDto.setLowCards(this.cardInfoService.getWeeklyLowStats());
 		homeDto.setWeeklyMostView(this.cardViewService.getWeeklyMostViewed());	
@@ -77,9 +77,9 @@ public class HomeServiceImpl implements HomeDetailService{
 					lastsSetsAdded = sets.stream().map(set ->{
 					LastAddedDTO lastSet = new LastAddedDTO();				
 					lastSet.setId(set.get(0,BigInteger.class).longValue());
-					lastSet.setImg(set.get(1, String.class));
+					lastSet.setImg("..\\"+set.get(1, String.class));
 					lastSet.setName(set.get(2, String.class));
-					lastSet.setPrice(0.0);
+					lastSet.setPrice(totalSetPrice(lastSet.getId()));
 					lastSet.setSetCode("WWW-EN001");
 					
 					return lastSet;
@@ -97,6 +97,18 @@ public class HomeServiceImpl implements HomeDetailService{
 		return lastsSetsAdded;
 	}
 	
+	private Double totalSetPrice(Long setId) {
+		if(setId == null || setId == 0) {
+			logger.error("Invalid Set Id".toUpperCase());
+			throw new IllegalArgumentException("Invalid Set Id");
+		}
+		
+		Double totalPrice = homeRepository.findTotalSetPrice(setId);
+		
+		return totalPrice;
+			
+	}
+	
 	private List<LastAddedDTO> lastCardsAddedToUsuer(List<Tuple> lastCardsAddedTuple){
 		List<LastAddedDTO> lastCardsAdded = new ArrayList<>();
 		
@@ -109,18 +121,38 @@ public class HomeServiceImpl implements HomeDetailService{
 					lastCard.setSetCode(card.get(2, String.class));
 					lastCard.setPrice(card.get(3, Double.class));
 					
-					this.calculate("HIGH");
-					
 					return lastCard;
 				}).collect(Collectors.toList());
 				
 			}else {
-				return Collections.emptyList();
+				logger.error("Last cards added to user list is empty".toUpperCase());
+				throw new NoSuchElementException("Last cards added to user  list is empty");
 			}
 			
 		return lastCardsAdded;
 	}
 	
+	private List<LastAddedDTO> hotNews(List<Tuple> hotNews){
+		List<LastAddedDTO> hotNewsList = new ArrayList<>();
+		
+		if(hotNews != null && !hotNews.isEmpty()) {
+			hotNewsList = hotNews.stream().map(set -> {
+				LastAddedDTO lastAdded = new LastAddedDTO();
+				
+				lastAdded.setId(set.get(0, BigInteger.class).longValue());
+				lastAdded.setImg("..\\"+set.get(1, String.class));
+				lastAdded.setName(set.get(2, String.class));
+				
+				return lastAdded;
+			}).collect(Collectors.toList());
+			
+		} else {
+			logger.error("Hot News list is empty".toUpperCase());
+			throw new NoSuchElementException("Hot News list is empty");
+		}
+		
+		return hotNewsList;
+	}
 /*	private void saveInfoCard(LastAddedDTO lastCardAdded) {
 		CardExtraInformation info = new CardExtraInformation();
 		info.setCardNumber(String.valueOf(lastCardAdded.getCardNumber()));
@@ -137,7 +169,4 @@ public class HomeServiceImpl implements HomeDetailService{
 		cardInfoRepository.save(info);
 	}*/
 	
-	private void calculate(String stats) {
-		cardInfoService.findWeeklyCards(CardStats.LOW);
-	}
 }

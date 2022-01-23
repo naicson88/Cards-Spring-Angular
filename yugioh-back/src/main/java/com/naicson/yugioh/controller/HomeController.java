@@ -19,7 +19,7 @@ public class HomeController {
 	@Autowired
 	HomeServiceImpl homeService;
 	
-	@GetMapping()
+	@GetMapping(path = "/info")
 	public ResponseEntity<HomeDTO> homeInformations(){
 		HomeDTO home = homeService.getHomeDto();
 		

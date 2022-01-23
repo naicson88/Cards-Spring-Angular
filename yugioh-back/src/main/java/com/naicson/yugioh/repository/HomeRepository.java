@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.dto.home.HomeDTO;
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.sets.DeckUsers;
 
 
@@ -38,6 +39,12 @@ public interface HomeRepository extends JpaRepository<HomeDTO, Long>{
 			+ " order by du.dt_criacao "
 			+ " limit 10 ", nativeQuery = true)
 	List<Tuple> lastCardsAddedToUser(Long userId);
+	
+	@Query(value = "select * from tab_decks order by dt_criacao desc limit 5", nativeQuery = true)
+	List<Tuple> getHotNews();
+	
+	@Query(value = "select ROUND(sum(card_price),2) as total from tab_rel_deckusers_cards where deck_id = :setId", nativeQuery = true)
+	Double findTotalSetPrice(Long setId);
 	
 	
 }

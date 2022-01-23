@@ -40,7 +40,7 @@
     padding: 10px;
     width: 100%;
     height: fit-content;
-    border: solid thin blue;
+   
    
 }
 .block {
@@ -50,7 +50,10 @@
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     display: block;
     position: relative;
-   
+}
+
+#third_block .block {
+    height: 300px !important;
 }
 
 #slide{
@@ -89,8 +92,6 @@
     width: 100%;
     height: 130px;
     margin-top: 10px;
-
-    border: solid brown
 }
 
 #thin_block img{
@@ -115,7 +116,7 @@ max-height:100%;
 .last_img{
     width: 13%;
     height: 100%;
-    background: red;
+   
     display: inline-block;
     position: relative;
     vertical-align:top;
@@ -171,3 +172,15 @@ max-height:100%;
     text-overflow: ellipsis;
     white-space: nowrap;
   }*/
+
+  .high_body table tr:nth-child(even){
+      background-color: #e8f5e9;
+  }
+
+  .low_body table tr:nth-child(even){
+      background-color: #fdebee;
+  }
+
+  .mos_vw_body table tr:nth-child(even){
+    background-color: #eef0f9;
+  }
