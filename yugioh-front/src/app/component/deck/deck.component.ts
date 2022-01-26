@@ -198,8 +198,8 @@ export class DeckComponent implements OnInit {
   }
 
   handlePageSizeChange(event): void {
-
-    this.pageSize = event.value;
+debugger
+    this.pageSize = event//event.value;
     this.page = 1;
     this.getDecksInfo();
   }

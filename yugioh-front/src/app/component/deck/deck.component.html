@@ -1,37 +1,41 @@
 
 
-<div id="mainDiv" class="container"> 
+<div id="mainDiv" class="container" style="background-color: whitesmoke;" > 
    <div class="set-header">  
       <span *ngIf="set_type == 'UD' ">User's Decks</span> 
       <span *ngIf="set_type != 'UD' ">Konami's Decks</span> 
    </div>
 
-   <div id="header-main">
-      <div style="
-      width: 300px; margin-top: 4%; float: left;"> 
-        <div class="input-group input-group-sm" style="width: 400px;">
+   <div id="header-main" >
+     
+      <div > 
+
+        <div class="input-group input-group-sm" style="width: 300px; margin-top: 5px; margin-left: 10px;">
            <input class="form-control mr-sm-2" type="search" 
            placeholder="Search deck.." aria-label="Search" [(ngModel)]="deckFilter.nome"  >           
-         </div>
-     </div>
-
-<div style="margin-left: 80%; position: relative;">
-   <h4 style="font-family: Roboto,Helvetica Neue,sans-serif;
-   font-size: 16px; color:#0f75b2">
-  Itens per page:</h4>
-  <mat-form-field appearance="fill">
-     <mat-label>Quantity</mat-label>
-     <mat-select (selectionChange)="handlePageSizeChange($event)">
-     <mat-option [value]="size" *ngFor="let size of pageSizes">
-        {{size}}
-     </mat-option>
-     </mat-select>
-  </mat-form-field>
-</div>
+       </div>
+            <!-- PAGINATION-->        
+      <div style="margin-left: 40%; margin-top: -23px;">
+<!--       
+         <mat-form-field appearance="standard">
+            <mat-label style="color: white;">Quantity per page</mat-label>
+            <mat-select (selectionChange)="handlePageSizeChange($event)" style="color: white;">
+            <mat-option [value]="size" *ngFor="let size of pageSizes">
+               {{size}}
+            </mat-option>
+            </mat-select>
+         </mat-form-field> -->
+         <label for="" style="color: white; font-size: small;">Quantity per page: </label>&nbsp;
+         <select class="form-select" aria-label="Default select example" (change)="handlePageSizeChange($event.target.value)">
+            <option [value]="size" *ngFor="let size of pageSizes"> {{size}}</option>     
+          </select>
    </div>
-           <!-- PAGINATION-->         
-
-   <!--END PAGINATION-->  
+   
+      </div> 
+        
+   </div>
+ 
+   <!-- Decks-->
    <mat-tab-group mat-align-tabs="end">
       <mat-tab > 
          <ng-template mat-tab-label>
@@ -54,9 +58,9 @@
                            <!--(click)="storeDeckId($event)"-->
                            {{deck.nome}}
                         </a><br>
-                        <a href="#">
+                        <!-- <a href="#">
                            <span >{{deck.nomePortugues}}</span>
-                        </a>                            
+                        </a>                             -->
    
                      </h5>
                      <span class="tag1"></span> 
@@ -131,15 +135,15 @@
          <!--Cards em lista-->
         <div style="margin-top: 15px; padding: 2px;" id="sets-list">
 
-            <div class="row" id="row-list" *ngFor="let decklist of deck">
+            <div  id="row-list" *ngFor="let decklist of deck">
                   
-                  <div class="col-md-2" style="max-width: 70px;">
+                  <!-- <div  style="width: 70px;">
                      <img [src]='decklist.imagem' class="img-responsive" height="70px" width="50px" title="{{decklist.nome}}" >                    
-                  </div>
+                  </div> -->
 
-                  <div class="col-md-10" style="min-width: 400px; height: 70px; background-color:ghostwhite; " >
+                  <div  style="width: 100%; height: 70px; background-color:ghostwhite; padding: 5px;" >
 
-                    <div style="position: absolute; top: 50%; transform: translate(0, -50%); "> 
+                    <div > 
                         <a  name="{{decklist.id}}"  (click)="storeDeckId($event)" [routerLink]="['/deck-details/', deck.nome]" > 
                            <!--(click)="storeDeckId($event)"-->
                            {{decklist.nome}} 
@@ -149,7 +153,7 @@
       
                         <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">You have:</span> &nbsp;<span>200</span>
                         
-                        <span *ngIf="set_type == 'UD'"> 
+                        <span *ngIf="set_type == 'UD'" style="float: right;"> 
                             <!--Opções que só aparecem se for deck de usuário-->
                             &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
                             <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
@@ -170,7 +174,8 @@
             </div>    
         </div>
       </mat-tab >
-</mat-tab-group>
+   </mat-tab-group>
+
 <!--PAGINAÇÃO-->
 <!--<pagination-controls (pageChange)="p = $event"></pagination-controls>-->
 <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>

@@ -36,10 +36,14 @@ justify-items: center;
 }
 
 #header-main{
-  position: relative;
+  margin-bottom: 20px;
   width: 92%;
   margin-left: 5%;
-  height: fit-content;
+  padding: 5px;
+  background-color: #3f51b5;
+  height: 50px;
+
+ 
 }
  .container-fluid{  
    width: 100%;
@@ -259,11 +263,13 @@ margin-left: 50%;
 }
 
 #row-list{
-  display: inline-flex;
+  display: inline-block;
   margin-left: auto; 
-  width: 50%;
+  width: 48%;
   margin-bottom: 5px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: solid thin cadetblue;
+  margin: 1px;
 }
 
 
