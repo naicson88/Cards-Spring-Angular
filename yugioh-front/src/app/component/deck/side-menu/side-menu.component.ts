@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth-service/auth.service';
 
@@ -59,11 +59,20 @@ export class SideMenuComponent implements OnInit {
   isIndex: boolean = false;
   isLogin: boolean = false;
   isRegister: boolean = false;
+  
   //trans: string = 'left 0.4s ease'
  
   constructor(private router: Router, private authService: AuthService) {
+ 
+   }
+
+  ngOnInit() {
+    
     this.router.events.subscribe((event:any) => {
+
+     
       if(event instanceof NavigationEnd) {
+        console.log(typeof event.url)
         if(event.url === '/index'){
           this.isIndex = true;
         } 
@@ -72,19 +81,14 @@ export class SideMenuComponent implements OnInit {
         }
         else if(event.url === '/register'){
           this.isRegister = true
-        }
-
-        else {
-          this.isLogin = false;
-          this.isIndex = false;
-          this.isRegister = false;
+        } 
+        else if(event.url === '/'){
+          this.isIndex = true
         }
         
       }
     })
-   }
 
-  ngOnInit() {
   }
 
   mostrarUlDecks(){

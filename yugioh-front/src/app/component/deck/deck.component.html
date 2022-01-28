@@ -1,124 +1,142 @@
 
 
-<div id="mainDiv" class="container"> 
-   <div class="set-header">  
-      <span *ngIf="set_type == 'UD' ">User's Decks</span> 
-      <span *ngIf="set_type != 'UD' ">Konami's Decks</span> 
+<div id="mainDiv" class="container" style="background-color: whitesmoke;" >
+   <div class="set-header">
+      <span *ngIf="set_type == 'UD' ">User's Decks</span>
+      <span *ngIf="set_type != 'UD' ">Konami's Decks</span>
    </div>
 
-   <div id="header-main">
-      <div style="
-      width: 300px; margin-top: 4%; float: left;"> 
-        <div class="input-group input-group-sm" style="width: 400px;">
-           <input class="form-control mr-sm-2" type="search" 
-           placeholder="Search deck.." aria-label="Search" [(ngModel)]="deckFilter.nome"  >           
-         </div>
-     </div>
+   <div id="header-main" >
 
-<div style="margin-left: 80%; position: relative;">
-   <h4 style="font-family: Roboto,Helvetica Neue,sans-serif;
-   font-size: 16px; color:#0f75b2">
-  Itens per page:</h4>
-  <mat-form-field appearance="fill">
-     <mat-label>Quantity</mat-label>
-     <mat-select (selectionChange)="handlePageSizeChange($event)">
-     <mat-option [value]="size" *ngFor="let size of pageSizes">
-        {{size}}
-     </mat-option>
-     </mat-select>
-  </mat-form-field>
-</div>
+      <div >
+
+        <div class="input-group input-group-sm" style="width: 300px; margin-top: 5px; margin-left: 10px;">
+           <input class="form-control mr-sm-2" type="search"
+           placeholder="Search deck.." aria-label="Search" [(ngModel)]="deckFilter.nome"  >
+       </div>
+            <!-- PAGINATION-->
+      <div style="margin-left: 40%; margin-top: -23px;">
+<!--
+         <mat-form-field appearance="standard">
+            <mat-label style="color: white;">Quantity per page</mat-label>
+            <mat-select (selectionChange)="handlePageSizeChange($event)" style="color: white;">
+            <mat-option [value]="size" *ngFor="let size of pageSizes">
+               {{size}}
+            </mat-option>
+            </mat-select>
+         </mat-form-field> -->
+         <label for="" style="color: white; font-size: small;">Quantity per page: </label>&nbsp;
+         <select class="form-select" aria-label="Default select example" (change)="handlePageSizeChange($event.target.value)">
+            <option [value]="size" *ngFor="let size of pageSizes"> {{size}}</option>
+         </select>
+
    </div>
-           <!-- PAGINATION-->         
 
-   <!--END PAGINATION-->  
+      </div>
+
+   </div>
+   <div id="divSelectCollection">
+
+      <mat-form-field appearance="fill">
+         <mat-label >Collection</mat-label>
+         <mat-select  value="DECK" (selectionChange)="handlePageSizeChange($event)">
+         <mat-option value="DECK"> DECK </mat-option>
+         <mat-option value="TIN"> TIN </mat-option>
+         <mat-option value="BOX"> BOX </mat-option>
+
+         </mat-select>
+      </mat-form-field>
+   </div>
+
+
+   <!-- Decks-->
    <mat-tab-group mat-align-tabs="end">
-      <mat-tab > 
+      <mat-tab >
          <ng-template mat-tab-label>
             <mat-icon>view_module</mat-icon>
             Grid
          </ng-template>
-      <div id="cont-cards" class="container-fluid" >
+      <div id="cont-cards" class="flex">
          <div class="cardDiv" style="display: inline; max-width: 100px; " *ngFor="let deck of (deck |  filterBy: deckFilter) |
          paginate: {itemsPerPage: pageSize, currentPage: page, totalItems: totalItens} ">
-            
-    
+
+
       <div class="deck-info-main deck-wrap clearfix">
          <div class="row">
             <div class="col-md-3 col-sm-12 col-xs-12">
                <div class="deckuct-deatil" style="margin-bottom: 12px; margin-left: 12px;">
                      <h5 class="name" title=" {{deck.nome}}">
                         <!--<a  name="{{deck.id}}"  (click)="deckDetailPage(deck.nome); storeDeckId($event)" >-->
-                        
-                           <a  name="{{deck.id}}"  (click)="storeDeckId(deck.id)" [routerLink]="['/deck-details/', deck.nome]" > 
+
+                           <a  name="{{deck.id}}"  (click)="storeDeckId(deck.id)" [routerLink]="['/deck-details/', deck.nome]" >
                            <!--(click)="storeDeckId($event)"-->
                            {{deck.nome}}
                         </a><br>
-                        <a href="#">
+                        <!-- <a href="#">
                            <span >{{deck.nomePortugues}}</span>
-                        </a>                            
-   
+                        </a>                             -->
+
                      </h5>
-                     <span class="tag1"></span> 
+                     <span class="tag1"></span>
                </div>
                <div class="col-md-6 col-sm-10 col-xs-10" style="margin-left: -4px;">
-                  <div class="deckuct-image"> 
-                     <img [src]='deck.imagem' class="img-responsive" height="238px" width="200px" title="{{deck.nome}}"> 
+                  <div class="deckuct-image">
+                     <img [src]='deck.imagem' class="img-responsive" height="238px" width="200px" title="{{deck.nome}}">
                      <span class="tag2 hot">
                         HO
-                     </span> 
+                     </span>
                   </div>
                </div>
-          
+
                <div class="deckuct-info smart-form"  >
                   <div class="row">
-                     <div class="col-md-6"  > 
+                     <div class="col-md-6"  >
                     <!--    <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>-->
                     <span style="font-size:x-small; color: #ccc; font-weight: bold;" *ngIf="set_type != 'UD'">Total you have:</span><br>
 
                     <div class="clearfix quantity r_corners d_inline_middle f_size_medium color_dark" style="display: inline-block; margin-left: 22%;">
                      <span *ngIf="set_type != 'UD'">
-                        
+
                         <input type="text" name="input_qtde" id="inp_{{deck.id}}"
                         value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" >
-                     
-                        <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}" 
+
+                        <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}"
                         (click)="addSetToUserCollection($event)" >+</button>
 
                      </span>
-                      
 
-                     <span *ngIf="set_type == 'UD'"> 
+
+                     <span *ngIf="set_type == 'UD'">
                         <!--Opções que só aparecem se for deck de usuário-->
                         &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
                         <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
 
                         &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
                         <a  name="{{deck.id}}" [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId(deck.id)" >
-                           <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp; 
+                           <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp;
                         </a>
-                        
 
-                       <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"> 
+
+                       <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">
 
                           <mat-icon style="color: red; cursor: pointer;" title="Delete from your collection"
                           id="{{deck.id}}" (click)="removeSetToUserCollection($event)">delete_forever</mat-icon>
 
                        </span>&nbsp;
-                    </span>         
-                     
+                    </span>
+
                  </div>
-                           
-                     </div>              
+
+                     </div>
                   </div>
                </div>
             </div>
          </div>
     </div>
- 
+
     <!-- First deckuct box start here-->
-  
-  
+
+
 </div>
 </div>
       </mat-tab>
@@ -131,46 +149,47 @@
          <!--Cards em lista-->
         <div style="margin-top: 15px; padding: 2px;" id="sets-list">
 
-            <div class="row" id="row-list" *ngFor="let decklist of deck">
-                  
-                  <div class="col-md-2" style="max-width: 70px;">
-                     <img [src]='decklist.imagem' class="img-responsive" height="70px" width="50px" title="{{decklist.nome}}" >                    
-                  </div>
+            <div  id="row-list" *ngFor="let decklist of deck">
 
-                  <div class="col-md-10" style="min-width: 400px; height: 70px; background-color:ghostwhite; " >
+                  <!-- <div  style="width: 70px;">
+                     <img [src]='decklist.imagem' class="img-responsive" height="70px" width="50px" title="{{decklist.nome}}" >
+                  </div> -->
 
-                    <div style="position: absolute; top: 50%; transform: translate(0, -50%); "> 
-                        <a  name="{{decklist.id}}"  (click)="storeDeckId($event)" [routerLink]="['/deck-details/', deck.nome]" > 
+                  <div  style="width: 100%; height: 70px; background-color:ghostwhite; padding: 5px;" >
+
+                    <div >
+                        <a  name="{{decklist.id}}"  (click)="storeDeckId($event)" [routerLink]="['/deck-details/', deck.nome]" >
                            <!--(click)="storeDeckId($event)"-->
-                           {{decklist.nome}} 
-                        </a><br> 
-      
+                           {{decklist.nome}}
+                        </a><br>
+
                         <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">Released:</span> &nbsp; <span>2002</span>&nbsp;&nbsp;&nbsp;
-      
+
                         <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">You have:</span> &nbsp;<span>200</span>
-                        
-                        <span *ngIf="set_type == 'UD'"> 
+
+                        <span *ngIf="set_type == 'UD'" style="float: right;">
                             <!--Opções que só aparecem se for deck de usuário-->
                             &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
                             <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
 
                             &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
-                            <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp; 
+                            <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp;
 
-                           <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"> 
+                           <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">
 
                               <mat-icon style="color: red; cursor: pointer;" title="Delete from your collection"
                               id="{{decklist.id}}" (click)="removeSetToUserCollection($event)">delete_forever</mat-icon>
 
                            </span>&nbsp;
-                        </span>         
-                              <!-- <button type="button" class="btn btn-info btn-sm" style="background-color: #138496 !important; margin-left: 20px;" >Manege</button> -->               
+                        </span>
+                              <!-- <button type="button" class="btn btn-info btn-sm" style="background-color: #138496 !important; margin-left: 20px;" >Manege</button> -->
                       </div>
                   </div>
-            </div>    
+            </div>
         </div>
       </mat-tab >
-</mat-tab-group>
+   </mat-tab-group>
+
 <!--PAGINAÇÃO-->
 <!--<pagination-controls (pageChange)="p = $event"></pagination-controls>-->
 <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
