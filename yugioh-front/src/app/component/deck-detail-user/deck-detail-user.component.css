@@ -277,3 +277,15 @@ select {
     border-radius: 5px ; 
     border: solid thin silver
 }
+
+#divSelectCollection{
+  margin-left: 10%; 
+  margin-top: -30px;
+}
+
+#divSelectCollection label{
+color: #27ae60;
+font-size: medium;
+
+  font-weight: 500;
+}

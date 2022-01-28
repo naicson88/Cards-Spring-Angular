@@ -50,6 +50,7 @@ justify-items: center;
    max-width: 1250px;
    justify-self: center;
    justify-content:center;
+   display: flex;
 }
 
 
@@ -272,7 +273,17 @@ margin-left: 50%;
   margin: 1px;
 }
 
+#divSelectCollection{
+  margin-left: 10%; 
 
+}
+
+#divSelectCollection label{
+  color: #27ae60;
+  font-size: medium;
+  
+  font-weight: 500;
+}
 
 
 
