@@ -1,5 +1,7 @@
 package com.naicson.yugioh.util;
 
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -38,4 +40,18 @@ public abstract class GeneralFunctions {
 		
 		return str;
 	}
+	
+    public static String momentAsString() {
+    	String hour = String.valueOf(LocalDateTime.now().getHour());
+    	String minutes = String.valueOf(LocalDateTime.now().getMinute());
+    	String seconds = String.valueOf(LocalDateTime.now().getSecond());
+    	
+    	String day = String.valueOf(LocalDateTime.now().getDayOfMonth());
+    	String month = String.valueOf(LocalDateTime.now().getMonthValue());
+    	String year = String.valueOf(LocalDateTime.now().getYear());
+    	
+    	String moment = day+month+year+hour+minutes+seconds;
+    	
+    	return moment;
+    }
 }

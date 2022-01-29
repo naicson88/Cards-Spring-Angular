@@ -19,8 +19,8 @@ import { SpinnerService } from 'src/app/service/spinner.service';
 
 export class DeckComponent implements OnInit {
  page: number = 1; 
- pageSize: number = 8
- pageSizes = [8,12,24,36,100];
+ pageSize: number = 12
+ pageSizes = [12,24,48,100];
  totalItens = 0;
 
  set_type: any;
@@ -134,7 +134,7 @@ export class DeckComponent implements OnInit {
     }
 
     removeSetToUserCollection(event:any) {
-      debugger
+      
       let qtdCardManeged:number;
       let setId = event.target.id
 
@@ -198,7 +198,7 @@ export class DeckComponent implements OnInit {
   }
 
   handlePageSizeChange(event): void {
-debugger
+
     this.pageSize = event//event.value;
     this.page = 1;
     this.getDecksInfo();

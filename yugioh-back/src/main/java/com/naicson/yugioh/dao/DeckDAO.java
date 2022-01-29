@@ -193,12 +193,12 @@ public class DeckDAO {
 		return relList;
 	}
 
-	public int addCardsToDeck(Long originalDeckId2, Long originalDeckId) {
+	public int addCardsToDeck(Long originalDeckId, Long generatedDeckId) {
 		int result = 0;
-		
-		if(originalDeckId2 != null && originalDeckId != null) {
+	
+		if(originalDeckId != null && generatedDeckId != null) {
 			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECK_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
-											  " SELECT " + originalDeckId2 + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
+											  " SELECT " + generatedDeckId + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
 											  " where deck_id = " + originalDeckId  );
 			
 			 result = query.executeUpdate();
@@ -208,15 +208,18 @@ public class DeckDAO {
 	}
 
 	
-	public void removeCardsFromSet(Long setId) throws SQLException, Exception, ErrorMessage {
+	public int removeCardsFromUserSet(Long setId) throws SQLException, Exception, ErrorMessage {
+		int removed = 0;
 		
 		if(setId == null || setId == 0) {
 			throw new ErrorMessage("Set id was not informed.");
 		}		
-		Query query = em.createNativeQuery("DELETE FROM tab_rel_deck_cards WHERE deck_id = :setId")
+		Query query = em.createNativeQuery("DELETE FROM tab_rel_deckusers_cards WHERE deck_id = :setId")
 				.setParameter("setId", setId);	
 		
-		query.executeUpdate();
+		removed = query.executeUpdate();
+		
+		return removed;
 	}
 	
 	// Traz informações completas dos cards contidos num deck
