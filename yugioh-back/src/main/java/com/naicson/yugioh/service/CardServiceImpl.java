@@ -324,6 +324,9 @@ public class CardServiceImpl implements CardDetailService {
 				.map(card -> CardsSearchDTO.transformInDTO(card))
 				.collect(Collectors.toList());
 		
+		if(!dtoList.isEmpty())
+			dtoList.get(0).setTotalFound(list.getTotalElements());
+		
 		return dtoList;
 			
 	}

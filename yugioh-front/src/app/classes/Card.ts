@@ -33,6 +33,7 @@ export class Card {
 	 relDeckCards: any
 	 set_code = new Array();
 	 index:number
+	 totalFound: number;
 	 
     
 }

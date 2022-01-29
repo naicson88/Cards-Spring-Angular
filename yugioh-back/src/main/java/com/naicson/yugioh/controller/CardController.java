@@ -121,7 +121,7 @@ public class CardController {
 	
 	@PostMapping(path = {"/searchCardDetailed"})
 	@ResponseBody
-	public ResponseEntity<Page<Card>> cardSearchDetailed(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable, 
+	public ResponseEntity<Page<Card>> cardSearchDetailed(@PageableDefault(page = 1, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable, 
 			@RequestBody List<SearchCriteria> criterias, String join){
 		Page<Card> listCards = cardService.searchCardDetailed(criterias, join, pageable);
 		

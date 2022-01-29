@@ -1,4 +1,5 @@
 import { COMPILER_OPTIONS, Component, Directive, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Card } from 'src/app/classes/Card';
 import { Imagens } from 'src/app/classes/Imagens';
 import { SearchCriteria } from 'src/app/classes/SearchCriteria';
@@ -13,7 +14,7 @@ import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
 @Directive({ selector: 'img' })
 export class CardsSearchComponent implements OnInit {
 
-  constructor(private imagens: Imagens, private cardService: CardServiceService, {nativeElement}: ElementRef<HTMLImageElement>) {
+  constructor(private imagens: Imagens, private cardService: CardServiceService, {nativeElement}: ElementRef<HTMLImageElement>, private router :Router) {
     const supports = 'loading' in HTMLImageElement.prototype;
 
     if(supports){
@@ -36,13 +37,15 @@ export class CardsSearchComponent implements OnInit {
   leftTp;
   imgTooltip: string;
   isShowTooltip: boolean = false;
+  isShowTooltipDetailed: boolean = false;
   isRandomCards : boolean = true;
-  cardsFoundQtd: number;
+  totalFound: number;
 
 
   panelOpenState = false;
   chosen:string;
   cardsFound: Card[] = [];
+  cardsFromScroll: Card[] = [];
   relUserCard: any;
 
   //Cards input field data 
@@ -143,15 +146,17 @@ export class CardsSearchComponent implements OnInit {
     this.typesFilters();
 
     if(this.criterios != null && this.criterios.length > 0){
-      
-      this.cardService.searchCards(this.criterios).subscribe(data => {
+
+      const params = this.getRequestParam(30, 0);
+      this.cardService.searchCards(params, this.criterios).subscribe(data => {
+        
         this.cardsFound = data;
         console.log(this.cardsFound);
 
        this.relUserCard = GeneralFunctions.relUserCards(this.cardsFound, this.cardService);
 
        this.isRandomCards = false;
-       this.cardsFoundQtd = this.cardsFound.length;
+       this.totalFound = this.cardsFound[0].totalFound;
        /* for(var i = 0; i < this.cardsFound.length; i++){
           if(this.cardsFound[i]['numero'] != null){cardNumbers.push(this.cardsFound[i]['numero'] )}
          }
@@ -168,10 +173,12 @@ export class CardsSearchComponent implements OnInit {
           })
         });*/
 
+      }, error => {
+        let errorCode = error.status;
+        this.router.navigate(["/error-page", errorCode]);
       }) 
   
     }
-    //console.log(this.criterios);
     
   }
 
@@ -361,7 +368,7 @@ export class CardsSearchComponent implements OnInit {
       }
 
       cardImagem(cardId: any){
-        let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
+        let urlimg = GeneralFunctions.cardImagem + cardId + '.jpg';
         return urlimg;
       }
 
@@ -378,6 +385,10 @@ export class CardsSearchComponent implements OnInit {
         this.isShowTooltip = false;
       }
 
+      esconderImgToolTipDetailed(){
+        this.isShowTooltipDetailed = false;
+      }
+
       openCardDetail(event:any){
       
         const cardNumber = event.target.name;
@@ -391,6 +402,65 @@ export class CardsSearchComponent implements OnInit {
         }
         
       }
+
+      cardImage:string;
+      card:Card;
+      mostrarDivCardsInfo(e, cardNumber:any){
+
+        this.leftTp =  e.pageX - 100 + "px";
+        this.topTp = + e.pageY + 100 + "px";
+        this.isShowTooltipDetailed = true;
+      
+        this.cardImage = GeneralFunctions.cardImagem + cardNumber + '.jpg';
+        this.cardService.findByNumero(cardNumber).subscribe(card => { this.card = card  });
+      
+      }
+
+      page: number = 0; 
+      pageSize: number = 30;
+
+      onScroll(){
+        if(this.isRandomCards)
+            return false;
+        this.page = this.page + 1;
+        const params = this.getRequestParam(this.pageSize, this.page);
+      
+        this.cardService.searchCards(params, this.criterios).subscribe(newCards => {
+          debugger
+         
+          this.isRandomCards = false;
+          this.totalFound = this.cardsFound[0].totalFound;
+
+
+          this.cardsFromScroll = newCards;
+          this.relUserCard = GeneralFunctions.relUserCards(this.cardsFromScroll, this.cardService);
+
+          this.cardsFromScroll.forEach(card => {
+            this.cardsFound.push(card);
+          });
+  
+         
+        }, error => {
+          this.page = this.page - 1;
+        })
+      
+      }
+
+      
+   getRequestParam(pageSize, page){
+    let params = {}
+  
+    if (page) {
+      params[`page`] = page ;
+    }
+  
+    if (pageSize) {
+      params[`size`] = pageSize;
+    }
+  
+    return params;
+  
+    }
 
 
 }
