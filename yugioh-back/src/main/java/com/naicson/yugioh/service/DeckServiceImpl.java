@@ -3,6 +3,7 @@ package com.naicson.yugioh.service;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -352,9 +353,6 @@ public class DeckServiceImpl implements DeckDetailService {
 
 	@Override
 	public int removeSetFromUsersCollection(Long setId) throws SQLException, ErrorMessage, Exception {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
 	
 		// Consulta o deck pelo Id
 		Optional<DeckUsers> dk = deckUserRepository.findById(setId);
@@ -570,5 +568,43 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 		
  }
-  
+
+	@Override
+	public List<Deck> searchByDeckName(String setName, String source) {
+		
+		this.validSearchByDeckName(setName, source);
+		
+		List<Deck> setsFound = null;
+		
+		if("K".equals(source)) {
+			setsFound = this.deckRepository.findTop30ByNomeContaining(setName);
+			
+		} else if("U".equals(source)) {
+			List<DeckUsers> deckUser = this.deckUserRepository.findTop30ByNomeContaining(setName);
+			
+			setsFound = deckUser.stream().map(du -> {
+				Deck deck = Deck.deckFromDeckUser(du);			
+				return deck;
+			}).collect(Collectors.toList());
+			
+		}
+		
+		if(setsFound == null || setsFound.isEmpty())
+			 return Collections.emptyList();
+		
+		return setsFound;				
+	}
+	
+	private void validSearchByDeckName(String setName, String source) {
+		
+		if(setName.isEmpty() || setName.length() <= 5) {
+			logger.error("Invalid set name for searching. Set name was = " + setName);
+			throw new IllegalArgumentException("Invalid set name for searching");
+		}	
+		
+		if(!"K".equals(source) && !"U".equals(source)) {
+				logger.error("Invalid source for search a Set".toUpperCase());
+				throw new IllegalAccessError("Invalid source for search a Set");
+		}
+	}
 }

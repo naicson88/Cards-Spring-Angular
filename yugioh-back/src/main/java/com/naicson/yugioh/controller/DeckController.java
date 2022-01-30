@@ -104,9 +104,11 @@ public class DeckController {
 		return new ResponseEntity<>(deck, HttpStatus.OK) ;
 	}
 	
-	@GetMapping("/por-nome")
-	public List<Deck> consultarPorNome(String nomeDeck) {
-		return deckRepository.findByNomeContaining(nomeDeck);
+	@GetMapping("/search-by-set-name")
+	public ResponseEntity<List<Deck>> searchByDeckName(@RequestParam("setName") String setName, @RequestParam("source") String source) {
+		List<Deck> setsFound = this.deckService.searchByDeckName(setName, source);
+		
+		return new ResponseEntity<List<Deck>>(setsFound, HttpStatus.OK);
 	}
 
 	@GetMapping(path = { "/add-deck-to-user-collection/{deckId}" })

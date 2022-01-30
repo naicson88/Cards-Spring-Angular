@@ -53,5 +53,7 @@ public interface DeckDetailService {
 
 	void saveUserdeck(Deck deck) throws SQLException;
 	
+	List<Deck> searchByDeckName(String setName, String source);
+	
 	
 }

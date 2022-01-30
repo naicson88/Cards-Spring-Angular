@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.naicson.yugioh.entity.sets.DeckUsers;
+
 @Entity
 @Table(name = "tab_decks")
 public class Deck {
@@ -76,6 +78,15 @@ public class Deck {
 		this.isKonamiDeck = isKonamiDeck;
 
 	}	
+	
+	public static Deck deckFromDeckUser(DeckUsers deckUser) {
+		Deck deck = new Deck();
+		deck.setId(deckUser.getId());
+		deck.setNome(deckUser.getNome());
+		deck.setImagem(deckUser.getImagem());
+		return deck;
+		
+	}
 	
 	public List<Card> getExtraDeck() {
 		return extraDeckCards;

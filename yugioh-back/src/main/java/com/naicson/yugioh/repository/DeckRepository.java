@@ -16,7 +16,7 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 public interface DeckRepository extends JpaRepository<Deck, Long> {
 
 
-	List<Deck> findByNomeContaining(String nomeDeck);
+	List<Deck> findTop30ByNomeContaining(String nomeDeck);
 	
 	Page<Deck> findAllBySetType(String setType, Pageable pageable);
 	Page<Deck> findAllByUserId(int userId, Pageable pageable);

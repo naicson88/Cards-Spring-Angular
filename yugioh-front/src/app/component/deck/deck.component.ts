@@ -5,6 +5,11 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SpinnerService } from 'src/app/service/spinner.service';
+import { error } from 'protractor';
+import { MatDialog } from '@angular/material';
+import { ErrorDialogComponent } from '../dialogs/error-dialog/error-dialog.component';
+import { WarningDialogComponent } from '../dialogs/warning-dialog/warning-dialog.component';
+import { SuccessDialogComponent } from '../dialogs/success-dialog/success-dialog.component';
 
 
 @Component({
@@ -32,7 +37,7 @@ export class DeckComponent implements OnInit {
 
  user: any;
  
-  constructor(private service: DeckService, private domSanitizer: DomSanitizer, private  router: Router,
+  constructor(private service: DeckService, private domSanitizer: DomSanitizer, private  router: Router, public dialog: MatDialog,
      private toastr: ToastrService, private  spinner: SpinnerService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -137,13 +142,14 @@ export class DeckComponent implements OnInit {
       
       let qtdCardManeged:number;
       let setId = event.target.id
+      let i = this.deck.findIndex(deck => deck.id == setId);
 
       let conf= confirm("Are you sure you want to delete from your collection?")
-      
-      if(setId == null || setId == undefined || setId == "")
-        alert("It was not possible remove this set. Try again later.")
 
       if(conf){
+
+        if(setId == null || setId == undefined || setId == "")
+        alert("It was not possible remove this set. Try again later.")
 
         this.service.removeSetToUsersCollection(setId).subscribe(data => {
           qtdCardManeged = data;
@@ -151,12 +157,16 @@ export class DeckComponent implements OnInit {
           if(qtdCardManeged > 0){
   
             this.toastr.warning('The Deck has been removed from your collection! Plus ' + qtdCardManeged + ' cards of this deck.', 'Success!');
-            this.manegeQuantity(setId, "R");
-
+           // this.manegeQuantity(setId, "R");
+            
           } else {
             this.toastr.error('Unable to remove the Deck or Cards to the user collection.', 'Error!')
           }
+        }, error => {
+          alert("Sorry, something bad happened.")
         })
+
+        this.deck.splice(i, 1);
 
       } else {
           return false;
@@ -185,10 +195,6 @@ export class DeckComponent implements OnInit {
       
       }    
     }  
-  }
-
-  getRelUserDecks(decks: Deck[]){
-
   }
 
   ordenacaoArrayAPI(){
@@ -221,5 +227,51 @@ export class DeckComponent implements OnInit {
     
     //console.log(deckId, this.user)
    this.toastr.success('The Deck has been added to your collection!', 'Success!')
+  }
+
+  setName:string = '';
+  searchByName(){
+    
+    if(this.setName.length < 5){
+      this.warningDialog("Need at lest 5 caracteres of set name")
+      return false;
+    }
+    let source = this.set_type == 'UD' ? "U" : "K";
+
+    this.service.searchBySetName(this.setName, source).subscribe( data => {
+        let decksFound:Deck[] = [];
+        decksFound = data;
+
+        if(decksFound == null || decksFound == undefined || decksFound.length == 0){
+            this.toastr.warning("No Set found with this name")
+        } else {
+          this.deck = [];
+          this.deck = data;
+          this.toastr.success(this.deck.length + " Set(s) found")
+        }
+      
+    }, error => {
+      console.log(error.msg)
+      this.errorDialog("Sorry, some error happened. Try again later.");
+    })
+
+  }
+
+  errorDialog(errorMessage:string){
+    this.dialog.open(ErrorDialogComponent, {
+      data: errorMessage
+    })
+  }
+  
+  warningDialog(warningMessage:string){
+    this.dialog.open(WarningDialogComponent, {
+      data: warningMessage
+    })
+  }
+  
+  successDialog(successMessage:string){
+    this.dialog.open(SuccessDialogComponent,{
+      data: successMessage
+    })
   }
 }

@@ -10,10 +10,20 @@
 
       <div >
 
-        <div class="input-group input-group-sm" style="width: 300px; margin-top: 5px; margin-left: 10px;">
+         <!-- <div class="input-group input-group-sm" style="width: 300px; margin-top: 5px; margin-left: 10px;">
            <input class="form-control mr-sm-2" type="search"
            placeholder="Search deck.." aria-label="Search" [(ngModel)]="deckFilter.nome"  >
-       </div>
+       </div>  -->
+       
+       <div class="wrap" style="margin-top: 5px;">
+         <div class="search">
+            <input type="text" class="searchTerm" placeholder="Search deck..." maxlength="50" [(ngModel)]="setName" name="setName">
+            <button type="submit" class="searchButton" >
+              <i class="fa fa-search" (click)="searchByName()"></i>
+           </button>
+         </div>
+      </div>
+       
             <!-- PAGINATION-->
       <div style="margin-left: 40%; margin-top: -23px;">
 <!--
@@ -30,12 +40,24 @@
             <option [value]="size" *ngFor="let size of pageSizes"> {{size}}</option>
          </select>
 
-   </div>
+         <div style="width: 30%; float:right">
+            <label for=""  style="color: white; font-size: small;">Collection: </label>&nbsp;
+            <select class="form-select" aria-label="Default select example">
+               <option value="1" selected>Deck</option>
+               <option value="2">Tin</option>
+               <option value="3">Box</option>
+             </select>
+         </div>
+        
+
+    </div>
+
+
 
       </div>
 
    </div>
-   <div id="divSelectCollection">
+   <!-- <div id="divSelectCollection">
 
       <mat-form-field appearance="fill">
          <mat-label >Collection</mat-label>
@@ -46,7 +68,7 @@
 
          </mat-select>
       </mat-form-field>
-   </div>
+   </div> -->
 
 
    <!-- Decks-->
@@ -87,48 +109,56 @@
                         </div>
                      </div>
 
-                     <div class="deckuct-info smart-form"  >
+                     <div class="deckuct-info smart-form"  *ngIf="set_type != 'UD'">
                         <div class="row">
                            <div class="col-md-6"  style="text-align: center;">
                         <!--    <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>-->
-                        <span style="font-size:x-small; color: #ccc; font-weight: bold; " *ngIf="set_type != 'UD'">Total you have:</span><br>
+                              <span style="font-size:x-small; color: #ccc; font-weight: bold; " *ngIf="set_type != 'UD'">Total you have:</span><br>
 
-                        <div class="clearfix quantity r_corners d_inline_middle f_size_medium " style="display: inline-block;">
-                           <span *ngIf="set_type != 'UD'">
+                              <div class="clearfix quantity r_corners d_inline_middle f_size_medium " style="display: inline-block;">
+                                 <span *ngIf="set_type != 'UD'">
 
-                              <input type="text" name="input_qtde" id="inp_{{deck.id}}" disabled
-                              value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" >
-                              
-                              <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}" title="Add to your collection"
-                              (click)="addSetToUserCollection($event)" >+</button>
+                                    <input type="text" name="input_qtde" id="inp_{{deck.id}}" disabled
+                                    value="{{deck.quantityUserHave == null ? 0 : deck.quantityUserHave}}" >
+                                    
+                                    <button class="bg_tr d_block f_left" data-direction="up"  name="{{deck.id}}" title="Add to your collection"
+                                    (click)="addSetToUserCollection($event)" >+</button>
 
-                           </span>
+                                 </span>
 
-
-                           <span *ngIf="set_type == 'UD'">
-                              <!--Opções que só aparecem se for deck de usuário-->
-                              &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
-                              <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon>
-
-                              &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
-                              <a  name="{{deck.id}}" [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId(deck.id)" >
-                                 <mat-icon style="color: #FFD700; cursor: pointer;" title="Edit this deck">edit</mat-icon> &nbsp;
-                              </a>
-
-
-                           <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">
-
-                              <mat-icon style="color: red; cursor: pointer;" title="Delete from your collection"
-                              id="{{deck.id}}" (click)="removeSetToUserCollection($event)">delete_forever</mat-icon>
-
-                           </span>&nbsp;
-                        </span>
-
-                     </div>
+                              </div>
 
                            </div>
                         </div>
+
                      </div>
+
+                     
+               
+
+                           <!--Opções que só aparecem se for deck de usuário-->
+                           <!-- &nbsp; <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;"></span>&nbsp;
+                           <mat-icon style="color: royalblue; cursor: pointer;" title="Add to your collection">library_add</mat-icon> -->
+                           <div class="row editRemove"   *ngIf="set_type == 'UD'">
+                              <div class="col-md-6"  style="text-align: center;">
+                           <!--    <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>-->
+                                 <span style="font-size:x-small; color: #ccc; font-weight: bold; " *ngIf="set_type != 'UD'">Total you have:</span><br>
+   
+                                 <a  name="{{deck.id}}" [routerLink]="['/userdeck-details/', deck.nome]" (click)="storeDeckId(deck.id)" >
+                                    <button type="button" class="btn btn-outline-warning btn-sm"> Edit  </button>
+                                 </a> &nbsp;
+                                 
+                                 <button type="button" class="btn btn-outline-danger btn-sm"  title="Delete from your collection"
+                                 id="{{deck.id}}" (click)="removeSetToUserCollection($event)">Remove            
+                                 </button>
+   
+                              </div>
+                           </div>
+                              
+
+                    
+                     
+                     
                   </div>
                </div>
             </div>

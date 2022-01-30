@@ -1,5 +1,7 @@
 package com.naicson.yugioh.repository.sets;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +14,7 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 public interface DeckUsersRepository extends JpaRepository<DeckUsers, Long>{
 	
 	Page<DeckUsers> findAllByUserIdAndSetType(long userId, String setType, Pageable pageable);
+
+	List<DeckUsers> findTop30ByNomeContaining(String setName);
 
 }
