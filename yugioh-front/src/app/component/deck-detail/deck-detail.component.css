@@ -12,7 +12,7 @@
 
 #cabecalhoDeck{
     width: 65%;
-    height: 350px;
+    height: 310px;
     background-color: white;
     border: solid thin;
     margin-left: 20%;
@@ -37,8 +37,8 @@
 #informacoes{
     width: 65%;
     background-color: white;
-    height: 320px;
-    margin-top: -300px;
+    height: 300px;
+    margin-top: -290px;
     margin-left: 230px;
     float: right;
     padding: 10px;
@@ -55,7 +55,9 @@
 }*/
 
 .raridade ul li {
-
+  font-weight: 500;
+  font-size: 14px;
+  color: rgb(167, 164, 164);
   line-height: .8;
   border-top: solid thin #ccc !important;
 }
@@ -115,7 +117,7 @@
     height: 229px;
 
   }
-  #row-infomacoes-card{
+  .row-infomacoes-card{
     margin-left: 3%;
      min-height: 233px;
      height: fit-content;
@@ -168,11 +170,6 @@
   }
 
 
-  #imgGeneral{
-    height: fit-content;
-    display: inline-block;
-    margin: 0;    
-  }
 
   #deckCards{
     border: solid thin;  
@@ -238,3 +235,27 @@
   .box-desc{
     background: ghostwhite;
   }
+  #rarity ul {
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap;
+    justify-content: space-around;
+    list-style-type: none;
+    margin-left: -5%;
+  }
+
+  #rarity ul li{
+    font-weight: 400;
+    font-size: 18px;
+  }
+
+  #allCards{
+    width: 100%; 
+    border: solid thin silver; 
+    margin-top: 4px; 
+    overflow-y: scroll;
+     max-height: 200px;
+      padding: 7px;
+      text-align: justify;
+  }
+ 

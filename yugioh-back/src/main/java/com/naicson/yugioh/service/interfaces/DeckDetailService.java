@@ -55,5 +55,7 @@ public interface DeckDetailService {
 	
 	List<Deck> searchByDeckName(String setName, String source);
 	
+	Deck countQtdCardRarityInTheDeck(Deck deck);
+	
 	
 }

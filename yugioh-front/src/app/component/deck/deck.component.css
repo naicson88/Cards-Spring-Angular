@@ -60,11 +60,11 @@ justify-items: center;
  justify-content:space-around;
  min-width: 728px;
 }
-
+/* 
 #cardDiv::after {
   content: "";
   flex: auto;
-}
+} */
 
 .deck-info-main {
   border: 1px solid #ceefff;

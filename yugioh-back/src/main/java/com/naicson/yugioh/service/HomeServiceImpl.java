@@ -20,12 +20,11 @@ import com.naicson.yugioh.dto.home.HomeDTO;
 import com.naicson.yugioh.dto.home.LastAddedDTO;
 import com.naicson.yugioh.dto.home.RankingForHomeDTO;
 import com.naicson.yugioh.entity.Deck;
-import com.naicson.yugioh.entity.sets.SetType;
-
 import com.naicson.yugioh.repository.HomeRepository;
 import com.naicson.yugioh.service.interfaces.HomeDetailService;
 import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.enums.CardStats;
+import com.naicson.yugioh.util.enums.SetType;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
 
 @Service
