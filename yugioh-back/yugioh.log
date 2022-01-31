@@ -1785,3 +1785,5 @@ Identify and stop the process that's listening on port 8080 or configure this ap
 2022-01-31 14:09:38.086  INFO 2324 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 2022-01-31 14:09:38.093  INFO 2324 --- [main] com.naicson.yugioh.YugiohApplication     : Started YugiohApplication in 5.415 seconds (JVM running for 6.456)
 2022-01-31 14:09:56.910  INFO 2324 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-01-31 14:09:56.910  INFO 2324 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-01-31 14:09:56.917  INFO 2324 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms

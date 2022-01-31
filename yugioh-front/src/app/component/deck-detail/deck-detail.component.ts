@@ -87,7 +87,6 @@ export class DeckDetailComponent implements OnInit {
 
           } else {
             alert("Sorry, could not load the page, try again later.")
-            //add router
             throw new Error("Relation is empty");
           }
       });

@@ -427,6 +427,12 @@ public class DeckServiceImpl implements DeckDetailService {
 		List<Card> mainDeck = null;
 		deck = this.findById(deckId);
 		
+		if(deck == null) {
+			logger.error("Deck not found. Id informed: ".toUpperCase() + deckId);
+			throw new EntityNotFoundException("Deck not found. Id informed: " + deckId);
+		}
+			
+		
 		mainDeck = this.cardsOfDeck(deckId);
 		List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
 		
