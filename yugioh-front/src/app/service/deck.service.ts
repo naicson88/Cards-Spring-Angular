@@ -48,6 +48,15 @@ export class DeckService {
      
   }
 
+  public editDeck(id:any, setSource:string) {
+
+    return this.http.get<Deck>(this.base_url+`/decks/edit-deck?id=${id}&setSource=${setSource}`) 
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+     
+  }
+
   public addSetToUsersCollection(setId:number){
     return this.http.get<any>(this.base_url+`/decks/add-deck-to-user-collection/${setId}`)
     .pipe(

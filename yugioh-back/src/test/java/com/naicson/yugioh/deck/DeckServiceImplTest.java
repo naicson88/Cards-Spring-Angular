@@ -91,7 +91,7 @@ public class DeckServiceImplTest {
 		
 		Mockito.when(relDeckCardsRepository.findByDeckId(deck.getId())).thenReturn(rels);
 		
-		List<RelDeckCards> relReturned = deckService.relDeckCards(deck.getId());
+		List<RelDeckCards> relReturned = deckService.relDeckCards(deck.getId(), "user");
 		
 		assertThat(relReturned).isNotEmpty();
 		assertThat(relReturned).isNotNull();

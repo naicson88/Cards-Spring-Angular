@@ -24,8 +24,6 @@ public interface DeckDetailService {
 	 
 	Deck findById(Long Id);
 
-	List<RelDeckCards> relDeckCards(Long deckId);
-
 	int addSetToUserCollection(Long originalDeckId) throws SQLException, ErrorMessage, Exception;
 
 	int ImanegerCardsToUserCollection(Long originalDeckId, String flagAddOrRemove) throws SQLException, ErrorMessage;
@@ -56,6 +54,10 @@ public interface DeckDetailService {
 	List<Deck> searchByDeckName(String setName, String source);
 	
 	Deck countQtdCardRarityInTheDeck(Deck deck);
+
+	Deck editDeck(Long deckId, String deckType);
+
+	List<RelDeckCards> relDeckCards(Long deckId, String setSource);
 	
 	
 }

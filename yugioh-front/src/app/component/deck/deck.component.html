@@ -89,10 +89,15 @@
                            <h6 class="name" title=" {{deck.nome}}" style="font-weight: 600;">
                               <!--<a  name="{{deck.id}}"  (click)="deckDetailPage(deck.nome); storeDeckId($event)" >-->
 
-                                 <a  name="{{deck.id}}"  (click)="storeDeckId(deck.id)" [routerLink]="['/deck-details/', deck.nome]" >
+                                 <a *ngIf="set_type != 'UD'" name="{{deck.id}}"  (click)="storeDeckId(deck.id)" [routerLink]="['/deck-details/', deck.nome]" >
                                  <!--(click)="storeDeckId($event)"-->
-                                 {{deck.nome}}
-                              </a><br>
+                                  {{deck.nome}}
+                                 </a><br>
+
+                                 <a *ngIf="set_type == 'UD'" name="{{deck.id}}"  (click)="storeDeckId(deck.id)" [routerLink]="['/user-deck-details/', deck.nome]" >
+                                    <!--(click)="storeDeckId($event)"-->
+                                     {{deck.nome}}
+                                 </a><br>
                               <!-- <a href="#">
                                  <span >{{deck.nomePortugues}}</span>
                               </a>                             -->

@@ -55,7 +55,7 @@ public class DeckServiceImpl implements DeckDetailService {
 	DeckUsersRepository deckUserRepository;
 	
 	@Autowired
-	RelDeckCardsRepository relDeckCardsRepository;
+	RelDeckCardsRepository relDeckCardsRepository;	
 	
 	Logger logger = LoggerFactory.getLogger(DeckServiceImpl.class);
 	
@@ -80,15 +80,24 @@ public class DeckServiceImpl implements DeckDetailService {
 			 return deck;
 	}
 
-	//Traz informações da relação entre o deck e os cards
 	@Override
-	public List<RelDeckCards> relDeckCards(Long deckId) {
+	public List<RelDeckCards> relDeckCards(Long deckId, String setSource) {
 
 		if(deckId == null || deckId == 0)
 			throw new IllegalArgumentException("Deck Id informed is invalid.");
 		
-		List<RelDeckCards> relation = relDeckCardsRepository.findByDeckId(deckId);
+		List<RelDeckCards> relation = new ArrayList<>();
 		
+		if("konami".equalsIgnoreCase(setSource))
+			relation =	relDeckCardsRepository.findByDeckId(deckId);
+		else if("user".equalsIgnoreCase(setSource))
+			relation = dao.relDeckUserCards(deckId);
+		
+		if(relation == null || relation.size() == 0) {
+			logger.error("Relation of cards is empty. Deck id: ".toUpperCase() + deckId);
+			throw new NoSuchElementException("Relation of cards is empty. Deck id: " + deckId);
+		}	
+			
 		return relation;
 		
 	}
@@ -397,36 +406,38 @@ public class DeckServiceImpl implements DeckDetailService {
 	
 
 	@Override
-	public Deck deckAndCards(Long deckId, String setType) throws Exception {
+	public Deck deckAndCards(Long deckId, String setSource) throws Exception {
 		
 		Deck deck = new Deck();
 		
-		if(("Konami").equalsIgnoreCase(setType)) {
+		if(!("Konami").equalsIgnoreCase(setSource) && !("User").equalsIgnoreCase(setSource)) {
 			
-			deck =  this.returnKonamiDeck(deckId);
-			deck = this.countQtdCardRarityInTheDeck(deck);
-		}
-		else if(("User").equalsIgnoreCase(setType)) {
-			
-			deck = this.returnUserDeck(deckId);
-			
-		} else {
-			logger.error("INVALID SETTYPE. SETTYPE WAS = " + setType);
-			throw new IllegalArgumentException("SetType invalid. SetType was = " + setType);			
-		}			
+			logger.error("INVALID SETTYPE. SETTYPE WAS = " + setSource);
+			throw new IllegalArgumentException("SetType invalid. SetType was = " + setSource);			
+		}	
+		
+		deck =  this.returnDeckWithCards(deckId, setSource);
+		deck = this.countQtdCardRarityInTheDeck(deck);
 		
 		return deck;
 	}
 	
-	private Deck returnKonamiDeck(Long deckId) {
+	private Deck returnDeckWithCards(Long deckId, String setSource) {
 		
 		if(deckId == null || deckId == 0)
 			throw new  IllegalArgumentException("Invalid Deck Id. deckId = " + deckId);
 		
 		Deck deck = new Deck();
 		List<Card> mainDeck = null;
-		deck = this.findById(deckId);
 		
+		if("konami".equalsIgnoreCase(setSource))
+			deck = this.findById(deckId);
+		
+		else if("user".equalsIgnoreCase(setSource)) {
+			DeckUsers deckUser = deckUserRepository.findById(deckId).orElseThrow(() -> new EntityNotFoundException());
+			deck = Deck.deckFromDeckUser(deckUser);
+		}		
+			
 		if(deck == null) {
 			logger.error("Deck not found. Id informed: ".toUpperCase() + deckId);
 			throw new EntityNotFoundException("Deck not found. Id informed: " + deckId);
@@ -434,16 +445,15 @@ public class DeckServiceImpl implements DeckDetailService {
 			
 		
 		mainDeck = this.cardsOfDeck(deckId);
-		List<RelDeckCards> relDeckCards = this.relDeckCards(deckId);
+		List<RelDeckCards> relDeckCards = this.relDeckCards(deckId, setSource);
 		
 		deck.setCards(mainDeck);
 		deck.setRel_deck_cards(relDeckCards);
 		
-		return deck;
-		
+		return deck;		
 	}
 	
-	private Deck returnUserDeck(Long deckId) throws ErrorMessage {
+	private Deck editUserDeck(Long deckId) throws ErrorMessage {
 		
 		if(deckId == null || ("").equals(deckId))
 			throw new  IllegalArgumentException("Invalid Deck Id. deckId = " + deckId);
@@ -454,6 +464,13 @@ public class DeckServiceImpl implements DeckDetailService {
 		DeckUsers deckUser = new DeckUsers();
 		
 		deckUser = this.deckUserRepository.findById(deckId).orElseThrow(() -> new EntityNotFoundException("UserDeck id = " + deckId));
+		
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		
+		if(user.getId() != deckUser.getUserId()) {
+			logger.error("This Deck dont belongs to the user ".toUpperCase() + user.getId());
+			throw new ErrorMessage("This Deck dont belongs to the user " + user.getId());
+		}
 		
 		deck.setNome(deckUser.getNome());
 		deck.setImagem(deckUser.getImagem());
@@ -629,6 +646,26 @@ public class DeckServiceImpl implements DeckDetailService {
 			card.getCard_raridade().equals(CardRarity.SUPER_RARE.getCardRarity())).count());
 		deck.setQtd_ultra_raras(deck.getRel_deck_cards().stream().filter(card -> 
 			card.getCard_raridade().equals(CardRarity.ULTRA_RARE.getCardRarity())).count());
+		
+		return deck;
+	}
+	
+	@Override
+	public Deck editDeck(Long deckId, String setSource) {
+		Deck deck = new Deck();
+		
+		try {
+			//Validar futuramente se é Konami deck ou Userdeck.
+			 deck = this.editUserDeck(deckId);
+
+		}catch(ErrorMessage em) {
+			logger.error(em.getMsg().toUpperCase());
+		}
+		 
+		 if(deck == null || deck.getCards().isEmpty()) {
+			 logger.error("Deck is invalid. Informed ID: ".toUpperCase() + deckId);
+			 throw new EntityNotFoundException("Deck is invalid. Informed ID: " + deckId);
+		 }
 		
 		return deck;
 	}

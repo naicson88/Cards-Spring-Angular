@@ -41,7 +41,7 @@ export class DeckComponent implements OnInit {
      private toastr: ToastrService, private  spinner: SpinnerService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
+    debugger
     this.route.data.subscribe(set_type =>{
       this.set_type = set_type.set_type;
     })
@@ -92,6 +92,8 @@ export class DeckComponent implements OnInit {
        })
 
      })
+
+     
        
     })
 
@@ -274,4 +276,6 @@ export class DeckComponent implements OnInit {
       data: successMessage
     })
   }
+
+  
 }
