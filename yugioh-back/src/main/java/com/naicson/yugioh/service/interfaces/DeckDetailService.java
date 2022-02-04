@@ -20,7 +20,7 @@ public interface DeckDetailService {
 	
 	List<Deck> findByNomeContaining(String nomeDeck);
 	
-	List<Card> cardsOfDeck(Long deckId) throws ErrorMessage;
+	List<Card> cardsOfDeck(Long deckId, String table) throws ErrorMessage;
 	 
 	Deck findById(Long Id);
 

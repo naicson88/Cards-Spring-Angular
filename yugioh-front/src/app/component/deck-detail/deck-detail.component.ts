@@ -50,7 +50,7 @@ export class DeckDetailComponent implements OnInit {
   ngOnInit() {
 
     this.router.data.subscribe(source =>{
-      this.source = source.set_type;
+      this.source = source.source;
     })
 
     window.scrollTo(0, 0);

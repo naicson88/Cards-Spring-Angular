@@ -197,8 +197,8 @@ public class DeckDAO {
 		int result = 0;
 	
 		if(originalDeckId != null && generatedDeckId != null) {
-			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECK_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO) "+
-											  " SELECT " + generatedDeckId + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE() FROM TAB_REL_DECK_CARDS " +
+			Query query = em.createNativeQuery(" INSERT INTO tab_rel_deckusers_cards (DECK_ID, CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, DT_CRIACAO, is_side_deck) "+
+											  " SELECT " + generatedDeckId + " , CARD_NUMERO,CARD_RARIDADE,CARD_SET_CODE,CARD_PRICE, CURDATE(),0 FROM TAB_REL_DECK_CARDS " +
 											  " where deck_id = " + originalDeckId  );
 			
 			 result = query.executeUpdate();
@@ -224,13 +224,13 @@ public class DeckDAO {
 	
 	// Traz informações completas dos cards contidos num deck
 	@Transactional
-	public List<Card> cardsOfDeck(Long deckId) {
-		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN\r\n"
-				+ "(SELECT CARD_NUMERO FROM tab_rel_deck_cards WHERE DECK_ID = :deckId)\r\n" + "order by case\r\n"
-				+ "when categoria LIKE 'link monster' then 1\r\n" + "when categoria like 'XYZ Monster' then 2\r\n"
-				+ "when categoria like 'Fusion Monster' then 3\r\n" + "when categoria like '%Synchro%' then 4\r\n"
-				+ "when categoria LIKE '%monster%' then 5\r\n" + "when categoria = 'Spell Card' then 6\r\n"
-				+ "ELSE    7\r\n" + "END", Card.class);
+	public List<Card> cardsOfDeck(Long deckId, String table) {
+		Query query = em.createNativeQuery("SELECT * FROM TAB_CARDS WHERE NUMERO IN "
+				+ "(SELECT CARD_NUMERO FROM "+ table + " WHERE DECK_ID = :deckId) " + "order by case "
+				+ "when categoria LIKE 'link monster' then 1 " + "when categoria like 'XYZ Monster' then 2 "
+				+ "when categoria like 'Fusion Monster' then 3 " + "when categoria like '%Synchro%' then 4 "
+				+ "when categoria LIKE '%monster%' then 5 " + "when categoria = 'Spell Card' then 6 "
+				+ "ELSE    7 " + " END ", Card.class);
 		List<Card> cards = (List<Card>) query.setParameter("deckId", deckId).getResultList();
 		return cards;
 	}

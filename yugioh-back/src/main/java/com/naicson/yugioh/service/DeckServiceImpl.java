@@ -394,9 +394,9 @@ public class DeckServiceImpl implements DeckDetailService {
 	}
 
 	@Override
-	public List<Card> cardsOfDeck(Long deckId) {
+	public List<Card> cardsOfDeck(Long deckId, String table) {
 		
-		List<Card> cards = dao.cardsOfDeck(deckId);
+		List<Card> cards = dao.cardsOfDeck(deckId, table);
 		
 		if(cards == null || cards.size() == 0)
 			throw new IllegalArgumentException("Can't find cards of this Set.");
@@ -443,8 +443,9 @@ public class DeckServiceImpl implements DeckDetailService {
 			throw new EntityNotFoundException("Deck not found. Id informed: " + deckId);
 		}
 			
+		String table = ("konami").equalsIgnoreCase(setSource) ? "tab_rel_deck_cards" : "tab_rel_deckusers_cards";
 		
-		mainDeck = this.cardsOfDeck(deckId);
+		mainDeck = this.cardsOfDeck(deckId, table);
 		List<RelDeckCards> relDeckCards = this.relDeckCards(deckId, setSource);
 		
 		deck.setCards(mainDeck);
@@ -584,6 +585,12 @@ public class DeckServiceImpl implements DeckDetailService {
 		if(rel.getCard_price() == null )
 			rel.setCard_price(0.00);
 		
+		if(rel.getCard_raridade() == null || rel.getCard_raridade().isEmpty())
+			rel.setCard_raridade(CardRarity.NOT_DEFINED.getCardRarity());
+		
+		if(rel.getCard_set_code() == null || rel.getCard_set_code().isEmpty())
+			rel.setCard_set_code("Not Defined");
+		
 		int isSaved = dao.saveRelDeckUserCard(rel, userDeck.getId());
 		
 		if(isSaved == 0) {
@@ -647,6 +654,7 @@ public class DeckServiceImpl implements DeckDetailService {
 		deck.setQtd_ultra_raras(deck.getRel_deck_cards().stream().filter(card -> 
 			card.getCard_raridade().equals(CardRarity.ULTRA_RARE.getCardRarity())).count());
 		
+		//Cards sem raridade definida
 		return deck;
 	}
 	
