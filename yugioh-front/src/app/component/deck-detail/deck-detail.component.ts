@@ -2,9 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Deck } from 'src/app/classes/deck';
 import { DeckService } from 'src/app/service/deck.service';
 import {Chart} from   'Chart.js';
-import { arch } from 'process';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
+import { RelDeckCards } from 'src/app/classes/Rel_Deck_Cards';
+import { ActivatedRoute} from '@angular/router';
+
 
 @Component({
   selector: 'app-deck-detail',
@@ -42,25 +43,33 @@ export class DeckDetailComponent implements OnInit {
   leftTp;
   imgTooltip: string;
   isShowTooltip: boolean = false;
- 
   
-
-  constructor(private service: DeckService, private cardService: CardServiceService) { }
+  source:string
+  constructor(private service: DeckService, private cardService: CardServiceService, private router: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.router.data.subscribe(source =>{
+      this.source = source.source;
+    })
+
     window.scrollTo(0, 0);
+    //this.checkPreviousUrl();
     this.loadDeckDetails();
   
   }
+
+
   //Carrega informações do deck
   loadDeckDetails(){
 
     const id = localStorage.getItem("idDeckDetails");
-    
-    this.service.getDeckDetails(id, 'Konami').subscribe(data => {
+    let src = this.source == 'U' ? 'User' : 'Konami'
+    this.service.getDeckDetails(id, src).subscribe(data => {
       this.deckDetails = data;
       console.log(this.deckDetails);
 
+      this.setCodeAndPrice(this.deckDetails)
       this.estatisticasDeck(data);  
       this.qtdEstrelas(data);
       this.graficoAtributos();
@@ -71,6 +80,23 @@ export class DeckDetailComponent implements OnInit {
 
     })
    
+  }
+  setCodeAndPrice(deckDetails: Deck) {
+    
+      let rel:RelDeckCards[] = deckDetails['rel_deck_cards'];
+
+      this.deckDetails.cards.forEach(card => {
+          let relationOfACard: RelDeckCards = rel.find(relation => relation.card_numero == card.numero);
+
+          if(relationOfACard != null && relationOfACard != undefined){
+              card.price =relationOfACard.card_price;
+              card.card_set_code = relationOfACard.card_set_code;
+
+          } else {
+            alert("Sorry, could not load the page, try again later.")
+            throw new Error("Relation is empty");
+          }
+      });
   }
 
   
@@ -114,7 +140,6 @@ export class DeckDetailComponent implements OnInit {
     categorias.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
     //this.categoriaCards.push(this.countsGeneric_type);
     this.countsGeneric_type.push(counts);
-    console.log(this.countsGeneric_type);
 
     /*categorias.reduce((acc, val) => {
       if(!acc[val]){
@@ -313,11 +338,10 @@ export class DeckDetailComponent implements OnInit {
     //localStorage.setItem("idCard", id);
     const cardNumber = event.target.name;
     if(cardNumber != null && cardNumber != ""){
-      console.log(cardNumber)
       this.cardService.setCardNumber(cardNumber);
     
     } else {
-       console.log("Unable to consult this card, try again later.");
+       alert("Unable to consult this card, try again later.");
        return false;
     }
   }
@@ -435,4 +459,23 @@ export class DeckDetailComponent implements OnInit {
     else
        return 'rgba(255, 64, 0, 0.3)'
   }
+
+  returnCardRarityImage(cardNumber:any){
+    
+    let card:RelDeckCards = this.deckDetails['rel_deck_cards'].find(card => card.card_numero == cardNumber);
+
+    if(card != null && card != undefined){
+      if(card.card_raridade == "Ultra Rare")
+         return ' ..\\..\\assets\\img\\tiposMonstros\\UR.JPG';
+      else if(card.card_raridade == "Rare")
+          return ' ..\\..\\assets\\img\\tiposMonstros\\r.JPG';
+      else if(card.card_raridade == "Super Rare")
+          return ' ..\\..\\assets\\img\\tiposMonstros\\sr.JPG';
+      else (card.card_raridade == "Common")
+          return null
+    }
+  }
+
+  
+
 }

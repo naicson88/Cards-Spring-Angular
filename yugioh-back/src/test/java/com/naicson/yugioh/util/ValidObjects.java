@@ -72,16 +72,13 @@ public abstract class ValidObjects {
 		newDeck.setNome("Deck Teste");
 		newDeck.setNomePortugues("Deck teste Portugues");
 		newDeck.setSetType("UD");
-		newDeck.setQtd_cards(10);
-		newDeck.setQtd_comuns(5);
-		newDeck.setQtd_raras(11);
-		newDeck.setQtd_secret_raras(15);
-		newDeck.setQtd_super_raras(10);
-		newDeck.setQtd_ulta_raras(2);
-		newDeck.setIsKonamiDeck("N");
+		newDeck.setQtd_cards(10L);
+		newDeck.setQtd_comuns(5L);
+		newDeck.setQtd_raras(11L);
+		newDeck.setQtd_super_raras(10L);
+		newDeck.setQtd_ultra_raras(2L);
 		newDeck.setDt_criacao(new Date());
-		newDeck.setCopiedFromDeck(10);
-		newDeck.setUserId(2); 			  		  
+ 			  		  
 	  
 	  return newDeck;  
 

@@ -1,4 +1,4 @@
-package com.naicson.yugioh.entity.sets;
+package com.naicson.yugioh.util.enums;
 
 public enum GenericTypesCards {
 		

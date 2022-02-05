@@ -1,6 +1,5 @@
 package com.naicson.yugioh.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.auth.User;
-import com.naicson.yugioh.entity.sets.Tin;
 import com.naicson.yugioh.repository.UserRepository;
 
 @RestController

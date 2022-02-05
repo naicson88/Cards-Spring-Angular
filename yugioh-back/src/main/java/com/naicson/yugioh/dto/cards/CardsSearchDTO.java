@@ -12,8 +12,9 @@ public class CardsSearchDTO {
 	private Long numero;
 	private String nome;
 	private String imagem;
-	@Transient
 	private List<Deck> decksWithThisCard;
+	private Long totalFound;
+	
 	
 	public CardsSearchDTO() {
 		
@@ -64,6 +65,14 @@ public class CardsSearchDTO {
 
 	public void setDecksWithThisCard(List<Deck> decksWithThisCard) {
 		this.decksWithThisCard = decksWithThisCard;
+	}
+
+	public Long getTotalFound() {
+		return totalFound;
+	}
+
+	public void setTotalFound(Long totalFound) {
+		this.totalFound = totalFound;
 	}
 	
 	

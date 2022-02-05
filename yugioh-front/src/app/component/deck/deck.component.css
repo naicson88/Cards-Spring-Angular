@@ -53,6 +53,18 @@ justify-items: center;
    display: flex;
 }
 
+#cardDiv{
+ display: flex; 
+ width: 100%;
+ flex-wrap: wrap;
+ justify-content:space-around;
+ min-width: 728px;
+}
+/* 
+#cardDiv::after {
+  content: "";
+  flex: auto;
+} */
 
 .deck-info-main {
   border: 1px solid #ceefff;
@@ -205,7 +217,7 @@ input[type=search]:focus {
   border: 2px solid rgba(251, 167, 27, 0.82);
   width: fit-content;
   border-radius: 5px;
-  
+  color: #3f51b5;
 }
 
 .f_size_medium {
@@ -218,8 +230,8 @@ input[type=search]:focus {
 }
 .quantity input[type="text"] {
   padding: 0 8px;
-  border-left-width: 1px;
-  border-right-width: 1px;
+  border-left-width: 0.1px;
+  border-right-width:2px solid rgba(251, 167, 27, 0.82);
   border-top: none;
   border-bottom: none;
   background: transparent;
@@ -241,10 +253,16 @@ input[type=search]:focus {
   background: transparent;
   border-radius: 5px;
   border:transparent;
+  color: #3f51b5;
+  font-weight: 500;
   font-family: Roboto, "Helvetica Neue";
-  font-size: 16px;
+  font-size: 17px;
   text-decoration: none solid rgba(0,0,0,0.8);
   
+}
+
+.bg_tr:hover{
+  color: #27ae60;
 }
 
 .spanQtdCards{
@@ -284,6 +302,43 @@ margin-left: 50%;
   
   font-weight: 500;
 }
+
+.editRemove{
+  font-size: smaller;
+}
+
+.search{
+  width: 300px;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm{
+  width: 100%;
+  border: 3px solid #00b4cc;
+  border-radius: none;
+  padding: 5px;
+  height: 30px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9dbfaf;
+}
+
+
+.searchButton {
+  width: 40px;
+  height: 30px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+
+
 
 
 

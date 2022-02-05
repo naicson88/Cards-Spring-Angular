@@ -20,11 +20,9 @@ public interface DeckDetailService {
 	
 	List<Deck> findByNomeContaining(String nomeDeck);
 	
-	List<Card> cardsOfDeck(Long deckId) throws ErrorMessage;
+	List<Card> cardsOfDeck(Long deckId, String table) throws ErrorMessage;
 	 
 	Deck findById(Long Id);
-
-	List<RelDeckCards> relDeckCards(Long deckId);
 
 	int addSetToUserCollection(Long originalDeckId) throws SQLException, ErrorMessage, Exception;
 
@@ -52,6 +50,14 @@ public interface DeckDetailService {
     List<RelDeckCards> relDeckUserCards(Long deckUserId);
 
 	void saveUserdeck(Deck deck) throws SQLException;
+	
+	List<Deck> searchByDeckName(String setName, String source);
+	
+	Deck countQtdCardRarityInTheDeck(Deck deck);
+
+	Deck editDeck(Long deckId, String deckType);
+
+	List<RelDeckCards> relDeckCards(Long deckId, String setSource);
 	
 	
 }

@@ -67,3 +67,16 @@ h4 {
     z-index: 9999;
     display: block;
   }
+
+  .divTooltipDetailed{
+    position:fixed;
+    top: 20%;
+    left: 10%;
+   /* margin-top: -9em; set to a negative number 1/2 of your height
+    margin-left: -15em;*/
+  
+  }
+  
+  .divTooltipDetailed:hover{
+    z-index: 1;
+  }

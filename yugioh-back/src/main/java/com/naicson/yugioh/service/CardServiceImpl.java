@@ -120,7 +120,7 @@ public class CardServiceImpl implements CardDetailService {
 		}
 	}
 	
-	@Override
+	/*@Override
 	public CardAndSetsDTO findCardToAddToUserCollection (Long cardNumber) throws SQLException, ErrorMessage {
 		
 		Card card = cardRepository.findByNumero(cardNumber.longValue());
@@ -174,7 +174,7 @@ public class CardServiceImpl implements CardDetailService {
 		dto.setMapSetsOfUser(mapUsersSets);
 		
 		return dto;
-	}
+	}*/
 	
 	@Override
 	public List<Card> listar() {
@@ -324,6 +324,9 @@ public class CardServiceImpl implements CardDetailService {
 				.map(card -> CardsSearchDTO.transformInDTO(card))
 				.collect(Collectors.toList());
 		
+		if(!dtoList.isEmpty())
+			dtoList.get(0).setTotalFound(list.getTotalElements());
+		
 		return dtoList;
 			
 	}
@@ -389,6 +392,12 @@ public class CardServiceImpl implements CardDetailService {
 		
 		return list;
 		
+	}
+
+	@Override
+	public CardAndSetsDTO findCardToAddToUserCollection(Long cardNumber) throws SQLException, ErrorMessage {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

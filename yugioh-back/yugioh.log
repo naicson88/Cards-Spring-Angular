@@ -1,3 +1,26 @@
-2022-01-28 10:58:28.325  WARN 2348 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10h25m554ms832µs900ns).
-2022-01-28 14:44:12.042  WARN 2348 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m10s504ms905µs400ns).
-2022-01-28 17:27:53.254  WARN 2348 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m39s376ms416µs).
+2022-02-05 14:28:36.094  INFO 1632 --- [main] com.naicson.yugioh.YugiohApplication     : Starting YugiohApplication on DESKTOP-K8HK1IE with PID 1632 (C:\Users\USER\Documents\workspace-spring-tool-suite-4-4.12.0.RELEASE\Cards-Spring-Angular\yugioh-back\target\classes started by USER in C:\Users\USER\Documents\workspace-spring-tool-suite-4-4.12.0.RELEASE\Cards-Spring-Angular\yugioh-back)
+2022-02-05 14:28:36.102  INFO 1632 --- [main] com.naicson.yugioh.YugiohApplication     : No active profile set, falling back to default profiles: default
+2022-02-05 14:28:37.292  INFO 1632 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-02-05 14:28:37.437  INFO 1632 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 129ms. Found 11 JPA repository interfaces.
+2022-02-05 14:28:38.087  INFO 1632 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-02-05 14:28:38.102  INFO 1632 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-02-05 14:28:38.102  INFO 1632 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2022-02-05 14:28:38.233  INFO 1632 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-02-05 14:28:38.233  INFO 1632 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2030 ms
+2022-02-05 14:28:38.304  WARN 1632 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-02-05 14:28:38.503  INFO 1632 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-02-05 14:28:38.590  INFO 1632 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.25.Final
+2022-02-05 14:28:38.854  INFO 1632 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-02-05 14:28:39.050  INFO 1632 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-02-05 14:28:39.267  INFO 1632 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-02-05 14:28:39.293  INFO 1632 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-02-05 14:28:40.714  INFO 1632 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-02-05 14:28:40.725  INFO 1632 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-02-05 14:28:41.697  INFO 1632 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@47d4468a, org.springframework.security.web.context.SecurityContextPersistenceFilter@35e7fcf2, org.springframework.security.web.header.HeaderWriterFilter@5f1db390, org.springframework.web.filter.CorsFilter@60658389, org.springframework.security.web.authentication.logout.LogoutFilter@13868c41, com.naicson.yugioh.security.AuthTokenFilter@5c43cb12, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e581302, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1715193f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3ec98000, org.springframework.security.web.session.SessionManagementFilter@1fce6eb4, org.springframework.security.web.access.ExceptionTranslationFilter@2178d296, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@41831611]
+2022-02-05 14:28:41.826  INFO 1632 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-02-05 14:28:42.122  INFO 1632 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-02-05 14:28:42.134  INFO 1632 --- [main] com.naicson.yugioh.YugiohApplication     : Started YugiohApplication in 6.505 seconds (JVM running for 7.844)
+2022-02-05 14:31:24.352  INFO 1632 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-02-05 14:31:24.353  INFO 1632 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-02-05 14:31:24.361  INFO 1632 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2022-02-05 14:31:24.473 ERROR 1632 --- [http-nio-8080-exec-2] com.naicson.yugioh.security.JwtUtils     : JWT token is expired: JWT expired at 2022-02-04T22:06:26Z. Current time: 2022-02-05T14:31:24Z, a difference of 59098473 milliseconds.  Allowed clock skew: 0 milliseconds.

@@ -16,14 +16,14 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 public interface DeckRepository extends JpaRepository<Deck, Long> {
 
 
-	List<Deck> findByNomeContaining(String nomeDeck);
+	List<Deck> findTop30ByNomeContaining(String nomeDeck);
 	
 	Page<Deck> findAllBySetType(String setType, Pageable pageable);
-	Page<Deck> findAllByUserId(int userId, Pageable pageable);
+	//Page<Deck> findAllByUserId(int userId, Pageable pageable);
 	
 	List<Deck> findAllByIdIn(Long[] arraySetsIds);
 	
-	List<Deck> findAllByUserId(long userId);
+	//List<Deck> findAllByUserId(long userId);
 	
 	@Query(value = "Select * from TAB_DECK_USERS where user_id = :userId", countQuery = "SELECT count(*) FROM yugioh.tab_cards", nativeQuery = true)
 	Page<DeckUsers> listDeckUser(Pageable page, Long userId);

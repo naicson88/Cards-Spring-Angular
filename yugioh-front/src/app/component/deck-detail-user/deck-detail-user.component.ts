@@ -105,7 +105,7 @@ loadDeckCards(){
   
   const id = localStorage.getItem("idDeckDetails");
   
-  this.deckService.getDeckDetails(id,"User").subscribe(data => {
+  this.deckService.editDeck(id, "User").subscribe(data => {
  
   this.deck = data
 
@@ -254,7 +254,7 @@ setRelDeckCardsTypeDeck(card:Card){
 }
 
 cardImagem(cardId: any){
-  let urlimg = 'https://storage.googleapis.com/ygoprodeck.com/pics/' + cardId + '.jpg';
+  let urlimg = GeneralFunctions.cardImagem + cardId + '.jpg';
   return urlimg;
 }
   

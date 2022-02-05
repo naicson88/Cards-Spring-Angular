@@ -158,9 +158,7 @@
                         <mat-panel-title>
                             <h4>Attribute</h4>
                         </mat-panel-title>
-                        <mat-panel-description>
-                        Currently I am {{panelOpenState ? 'open' : 'closed'}}
-                        </mat-panel-description>
+                   
                         </mat-expansion-panel-header>
                        
                                 <ul>
@@ -261,8 +259,8 @@
         
          <span style="margin-left: 80%; font-family: 
             SegoeProBlack, Segoe UI,SegoeUI,Helvetica,Arial,sans-serif; 
-            color: silver; font-weight: 900;" *ngIf="!isRandomCards">
-            <span style="color: red;"> {{cardsFoundQtd}} </span>cards found!</span>
+            color: steelblue; font-weight: 900;" *ngIf="!isRandomCards">
+            <span style="color:#63b175;"> {{totalFound}} </span>cards found!</span>
         
         <div id="cards-body" style="padding-left: 3%;">
             
@@ -283,6 +281,10 @@
                         Total you have: 
                         <span style="color: red;" *ngIf="card.qtd == null">0</span>
                         <span style="color: navy;" *ngIf="card.qtd > 0">{{card.qtd}}</span>
+
+                        <mat-icon style="color: navy; transform: scale(.8);float: right; " class="card-item-icon"
+                        (mouseover)="mostrarDivCardsInfo($event, card.numero)"
+                        (mouseout)="esconderImgToolTipDetailed()"> remove_red_eye </mat-icon>
                     </span>
             </div>
 
@@ -293,8 +295,25 @@
                 </div>
                 
         </div>
+
+        <div
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="1000"
+        [infiniteScrollContainer]="selector"
+        [fromRoot]="true"
+        (scrolled)="onScroll()"
+      ></div>
     </div>
 </div>
+
+
+
+     <!-- Mostrar div com informações do card-->
+     <div *ngIf="isShowTooltipDetailed == true" class="divTooltipDetailed" >
+        <app-cardinfo [cardImage]="cardImage" [card]="card"></app-cardinfo>
+      </div> 
+
 <div style="margin-top: 8%;">
     <app-footer></app-footer>
 </div>

@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'usercollection/cards', component: UsercardsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'deck-details/:deckName', component: DeckDetailComponent},
+  { path: 'user-deck-details/:deckName', component: DeckDetailComponent, data: {source: 'U'}},
   { path: 'card-detail/:cardName', component: CardDetailComponent },
   { path: 'index', component: IndexComponent },
   { path: 'login', component: LoginComponent},

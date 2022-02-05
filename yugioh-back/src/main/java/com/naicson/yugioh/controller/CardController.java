@@ -1,17 +1,14 @@
 package com.naicson.yugioh.controller;
 
-import java.net.http.HttpResponse;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +25,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.naicson.yugioh.dto.RelUserCardsDTO;
-import com.naicson.yugioh.dto.RelUserDeckDTO;
+
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
-import com.naicson.yugioh.entity.sets.GenericTypesCards;
-import com.naicson.yugioh.entity.sets.Sets;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
 import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.service.interfaces.CardDetailService;
 import com.naicson.yugioh.util.GeneralFunctions;
+
 import com.naicson.yugioh.util.exceptions.ErrorMessage;
-import com.naicson.yugioh.util.search.CardSpecification;
-import com.naicson.yugioh.util.search.CardSpecificationBuilder;
+
 import com.naicson.yugioh.util.search.SearchCriteria;
 
 
@@ -88,7 +83,7 @@ public class CardController {
 		List<Deck> deck_set = cardService.cardDecks(cardNumero);
 		
 		Card card = cardService.encontrarPorNumero(cardNumero);
-		card.setSet_decks(deck_set);
+		card.setSets(deck_set);
 		
 		for(Deck rel : deck_set) {
 			List<RelDeckCards> rels = relDeckCardsRepository.findByDeckIdAndCardNumber(rel.getId(), cardNumero);
@@ -121,7 +116,7 @@ public class CardController {
 	
 	@PostMapping(path = {"/searchCardDetailed"})
 	@ResponseBody
-	public ResponseEntity<Page<Card>> cardSearchDetailed(@PageableDefault(page = 0, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable, 
+	public ResponseEntity<Page<Card>> cardSearchDetailed(@PageableDefault(page = 1, size = 30, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable, 
 			@RequestBody List<SearchCriteria> criterias, String join){
 		Page<Card> listCards = cardService.searchCardDetailed(criterias, join, pageable);
 		

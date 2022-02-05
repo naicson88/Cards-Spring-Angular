@@ -1,11 +1,14 @@
 
 <div class="container">
     <div style="margin:30px auto;  width: 600px; height: 450px;">
-        <img src="../../../assets/img/error/500.jpg" width="600px" height="450px" #img>
+        <img [src]="errorImage" width="600px" height="450px" #img>
 
-        <button mat-raised-button color="accent" id="btnNew" style="margin: 3px 43%;">
-            Home Page
-        </button>
+        <a [routerLink]="['/home']">
+            <button mat-raised-button color="accent" id="btnNew" style="margin: 5px 43%;" >
+                Home Page
+            </button>
+        </a>
+        
     </div>
    
 </div>

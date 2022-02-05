@@ -13,11 +13,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.naicson.yugioh.entity.imgs.CardAttributeImage;
-import com.naicson.yugioh.entity.sets.Sets;
+
 
 @Entity
 @Table(name = "tab_cards")
-public class Card extends Sets {
+public class Card {
 	
 	@Id
 	@Column
@@ -48,7 +48,7 @@ public class Card extends Sets {
 	private String arquetipo;
 	private String qtd_link;
 	@Transient
-	private Sets sets;
+	private List<Deck> sets;
 	@Column(name = "generic_type")
 	private String genericType;
 	@Column(name = "cod_archetype")
@@ -62,33 +62,7 @@ public class Card extends Sets {
 		
 	}
 
-	public Card(Integer id, Long numero, String categoria, String nome, String nomePortgues, String atributo,
-			String propriedade, Integer nivel, String tipos, Integer atk, Integer def, String condicao,
-			String descricao, String imagem, String raridade, Integer escala, 
-			String descr_pendulum, String arquetipo, String qtd_link, Sets sets, String generic_type) {
-		super();
-		this.id = id;
-		this.numero = numero;
-		this.categoria = categoria;
-		this.nome = nome;
-		this.nomePortugues = nomePortgues;
-		this.atributo = atributo;
-		this.propriedade = propriedade;
-		this.nivel = nivel;
-		this.tipos = tipos;
-		this.atk = atk;
-		this.def = def;
-		this.condicao = condicao;
-		this.descricao = descricao;
-		this.imagem = imagem;
-		this.raridade = raridade;
-		this.escala = escala;
-		this.descr_pendulum = descr_pendulum;
-		this.arquetipo = arquetipo;
-		this.qtd_link = qtd_link;
-		this.sets = sets;
-		this.genericType = generic_type;
-	}
+
 	
 	//Construtor para CardsSearchDTO
 	public Card(Long numero, String nome, String imagem) {
@@ -137,12 +111,12 @@ public class Card extends Sets {
 		this.descr_pendulum_pt = descr_pendulum_pt;
 	}
 
-	public Sets getSets() {
+	public List<Deck> getSets() {
 		return sets;
 	}
 
-	public void setSets(Sets sets) {
-		this.sets = sets;
+	public void setSets(List<Deck> deck_set) {
+		this.sets = deck_set;
 	}
 
 	public Integer getId() {

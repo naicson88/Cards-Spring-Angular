@@ -62,8 +62,8 @@ export class CardServiceService {
     )
   }
 
-  public searchCards(criterios:SearchCriteria[]){
-    return this.http.post<Card[]>(this.base_url+"/cards/searchCard", criterios)
+  public searchCards(params:any, criterios:SearchCriteria[]){
+    return this.http.post<Card[]>(this.base_url+`/cards/searchCard?size=${params.size}&page=${params.page}`, criterios)
     .pipe(
       catchError(HandleErros.handleError)
     )

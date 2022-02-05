@@ -4,7 +4,6 @@ import { Deck } from '../classes/deck';
 import { Observable, throwError } from 'rxjs';
 import { HandleErros } from '../Util/HandleErros';
 import { catchError } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 
@@ -29,6 +28,7 @@ export class DeckService {
         .pipe(
           catchError(HandleErros.handleError)
         )
+
       } else if (set_type == "UD" || set_type == "UT" || set_type == "UB"){ //Se forem sets do usuário
             set_type.substr(1);
           return  this.http.get(this.base_url+`/decks/sets-of-user?size=${params.size}&page=${params.page}&setType=${set_type}`)
@@ -43,7 +43,16 @@ export class DeckService {
 
     return this.http.get<Deck>(this.base_url+`/decks?id=${id}&deckType=${deckType}`) 
     .pipe(
-      catchError(this.handleError)
+      catchError(HandleErros.handleError)
+    )
+     
+  }
+
+  public editDeck(id:any, setSource:string) {
+
+    return this.http.get<Deck>(this.base_url+`/decks/edit-deck?id=${id}&setSource=${setSource}`) 
+    .pipe(
+      catchError(HandleErros.handleError)
     )
      
   }
@@ -82,17 +91,11 @@ export class DeckService {
     )
   }
 
-  public  handleError(error: HttpErrorResponse) {
-    
-   // const router = AppModule.injector.get(Router);
-    if(error.error instanceof ErrorEvent){
-        console.log(" An error occurred", error.error.message);
-    } else {
-        console.log(`Backend returned code  ${error.status} ` + ` body was: ${JSON.stringify(error.error)} `); 
-       //this.router.navigateByUrl('/error-code')          
-    }
-  
-    return throwError(error);
-}
+  public searchBySetName(name:string, source:string){
+      return this.http.get<Deck[]>(this.base_url+`/decks/search-by-set-name?setName=${name}&source=${source}`)
+        .pipe(
+          catchError(HandleErros.handleError)
+        )
+  }
 
 }
