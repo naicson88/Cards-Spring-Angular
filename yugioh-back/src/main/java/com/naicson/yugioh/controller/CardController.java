@@ -46,7 +46,7 @@ import com.naicson.yugioh.util.search.SearchCriteria;
 
 @RestController
 @RequestMapping({"yugiohAPI/cards"})
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "${angular.path}", maxAge = 3600)
 public class CardController {
 	
 	@Autowired

@@ -2,6 +2,7 @@ package com.naicson.yugioh.entity;
 
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,12 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 
 @Entity
 @Table(name = "tab_decks")
-public class Deck {
+public class Deck implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@Column

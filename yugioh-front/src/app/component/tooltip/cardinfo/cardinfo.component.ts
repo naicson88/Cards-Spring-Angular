@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Injectable, Input, OnInit } from '@angular/core';
+import { Component, Injectable, Input, OnInit } from '@angular/core';
 import { Card } from 'src/app/classes/Card';
 
 @Component({

@@ -96,10 +96,10 @@ public class DeckController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Deck> deckAndCards(@RequestParam Long id, @RequestParam String deckType) throws Exception {
+	public ResponseEntity<Deck> deckAndCards(@RequestParam Long id, @RequestParam String source) throws Exception {
 		Deck deck;	
 		
-		deck = deckService.deckAndCards(id, deckType);	
+		deck = deckService.deckAndCards(id, source);	
 		
 		return new ResponseEntity<>(deck, HttpStatus.OK) ;
 	}

@@ -32,7 +32,7 @@ import com.naicson.yugioh.security.JwtUtils;
 import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.util.exceptions.MessageResponse;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "${angular.path}", maxAge = 3600)
 @RestController
 @RequestMapping({"yugiohAPI/auth"})
 public class AuthController {
