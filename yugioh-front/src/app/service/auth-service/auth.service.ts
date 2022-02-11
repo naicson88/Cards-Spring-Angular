@@ -91,8 +91,8 @@ export class AuthService {
       console.log("This user is " + this.user)  
     });*/
 
- 
-     return this.user = this.consultarUsuarioLogado(this.username.sub);
+     return  this.user = this.consultarUsuarioLogado(this.username.sub);
+
   }
 
 }
