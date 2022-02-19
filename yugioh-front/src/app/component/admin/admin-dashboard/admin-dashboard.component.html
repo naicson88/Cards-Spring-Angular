@@ -16,17 +16,22 @@
 
        <form action="" [formGroup]="formDeck" (ngSubmit)="onSubmit()">
            <div class="form-group">
-                <label for="imageUrl">Set Name</label>
-                <input type="text" class="form-control" name="nome" id="nome" required formControlName="name">
+                <label for="nome" style="color: blueviolet; font-weight: 600;">Set Name</label>
+                <input type="text" class="form-control" name="nome" id="nome" required formControlName="nome">
            </div>
 
            <div class="form-group">
-                <label for="imageUrl">Set Name Portuguese</label>
-                <input type="text" class="form-control" name="nomePortuguese" id="nomePortugues" required formControlName="namePortuguese">
+                <label for="nomePortugues" style="color: green; font-weight: 600;">Set Name Portuguese</label>
+                <input type="text" class="form-control" name="nomePortuguese" id="nomePortugues" required formControlName="nomePortugues">
            </div>
 
-           <div class="form-group">´
-               <label for="setType">Set Type</label>
+          <div class="form-group">
+            <label for="imagem" style="color: blue; font-weight: 600;">Image Path</label>
+            <input type="text" class="form-control" name="imagem" id="imagem" required formControlName="imagem"  style="width:50%">
+          </div>
+
+           <div class="form-group">
+               <label for="setType" style="color:brown; font-weight: 600;">Set Type</label>
 
                <select name="setType" class="form-control" id="setType" style="width:30%" formControlName="setType"> 
                    <option value="D" selected>Deck</option>
@@ -36,8 +41,8 @@
            </div>
 
            <div class="form-group">
-               <label for="releaseDate">Release Date</label><br>
-                <input matInput [matDatepicker]="picker"  style="width:20%" name="releaseDate" formControlName="releaseDate">
+               <label for="releaseDate" style="color:cornflowerblue; font-weight: 600;">Release Date</label><br>
+                <input matInput [matDatepicker]="picker"  style="width:20%" name="releaseDate" formControlName="lancamento">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
            </div>

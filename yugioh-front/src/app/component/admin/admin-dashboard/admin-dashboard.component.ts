@@ -1,6 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Deck } from 'src/app/classes/deck';
+import { KonamiDeck } from 'src/app/classes/KonamiDeck';
+import { AdminDashboardService } from '../admin-dashboard-service';
+import {formatDate } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -11,21 +15,32 @@ export class AdminDashboardComponent implements OnInit {
 
   formDeck: FormGroup;
 
-  constructor() { }
+  constructor(private adminService: AdminDashboardService, private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.createFormDeck(new Deck())
+    this.createFormDeck(new KonamiDeck())
   }
-  onSubmit(){
-    console.log(this.formDeck.value)
+  onSubmit(){  
+
+    this.formDeck.value.lancamento = formatDate(this.formDeck.value.lancamento, 'dd-MM-yyyy HH:mm:ss', 'en')
+    
+    this.adminService.createNewKonamiDeck(this.formDeck.value).subscribe(result => {
+      console.warn(result);
+      this.toastr.success("Deck information sent to Queue");
+      this.formDeck.reset();
+    }, error =>{
+      console.log(error.msg)
+    })
+    
   }
 
-  createFormDeck(deck:Deck){
+  createFormDeck(konamiDeck:KonamiDeck){
     this.formDeck = new FormGroup({
-      name: new FormControl(deck.nome),
-      namePortuguese: new FormControl(deck.nomePortugues),
-      setType: new FormControl(deck.setType),
-      releaseDate: new FormControl(deck.lancamento)
+      nome: new FormControl(konamiDeck.nome),
+      nomePortugues: new FormControl(konamiDeck.nomePortugues),
+      setType: new FormControl(konamiDeck.setType),
+      lancamento: new FormControl(konamiDeck.lancamento),
+      imagem: new FormControl(konamiDeck.imagem)
     })
   }
 

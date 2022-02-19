@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule, MatExpansionModule, MatNativeDateModule, MatSelectModule, MatSpinner } from '@angular/material';
+import { MatDatepickerModule, MatExpansionModule, MatNativeDateModule, MatSelectModule, MatSpinner, MAT_DATE_LOCALE } from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -52,6 +52,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatDatepickerModule,
     MatNativeDateModule 
   ],
+
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }]
 
 })
 export class MaterialModule { }

@@ -62,7 +62,7 @@ export class DeckDetailComponent implements OnInit {
 
   //Carrega informações do deck
   loadDeckDetails(){
-
+  
     const id = localStorage.getItem("idDeckDetails");
     let src = this.source == 'U' ? 'User' : 'Konami'
     this.service.getDeckDetails(id, src).subscribe(data => {

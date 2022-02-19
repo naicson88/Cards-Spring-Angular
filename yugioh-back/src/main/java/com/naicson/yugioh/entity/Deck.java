@@ -42,7 +42,7 @@ public class Deck implements Serializable {
 	private Long qtd_ultra_raras;
 	//private Long qtd_secret_raras;
 	
-	private Long lancamento;
+	private Date lancamento;
 	
 	@Column(name = "set_type")
 	private String setType;
@@ -167,11 +167,11 @@ public class Deck implements Serializable {
 		this.qtd_ultra_raras = qtd_ulta_raras;
 	}
 
-	public Long getLancamento() {
+	public Date getLancamento() {
 		return lancamento;
 	}
 
-	public void setLancamento(Long lancamento) {
+	public void setLancamento(Date lancamento) {
 		this.lancamento = lancamento;
 	}
 

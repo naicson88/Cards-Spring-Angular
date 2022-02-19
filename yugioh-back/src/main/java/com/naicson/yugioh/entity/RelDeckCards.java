@@ -1,5 +1,6 @@
 package com.naicson.yugioh.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,7 +13,10 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_rel_deck_cards")
-public class RelDeckCards {
+public class RelDeckCards implements Serializable {
+	
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@Column

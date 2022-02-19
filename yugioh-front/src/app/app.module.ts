@@ -42,6 +42,7 @@ import { SearchBoxComponent } from './component/cards-search/search-box/search-b
 import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
 import { AdminDashboardComponent } from './component/admin/admin-dashboard/admin-dashboard.component';
 import { BaseRoleGuard } from './Util/CanActivate/BaseRoleGuard';
+import { AdminDashboardModule } from './component/admin/admin-dashboard/admin-dashboard.module';
 
 
 
@@ -87,6 +88,7 @@ import { BaseRoleGuard } from './Util/CanActivate/BaseRoleGuard';
     UsercardsModule,
     DeckDetailUserModule,
     DialogModule,
+    AdminDashboardModule,
     ToastrModule.forRoot()
 
   ],
