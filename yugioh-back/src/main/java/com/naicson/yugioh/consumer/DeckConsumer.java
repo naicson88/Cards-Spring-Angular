@@ -37,18 +37,23 @@ public class DeckConsumer {
 		
 		System.out.println(kDeck.toString());
 		
-		Deck newDeck = this.createNewDeck(kDeck);
-		
-		newDeck = deckService.countQtdCardRarityInTheDeck(newDeck);
-		
-		Long deckId = deckRepository.save(newDeck).getId();
-		
-		newDeck = this.setDeckIdInRelDeckCards(newDeck, deckId);
-		
-		relDeckCardsRepository.saveAll(newDeck.getRel_deck_cards());
-		
-		logger.info("Deck successfully saved!");
-		
+		try {
+			
+			Deck newDeck = this.createNewDeck(kDeck);
+			
+			newDeck = deckService.countQtdCardRarityInTheDeck(newDeck);
+			
+			Long deckId = deckRepository.save(newDeck).getId();
+			
+			newDeck = this.setDeckIdInRelDeckCards(newDeck, deckId);
+			
+			relDeckCardsRepository.saveAll(newDeck.getRel_deck_cards());
+			
+			logger.info("Deck successfully saved!");
+			
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+		}			
 	}
 	
 	private Deck createNewDeck(KonamiDeck kDeck) {
@@ -66,6 +71,7 @@ public class DeckConsumer {
 		deck.setRel_deck_cards(kDeck.getListRelDeckCards());
 		deck.setSetType(kDeck.getSetType());
 		
+		logger.info("Deck created!");
 		return deck;
 	}
 	
@@ -76,7 +82,7 @@ public class DeckConsumer {
 		}
 		
 		newDeck.getRel_deck_cards().stream().forEach(rel -> {rel.setDeckId(deckId);});
-		
+		logger.info("Deck's Id setted");
 		return newDeck;
 	}
 	

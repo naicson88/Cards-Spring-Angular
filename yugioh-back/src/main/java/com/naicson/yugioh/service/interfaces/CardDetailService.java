@@ -60,5 +60,7 @@ public interface CardDetailService {
 	Page<Card> searchCardDetailed(List<SearchCriteria> criterias, String join, Pageable pageable);
 
 	List<RelDeckCards> findAllRelDeckCardsByCardNumber(Long cardNumber);
+	
+	List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber);
 
 }

@@ -15,7 +15,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -49,20 +52,18 @@ public class CardServiceImpl implements CardDetailService {
 	@Autowired
 	private RelDeckCardsRepository relDeckCardsRepository;
 	@Autowired
-	private DeckRepository deckRepository;	
-	@Autowired
 	EntityManager em;	
 	@Autowired
 	CardDAO dao;
 	@Autowired
 	CardOfUserDetailDTO cardUserDTO;
 	
+	Logger logger = LoggerFactory.getLogger(HomeServiceImpl.class);	
 	
 	public CardServiceImpl(CardRepository cardRepository, CardDAO dao, RelDeckCardsRepository relDeckCardsRepository, DeckRepository deckRepository) {
 		this.cardRepository = cardRepository;
 		this.dao = dao;
 		this.relDeckCardsRepository = relDeckCardsRepository;
-		this.deckRepository = deckRepository;
 	}
 
 	public CardServiceImpl() {
@@ -400,5 +401,44 @@ public class CardServiceImpl implements CardDetailService {
 		return null;
 	}
 
+	@Override
+	public List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber) {
+		
+		if(cardsNumber == null || cardsNumber.isEmpty()) {
+			logger.error("List with card numbers is invalid");
+			throw new IllegalArgumentException("List with card numbers is invalid");
+		}
+		
+		List<Long> cardsRegistered = new ArrayList<>(); //cardRepository.findAllCardsByListOfCardNumbers(cardsNumber);
+		List<Long> cardsNotRegistered = new ArrayList<>();
+		
+		if(cardsRegistered == null && cardsRegistered.isEmpty())
+			return cardsNumber;
+		else			
+			cardsNotRegistered = this.verifyCardsNotRegistered(cardsNumber, cardsRegistered);
+		
+		return cardsNotRegistered;
+		
+	}
+
+	private List<Long> verifyCardsNotRegistered(List<Long> cardsNumber, List<Long> cardsRegistered) {
+			
+		if(cardsNumber == null || cardsNumber.isEmpty()) {
+			logger.error("List with card numbers is invalid");
+			throw new IllegalArgumentException("List with card numbers is invalid");
+		}
+		
+		if(cardsRegistered == null || cardsRegistered.isEmpty()) {
+			logger.error("There is no list of comparison since cards registered is empty");
+			throw new IllegalArgumentException("There is no list of comparison since cards registered is empty");
+		}
+		
+		if(cardsRegistered.containsAll(cardsNumber))
+			return Collections.emptyList();
+		
+		return Collections.emptyList();
+		
+		
+	}
 
 }

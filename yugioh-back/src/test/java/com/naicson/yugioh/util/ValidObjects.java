@@ -52,9 +52,9 @@ public abstract class ValidObjects {
 		
 		card.setArquetipo("Arquetipo Teste");
 		card.setAtk(2000);
-		card.setAtributo("EARTH");
+		//card.setAtributo("EARTH");
 		card.setCategoria("Monster");
-		card.setCodArchetype(10);
+		//card.setCodArchetype(10);
 		card.setDef(1500);
 		card.setDescr_pendulum("Descricao Pendulum Teste");
 		card.setEscala(8);

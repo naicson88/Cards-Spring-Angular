@@ -143,8 +143,8 @@ public class UtilitariosServiceImpl implements UtilitariosService {
 						card.setAtk((Integer) 		obj.get("atk"));
 						card.setDef((Integer) 		obj.get("def"));
 						card.setNivel((Integer)		obj.get("level"));
-						card.setTipos((String)		obj.get("race"));
-						card.setAtributo((String)	obj.get("attribute"));
+						//card.setTipos((String)		obj.get("race"));
+						//card.setAtributo((String)	obj.get("attribute"));
 						if(obj.has("archetype"))
 						card.setArquetipo((String)  obj.get("archetype"));
 						if(obj.has("linkval"))

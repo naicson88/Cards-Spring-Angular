@@ -17,7 +17,7 @@ public class Archetype {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	@Column(name = "arc_name")
 	private String arcName;
 	
@@ -30,11 +30,11 @@ public class Archetype {
 		
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

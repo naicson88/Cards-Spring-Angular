@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.entity.Card;
@@ -62,6 +63,9 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 			countQuery = "SELECT count(*) FROM tab_cards",
 			nativeQuery=true)
 	Page<Card> cardSearchByNameUserCollection(String cardName, long userId, Pageable pageable);
+	
+	/*@Query( "select numero from tab_cards where numero in :cardsNumber" )
+	List<Long> findAllCardsByListOfCardNumbers(@Param("cardsNumber") List<Long> cardsNumber);*/
 	
 	
 }
