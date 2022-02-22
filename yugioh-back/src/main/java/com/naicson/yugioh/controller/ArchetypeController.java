@@ -14,7 +14,7 @@ import com.naicson.yugioh.entity.Archetype;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.repository.ArchetypeRepository;
 import com.naicson.yugioh.repository.CardRepository;
-import com.naicson.yugioh.service.CardServiceImpl;
+import com.naicson.yugioh.service.card.CardServiceImpl;
 
 @RestController
 @RequestMapping({"yugiohAPI/arch"})

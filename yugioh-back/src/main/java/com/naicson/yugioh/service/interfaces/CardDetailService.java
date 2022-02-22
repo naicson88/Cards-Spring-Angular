@@ -61,6 +61,6 @@ public interface CardDetailService {
 
 	List<RelDeckCards> findAllRelDeckCardsByCardNumber(Long cardNumber);
 	
-	List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber);
+	List<Long> findCardsNotRegistered(List<Long> cardsNumber);
 
 }

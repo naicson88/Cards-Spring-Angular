@@ -1,4 +1,4 @@
-package com.naicson.yugioh.service;
+package com.naicson.yugioh.service.card;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -22,6 +22,7 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.stats.CardPriceInformation;
 import com.naicson.yugioh.repository.CardPriceInformationRepository;
 import com.naicson.yugioh.repository.CardRepository;
+import com.naicson.yugioh.service.HomeServiceImpl;
 import com.naicson.yugioh.service.interfaces.CardPriceInformationService;
 import com.naicson.yugioh.util.enums.CardStats;
 import com.naicson.yugioh.util.exceptions.ErrorMessage;

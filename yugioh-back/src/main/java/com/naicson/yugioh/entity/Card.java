@@ -34,26 +34,23 @@ public class Card {
 	private TipoCard tipo;
 	private Integer atk;
 	private Integer def;
-	private String condicao;
 	@Column(columnDefinition="text")
 	private String descricao;
 	@Column(columnDefinition="text")
 	private String descricaoPortugues;
 	private String imagem;
-	private String raridade;
 	private Integer escala;
 	@Column(columnDefinition="text")
 	private String descr_pendulum;
 	@Column(columnDefinition="text")
 	private String descr_pendulum_pt;
-	private String arquetipo;
 	private String qtd_link;
 	@Transient
 	private List<Deck> sets;
 	@Column(name = "generic_type")
 	private String genericType;
 	@ManyToOne
-	@JoinColumn(name = "cod_Archetype",  referencedColumnName = "id")
+	@JoinColumn(name = "cod_archetype",  referencedColumnName = "id")
 	private Archetype archetype;
 	
 	public Card() {

@@ -1,4 +1,4 @@
-package com.naicson.yugioh.service;
+package com.naicson.yugioh.service.card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.stats.CardViewsInformation;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.CardViewsInformationRepository;
+import com.naicson.yugioh.service.HomeServiceImpl;
 import com.naicson.yugioh.service.interfaces.CardViewsInformationDetails;
 import com.naicson.yugioh.util.enums.CardStats;
 

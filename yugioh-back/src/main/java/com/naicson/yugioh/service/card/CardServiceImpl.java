@@ -1,4 +1,4 @@
-package com.naicson.yugioh.service;
+package com.naicson.yugioh.service.card;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
@@ -37,6 +37,8 @@ import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
+import com.naicson.yugioh.service.HomeServiceImpl;
+import com.naicson.yugioh.service.UserDetailsImpl;
 import com.naicson.yugioh.service.interfaces.CardDetailService;
 import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.exceptions.ApiExceptionHandler;
@@ -402,23 +404,24 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber) {
+	public List<Long> findCardsNotRegistered(List<Long> cardsNumber) {
 		
 		if(cardsNumber == null || cardsNumber.isEmpty()) {
 			logger.error("List with card numbers is invalid");
 			throw new IllegalArgumentException("List with card numbers is invalid");
 		}
 		
-		List<Long> cardsRegistered = new ArrayList<>(); //cardRepository.findAllCardsByListOfCardNumbers(cardsNumber);
+		List<Long> cardsRegistered = cardRepository.findAllCardsByListOfCardNumbers(cardsNumber);
 		List<Long> cardsNotRegistered = new ArrayList<>();
 		
-		if(cardsRegistered == null && cardsRegistered.isEmpty())
-			return cardsNumber;
-		else			
+		if(cardsRegistered == null || cardsRegistered.isEmpty()) {
+			cardsNotRegistered = cardsNumber;
+			
+		}else {
 			cardsNotRegistered = this.verifyCardsNotRegistered(cardsNumber, cardsRegistered);
+		}
 		
 		return cardsNotRegistered;
-		
 	}
 
 	private List<Long> verifyCardsNotRegistered(List<Long> cardsNumber, List<Long> cardsRegistered) {
@@ -435,10 +438,10 @@ public class CardServiceImpl implements CardDetailService {
 		
 		if(cardsRegistered.containsAll(cardsNumber))
 			return Collections.emptyList();
-		
-		return Collections.emptyList();
-		
-		
+			
+			cardsNumber.removeAll(cardsRegistered);
+			
+			return cardsNumber;		
 	}
 
 }

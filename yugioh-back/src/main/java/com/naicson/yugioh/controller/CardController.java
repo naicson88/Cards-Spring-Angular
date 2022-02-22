@@ -240,5 +240,13 @@ public class CardController {
 		
 		return new ResponseEntity<List<RelDeckCards>>(relation, HttpStatus.OK);
 	}
+	
+	@PostMapping(path = {"/search-cards-not-registered"})
+	public ResponseEntity<List<Long>> searchCardsByCardNumbers(@RequestBody List<Long> cardNumbers){
+		
+		List<Long> cardsNotRegistered = this.cardService.findCardsNotRegistered(cardNumbers);
+		
+		return new ResponseEntity<List<Long>>(cardsNotRegistered, HttpStatus.OK);
+	}
 }
 

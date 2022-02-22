@@ -64,8 +64,8 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 			nativeQuery=true)
 	Page<Card> cardSearchByNameUserCollection(String cardName, long userId, Pageable pageable);
 	
-	/*@Query( "select numero from tab_cards where numero in :cardsNumber" )
-	List<Long> findAllCardsByListOfCardNumbers(@Param("cardsNumber") List<Long> cardsNumber);*/
+	@Query(value = "select numero from tab_cards where numero in :cardsNumber", nativeQuery = true)
+	List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber);
 	
 	
 }

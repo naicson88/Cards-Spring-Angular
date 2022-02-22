@@ -136,7 +136,7 @@ public class UtilitariosServiceImpl implements UtilitariosService {
 					if(isPt == false) {	
 						Card card = new Card();
 						
-						card.setNumero((Long)    obj.get("id"));
+						card.setNumero((Long)    	obj.get("id"));
 						card.setNome((String) 		obj.get("name"));
 						card.setCategoria((String)  obj.get("type"));
 						card.setDescricao((String)  obj.get("desc"));
