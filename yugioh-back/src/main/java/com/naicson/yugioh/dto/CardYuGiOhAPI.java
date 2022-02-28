@@ -1,12 +1,15 @@
-package com.naicson.yugioh.entity;
+package com.naicson.yugioh.dto;
+
+import java.io.Serializable;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class CardYuGiOhAPI  {
+public class CardYuGiOhAPI implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Long id;
-	private String type;
+	private String categoria;
 	private String name;
 	private String attribute;
 	private Integer level;
@@ -15,6 +18,8 @@ public class CardYuGiOhAPI  {
 	private Integer def;
 	private String desc;
 	private String archetype;
+	private String scale;
+	private int linkval;
 
 
 	public Long getId() {
@@ -26,11 +31,11 @@ public class CardYuGiOhAPI  {
 	}
 
 	public String getType() {
-		return type;
+		return categoria;
 	}
 
 	public void setType(String type) {
-		this.type = type;
+		this.categoria = type;
 	}
 
 	public String getName() {
@@ -95,6 +100,22 @@ public class CardYuGiOhAPI  {
 
 	public void setArchetype(String archetype) {
 		this.archetype = archetype;
+	}
+
+	public String getScale() {
+		return scale;
+	}
+
+	public void setScale(String scale) {
+		this.scale = scale;
+	}
+
+	public int getLinkval() {
+		return linkval;
+	}
+
+	public void setLinkval(int linkval) {
+		this.linkval = linkval;
 	}
 	
 }

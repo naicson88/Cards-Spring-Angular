@@ -538,7 +538,7 @@ public class DeckServiceImpl implements DeckDetailService {
 			
 		//Coloca o restante das cartas
 		cardList.stream().filter(card -> card.getNivel() == null)
-		.sorted((c1, c2) -> c1.getGeneric_type().compareTo(c2.getGeneric_type()))
+		.sorted((c1, c2) -> c1.getGenericType().compareTo(c2.getGenericType()))
 		.collect(Collectors.toCollection(() -> sortedCardList));
 				
 		return sortedCardList;

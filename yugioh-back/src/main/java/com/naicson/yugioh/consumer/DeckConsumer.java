@@ -15,6 +15,7 @@ import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.DeckServiceImpl;
+import com.naicson.yugioh.service.card.CardRegistry;
 
 
 @Component
@@ -29,15 +30,18 @@ public class DeckConsumer {
 	@Autowired
 	DeckServiceImpl deckService;
 	
+	@Autowired
+	CardRegistry cardRegistry;
+	
 	Logger logger = LoggerFactory.getLogger(DeckConsumer.class);
 	
-	//@RabbitListener(queues = "${rabbitmq.queue.deck}")
+	@RabbitListener(queues = "${rabbitmq.queue.deck}")
 	@Transactional
 	private void consumer(KonamiDeck kDeck) {
 		
-		System.out.println(kDeck.toString());
-		
 		try {
+			
+			cardRegistry.RegistryCardFromYuGiOhAPI(kDeck);
 			
 			Deck newDeck = this.createNewDeck(kDeck);
 			
@@ -52,7 +56,7 @@ public class DeckConsumer {
 			logger.info("Deck successfully saved!");
 			
 		} catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(e.getLocalizedMessage());
 		}			
 	}
 	
@@ -85,5 +89,6 @@ public class DeckConsumer {
 		logger.info("Deck's Id setted");
 		return newDeck;
 	}
+	
 	
 }

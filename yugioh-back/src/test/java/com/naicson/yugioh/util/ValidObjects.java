@@ -50,7 +50,7 @@ public abstract class ValidObjects {
 	public static Card generateValidCard() {
 		Card card = new Card();
 		
-		card.setArquetipo("Arquetipo Teste");
+		//card.setArquetipo("Arquetipo Teste");
 		card.setAtk(2000);
 		//card.setAtributo("EARTH");
 		card.setCategoria("Monster");

@@ -21,7 +21,7 @@ public class KonamiDeck implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private Date lancamento;
 	private String setType;
-	private List<Object> cardsToBeRegistered;
+	private List<CardYuGiOhAPI> cardsToBeRegistered;
 	private List<RelDeckCards> relDeckCards;
 	
 	public Long getId() {
@@ -73,10 +73,10 @@ public class KonamiDeck implements Serializable{
 				+ ", lancamento=" + lancamento + ", setType=" + setType + ", listRelDeckCards=" + relDeckCards
 				+ "]";
 	}
-	public List<Object> getCardsToBeRegistered() {
+	public List<CardYuGiOhAPI> getCardsToBeRegistered() {
 		return cardsToBeRegistered;
 	}
-	public void setCardsToBeRegistered(List<Object> cardsToBeRegistered) {
+	public void setCardsToBeRegistered(List<CardYuGiOhAPI> cardsToBeRegistered) {
 		this.cardsToBeRegistered = cardsToBeRegistered;
 	}
 	

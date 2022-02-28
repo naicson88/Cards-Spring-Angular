@@ -1,5 +1,6 @@
 package com.naicson.yugioh.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_cards")
@@ -52,6 +54,8 @@ public class Card {
 	@ManyToOne
 	@JoinColumn(name = "cod_archetype",  referencedColumnName = "id")
 	private Archetype archetype;
+
+	private Date registryDate;
 	
 	public Card() {
 		
@@ -64,9 +68,6 @@ public class Card {
 		this.imagem = imagem;
 	}
 
-	public String getGeneric_type() {
-		return genericType;
-	}
 
 	public Atributo getAtributo() {
 		return atributo;
@@ -88,12 +89,6 @@ public class Card {
 
 	public void setGenericType(String genericType) {
 		this.genericType = genericType;
-	}
-
-
-
-	public void setGeneric_type(String generic_type) {
-		this.genericType = generic_type;
 	}
 
 	public String getNomePortugues() {
@@ -200,14 +195,6 @@ public class Card {
 		this.def = def;
 	}
 
-	public String getCondicao() {
-		return condicao;
-	}
-
-	public void setCondicao(String condicao) {
-		this.condicao = condicao;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -222,14 +209,6 @@ public class Card {
 
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
-	}
-
-	public String getRaridade() {
-		return raridade;
-	}
-
-	public void setRaridade(String raridade) {
-		this.raridade = raridade;
 	}
 
 	public Integer getEscala() {
@@ -248,14 +227,6 @@ public class Card {
 		this.descr_pendulum = descr_pendulum;
 	}
 
-	public String getArquetipo() {
-		return arquetipo;
-	}
-
-	public void setArquetipo(String arquetipo) {
-		this.arquetipo = arquetipo;
-	}
-
 	public String getQtd_link() {
 		return qtd_link;
 	}
@@ -271,8 +242,23 @@ public class Card {
 	public void setNomePortgues(String nomePortgues) {
 		this.nomePortugues = nomePortgues;
 	}
-	
 
+	public Archetype getArchetype() {
+		return archetype;
+	}
+
+	public void setArchetype(Archetype archetype) {
+		this.archetype = archetype;
+	}
+
+	public Date getRegistryDate() {
+		return registryDate;
+	}
+
+	public void setRegistryDate(Date registryDate) {
+		this.registryDate = registryDate;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -298,12 +284,18 @@ public class Card {
 		return true;
 	}
 
-	public Archetype getArchetype() {
-		return archetype;
+	@Override
+	public String toString() {
+		return "Card [id=" + id + ", numero=" + numero + ", categoria=" + categoria + ", nome=" + nome
+				+ ", nomePortugues=" + nomePortugues + ", atributo=" + atributo + ", propriedade=" + propriedade
+				+ ", nivel=" + nivel + ", tipo=" + tipo + ", atk=" + atk + ", def=" + def + ", descricao=" + descricao
+				+ ", descricaoPortugues=" + descricaoPortugues + ", imagem=" + imagem + ", escala=" + escala
+				+ ", descr_pendulum=" + descr_pendulum + ", descr_pendulum_pt=" + descr_pendulum_pt + ", qtd_link="
+				+ qtd_link + ", sets=" + sets + ", genericType=" + genericType + ", archetype=" + archetype
+				+ ", registryDate=" + registryDate + "]";
 	}
-
-	public void setArchetype(Archetype archetype) {
-		this.archetype = archetype;
-	}
+	
+	
+	
 	
 }

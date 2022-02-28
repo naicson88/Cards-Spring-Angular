@@ -1,5 +1,11 @@
 package com.naicson.yugioh.util;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
@@ -53,5 +59,14 @@ public abstract class GeneralFunctions {
     	String moment = day+month+year+hour+minutes+seconds;
     	
     	return moment;
+    }
+    
+    public static void saveCardInFolder(Long cardNumber) {
+    	try(InputStream in = new URL("https://storage.googleapis.com/ygoprodeck.com/pics/"+cardNumber+".jpg").openStream()) {
+    		Files.copy(in, Paths.get("C:\\Cards"+cardNumber+".jpg"));
+    		
+    	}catch(IOException e) {
+    		e.getMessage();
+    	}
     }
 }
