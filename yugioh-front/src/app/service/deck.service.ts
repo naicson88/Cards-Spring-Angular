@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { HandleErros } from '../Util/HandleErros';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { KonamiDeck } from '../classes/KonamiDeck';
 
 
 @Injectable({
@@ -39,9 +40,9 @@ export class DeckService {
    
   } 
 
-  public getDeckDetails(id:any, deckType:string) {
+  public getDeckDetails(id:any, source:string) {
 
-    return this.http.get<Deck>(this.base_url+`/decks?id=${id}&deckType=${deckType}`) 
+    return this.http.get<Deck>(this.base_url+`/decks?id=${id}&source=${source}`) 
     .pipe(
       catchError(HandleErros.handleError)
     )
@@ -96,6 +97,15 @@ export class DeckService {
         .pipe(
           catchError(HandleErros.handleError)
         )
+  }
+
+  public createNewKonamiDeck(konamiDeck: KonamiDeck) {
+    
+    return this.http.post<KonamiDeck>("http://localhost:8082/v1/admin/deck/new-deck", konamiDeck)
+    .pipe(
+      catchError(HandleErros.handleError)
+    )
+     
   }
 
 }

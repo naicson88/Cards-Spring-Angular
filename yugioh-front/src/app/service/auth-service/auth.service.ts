@@ -20,6 +20,10 @@ export class AuthService {
   public readonly LOGIN_PATH ='/login';
   public readonly CONFIRM_PATH = '/confirm';
   public readonly INITIAL_PATH = '/home';
+
+  userRole:string
+  username: any;
+  user: any;
   
   constructor(
   
@@ -33,13 +37,17 @@ export class AuthService {
   }
 
   login(loginRequest: LoginRequest): Observable<User> {
+    
     return this.http.post<any>(`${configg.authUrl}/auth/login`, loginRequest)
-    .pipe(tap(data => this.auth.doLoginUser(data)));
+    .pipe(tap(user => {
+        this.auth.doLoginUser(user)
+       // localStorage.setItem('currentUser', JSON.stringify(user.roles[0]));
+    }));
 
   }
 
   consultarUsuarioLogado(username: string){
-    return  this.http.get<User[]>(`${configg.authUrl}/User/consulta-usuario/${username}`);
+    return  this.http.get<User>(`${configg.authUrl}/User/consulta-usuario/${username}`);
   }
   /*logout(){
     return this.http.get<any>(`${configg.authUrl}/auth/logout`)
@@ -48,6 +56,7 @@ export class AuthService {
   //Logout JWT
   logout(){
     localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem('currentUser');
   }
 
   private doLogoutUser() {
@@ -68,6 +77,22 @@ export class AuthService {
   doLogoutAndRedirectToLogin() {
     this.doLogoutUser();
     this.router.navigate(['/login']);
+  }
+
+  getUser(): Observable<User>{
+    
+    this.getCurrentUser$().subscribe(user=>{
+      this.username = user  
+    })
+
+    /*this.consultarUsuarioLogado(this.username.sub).subscribe(data =>{
+      debugger
+      this.user = data;  
+      console.log("This user is " + this.user)  
+    });*/
+
+     return  this.user = this.consultarUsuarioLogado(this.username.sub);
+
   }
 
 }

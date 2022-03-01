@@ -4,7 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +47,7 @@ import com.naicson.yugioh.util.search.SearchCriteria;
 
 @RestController
 @RequestMapping({"yugiohAPI/cards"})
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "${angular.path}", maxAge = 3600)
 public class CardController {
 	
 	@Autowired
@@ -57,6 +58,8 @@ public class CardController {
 	CardRepository cardRepository;
 	@Autowired
 	RelDeckCardsRepository relDeckCardsRepository;
+	
+	Logger logger = LoggerFactory.getLogger(DeckServiceImpl.class);
 	
 	@GetMapping
 	public List<Card> listar(){
@@ -239,6 +242,16 @@ public class CardController {
 		List<RelDeckCards> relation = this.cardService.findAllRelDeckCardsByCardNumber(cardNumber);
 		
 		return new ResponseEntity<List<RelDeckCards>>(relation, HttpStatus.OK);
+	}
+	
+	@PostMapping(path = {"/search-cards-not-registered"})
+	public ResponseEntity<List<Long>> searchCardsByCardNumbers(@RequestBody List<Long> cardNumbers){
+		
+		logger.info("Start request for cards not registered...".toUpperCase());
+		
+		List<Long> cardsNotRegistered = this.cardService.findCardsNotRegistered(cardNumbers);
+		
+		return new ResponseEntity<List<Long>>(cardsNotRegistered, HttpStatus.OK);
 	}
 }
 

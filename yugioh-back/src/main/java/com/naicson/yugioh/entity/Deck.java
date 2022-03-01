@@ -2,6 +2,7 @@ package com.naicson.yugioh.entity;
 
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,12 @@ import com.naicson.yugioh.entity.sets.DeckUsers;
 
 @Entity
 @Table(name = "tab_decks")
-public class Deck {
+public class Deck implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@Column
@@ -36,7 +42,7 @@ public class Deck {
 	private Long qtd_ultra_raras;
 	//private Long qtd_secret_raras;
 	
-	private Long lancamento;
+	private Date lancamento;
 	
 	@Column(name = "set_type")
 	private String setType;
@@ -161,11 +167,11 @@ public class Deck {
 		this.qtd_ultra_raras = qtd_ulta_raras;
 	}
 
-	public Long getLancamento() {
+	public Date getLancamento() {
 		return lancamento;
 	}
 
-	public void setLancamento(Long lancamento) {
+	public void setLancamento(Date lancamento) {
 		this.lancamento = lancamento;
 	}
 

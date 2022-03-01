@@ -40,6 +40,9 @@ import { CardinfoComponent } from './component/tooltip/cardinfo/cardinfo.compone
 import { DeckDetailUserComponent } from './component/deck-detail-user/deck-detail-user.component';
 import { SearchBoxComponent } from './component/cards-search/search-box/search-box.component';
 import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
+import { AdminDashboardComponent } from './component/admin/admin-dashboard/admin-dashboard.component';
+import { BaseRoleGuard } from './Util/CanActivate/BaseRoleGuard';
+import { AdminDashboardModule } from './component/admin/admin-dashboard/admin-dashboard.module';
 
 
 
@@ -66,7 +69,8 @@ import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.compo
     CardinfoComponent,
     DeckDetailUserComponent,
     SearchBoxComponent,
-    ErrorPagesComponent
+    ErrorPagesComponent,
+    AdminDashboardComponent
   
   ],
   imports: [
@@ -84,15 +88,17 @@ import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.compo
     UsercardsModule,
     DeckDetailUserModule,
     DialogModule,
+    AdminDashboardModule,
     ToastrModule.forRoot()
 
   ],
   
   providers: [
+    BaseRoleGuard,
     authStrategyProvider, 
-  {provide: HTTP_INTERCEPTORS,
-  useClass: AuthInterceptor,
-  multi: true},
+    {provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true},
 
   {provide: HTTP_INTERCEPTORS,useClass: SpinnerService, multi: true },
   Imagens,

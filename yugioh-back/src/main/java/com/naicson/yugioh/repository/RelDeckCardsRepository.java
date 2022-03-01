@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.naicson.yugioh.entity.RelDeckCards;
 
+@Repository
 public interface RelDeckCardsRepository extends JpaRepository<RelDeckCards, Integer>{
 	
 	@Query(value = " select * from tab_rel_deck_cards rel "
@@ -20,6 +22,8 @@ public interface RelDeckCardsRepository extends JpaRepository<RelDeckCards, Inte
 	
 	List<RelDeckCards> findByDeckIdAndCardNumber(Long long1, Long cardNumero);
 
-	List<RelDeckCards> findByCardNumber(Long cardNumber);	 
-	
+	List<RelDeckCards> findByCardNumber(Long cardNumber);
+
+	//RelDeckCards findByCard_set_code(String card_set_code);	 
+	 List<RelDeckCards> findByCardSetCode(String card_set_code);
 }

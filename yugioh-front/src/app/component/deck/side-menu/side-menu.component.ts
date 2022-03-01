@@ -59,20 +59,23 @@ export class SideMenuComponent implements OnInit {
   isIndex: boolean = false;
   isLogin: boolean = false;
   isRegister: boolean = false;
-  
-  //trans: string = 'left 0.4s ease'
- 
-  constructor(private router: Router, private authService: AuthService) {
+  isAdminOrModerator: boolean = false;
+
+  constructor(private router: Router, private authService: AuthService, ) {
  
    }
 
   ngOnInit() {
-    
-    this.router.events.subscribe((event:any) => {
+   
+    this.checkRouter();
+    this.validUser();
+  }
 
-     
+  checkRouter(){
+    this.router.events.subscribe((event:any) => {
+      
       if(event instanceof NavigationEnd) {
-        console.log(typeof event.url)
+
         if(event.url === '/index'){
           this.isIndex = true;
         } 
@@ -84,11 +87,15 @@ export class SideMenuComponent implements OnInit {
         } 
         else if(event.url === '/'){
           this.isIndex = true
+
+        } else {
+          this.isIndex = false;
+          this.isLogin = false;
+          this.isRegister = false;
         }
         
       }
-    })
-
+    }) 
   }
 
   mostrarUlDecks(){
@@ -121,4 +128,32 @@ export class SideMenuComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/index'])
   }
+
+  validUser(){
+    
+    this.authService.getUser().subscribe(userReturned => { 
+          
+      this.checkIfIsAdmin(userReturned.roles[0].roleName)
+    }, error => {
+      console.log("Error when try to consult user" + error.erro);
+      this.router.navigate(['/error-page', 500])
+    })
+  }
+  
+checkIfIsAdmin(userRole:string) {   
+    //  let user:string = localStorage.getItem('currentUser');
+      
+        if(userRole == undefined || userRole == null)
+            this.router.navigate(['/login'])
+
+        if(userRole == "ROLE_ADMIN"  || userRole == "ROLE_MODERATOR")
+          this.isAdminOrModerator = true;
+
+        else if(userRole == "ROLE_USER")
+          this.isAdminOrModerator = false; 
+
+        else
+          this.router.navigate(['/login'])      
+  }
+
 }

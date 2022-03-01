@@ -1,0 +1,54 @@
+<div class="container">
+
+    <div id="header-block">
+        <button type="button" class="btn btn-outline-primary btn-lg">NEW SET</button>
+        <button type="button" class="btn btn-outline-secondary btn-lg">NEW CARD</button>
+        <button type="button" class="btn btn-outline-success btn-lg">EDIT CARD</button>
+        <button type="button" class="btn btn-outline-danger btn-lg">REMOVE SET</button>
+        <button type="button" class="btn btn-outline-dark btn-lg">NEW ARCHETYPE</button>
+    </div>
+
+    <div class="body-admin">
+
+        <div id="divTitle" style="color: navy;  margin-left: 40%;">
+            <h3 style="font-weight: 600;">NEW SET</h3>
+        </div>
+
+       <form action="" [formGroup]="formDeck" (ngSubmit)="onSubmit()">
+           <div class="form-group">
+                <label for="nome" style="color: blueviolet; font-weight: 600;">Set Name</label>
+                <input type="text" class="form-control" name="nome" id="nome" required formControlName="nome">
+           </div>
+
+           <div class="form-group">
+                <label for="nomePortugues" style="color: green; font-weight: 600;">Set Name Portuguese</label>
+                <input type="text" class="form-control" name="nomePortuguese" id="nomePortugues" required formControlName="nomePortugues">
+           </div>
+
+          <div class="form-group">
+            <label for="imagem" style="color: blue; font-weight: 600;">Image Path</label>
+            <input type="text" class="form-control" name="imagem" id="imagem" required formControlName="imagem"  style="width:50%">
+          </div>
+
+           <div class="form-group">
+               <label for="setType" style="color:brown; font-weight: 600;">Set Type</label>
+
+               <select name="setType" class="form-control" id="setType" style="width:30%" formControlName="setType"> 
+                   <option value="D" selected>Deck</option>
+                   <option value="T">Tin</option>
+                   <option value="B">Box</option>
+               </select>
+           </div>
+
+           <div class="form-group">
+               <label for="releaseDate" style="color:cornflowerblue; font-weight: 600;">Release Date</label><br>
+                <input matInput [matDatepicker]="picker"  style="width:20%" name="releaseDate" formControlName="lancamento" >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+           </div>
+
+         <input type="submit" class="btn btn-primary mt-4" value="Save" style="margin-left: 45%;">
+
+       </form>
+    </div>
+</div>

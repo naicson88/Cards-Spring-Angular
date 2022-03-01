@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminDashboardComponent } from './component/admin/admin-dashboard/admin-dashboard.component';
 import { ArchetypeDetailsComponent } from './component/archetype-details/archetype-details/archetype-details.component';
 import { ArchetypeComponent } from './component/archetype/archetype.component';
 import { CardDetailComponent } from './component/card-detail/card-detail/card-detail.component';
@@ -14,6 +15,7 @@ import { LoginComponent } from './component/index/login/login.component';
 import { RegisterComponent } from './component/index/register/register.component';
 import { UsercardsComponent } from './component/usercards/usercards.component';
 import { ErrorPagesComponent } from './error-pages/error-pages/error-pages.component';
+import { BaseRoleGuard } from './Util/CanActivate/BaseRoleGuard';
 
 const routes: Routes = [
   { path: 'decks', component: DeckComponent , data : {set_type: 'D'}},
@@ -32,8 +34,9 @@ const routes: Routes = [
   { path: 'archetypeDetails/:archId', component: ArchetypeDetailsComponent},
   { path: 'cards-search', component: CardsSearchComponent},
   { path: 'userdeck-details/:deckName', component: DeckDetailUserComponent },
-  {path: 'search-box', component: SearchBoxComponent},
-  {path: 'error-page/:code', component:ErrorPagesComponent},
+  { path: 'search-box', component: SearchBoxComponent},
+  { path: 'error-page/:code', component:ErrorPagesComponent},
+  { path: 'admin-dashboard', component:AdminDashboardComponent, canActivate: [BaseRoleGuard]},
   { path: '', redirectTo: 'index', pathMatch: 'full' },
   
   

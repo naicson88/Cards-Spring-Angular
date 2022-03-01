@@ -21,6 +21,8 @@ import com.naicson.yugioh.dto.home.LastAddedDTO;
 import com.naicson.yugioh.dto.home.RankingForHomeDTO;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.repository.HomeRepository;
+import com.naicson.yugioh.service.card.CardPriceInformationServiceImpl;
+import com.naicson.yugioh.service.card.CardViewsInformationServiceImpl;
 import com.naicson.yugioh.service.interfaces.HomeDetailService;
 import com.naicson.yugioh.util.GeneralFunctions;
 import com.naicson.yugioh.util.enums.CardStats;

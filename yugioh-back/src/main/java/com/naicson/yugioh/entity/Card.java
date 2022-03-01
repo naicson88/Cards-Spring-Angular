@@ -1,5 +1,6 @@
 package com.naicson.yugioh.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,12 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import com.naicson.yugioh.entity.imgs.CardAttributeImage;
-
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_cards")
@@ -27,64 +26,69 @@ public class Card {
 	private String categoria;
 	private String nome;
 	private String nomePortugues;
-	private String atributo;
+	@ManyToOne
+	@JoinColumn(name = "atributo_id",  referencedColumnName = "id")
+	private Atributo atributo;
 	private String propriedade;
 	private Integer nivel;
-	private String tipos;
+	@ManyToOne
+	@JoinColumn(name = "tipo_card_id",  referencedColumnName = "id")
+	private TipoCard tipo;
 	private Integer atk;
 	private Integer def;
-	private String condicao;
 	@Column(columnDefinition="text")
 	private String descricao;
 	@Column(columnDefinition="text")
 	private String descricaoPortugues;
 	private String imagem;
-	private String raridade;
 	private Integer escala;
 	@Column(columnDefinition="text")
 	private String descr_pendulum;
 	@Column(columnDefinition="text")
 	private String descr_pendulum_pt;
-	private String arquetipo;
 	private String qtd_link;
 	@Transient
 	private List<Deck> sets;
 	@Column(name = "generic_type")
 	private String genericType;
-	@Column(name = "cod_archetype")
-	private int codArchetype;
-	@OneToOne(optional = false)
-	@JoinColumn(name = "attribute_img_id", referencedColumnName = "id")
-	private CardAttributeImage attributeImg;
-	
+	@ManyToOne
+	@JoinColumn(name = "cod_archetype",  referencedColumnName = "id")
+	private Archetype archetype;
 
+	private Date registryDate;
+	
 	public Card() {
 		
 	}
 
-
-	
 	//Construtor para CardsSearchDTO
 	public Card(Long numero, String nome, String imagem) {
 		this.numero = numero;
 		this.nome = nome;
 		this.imagem = imagem;
 	}
-	
-	public CardAttributeImage getAttributeImg() {
-		return attributeImg;
+
+
+	public Atributo getAtributo() {
+		return atributo;
 	}
 
-	public void setAttributeImg(CardAttributeImage attributeImg) {
-		this.attributeImg = attributeImg;
+
+
+	public void setAtributo(Atributo atributo) {
+		this.atributo = atributo;
 	}
 
-	public String getGeneric_type() {
+
+
+	public String getGenericType() {
 		return genericType;
 	}
 
-	public void setGeneric_type(String generic_type) {
-		this.genericType = generic_type;
+
+
+	public void setGenericType(String genericType) {
+		this.genericType = genericType;
 	}
 
 	public String getNomePortugues() {
@@ -151,14 +155,6 @@ public class Card {
 		this.nome = nome;
 	}
 
-	public String getAtributo() {
-		return atributo;
-	}
-
-	public void setAtributo(String atributo) {
-		this.atributo = atributo;
-	}
-
 	public String getPropriedade() {
 		return propriedade;
 	}
@@ -174,13 +170,13 @@ public class Card {
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
 	}
-
-	public String getTipos() {
-		return tipos;
+	
+	public TipoCard getTipo() {
+		return tipo;
 	}
 
-	public void setTipos(String tipos) {
-		this.tipos = tipos;
+	public void setTipo(TipoCard tipo) {
+		this.tipo = tipo;
 	}
 
 	public Integer getAtk() {
@@ -199,14 +195,6 @@ public class Card {
 		this.def = def;
 	}
 
-	public String getCondicao() {
-		return condicao;
-	}
-
-	public void setCondicao(String condicao) {
-		this.condicao = condicao;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -221,14 +209,6 @@ public class Card {
 
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
-	}
-
-	public String getRaridade() {
-		return raridade;
-	}
-
-	public void setRaridade(String raridade) {
-		this.raridade = raridade;
 	}
 
 	public Integer getEscala() {
@@ -247,14 +227,6 @@ public class Card {
 		this.descr_pendulum = descr_pendulum;
 	}
 
-	public String getArquetipo() {
-		return arquetipo;
-	}
-
-	public void setArquetipo(String arquetipo) {
-		this.arquetipo = arquetipo;
-	}
-
 	public String getQtd_link() {
 		return qtd_link;
 	}
@@ -270,8 +242,23 @@ public class Card {
 	public void setNomePortgues(String nomePortgues) {
 		this.nomePortugues = nomePortgues;
 	}
-	
 
+	public Archetype getArchetype() {
+		return archetype;
+	}
+
+	public void setArchetype(Archetype archetype) {
+		this.archetype = archetype;
+	}
+
+	public Date getRegistryDate() {
+		return registryDate;
+	}
+
+	public void setRegistryDate(Date registryDate) {
+		this.registryDate = registryDate;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -297,24 +284,17 @@ public class Card {
 		return true;
 	}
 
-	public int getCodArchetype() {
-		return codArchetype;
-	}
-
-	public void setCodArchetype(int codArchetype) {
-		this.codArchetype = codArchetype;
-	}
-
 	@Override
 	public String toString() {
 		return "Card [id=" + id + ", numero=" + numero + ", categoria=" + categoria + ", nome=" + nome
 				+ ", nomePortugues=" + nomePortugues + ", atributo=" + atributo + ", propriedade=" + propriedade
-				+ ", nivel=" + nivel + ", tipos=" + tipos + ", atk=" + atk + ", def=" + def + ", condicao=" + condicao
-				+ ", descricao=" + descricao + ", descricaoPortugues=" + descricaoPortugues + ", imagem=" + imagem
-				+ ", raridade=" + raridade + ", escala=" + escala + ", descr_pendulum=" + descr_pendulum
-				+ ", descr_pendulum_pt=" + descr_pendulum_pt + ", arquetipo=" + arquetipo + ", qtd_link=" + qtd_link
-				+ ", sets=" + sets + ", generic_type=" + genericType + ", codArchetype=" + codArchetype + "]";
+				+ ", nivel=" + nivel + ", tipo=" + tipo + ", atk=" + atk + ", def=" + def + ", descricao=" + descricao
+				+ ", descricaoPortugues=" + descricaoPortugues + ", imagem=" + imagem + ", escala=" + escala
+				+ ", descr_pendulum=" + descr_pendulum + ", descr_pendulum_pt=" + descr_pendulum_pt + ", qtd_link="
+				+ qtd_link + ", sets=" + sets + ", genericType=" + genericType + ", archetype=" + archetype
+				+ ", registryDate=" + registryDate + "]";
 	}
+	
 	
 	
 	

@@ -184,7 +184,7 @@ export class UsercardsComponent implements OnInit {
 
         if(this.cardname != null && this.cardname != ""){
           this.service.searchCardsByName(this.cardname).subscribe(data=>{
-            console.log(typeof data)
+         
             if(Object.keys(data).length > 0 )
               this.arrCards = data;
             else{

@@ -136,17 +136,17 @@ public class UtilitariosServiceImpl implements UtilitariosService {
 					if(isPt == false) {	
 						Card card = new Card();
 						
-						card.setNumero((Long)    obj.get("id"));
+						card.setNumero((Long)    	obj.get("id"));
 						card.setNome((String) 		obj.get("name"));
 						card.setCategoria((String)  obj.get("type"));
 						card.setDescricao((String)  obj.get("desc"));
 						card.setAtk((Integer) 		obj.get("atk"));
 						card.setDef((Integer) 		obj.get("def"));
 						card.setNivel((Integer)		obj.get("level"));
-						card.setTipos((String)		obj.get("race"));
-						card.setAtributo((String)	obj.get("attribute"));
+						//card.setTipos((String)		obj.get("race"));
+						//card.setAtributo((String)	obj.get("attribute"));
 						if(obj.has("archetype"))
-						card.setArquetipo((String)  obj.get("archetype"));
+						//card.setArquetipo((String)  obj.get("archetype"));
 						if(obj.has("linkval"))
 						card.setQtd_link((String)   obj.get("linkval"));
 						if(obj.has("scanel"))

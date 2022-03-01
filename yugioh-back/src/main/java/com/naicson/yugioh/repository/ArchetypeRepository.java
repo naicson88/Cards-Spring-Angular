@@ -14,4 +14,6 @@ public interface ArchetypeRepository extends JpaRepository<Archetype, Integer>{
 
 	Archetype findById(int archId);
 
+	Archetype findByArcName(String archetype);
+
 }

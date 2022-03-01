@@ -59,5 +59,7 @@ public interface DeckDetailService {
 
 	List<RelDeckCards> relDeckCards(Long deckId, String setSource);
 	
+	Deck saveKonamiDeck(Deck kDeck);
+	
 	
 }

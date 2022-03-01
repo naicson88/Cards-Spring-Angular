@@ -1,5 +1,6 @@
 package com.naicson.yugioh.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,7 +13,10 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tab_rel_deck_cards")
-public class RelDeckCards {
+public class RelDeckCards implements Serializable {
+	
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@Column
@@ -22,7 +26,8 @@ public class RelDeckCards {
 	private Long deckId;
 	@Column(name = "card_numero")
 	private Long cardNumber;
-	private String card_set_code;
+	@Column(name = "card_set_code")
+	private String cardSetCode;
 	private Double card_price;
 	private String card_raridade;
 	private Date dt_criacao;
@@ -47,10 +52,10 @@ public class RelDeckCards {
 		this.cardNumber = card_numero;
 	}
 	public String getCard_set_code() {
-		return card_set_code;
+		return cardSetCode;
 	}
 	public void setCard_set_code(String card_set_code) {
-		this.card_set_code = card_set_code;
+		this.cardSetCode = card_set_code;
 	}
 	public Double getCard_price() {
 		return card_price;
