@@ -149,23 +149,23 @@ public class CardRegistry {
 		
 		if(StringUtils.containsIgnoreCase(type, "xyz"))
 			generic = GenericTypesCards.XYZ.toString();
-		else if(StringUtils.containsIgnoreCase("fusion", type))
+		else if(StringUtils.containsIgnoreCase(type, "fusion"))
 			generic = GenericTypesCards.FUSION.toString();
-		else if(StringUtils.containsIgnoreCase("link", type))
+		else if(StringUtils.containsIgnoreCase(type,"link"))
 			generic = GenericTypesCards.LINK.toString();
-		else if(StringUtils.containsIgnoreCase("pendulum", type))
+		else if(StringUtils.containsIgnoreCase(type,"pendulum"))
 			generic = GenericTypesCards.PENDULUM.toString();
-		else if(StringUtils.containsIgnoreCase("spell", type))
+		else if(StringUtils.containsIgnoreCase(type,"spell"))
 			generic = GenericTypesCards.SPELL.toString();
-		else if(StringUtils.containsIgnoreCase("trap", type))
+		else if(StringUtils.containsIgnoreCase(type,"trap"))
 			generic = GenericTypesCards.TRAP.toString();
-		else if(StringUtils.containsIgnoreCase("synchro", type))
+		else if(StringUtils.containsIgnoreCase(type,"synchro"))
 			generic = GenericTypesCards.SYNCHRO.toString();
 		else if(StringUtils.containsIgnoreCase(type, "ritual"))
 			generic = GenericTypesCards.RITUAL.toString();
-		else if(StringUtils.containsIgnoreCase("token", type))
+		else if(StringUtils.containsIgnoreCase(type,"token"))
 			generic = GenericTypesCards.TOKEN.toString();
-		else if(StringUtils.containsIgnoreCase("monster", type))
+		else if(StringUtils.containsIgnoreCase(type,"monster"))
 			generic = GenericTypesCards.MONSTER.toString();
 		else 
 			throw new IllegalArgumentException("Invalid monster type");

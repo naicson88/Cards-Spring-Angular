@@ -26,7 +26,8 @@ public class RelDeckCards implements Serializable {
 	private Long deckId;
 	@Column(name = "card_numero")
 	private Long cardNumber;
-	private String card_set_code;
+	@Column(name = "card_set_code")
+	private String cardSetCode;
 	private Double card_price;
 	private String card_raridade;
 	private Date dt_criacao;
@@ -51,10 +52,10 @@ public class RelDeckCards implements Serializable {
 		this.cardNumber = card_numero;
 	}
 	public String getCard_set_code() {
-		return card_set_code;
+		return cardSetCode;
 	}
 	public void setCard_set_code(String card_set_code) {
-		this.card_set_code = card_set_code;
+		this.cardSetCode = card_set_code;
 	}
 	public Double getCard_price() {
 		return card_price;

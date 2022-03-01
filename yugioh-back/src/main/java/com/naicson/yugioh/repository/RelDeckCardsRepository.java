@@ -22,6 +22,8 @@ public interface RelDeckCardsRepository extends JpaRepository<RelDeckCards, Inte
 	
 	List<RelDeckCards> findByDeckIdAndCardNumber(Long long1, Long cardNumero);
 
-	List<RelDeckCards> findByCardNumber(Long cardNumber);	 
-	
+	List<RelDeckCards> findByCardNumber(Long cardNumber);
+
+	//RelDeckCards findByCard_set_code(String card_set_code);	 
+	 List<RelDeckCards> findByCardSetCode(String card_set_code);
 }

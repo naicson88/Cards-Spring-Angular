@@ -63,8 +63,8 @@ public abstract class GeneralFunctions {
     
     public static void saveCardInFolder(Long cardNumber) {
     	try(InputStream in = new URL("https://storage.googleapis.com/ygoprodeck.com/pics/"+cardNumber+".jpg").openStream()) {
-    		Files.copy(in, Paths.get("C:\\Cards"+cardNumber+".jpg"));
-    		
+    		Files.copy(in, Paths.get("C:\\Cards\\"+cardNumber+".jpg"));
+    		logger.info("Card saved in folder");
     	}catch(IOException e) {
     		e.getMessage();
     	}

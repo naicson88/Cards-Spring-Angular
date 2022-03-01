@@ -677,4 +677,23 @@ public class DeckServiceImpl implements DeckDetailService {
 		
 		return deck;
 	}
+
+	@Override
+	public Deck saveKonamiDeck(Deck kDeck) {
+		
+		try {
+			List<Deck> isAlreadyRegistered = deckRepository.findTop30ByNomeContaining(kDeck.getNome());
+			
+			if(isAlreadyRegistered == null || isAlreadyRegistered.size() == 0){
+				kDeck = deckRepository.save(kDeck);
+			} else {
+				logger.error("Deck is already registered!".toUpperCase());
+				throw new Exception("Deck is already registered");
+			}
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		
+		return kDeck;
+	}
 }
