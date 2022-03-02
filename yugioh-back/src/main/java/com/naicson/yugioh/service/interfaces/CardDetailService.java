@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.entity.Card;
@@ -37,7 +38,7 @@ public interface CardDetailService {
 	
 	List<Deck> cardDecks(Long cardNumero);	
 	
-	List<Card> encontrarPorArchetype(int archId);
+	List<CardOfArchetypeDTO> encontrarPorArchetype(Integer archId);
 	
 	List<RelUserCardsDTO> searchForCardsUserHave(int[] cardsNumbers) throws SQLException, ErrorMessage;
 	

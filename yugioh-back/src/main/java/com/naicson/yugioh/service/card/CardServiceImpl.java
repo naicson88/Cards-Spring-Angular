@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
@@ -220,8 +221,22 @@ public class CardServiceImpl implements CardDetailService {
 	}
 
 	@Override
-	public List<Card> encontrarPorArchetype(int archId) {
-		return cardRepository.findByArchetype(archId);
+	public List<CardOfArchetypeDTO> encontrarPorArchetype(Integer archId) {
+		
+		List<Card> cardsOfArchetype = cardRepository.findByArchetype(archId);
+		
+		if(cardsOfArchetype == null || cardsOfArchetype.isEmpty())
+			throw new NoSuchElementException("It was not possible found cards of Archetype: " + archId);
+		
+		List<CardOfArchetypeDTO> listDTO = new ArrayList<>();
+		
+		  cardsOfArchetype.stream().forEach(card -> {
+			CardOfArchetypeDTO dto = new CardOfArchetypeDTO(card);
+			
+			listDTO.add(dto);
+		});
+		
+		return listDTO;
 	}
 
 	@Override

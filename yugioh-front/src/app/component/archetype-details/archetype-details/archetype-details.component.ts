@@ -20,7 +20,7 @@ export class ArchetypeDetailsComponent  implements OnInit  {
   
 
   ngOnInit() {
-    this.loadDeckDetails();
+    this.loadArchetypeDetails();
   }
 
   storedCardId(event){
@@ -45,8 +45,8 @@ export class ArchetypeDetailsComponent  implements OnInit  {
     return urlimg;
   }
 
-  loadDeckDetails(){
-
+  loadArchetypeDetails(){
+    debugger
     //const id = localStorage.getItem("idArchetype");
     const id = this.archService.getArchetypeId();
     this.archService.getArchetype(id).subscribe(data =>{

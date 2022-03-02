@@ -51,7 +51,7 @@ public class Card {
 	private List<Deck> sets;
 	@Column(name = "generic_type")
 	private String genericType;
-	@ManyToOne
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "cod_archetype",  referencedColumnName = "id")
 	private Archetype archetype;
 

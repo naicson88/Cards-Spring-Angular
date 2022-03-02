@@ -134,7 +134,7 @@ export class DeckDetailComponent implements OnInit {
     let categorias = [];
   
     for(var i = 0; i < data ['cards'].length; i++){
-     if(data['cards'][i].generic_type != null){categorias.push(data['cards'][i].generic_type)}
+     if(data['cards'][i].genericType != null){categorias.push(data['cards'][i].genericType)}
     }
     let counts = {};
     categorias.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
@@ -290,14 +290,14 @@ export class DeckDetailComponent implements OnInit {
     let arr = [];   
     
     for(var i = 0; i < data['cards'].length; i++){
-      if(data['cards'][i].nivel != null){arr.push(data['cards'][i].tipos)}  
+      if(data['cards'][i].nivel != null){arr.push(data['cards'][i].tipo.name)}  
 
-      if(data['cards'][i].atributo == 'DARK'){ this.qtd_total_DARK++;} 
-      if(data['cards'][i].atributo == 'FIRE'){ this.qtd_total_FIRE++;}
-      if(data['cards'][i].atributo == 'WATER'){ this.qtd_total_WATER++;}
-      if(data['cards'][i].atributo == 'EARTH'){ this.qtd_total_EARTH++;}
-      if(data['cards'][i].atributo == 'WIND'){ this.qtd_total_WIND++;}
-      if(data['cards'][i].atributo == 'LIGHT'){ this.qtd_total_LIGTH++;}
+      if(data['cards'][i].atributo.name == 'DARK'){ this.qtd_total_DARK++;} 
+      if(data['cards'][i].atributo.name  == 'FIRE'){ this.qtd_total_FIRE++;}
+      if(data['cards'][i].atributo.name  == 'WATER'){ this.qtd_total_WATER++;}
+      if(data['cards'][i].atributo.name  == 'EARTH'){ this.qtd_total_EARTH++;}
+      if(data['cards'][i].atributo.name  == 'WIND'){ this.qtd_total_WIND++;}
+      if(data['cards'][i].atributo.name  == 'LIGHT'){ this.qtd_total_LIGTH++;}
     }
 
         arr.reduce((acc, val) => {

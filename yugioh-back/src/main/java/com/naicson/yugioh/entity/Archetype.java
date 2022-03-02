@@ -11,18 +11,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
+
 @Entity
 @Table(name = "tab_archetypes")
 public class Archetype {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	@Column(name = "arc_name")
 	private String arcName;
 	
 	@Transient
-	private List<Card> arrayCards;
+	private List<CardOfArchetypeDTO> arrayCards;
 	@Transient
 	private List<Deck>arrayDecks;
 
@@ -30,11 +32,11 @@ public class Archetype {
 		
 	}
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -46,11 +48,11 @@ public class Archetype {
 		this.arcName = arcName;
 	}
 
-	public List<Card> getArrayCards() {
+	public List<CardOfArchetypeDTO> getArrayCards() {
 		return arrayCards;
 	}
 
-	public void setArrayCards(List<Card> arrayCards) {
+	public void setArrayCards(List<CardOfArchetypeDTO> arrayCards) {
 		this.arrayCards = arrayCards;
 	}
 
@@ -61,10 +63,11 @@ public class Archetype {
 	public void setArrayDecks(List<Deck> arrayDecks) {
 		this.arrayDecks = arrayDecks;
 	}
-	
-	
 
-
-
+	@Override
+	public String toString() {
+		return "Archetype [id=" + id + ", arcName=" + arcName + ", arrayCards=" + arrayCards + ", arrayDecks="
+				+ arrayDecks + "]";
+	}
 	
 }

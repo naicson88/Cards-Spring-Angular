@@ -10,7 +10,7 @@ export class Card {
 	 atributo:string
 	 propriedade:string
     nivel:number;
-	 tipos:string
+	 tipos:[]
 	 atk:number;
 	 def:number;
 	 condicao:string;
@@ -21,9 +21,9 @@ export class Card {
 	 escala:number;
 	 descr_pendulum:string
 	 descr_pendulum_pt:string
-	 arquetipo:string
+	 arquetipo:[]
 	 qtd_link:string
-	 generic_type:string
+	 genericType:string
 	 set_decks: Deck[];
 	 attributeImg:any;
 	 isExtraDeck:boolean;

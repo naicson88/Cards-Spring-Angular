@@ -32,7 +32,7 @@ public class DeckConsumer {
 	
 	Logger logger = LoggerFactory.getLogger(DeckConsumer.class);
 	
-	@RabbitListener(queues = "${rabbitmq.queue.deck}")
+	//@RabbitListener(queues = "${rabbitmq.queue.deck}")
 	@Transactional
 	private void consumer(KonamiDeck kDeck) {
 		

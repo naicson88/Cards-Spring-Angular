@@ -133,8 +133,8 @@
                        class="row" style="padding: 3px; border-bottom: solid thin #ccc; height: 39px; font-size: 14px; margin-bottom: 1px;">
                       
                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 hide-sm" style="max-width: 13%; padding-right: 1px; padding-left: 1px;">
-                            <img [src]='atributoImagem(cardsInfo.atributo)' alt="" width="30px" height="30px" style="display: inline-block;">
-                            <p class="atributo-card" style=" display: inline-block; margin: 0 2px 0 2px;">{{cardsInfo.atributo}} </p>
+                            <img [src]='cardsInfo.atributo.atributoImgPath' alt="" width="30px" height="30px" style="display: inline-block;">
+                            <p class="atributo-card" style=" display: inline-block; margin: 0 2px 0 2px;">{{cardsInfo.atributo.name}} </p>
                         </div>
 
                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2"style="max-width: 13%; padding-right: 1px; padding-left: 1px;margin-top: 1px;"
@@ -143,10 +143,10 @@
                             <p class="nivel" style=" display: inline-block; margin-left: 2px; "> Level {{cardsInfo.nivel}} </p>
                         </div>
                         <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5" style="padding-right: 1px; padding-left: 1px;">
-                            <img [src]='tipoImagem(cardsInfo.tipos)' alt="" height="30px" width="30px" 
+                            <img [src]='cardsInfo.tipo.atipoCardImgPath' alt="" height="30px" width="30px" 
                             style="display: inline-block; ">
                             <p class="tipos" style="display: inline-block; margin-left: 2px;" >[ 
-                               <span>{{cardsInfo.tipos}} </span> 
+                               <span>{{cardsInfo.tipo.name}} </span> 
 
                                <span *ngIf="cardsInfo.categoria == 'XYZ Monster' ">/ XYZ </span>
                                <span *ngIf="cardsInfo.categoria == 'Fusion Monster'">/ Fusion </span>
@@ -241,7 +241,7 @@
                         class="row" style="padding: 3px; border-bottom: solid thin #ccc; height: 39px; font-size: 14px; margin-bottom: 1px;">
 
                         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 hide-sm" style="max-width: 14%; padding-right: 1px; padding-left: 1px;">
-                            <img [src]='atributoImagem(cardsInfo.categoria)' alt="" width="30px" height="30px" style="display: inline-block;">
+                            <img [src]='cardsInfo.atributo.atributoImgPath' alt="" width="30px" height="30px" style="display: inline-block;">
                             <p class="atributo-card" style=" display: inline-block; margin: 0 2px 0 2px;">
                             <span *ngIf="cardsInfo.categoria == 'Spell Card'">Magic</span>
                             <span *ngIf="cardsInfo.categoria == 'Trap Card'">Trap</span>

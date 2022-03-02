@@ -60,9 +60,7 @@ public class CardRegistry {
 			cardToBeRegistered.setAtributo(apiCard.getAttribute() != null ? this.getCardAttribute(apiCard.getAttribute()) : null);
 					
 				
-			if(StringUtils.containsIgnoreCase("spell", apiCard.getType()) || 
-				StringUtils.containsIgnoreCase("trap", apiCard.getType()) ||
-				StringUtils.containsIgnoreCase("token", apiCard.getType()) ) {
+			if(StringUtils.containsIgnoreCase("spell", apiCard.getType()) || StringUtils.containsIgnoreCase("trap", apiCard.getType())) {
 				
 			   cardToBeRegistered.setPropriedade(apiCard.getRace() != null ? this.getCardProperty(apiCard.getRace()) : null);
 					
@@ -209,6 +207,5 @@ public class CardRegistry {
 		
 		return type;
 	}
-	
-	 
+		 
 }

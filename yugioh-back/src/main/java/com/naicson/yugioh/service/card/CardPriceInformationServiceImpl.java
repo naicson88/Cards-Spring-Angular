@@ -144,11 +144,12 @@ public class CardPriceInformationServiceImpl implements CardPriceInformationServ
 	}
 	
 	private String getCardName(Long cardNumber) {
+		
 		Card card = cardRepository.findByNumero(cardNumber);
 		
 		if(card == null) {
-			logger.error("Card with number " + card.getNumero() + " not found.".toUpperCase());
-			throw new EntityNotFoundException("Card with number " + card.getNumero() + " not found.");
+			logger.error("Card with number " + cardNumber + " not found.".toUpperCase());
+			throw new EntityNotFoundException("Card with number " + cardNumber + " not found.");
 		}
 		
 		if(card.getNome() == null || card.getNome().isBlank()) {

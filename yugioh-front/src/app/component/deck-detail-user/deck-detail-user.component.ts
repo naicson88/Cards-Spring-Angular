@@ -154,7 +154,7 @@ validTypeDeckCard(cards:any){
 
       if(card != null && card != undefined){
 
-        let isExtraDeckCard = GeneralFunctions.isExtraDeckCard(card.generic_type);
+        let isExtraDeckCard = GeneralFunctions.isExtraDeckCard(card.genericType);
 
         if(isExtraDeckCard)
           card.isExtraDeck = true;
@@ -201,15 +201,15 @@ countTypeCards(data:Card[], deck:string){
       if(deck === 'main'){
        // console.log(data)
         this.typeCard.monster = data.filter(card => card.nivel != null).length;
-        this.typeCard.magic = data.filter(card => card.generic_type === GenericTypeCard.SPELL).length;
-        this.typeCard.trap = data.filter(card => card.generic_type === GenericTypeCard.TRAP).length;
+        this.typeCard.magic = data.filter(card => card.genericType === GenericTypeCard.SPELL).length;
+        this.typeCard.trap = data.filter(card => card.genericType === GenericTypeCard.TRAP).length;
 
       } else if (deck === 'extra'){
   
-        this.typeCard.synchro = data.filter(card => card.generic_type === GenericTypeCard.SYNCHRO).length;
-        this.typeCard.xyz = data.filter(card => card.generic_type === GenericTypeCard.XYZ).length;
-        this.typeCard.fusion = data.filter(card => card.generic_type === GenericTypeCard.FUSION).length;
-        this.typeCard.link = data.filter(card => card.generic_type === GenericTypeCard.LINK).length;
+        this.typeCard.synchro = data.filter(card => card.genericType === GenericTypeCard.SYNCHRO).length;
+        this.typeCard.xyz = data.filter(card => card.genericType === GenericTypeCard.XYZ).length;
+        this.typeCard.fusion = data.filter(card => card.genericType === GenericTypeCard.FUSION).length;
+        this.typeCard.link = data.filter(card => card.genericType === GenericTypeCard.LINK).length;
 
       } else {
         alert("It was not possible count some deck cards. :( ")
@@ -655,7 +655,7 @@ sendToMainDeck(index:number){
   let card = this.sideDeckCards[index];
   Object.assign(card, {isExtraDeck: null})
 
-  let isExtraDeck = GeneralFunctions.isExtraDeckCard(card.generic_type);
+  let isExtraDeck = GeneralFunctions.isExtraDeckCard(card.genericType);
 
   if(isExtraDeck){
     this.sideDeckCards.splice(index, 1);
@@ -771,11 +771,11 @@ rearrengeCards(){
 rearrangeMain(){
   let auxArray:Card[] = [];
  
-  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.MONSTER).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.PENDULUM).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.SPELL).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.TRAP).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.mainDeckCards.filter(card => card.generic_type == GenericTypeCard.TOKEN).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.genericType == GenericTypeCard.MONSTER).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.genericType == GenericTypeCard.PENDULUM).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.genericType == GenericTypeCard.SPELL).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.genericType == GenericTypeCard.TRAP).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.mainDeckCards.filter(card => card.genericType == GenericTypeCard.TOKEN).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
   this.mainDeckCards = [];
   this.mainDeckCards.push(...auxArray)
 }
@@ -783,10 +783,10 @@ rearrangeMain(){
 rearrangeExtra(){
   let auxArray:Card[] = [];
 
-  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.FUSION).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.LINK).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.SYNCHRO).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.extraDeckCards.filter(card => card.generic_type == GenericTypeCard.XYZ).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.genericType == GenericTypeCard.FUSION).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.genericType == GenericTypeCard.LINK).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.genericType == GenericTypeCard.SYNCHRO).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.extraDeckCards.filter(card => card.genericType == GenericTypeCard.XYZ).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
 
   this.extraDeckCards = [];
   this.extraDeckCards.push(...auxArray)
@@ -795,15 +795,15 @@ rearrangeExtra(){
 rearrangeSide(){
   let auxArray:Card[] = [];
 
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.MONSTER).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.PENDULUM).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.SPELL).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.TRAP).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.TOKEN).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.FUSION).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.LINK).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.SYNCHRO).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
-  this.sideDeckCards.filter(card => card.generic_type == GenericTypeCard.XYZ).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.MONSTER).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.PENDULUM).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.SPELL).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.TRAP).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.TOKEN).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.FUSION).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.LINK).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.SYNCHRO).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
+  this.sideDeckCards.filter(card => card.genericType == GenericTypeCard.XYZ).sort((a,b) => a.nome.localeCompare(b.nome)).forEach(card => auxArray.push(card));
 
   this.sideDeckCards = [];
   this.sideDeckCards.push(...auxArray)
