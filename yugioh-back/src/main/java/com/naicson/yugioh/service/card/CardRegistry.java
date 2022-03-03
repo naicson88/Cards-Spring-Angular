@@ -189,21 +189,24 @@ public class CardRegistry {
 	}
 
 	private Archetype getCardArchetype(String archetype) {
-		Archetype arch = archRepository.findByArcName(archetype.trim());
-		
-		if(arch == null) {
-			throw new EntityNotFoundException("Cant found Archetype: " + archetype);
-		}
+		Archetype arch = new Archetype();
+	
+		if(archetype != null && !archetype.isEmpty()) 
+			arch = archRepository.findByArcName(archetype != null ? archetype.trim() : null);
+		else
+			arch = null;
 		
 		return arch;
 	}
 
 	private TipoCard getCardType(String race) {
-		TipoCard type = cardTypeRepository.findByName(race.trim());
+		TipoCard type = new TipoCard();
 		
-		if(type == null) {
-			throw new EntityNotFoundException("Cant found Card Type with name: " + race);
-		}
+		if(!"Normal".equalsIgnoreCase(race)) //Trap and Spell cards has "normal" type
+			 type = cardTypeRepository.findByName(race != null ? race.trim() : null);
+		else
+			type = null;
+
 		
 		return type;
 	}

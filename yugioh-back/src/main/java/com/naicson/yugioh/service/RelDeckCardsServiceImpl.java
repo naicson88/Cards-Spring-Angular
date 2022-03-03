@@ -22,7 +22,7 @@ public class RelDeckCardsServiceImpl implements RelDeckCardsDetails {
 	Logger logger = LoggerFactory.getLogger(DeckConsumer.class);
 
 	@Override
-	public List<RelDeckCards> saveRelDeckCards(List<RelDeckCards> listRelDeckCards) throws Exception {
+	public List<RelDeckCards> saveRelDeckCards(List<RelDeckCards> listRelDeckCards) throws Exception, IllegalArgumentException {
 		
 		if(listRelDeckCards == null || listRelDeckCards.size() == 0) {
 			logger.error("Invalid list of Rel Deck Cards".toUpperCase());
@@ -32,24 +32,17 @@ public class RelDeckCardsServiceImpl implements RelDeckCardsDetails {
 			
 			listRelDeckCards.stream().forEach(rel -> {
 				
-				try {
-				
-					if(relDeckCardsRepository.findByCardSetCode(rel.getCard_set_code()) == null) {
-						relSaved.add(relDeckCardsRepository.save(rel));
-						
-					} else {
-						logger.error("Card set code already registered {}".toUpperCase(), rel.getCard_set_code());
-						throw new Exception(" Card set code already registered: " + rel.getCard_set_code());
-					}
-				
-				}catch(Exception e) {
-					logger.error(e.getMessage());
-					 e.getMessage();
+				if(relDeckCardsRepository.findByCardSetCode(rel.getCard_set_code()) == null ||
+						relDeckCardsRepository.findByCardSetCode(rel.getCard_set_code()).isEmpty()	) {
+					relSaved.add(relDeckCardsRepository.save(rel));
+					
+				} else {
+					throw new IllegalArgumentException(" Card set code already registered: " + rel.getCard_set_code());
 				}
+
 			});
 			
 			if(listRelDeckCards.size() != relSaved.size()) {
-				logger.error("It was not possible save all Relations".toUpperCase());
 				throw new Exception("It was not possible save all Relations");
 			}
 			
