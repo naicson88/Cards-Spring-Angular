@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 
@@ -291,8 +292,22 @@ public class CardServiceImpl implements CardDetailService {
 	
 
 	@Override
-	public Card encontrarPorNumero(Long cardNumero) {
+	public Card findCardByNumberWithDecks(Long cardNumero) {
+		
 		Card card = cardRepository.findByNumero(cardNumero);
+		
+		if (card == null || card.getId() == null) {
+			logger.error("It was not possible find card with number: {}".toUpperCase(), cardNumero);
+			throw new EntityNotFoundException("It was not possible find card with number: " + cardNumero);
+		}
+		
+		card.setSets(cardDecks(cardNumero));
+					
+		if(card.getSets() != null && card.getSets().size() > 0) {
+			
+			card.getSets().stream().forEach(deck -> 
+				deck.setRel_deck_cards(relDeckCardsRepository.findByDeckIdAndCardNumber(deck.getId(), cardNumero)));
+		}
 		
 		return card;
 	}

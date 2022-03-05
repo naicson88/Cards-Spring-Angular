@@ -49,7 +49,7 @@ export class CardDetailComponent implements OnInit {
     localStorage.setItem("idDeckDetails", id);
     
   }
-
+/*
   atributoImagem(atributo:string){
     switch(atributo){
       case 'WATER':
@@ -82,8 +82,9 @@ export class CardDetailComponent implements OnInit {
 
     }
     
-  }
+  }*/
 
+  /*
   tipoImagem(tipo:string){
     switch(tipo){
       case 'Aqua': return '..\\..\\assets\\img\\tiposMonstros\\Aqua.png';
@@ -112,7 +113,7 @@ export class CardDetailComponent implements OnInit {
     case 'Wyrm' : return '..\\..\\assets\\img\\tiposMonstros\\Wyrm-DG.png';
     case 'Zombie': return '..\\..\\assets\\img\\tiposMonstros\\Zombie-DG.png';
     }
-  }
+  } */
 
   corRaridade(raridade:string){  
     if(raridade == 'Common'){
@@ -153,7 +154,7 @@ export class CardDetailComponent implements OnInit {
    esconderImgToolTip(){
     this.isShowTooltip = false;
   }
-
+/*
   storedArchetype(event){
     //const id = event.target.id;
     const archId = event.target.id;
@@ -167,6 +168,6 @@ export class CardDetailComponent implements OnInit {
       console.log("Unable to consult this card, try again later.");
       return false;
    }
-  }
+  }*/
 
 }

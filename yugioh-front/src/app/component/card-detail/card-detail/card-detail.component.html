@@ -106,7 +106,7 @@
                           <!--Descricao Card-->
                           <div class="row" style="padding: 5px; margin-left: 10px ; width: 95%; height: fit-content; border-top: solid thin #ccc;" >
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="text-align: left;">
-                                <p class="card-descr-pend" style="font-size:12px; margin-bottom: 1px;margin-top: 3px;
+                                <p class="card-descr-pend" style="font-size:14px; margin-bottom: 1px;margin-top: 3px;
                                  font-family:'Open Sans', Arial, sans-serif;" >
                                       {{card.descricao}}
                                  </p>
@@ -213,7 +213,7 @@
                   <th width="10%">Rarity</th>
                   <th width="15%">Price</th>
               </tr >
-              <tr *ngFor="let sets of card.set_decks">
+              <tr *ngFor="let sets of card.sets">
                 <td style="text-align: center;">
                     <img [src]='sets.imagem' alt="Image of the set" width="120px" height="160px" >
                 </td>

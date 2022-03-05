@@ -46,7 +46,7 @@ public interface CardDetailService {
 	
 	CardOfUserDetailDTO cardOfUserDetails(Long cardNumber) throws ErrorMessage, SQLException, Exception;
 	
-	Card encontrarPorNumero(Long cardNumero);
+	Card findCardByNumberWithDecks(Long cardNumero);
 	
 	List<CardsSearchDTO> getByGenericType(Pageable page, String getByGenericType, long userId);
 	

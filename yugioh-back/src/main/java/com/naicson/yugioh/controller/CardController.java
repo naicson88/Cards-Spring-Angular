@@ -82,17 +82,11 @@ public class CardController {
 	}
 	
 	@GetMapping(path = {"number/{cardNumero}"})
-	public Card procuraPorCardNumero(@PathVariable("cardNumero") Long cardNumero) {
-		List<Deck> deck_set = cardService.cardDecks(cardNumero);
-		
-		Card card = cardService.encontrarPorNumero(cardNumero);
-		card.setSets(deck_set);
-		
-		for(Deck rel : deck_set) {
-			List<RelDeckCards> rels = relDeckCardsRepository.findByDeckIdAndCardNumber(rel.getId(), cardNumero);
-			rel.setRel_deck_cards(rels);
-		}		
-		return card;		
+	public ResponseEntity<Card> procuraPorCardNumero(@PathVariable("cardNumero") Long cardNumero) {
+
+		Card card = cardService.findCardByNumberWithDecks(cardNumero);
+
+		return new ResponseEntity<Card>(card, HttpStatus.OK);		
 	}
 	
 	@PutMapping(path = {"editar/{id}"})
