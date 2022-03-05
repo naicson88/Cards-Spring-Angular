@@ -31,9 +31,6 @@ public class Card {
 	private Atributo atributo;
 	private String propriedade;
 	private Integer nivel;
-	@ManyToOne
-	@JoinColumn(name = "tipo_card_id",  referencedColumnName = "id")
-	private TipoCard tipo;
 	private Integer atk;
 	private Integer def;
 	@Column(columnDefinition="text")
@@ -51,7 +48,12 @@ public class Card {
 	private List<Deck> sets;
 	@Column(name = "generic_type")
 	private String genericType;
-	@ManyToOne
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "tipo_card_id",  referencedColumnName = "id")
+	private TipoCard tipo;
+	
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "cod_archetype",  referencedColumnName = "id")
 	private Archetype archetype;
 

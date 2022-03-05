@@ -189,15 +189,17 @@
                    </div> 
 
                   <div  style="width:90%; height: 70px; background-color:ghostwhite; padding: 5px; display: inline-block; " >
+               
 
-                        <a  name="{{decklist.id}}"  (click)="storeDeckId($event)" [routerLink]="['/deck-details/', deck.nome]" >
-                           <!--(click)="storeDeckId($event)"-->
+                        <a *ngIf="set_type != 'UD'" name="{{decklist.id}}"  (click)="storeDeckId(decklist.id)" [routerLink]="['/deck-details/', decklist.nome]" >
                            {{decklist.nome}}
-                        </a><br>
+                          </a><br>
+
+                          <a *ngIf="set_type == 'UD'" name="{{decklist.id}}"  (click)="storeDeckId(decklist.id)" [routerLink]="['/user-deck-details/', decklist.nome]" >
+                              {{decklist.nome}}
+                          </a><br>
 
                         <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">Released:</span> &nbsp; <span>2002</span>&nbsp;&nbsp;&nbsp;
-
-                        <span style="font-size:small; color: rgb(182, 178, 178); font-weight:normal;">You have:</span> &nbsp;<span>200</span>
 
                         <span *ngIf="set_type == 'UD'" style="float: right;">
                             <!--Opções que só aparecem se for deck de usuário-->

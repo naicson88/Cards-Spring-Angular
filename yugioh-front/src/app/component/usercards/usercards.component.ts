@@ -118,7 +118,7 @@ export class UsercardsComponent implements OnInit {
       this.leftTp =  e.pageX + 15 + "px";
       this.topTp = + e.pageY + 15 + "px";
       this.isShowTooltip = true;
-      console.log(this.leftTp +  " right ")
+     
       this.cardImage = GeneralFunctions.cardImagem + cardNumber + '.jpg';
       this.service.findByNumero(cardNumber).subscribe(card => { console.log(this.card); this.card = card  });
     

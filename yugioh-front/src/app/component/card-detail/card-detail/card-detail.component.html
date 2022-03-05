@@ -21,8 +21,8 @@
                     <p class="nome-cabecalho">{{card.nome}}</p>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm">
-                    <td class="td2">  <img [src]='atributoImagem(card.atributo)' alt="" width="40px" 
-                        height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo}} </td>
+                    <td class="td2">  <img [src]='card.atributo.atributoImgPath' alt="" width="40px" 
+                        height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo.name}} </td>
                 </div>
 
             </div>
@@ -40,18 +40,18 @@
                         </tr>
                         <tr>
                             <td class="td1">Types: </td>
-                            <td class="td2"> <img  [src]='tipoImagem(card.tipos)' alt=""
+                            <td class="td2"> <img  [src]='card.tipo.tipoCardImgPath' alt=""
                                  height="28px" width="28px" style="display: inline-block; margin-right: 3px;"> 
-                                <span>{{card.tipos}} </span> 
-                                <span *ngIf="card.generic_type == 'XYZ' ">/ XYZ </span>
-                               <span *ngIf="card.generic_type == 'FUSION'">/ Fusion </span>
-                               <span *ngIf="card.generic_type == 'LINK'">/ Link </span>
-                               <span *ngIf="card.generic_type == 'SYNCHRO' ">/ Synchro </span>
+                                <span>{{card.tipo.name}} </span> 
+                                <span *ngIf="card.genericType == 'XYZ' ">/ XYZ </span>
+                               <span *ngIf="card.genericType == 'FUSION'">/ Fusion </span>
+                               <span *ngIf="card.genericType == 'LINK'">/ Link </span>
+                               <span *ngIf="card.genericType == 'SYNCHRO' ">/ Synchro </span>
                                <span *ngIf="card.categoria == 'Toon Monster'">/ Toon </span>
                                <span *ngIf="card.categoria == 'Effect Monster'">/ Effect </span>
                                <span *ngIf="card.categoria == 'Flip Effect Monster'">/ Flip </span>
                                <span *ngIf="card.categoria == 'Tuner Monster'">/ Turner </span>
-                               <span *ngIf="card.generic_type == 'PENDULUM'">/ Pendulum </span>
+                               <span *ngIf="card.genericType == 'PENDULUM'">/ Pendulum </span>
                                 
                                 </td>
                         </tr>
@@ -76,10 +76,10 @@
                         </tr>
                         <tr>        
                             <td class="td1">Archetype: </td>
-                            <td class="td2 archetype"  id="{{card.codArchetype}}"> 
-                                <li  [routerLink]="['/archetypeDetails/', card.codArchetype]" 
-                                id='{{card.codArchetype}}' (click)="storedArchetype($event)" style=" list-style-type: none;">
-                                    {{card.arquetipo}} 
+                            <td class="td2 archetype"  > 
+                                <li  [routerLink]="['/archetypeDetails/', card.archetype.id]" 
+                                id='{{card.archetype.id}}' (click)="storedArchetype($event)" style=" list-style-type: none;">
+                                    {{card.archetype.arcName}} 
                                 </li>                            
                             </td>
                         </tr>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm">
                     <td class="td2">  <img [src]='atributoImagem(card.categoria)' alt="" width="40px" 
-                        height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo}} </td>
+                        height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo.name}} </td>
                 </div>
 
             </div>
@@ -146,10 +146,10 @@
                         <tr>        
                             <td class="td1">Archetype: </td>
                             
-                            <td class="td2"  attr.data-name="{{card.codArchetype}}" (click)="storedArchetype($event)"> 
-                                <li  [routerLink]="['/archetypeDetails/', card.codArchetype]" 
+                            <td class="td2"  attr.data-name="{{card.archetype.id}" (click)="storedArchetype($event)"> 
+                                <li  [routerLink]="['/archetypeDetails/', card.archetype.id]" 
                                 id='{{card.codArchetype}}' (click)="storedArchetype($event)">
-                                    {{card.arquetipo}} 
+                                    {{card.archetype.name}} 
                                 </li>                             
                             </td>
                         </tr>

@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
 import com.naicson.yugioh.entity.Archetype;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.repository.ArchetypeRepository;
@@ -33,11 +36,14 @@ public class ArchetypeController {
 	}
 
 	@GetMapping("/archetype/{archId}")
-	public Archetype consultarPorId( @PathVariable("archId") int archId) {
-		Archetype arch = new Archetype();
-		arch = archRepository.findById(archId);
-		List<Card> arrCards = cardService.encontrarPorArchetype(archId);
-		arch.setArrayCards(arrCards); 
+	public Archetype consultarPorId( @PathVariable("archId") Integer archId) {
+		
+		Archetype arch = archRepository.findById(archId).get();
+		System.out.println(arch.toString());
+		List<CardOfArchetypeDTO> cards = cardService.encontrarPorArchetype(archId);
+		
+		arch.setArrayCards(cards);
+		System.out.println(arch.toString());
 		
 		return arch;
 	}
