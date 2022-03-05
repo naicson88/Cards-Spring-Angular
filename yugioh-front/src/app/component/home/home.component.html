@@ -44,7 +44,7 @@
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active" >
-                    <img src="{{infoHome.hotNews[0].img}}" height="245px" class="d-block w-100">  
+                    <img src="{{infoHome.hotNews[0].img}}" height="245px" width="200px">  
                     <div class="slide_icon_name">
                         <a  (click)="storeDeckId(hot.id)" [routerLink]="['/deck-details/',infoHome.hotNews[0].name]">
                             <h5>{{infoHome.hotNews[0].name}}</h5>
@@ -53,7 +53,7 @@
                     </div>           
                   </div>  
                   <div class="carousel-item " *ngFor="let hot of infoHome.hotNews | slice:1; let i = index">
-                    <img src="{{hot.img}}" height="245px" class="d-block w-100">  
+                    <img src="{{hot.img}}" height="245px"  width="200px">  
                     <div class="slide_icon_name">
                         <a  (click)="storeDeckId(hot.id)" [routerLink]="['/deck-details/', hot.name]">
                             <h5>{{hot.name}}</h5>
