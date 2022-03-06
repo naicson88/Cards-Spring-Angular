@@ -62,7 +62,15 @@ public class ApiExceptionHandler {
 			return new ResponseEntity<Object>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+		@ExceptionHandler(value = {RuntimeException.class})
+		public ResponseEntity<Object> handleRuntimeException(RuntimeException re){
+			ApiExceptions ex = new ApiExceptions(re.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, this.time);
+			logger.error("RuntimeException: " + re.getMessage());
+			
+			return new ResponseEntity<Object>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+	}
 		
 	
 

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardDetailsDTO;
 import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
@@ -292,7 +293,7 @@ public class CardServiceImpl implements CardDetailService {
 	
 
 	@Override
-	public Card findCardByNumberWithDecks(Long cardNumero) {
+	public CardDetailsDTO findCardByNumberWithDecks(Long cardNumero) {
 		
 		Card card = cardRepository.findByNumero(cardNumero);
 		
@@ -309,7 +310,10 @@ public class CardServiceImpl implements CardDetailService {
 				deck.setRel_deck_cards(relDeckCardsRepository.findByDeckIdAndCardNumber(deck.getId(), cardNumero)));
 		}
 		
-		return card;
+		CardDetailsDTO dto = new CardDetailsDTO();
+		dto.setCard(card);
+		
+		return dto;
 	}
 	
 	@Override

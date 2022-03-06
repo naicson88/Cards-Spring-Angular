@@ -32,7 +32,7 @@ export class CardDetailComponent implements OnInit {
       id = Number(localStorage.getItem("idArchetype"));
     }
       this.service.getCardDetails(id).subscribe(data => {      
-        this.card = data;
+        this.card = data['card'];
         
       })  
   

@@ -66,6 +66,8 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 	
 	@Query(value = "select numero from tab_cards where numero in :cardsNumber", nativeQuery = true)
 	List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber);
+
+	Card findByNome(String nome);
 	
 	
 }
