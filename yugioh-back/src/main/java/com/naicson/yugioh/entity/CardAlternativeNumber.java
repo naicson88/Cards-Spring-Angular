@@ -17,9 +17,11 @@ public class CardAlternativeNumber {
 	private Long id;
 	private int cardId;
 	private Long cardAlternativeNumber;
+	
+	public CardAlternativeNumber() {}
 
 	public CardAlternativeNumber(Long id, int cardId, Long cardAlternativeNumber) {
-		super();
+		
 		this.id = id;
 		this.cardId = cardId;
 		this.cardAlternativeNumber = cardAlternativeNumber;

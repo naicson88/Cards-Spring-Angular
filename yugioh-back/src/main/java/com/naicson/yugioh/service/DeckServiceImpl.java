@@ -687,7 +687,7 @@ public class DeckServiceImpl implements DeckDetailService {
 			if(isAlreadyRegistered == null || isAlreadyRegistered.size() == 0){
 				kDeck = deckRepository.save(kDeck);
 			} else {
-				logger.error("Deck is already registered!".toUpperCase());
+				logger.error("Deck is already registered! Deck ID: ".toUpperCase() + isAlreadyRegistered.get(0).getId());
 				throw new Exception("Deck is already registered");
 			}
 		}catch(Exception e) {

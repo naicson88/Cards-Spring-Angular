@@ -62,13 +62,16 @@ public class CardRegistry {
 					this.validCardBeforeSave(cardToBeRegistered);
 					
 					GeneralFunctions.saveCardInFolder(cardToBeRegistered.getNumero());
-
-					if (cardRepository.save(cardToBeRegistered) == null) {
-						
+					
+					Card cardSaved = cardRepository.save(cardToBeRegistered);
+					
+					if (cardSaved == null) {						
 						logger.error("It was not possible save the card: " + cardToBeRegistered.getNumero());
-						throw new IllegalArgumentException(
-								"It was not possible save the card: " + cardToBeRegistered.getNumero());
+						throw new IllegalArgumentException("It was not possible save the card: " + cardToBeRegistered.getNumero());
+								
 					} else {
+						CardAlternativeNumber alternative = new CardAlternativeNumber(null, cardSaved.getId(), cardSaved.getNumero());
+						alternativeRepository.save(alternative);
 						logger.info("Card successfuly saved!");
 					}
 				}
@@ -122,20 +125,28 @@ public class CardRegistry {
 		Card card = cardRepository.findByNome(apiCard.getName());
 
 		if (card != null && card.getId() > 0) {
-			if (card.getNumero() == apiCard.getId()) {
+			if (card.getNumero() != apiCard.getId()) {
 
 				if (alternativeRepository.findByCardAlternativeNumber(apiCard.getId()) != null)
 					return true;
+				
 				else {
 					CardAlternativeNumber alternative = new CardAlternativeNumber(null, card.getId(), apiCard.getId());
-					alternativeRepository.save(alternative);
-					GeneralFunctions.saveCardInFolder(apiCard.getId());
-					return true;
+					
+					if(alternativeRepository.save(alternative) != null) {
+						logger.info("Alternative card number saved!");
+						GeneralFunctions.saveCardInFolder(apiCard.getId());
+						return true;
+						
+					}else {
+						throw new RuntimeException("It was not possible save alternative card number");
+					}
+
 				}
 
 			} else {
-				logger.error("Cards with same number cant be registered.");
-				throw new RuntimeException("Cards with same number cant be registered.");
+				//logger.error("Cards with same number and diferent name cant be registered.");
+				throw new RuntimeException("Cards with same number and diferent name cant be registered.");
 			}
 
 		} else {
