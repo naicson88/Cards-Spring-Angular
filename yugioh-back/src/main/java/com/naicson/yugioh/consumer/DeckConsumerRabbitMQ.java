@@ -19,7 +19,7 @@ import com.naicson.yugioh.service.card.CardRegistry;
 
 
 @Component
-public class DeckConsumer {
+public class DeckConsumerRabbitMQ {
 	
 	@Autowired
 	RelDeckCardsServiceImpl relDeckCardsService;
@@ -30,7 +30,7 @@ public class DeckConsumer {
 	@Autowired
 	CardRegistry cardRegistry;
 	
-	Logger logger = LoggerFactory.getLogger(DeckConsumer.class);
+	Logger logger = LoggerFactory.getLogger(DeckConsumerRabbitMQ.class);
 	
 	@RabbitListener(queues = "${rabbitmq.queue.deck}")
 	@Transactional

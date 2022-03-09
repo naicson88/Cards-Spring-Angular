@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.naicson.yugioh.consumer.DeckConsumer;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
 import com.naicson.yugioh.service.interfaces.RelDeckCardsDetails;
@@ -20,7 +19,7 @@ public class RelDeckCardsServiceImpl implements RelDeckCardsDetails {
 	@Autowired
 	RelDeckCardsRepository relDeckCardsRepository;
 	
-	Logger logger = LoggerFactory.getLogger(DeckConsumer.class);
+	Logger logger = LoggerFactory.getLogger(RelDeckCardsServiceImpl.class);
 
 	@Override
 	public List<RelDeckCards> saveRelDeckCards(List<RelDeckCards> listRelDeckCards) throws Exception, IllegalArgumentException, SQLException {

@@ -35,8 +35,10 @@ import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.CardAlternativeNumber;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.repository.CardAlternativeNumberRepository;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
@@ -62,6 +64,8 @@ public class CardServiceImpl implements CardDetailService {
 	CardDAO dao;
 	@Autowired
 	CardOfUserDetailDTO cardUserDTO;
+	@Autowired
+	CardAlternativeNumberRepository alternativeRepository;
 	
 	Logger logger = LoggerFactory.getLogger(HomeServiceImpl.class);	
 	
@@ -302,7 +306,47 @@ public class CardServiceImpl implements CardDetailService {
 			throw new EntityNotFoundException("It was not possible find card with number: " + cardNumero);
 		}
 		
-		card.setSets(cardDecks(cardNumero));
+		card = this.setAllCardSetsAndAlternativeNumbers(cardNumero, card);
+		
+		CardDetailsDTO dto = new CardDetailsDTO();
+		
+		dto.setCard(card);
+		dto.setQtdUserHaveByKonamiCollection(this.findQtdUserHaveByCollection(card.getId(), "konami"));
+		dto.setQtdUserHaveByUserCollection(this.findQtdUserHaveByCollection(card.getId(), "user"));
+		return dto;
+	}
+
+	private Map<String, Integer> findQtdUserHaveByCollection(Integer cardId, String collectionSource) {
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		
+		Map<String, Integer> mapCardSetAndQuantity = new HashMap<>();
+		List<Tuple> total = null;
+		
+		if("konami".equalsIgnoreCase(collectionSource))
+			total = cardRepository.findQtdUserHaveByKonamiCollection(cardId, user.getId());
+		else if("user".equalsIgnoreCase(collectionSource))
+			total = cardRepository.findQtdUserHaveByUserCollection(cardId, user.getId());
+		else
+			throw new IllegalArgumentException("Invalid collection source");
+		
+		if(total != null) {
+			
+			total.stream().forEach(relation -> {
+				mapCardSetAndQuantity.put(relation.get(1, String.class), relation.get(0, BigInteger.class).intValue());
+			});			
+			
+		} else {
+			return Collections.emptyMap();
+		}
+		
+		return mapCardSetAndQuantity;
+	
+	}
+
+	
+	private Card setAllCardSetsAndAlternativeNumbers(Long cardNumero, Card card) {
+		
+		card.setSets(this.cardDecks(cardNumero));
 					
 		if(card.getSets() != null && card.getSets().size() > 0) {
 			
@@ -310,10 +354,9 @@ public class CardServiceImpl implements CardDetailService {
 				deck.setRel_deck_cards(relDeckCardsRepository.findByDeckIdAndCardNumber(deck.getId(), cardNumero)));
 		}
 		
-		CardDetailsDTO dto = new CardDetailsDTO();
-		dto.setCard(card);
+		card.setAlternativeCardNumber(alternativeRepository.findAllByCardId(card.getId()));
 		
-		return dto;
+		return card;
 	}
 	
 	@Override

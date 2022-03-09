@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +17,12 @@ public class CardAlternativeNumber {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "card_id")
 	private int cardId;
 	private Long cardAlternativeNumber;
+	/*@ManyToOne()
+	@JoinColumn(name = "card_id",  referencedColumnName = "id")
+	private Card card;*/
 	
 	public CardAlternativeNumber() {}
 
