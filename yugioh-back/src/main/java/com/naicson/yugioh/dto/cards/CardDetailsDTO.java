@@ -1,14 +1,17 @@
 package com.naicson.yugioh.dto.cards;
 
+import java.util.List;
 import java.util.Map;
 
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.stats.CardPriceInformation;
 
 public class CardDetailsDTO {
 	
 	private Card card;
 	private Map<String, Integer> qtdUserHaveByKonamiCollection;
 	private Map<String,Integer> qtdUserHaveByUserCollection;
+	private List<CardPriceInformation> prices;
 	
 
 	public Card getCard() {
@@ -34,6 +37,15 @@ public class CardDetailsDTO {
 	public void setQtdUserHaveByUserCollection(Map<String,Integer> qtdUserHaveByUserCollection) {
 		this.qtdUserHaveByUserCollection = qtdUserHaveByUserCollection;
 	}
+
+	public List<CardPriceInformation> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(List<CardPriceInformation> prices) {
+		this.prices = prices;
+	}
+	
 	
 	
 }

@@ -18,6 +18,7 @@ import com.naicson.yugioh.entity.Atributo;
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.CardAlternativeNumber;
 import com.naicson.yugioh.entity.TipoCard;
+import com.naicson.yugioh.entity.stats.CardPriceInformation;
 import com.naicson.yugioh.repository.ArchetypeRepository;
 import com.naicson.yugioh.repository.AtributoRepository;
 import com.naicson.yugioh.repository.CardAlternativeNumberRepository;

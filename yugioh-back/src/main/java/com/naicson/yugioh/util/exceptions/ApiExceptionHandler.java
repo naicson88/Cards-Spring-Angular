@@ -24,7 +24,7 @@ public class ApiExceptionHandler {
 			
 		@ExceptionHandler(value = {Exception.class})
 		public ResponseEntity<ApiExceptions> handleExceptionError(Exception e) {
-			ApiExceptions ex = new ApiExceptions(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR, this.time);			
+			ApiExceptions ex = new ApiExceptions(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, this.time);			
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex);
 		}
 		

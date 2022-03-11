@@ -38,6 +38,7 @@ import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.CardAlternativeNumber;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.stats.CardPriceInformation;
 import com.naicson.yugioh.repository.CardAlternativeNumberRepository;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
@@ -66,6 +67,8 @@ public class CardServiceImpl implements CardDetailService {
 	CardOfUserDetailDTO cardUserDTO;
 	@Autowired
 	CardAlternativeNumberRepository alternativeRepository;
+	@Autowired
+	CardPriceInformationServiceImpl cardPriceService;
 	
 	Logger logger = LoggerFactory.getLogger(HomeServiceImpl.class);	
 	
@@ -313,6 +316,8 @@ public class CardServiceImpl implements CardDetailService {
 		dto.setCard(card);
 		dto.setQtdUserHaveByKonamiCollection(this.findQtdUserHaveByCollection(card.getId(), "konami"));
 		dto.setQtdUserHaveByUserCollection(this.findQtdUserHaveByCollection(card.getId(), "user"));
+		dto.setPrices(cardPriceService.getAllPricesOfACardById(card.getId()));
+		
 		return dto;
 	}
 
