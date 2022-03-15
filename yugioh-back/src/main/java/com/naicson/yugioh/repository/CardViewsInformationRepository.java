@@ -11,4 +11,7 @@ import com.naicson.yugioh.entity.stats.CardViewsInformation;
 public interface CardViewsInformationRepository extends JpaRepository<CardViewsInformation, Long> {
 	
 	List<CardViewsInformation> findTop6ByOrderByQtdViewsWeeklyDesc();
+
+	CardViewsInformation findByCardNumber(String cardNumber);
+	
 }

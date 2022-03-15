@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import com.naicson.yugioh.entity.CardAlternativeNumber;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
 import com.naicson.yugioh.entity.stats.CardPriceInformation;
+import com.naicson.yugioh.entity.stats.CardViewsInformation;
 import com.naicson.yugioh.repository.CardAlternativeNumberRepository;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
@@ -69,6 +71,8 @@ public class CardServiceImpl implements CardDetailService {
 	CardAlternativeNumberRepository alternativeRepository;
 	@Autowired
 	CardPriceInformationServiceImpl cardPriceService;
+	@Autowired
+	CardViewsInformationServiceImpl viewsService;
 	
 	Logger logger = LoggerFactory.getLogger(HomeServiceImpl.class);	
 	
@@ -300,6 +304,7 @@ public class CardServiceImpl implements CardDetailService {
 	
 
 	@Override
+	@Transactional
 	public CardDetailsDTO findCardByNumberWithDecks(Long cardNumero) {
 		
 		Card card = cardRepository.findByNumero(cardNumero);
@@ -318,7 +323,24 @@ public class CardServiceImpl implements CardDetailService {
 		dto.setQtdUserHaveByUserCollection(this.findQtdUserHaveByCollection(card.getId(), "user"));
 		dto.setPrices(cardPriceService.getAllPricesOfACardById(card.getId()));
 		
+		try {
+			dto.setViews(this.updateQtdCardViews(cardNumero));	
+			
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}
+		
 		return dto;
+	}
+
+	private CardViewsInformation updateQtdCardViews(Long cardNumero) {
+		
+		CardViewsInformation views = viewsService.updateCardViewsOrInsertInDB(cardNumero);
+		
+		if(views != null)
+			logger.info("Card views successfully updated!");
+		
+		return views;
 	}
 
 	private Map<String, Integer> findQtdUserHaveByCollection(Integer cardId, String collectionSource) {

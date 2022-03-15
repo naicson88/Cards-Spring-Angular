@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.naicson.yugioh.entity.Card;
 import com.naicson.yugioh.entity.stats.CardPriceInformation;
+import com.naicson.yugioh.entity.stats.CardViewsInformation;
 
 public class CardDetailsDTO {
 	
@@ -12,6 +13,7 @@ public class CardDetailsDTO {
 	private Map<String, Integer> qtdUserHaveByKonamiCollection;
 	private Map<String,Integer> qtdUserHaveByUserCollection;
 	private List<CardPriceInformation> prices;
+	private CardViewsInformation views;
 	
 
 	public Card getCard() {
@@ -44,6 +46,14 @@ public class CardDetailsDTO {
 
 	public void setPrices(List<CardPriceInformation> prices) {
 		this.prices = prices;
+	}
+
+	public CardViewsInformation getViews() {
+		return views;
+	}
+
+	public void setViews(CardViewsInformation views) {
+		this.views = views;
 	}
 	
 	
