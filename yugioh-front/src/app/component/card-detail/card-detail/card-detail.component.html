@@ -200,6 +200,21 @@
               </div>
             </div>
           </div> -->
+          <div style="margin: 10px; border: solid thin cadetblue;">
+            <mat-accordion >
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                     (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title style="font-weight: 500 !important;">
+                        <mat-icon> attach_money</mat-icon>   Card Price History
+                    </mat-panel-title>
+                  
+                  </mat-expansion-panel-header>
+                  <canvas #attrCanvas ></canvas>
+                </mat-expansion-panel>
+              </mat-accordion>
+          </div>
+       
           <div class="set-header" >
             Sets that contains this card
           </div>

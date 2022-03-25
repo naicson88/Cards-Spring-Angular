@@ -214,3 +214,10 @@ table {
     cursor: pointer;
 }
 
+.mat-expansion-panel-header{
+    background-color: #C3E8D1;
+    font-size: 16px;
+    font-family: "Droid Sans", sans-serif;
+    color: white;
+}
+

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/classes/Card';
 import { AchetypeService } from 'src/app/service/archetype-service/achetype.service';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
+import {Chart} from   'Chart.js';
 
 @Component({
   selector: 'app-card-detail',
@@ -11,15 +12,17 @@ import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
   styleUrls: ['./card-detail.component.css']
 })
 export class CardDetailComponent implements OnInit {
-
+  @ViewChild("attrCanvas",{static: true}) elemento: ElementRef;
   raridade:string;
   
 
   constructor(private router: Router, private service: CardServiceService, private archService: AchetypeService) { }
 
+
   ngOnInit() {
     window.scrollTo(0, 0);
     this.loadCardDetail();
+    this.cardPriceGrafic();
   }
 
   card: Card[]=[];
@@ -169,5 +172,46 @@ export class CardDetailComponent implements OnInit {
       return false;
    }
   }*/
+
+  cardPriceGrafic(){
+
+
+  const data = {
+    labels: ['5 Weeks ago', '4 Weeks ago', '3 Weeks ago', '2 Weeks ago', 'Current'],
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [12.30,21,23,25,30,10],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      },
+      {
+        label: 'Dataset 2',
+        data: [19,30,10,25,31,11],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      }
+    ]
+  };
+
+    new Chart(this.elemento.nativeElement, {
+      type: 'line',
+      data: data,
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins:{
+            legend: {
+              position: 'right'
+            }
+          },
+          responsive: true
+
+      }
+    });
+  }
 
 }
