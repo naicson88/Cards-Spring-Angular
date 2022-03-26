@@ -1,4 +1,4 @@
-<div id="mainDivCards">
+<div id="mainDivCards" >
     <div id="cabecalho" class="row">
         <div id="cardImagem" >
             <!--<img [src]="card.imagem" alt="" width="193" height="265" style="margin-left: -3px; margin-top: -3px;">-->
@@ -175,7 +175,7 @@
     </div>
 
     <!--Div Decks que tem esse card-->
-    <div style=" width: 90%; margin-top: 30px;" class="container">
+    <div style=" width: 100%; margin-top: 30px; " class="container">
        <!-- <div id="setsTitle">
             <h3> Sets that contains this card</h3>
         </div>
@@ -200,7 +200,11 @@
               </div>
             </div>
           </div> -->
-          <div style="margin: 10px; border: solid thin cadetblue;">
+          <!-- Card Price -->
+          <div id="total-card-views">
+                Total Views:  <b>15060</b> 
+          </div>
+          <div id="card-price-chart">
             <mat-accordion >
                 <mat-expansion-panel (opened)="panelOpenState = true"
                                      (closed)="panelOpenState = false">
@@ -214,45 +218,77 @@
                 </mat-expansion-panel>
               </mat-accordion>
           </div>
-       
-          <div class="set-header" >
-            Sets that contains this card
-          </div>
-          <div class="table-users">
+          <div id="card-table-and-collections" style="display: flex; justify-content: space-around;">
 
-          <table cellspacing="0">
-              <tr>
-                  <th width="20%">Image</th>
-                  <th width="30%">Set Name</th>
-                  <th width="15%">Card Set Code</th>
-                  <th width="10%">Rarity</th>
-                  <th width="15%">Price</th>
-              </tr >
-              <tr *ngFor="let sets of card.sets">
-                <td style="text-align: center;">
-                    <img [src]='sets.imagem' alt="Image of the set" width="120px" height="160px" >
-                </td>
-                <td>
-                   <a [routerLink]="['/deck-details/', sets.nome]" >{{sets.nome}}</a> 
-                </td>
-                <td style="text-align: center ;">
-                    {{sets.rel_deck_cards[0].card_set_code}}
-                </td>
-                <td style="text-align: center !important;">
-                    <p  [title]='sets.rel_deck_cards[0].card_raridade'
-                    [ngClass]="['raridade', corRaridade(sets.rel_deck_cards[0].card_raridade)]"
-                     style="margin-left: 15px;">
-                     {{raridade}}
-                  </p>
-                </td>
-                <td style="text-align: center !important;">
-                    <p class="card-text" style="color: #1c9eff !important;
-                    font-weight: bold; font-size: 1.3em !important;"> US$    {{sets.rel_deck_cards[0].card_price}}</p>
-                </td>
-              </tr>
-          </table>
-        </div>
+          <div id="table-description">
+           
+                <div class="table-users">
+                <i><span id="table-caption">Sets that contains this card</span></i>
+                <table cellspacing="0" >
+                  
+                    <tr>
+                        <th width="10%">Image</th>
+                        <th width="40%">Set Name</th>
+                        <th width="18%">Card Set Code</th>
+                        <th width="7%">Rarity</th>
+                        <th width="15%">Price (US$)</th>
+                    </tr >
+                    <tr *ngFor="let sets of card.sets">
+                        <td style="text-align: center;">
+                            <img [src]='sets.imagem' alt="Image of the set" width="80px" height="110px" >
+                        </td>
+                        <td>
+                        <a [routerLink]="['/deck-details/', sets.nome]" >{{sets.nome}}</a> 
+                        </td>
+                        <td style="text-align: center ;">
+                            {{sets.rel_deck_cards[0].card_set_code}}
+                        </td>
+                        <td style="text-align: center !important;">
+                            <p  [title]='sets.rel_deck_cards[0].card_raridade'
+                            [ngClass]="['raridade', corRaridade(sets.rel_deck_cards[0].card_raridade)]"
+                            style="margin-left: 15px;">
+                            {{raridade}}
+                        </p>
+                        </td>
+                        <td style="text-align: center !important;">
+                            <p class="card-text" style="color: #1c9eff !important;
+                            font-weight: bold; font-size: 1.3em !important;"> {{sets.rel_deck_cards[0].card_price}}</p>
+                        </td>
+                    </tr>
+                </table>
+                </div>
+          </div>
+                    <!--Your card collections-->
+                    <div id="div-card-collections" >
+                    <div class="collection-description" style="border: solid 1px #faeec2;">
+                        <div class="collection-description-header" style="background-color: #FBF3D5; border: solid thin #fde899;">
+                                Your Konami Collections
+                        </div>
+                        <div class="collection-description-body" style="background-color: #f7f5f0;">
+                                <p>Structure Deck: Marik (SDMA-EN002): 1</p>
+                                <p>Structure Deck: Marik (SDMA-EN002): 1</p>
+                        </div>
+                    </div>
+
+                    <div class="collection-description" style="border: solid 1px #B3D3EA;">
+                        <div class="collection-description-header" style="background-color: #B3D3EA; border: solid thin #a1d0f1;">
+                            This card in your collections
+                        </div>
+                        <div class="collection-description-body" style="background-color: #e0edf7;">
+                            <p>Structure Deck: Marik (SDMA-EN002): 1</p>
+                            <p>Structure Deck: Marik (SDMA-EN002): 1</p>
+                        </div>
+                    </div>
+            </div>
+          </div>
+           
+
         </div> 
-        </div>
+           
+    </div>
+    
         <app-footer></app-footer>
+   
+        
+       
         

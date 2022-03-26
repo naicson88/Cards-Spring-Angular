@@ -183,13 +183,13 @@ export class CardDetailComponent implements OnInit {
         label: 'Dataset 1',
         data: [12.30,21,23,25,30,10],
         borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        backgroundColor: 'rgba(255, 0, 0, 0)',
       },
       {
         label: 'Dataset 2',
         data: [19,30,10,25,31,11],
         borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        backgroundColor: 'rgba(255, 0, 0, 0)',
       }
     ]
   };
@@ -205,7 +205,9 @@ export class CardDetailComponent implements OnInit {
           },
           plugins:{
             legend: {
-              position: 'right'
+              labels: {
+                usePointStyle: true
+              }
             }
           },
           responsive: true

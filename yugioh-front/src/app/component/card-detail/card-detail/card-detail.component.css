@@ -1,14 +1,17 @@
 #mainDivCards{
-    transition: margin-left .5s;
+  
     border: solid thin;
-    max-width: 85%;
-    margin: 1% 1% 4% auto;
+    margin-bottom: 4%;
+   
     padding: 10px;
-    border-radius: 5px;
     border-color: #BEBEBE;
    /* background: url(../../../../assets/img/banner.jpg); */
-    margin-left: 7%;
+    width: 90%;
     min-width: 900px; 
+    background-color: ghostwhite;
+    height: fit-content;
+    margin-left: 5%;
+   
 
 }
 
@@ -137,17 +140,12 @@
   }
 
  .table-users{
-     border: 1px solid darken(#398B93,5%);
-     border-radius: 10px;
+    
      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
-     max-width: calc(100% - 2em);
      overflow: hidden;
-     width: 105%;
- }
-
-table {
      width: 100%;
  }
+
 
  .table-users table td {
     color:#0f75b2 ;
@@ -218,6 +216,81 @@ table {
     background-color: #C3E8D1;
     font-size: 16px;
     font-family: "Droid Sans", sans-serif;
-    color: white;
 }
+
+#total-card-views{
+    background-color: #f1f2f3;
+   
+    width: fit-content;
+    margin-bottom: 5px;
+    padding: 5px;
+    font-size: 12px;
+    border: solid thin silver;
+}
+
+#table-caption{
+    color: #0f75b2;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#card-price-chart{
+    margin: 10px 0 20px 0; 
+    border: solid thin cadetblue;
+}
+
+#table-description{
+     width: 65%;
+}
+
+#table-description table {
+    width:  100%;
+    font-size: 13px;
+}
+/* USER COLLECTION OF THIS CARD*/
+#div-card-collections{
+    width: fit-content;
+    display: list-item;
+    list-style: none;
+   /*justify-content: space-around*/
+    padding: 5px; 
+
+}
+
+.collection-description{
+    width: 32%;
+    min-width: 320px ;
+    height: fit-content;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 15px;
+}
+
+.collection-description-header{
+    width: 100%;
+    padding:10px 13px 10px 13px ;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Liberation Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color:rgb(106, 115, 124);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.collection-description-body{
+    width: 100%;
+    padding: 10px 13px 10px 13px;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Liberation Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 17px;
+    text-decoration: none solid rgb(82, 89, 96);
+    text-align: left;     
+    vertical-align: baseline;
+    
+}
+
 
