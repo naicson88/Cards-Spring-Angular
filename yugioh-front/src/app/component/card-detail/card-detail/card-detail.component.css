@@ -249,8 +249,9 @@
 }
 /* USER COLLECTION OF THIS CARD*/
 #div-card-collections{
-    width: fit-content;
+    width: 330px;
     display: list-item;
+    align-items: center;
     list-style: none;
    /*justify-content: space-around*/
     padding: 5px; 

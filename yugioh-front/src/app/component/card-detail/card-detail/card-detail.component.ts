@@ -14,6 +14,7 @@ import {Chart} from   'Chart.js';
 export class CardDetailComponent implements OnInit {
   @ViewChild("attrCanvas",{static: true}) elemento: ElementRef;
   raridade:string;
+
   
 
   constructor(private router: Router, private service: CardServiceService, private archService: AchetypeService) { }
@@ -23,9 +24,13 @@ export class CardDetailComponent implements OnInit {
     window.scrollTo(0, 0);
     this.loadCardDetail();
     this.cardPriceGrafic();
+
   }
 
   card: Card[]=[];
+  userKonamiCollectionMap: Map<any,any>
+  userHaveByUserCollection: Map<any,any>;
+  totalViews:number;
 
   loadCardDetail(){
    // const id = localStorage.getItem("idCard");
@@ -34,9 +39,12 @@ export class CardDetailComponent implements OnInit {
     if(id == null || id == undefined){
       id = Number(localStorage.getItem("idArchetype"));
     }
-      this.service.getCardDetails(id).subscribe(data => {      
+      this.service.getCardDetails(id).subscribe(data => { 
         this.card = data['card'];
-        
+        this.qtdUserHaveByKonamiCollection(data);
+        this.qtdUserHaveByUserCollection(data);
+        this.totalViews = data['views']['totalQtdViews'];
+
       })  
   
   }
@@ -215,5 +223,18 @@ export class CardDetailComponent implements OnInit {
       }
     });
   }
+
+   qtdUserHaveByKonamiCollection(data:any) {
+     // console.log(JSON.stringify(data['qtdUserHaveByKonamiCollection']));
+    let  result = Object.entries(data['qtdUserHaveByKonamiCollection']);
+    this.userKonamiCollectionMap = new Map(result);
+   // console.log(this.userKonamiCollectionMap);
+   }
+
+   qtdUserHaveByUserCollection(data:any){
+     let result = Object.entries(data['qtdUserHaveByUserCollection']);
+     this.userHaveByUserCollection = new Map(result);
+     console.log(this.userHaveByUserCollection)
+   }
 
 }

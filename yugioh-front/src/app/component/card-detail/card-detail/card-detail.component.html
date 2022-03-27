@@ -202,7 +202,7 @@
           </div> -->
           <!-- Card Price -->
           <div id="total-card-views">
-                Total Views:  <b>15060</b> 
+                Total Views:  <b>{{totalViews}}</b> 
           </div>
           <div id="card-price-chart">
             <mat-accordion >
@@ -259,14 +259,13 @@
                 </div>
           </div>
                     <!--Your card collections-->
-                    <div id="div-card-collections" >
+            <div id="div-card-collections" >
                     <div class="collection-description" style="border: solid 1px #faeec2;">
                         <div class="collection-description-header" style="background-color: #FBF3D5; border: solid thin #fde899;">
-                                Your Konami Collections
+                            Your Konami Collections
                         </div>
                         <div class="collection-description-body" style="background-color: #f7f5f0;">
-                                <p>Structure Deck: Marik (SDMA-EN002): 1</p>
-                                <p>Structure Deck: Marik (SDMA-EN002): 1</p>
+                            <p *ngFor="let mapKonami of userKonamiCollectionMap | keyvalue">• {{mapKonami.key}}:<b style="color: #1c9eff;">{{mapKonami.value}}</b> </p>                            
                         </div>
                     </div>
 
@@ -275,14 +274,11 @@
                             This card in your collections
                         </div>
                         <div class="collection-description-body" style="background-color: #e0edf7;">
-                            <p>Structure Deck: Marik (SDMA-EN002): 1</p>
-                            <p>Structure Deck: Marik (SDMA-EN002): 1</p>
+                             <p *ngFor="let mapUserCol of userHaveByUserCollection | keyvalue">• {{mapUserCol.key}}:<b style="color: red;">{{mapUserCol.value}}</b> </p>                        
                         </div>
                     </div>
             </div>
           </div>
-           
-
         </div> 
            
     </div>
