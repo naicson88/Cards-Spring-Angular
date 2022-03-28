@@ -1,4 +1,7 @@
 <div id="mainDivCards" >
+    <div class="set-header">  
+        Card Details
+       </div>
     <div id="cabecalho" class="row">
         <div id="cardImagem" >
             <!--<img [src]="card.imagem" alt="" width="193" height="265" style="margin-left: -3px; margin-top: -3px;">-->
@@ -124,7 +127,7 @@
                 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 hide-sm">
                     <p class="nome-cabecalho">{{card.nome}}</p>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm" *ngIf="expression">
                     <td class="td2">  <img [src]='atributoImagem(card.categoria)' alt="" width="40px" 
                         height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo.name}} </td>
                 </div>
@@ -223,7 +226,7 @@
           <div id="table-description">
            
                 <div class="table-users">
-                <i><span id="table-caption">Sets that contains this card</span></i>
+                <i><span id="table-caption">Konami sets that contains this card</span></i>
                 <table cellspacing="0" >
                   
                     <tr>

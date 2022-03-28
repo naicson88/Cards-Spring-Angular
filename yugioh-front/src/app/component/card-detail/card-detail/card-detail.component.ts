@@ -37,7 +37,7 @@ export class CardDetailComponent implements OnInit {
     let id = this.service.getCardNumber();
     
     if(id == null || id == undefined){
-      id = Number(localStorage.getItem("idArchetype"));
+      id = Number(localStorage.getItem("idCard"));
     }
       this.service.getCardDetails(id).subscribe(data => { 
         this.card = data['card'];
@@ -60,7 +60,7 @@ export class CardDetailComponent implements OnInit {
     localStorage.setItem("idDeckDetails", id);
     
   }
-/*
+
   atributoImagem(atributo:string){
     switch(atributo){
       case 'WATER':
@@ -89,11 +89,9 @@ export class CardDetailComponent implements OnInit {
           return '..\\..\\assets\\img\\outras\\Counter.png';
         case 'Equip':
           return '..\\..\\assets\\img\\outras\\Equip.jpg'; 
-
-
     }
     
-  }*/
+  }
 
   /*
   tipoImagem(tipo:string){
@@ -165,7 +163,7 @@ export class CardDetailComponent implements OnInit {
    esconderImgToolTip(){
     this.isShowTooltip = false;
   }
-/*
+
   storedArchetype(event){
     //const id = event.target.id;
     const archId = event.target.id;
@@ -179,7 +177,7 @@ export class CardDetailComponent implements OnInit {
       console.log("Unable to consult this card, try again later.");
       return false;
    }
-  }*/
+  }
 
   cardPriceGrafic(){
 
