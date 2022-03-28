@@ -12,7 +12,7 @@ export class ErrorPagesComponent implements OnInit, AfterViewChecked {
   constructor(private router: ActivatedRoute) { }
 
   ngAfterViewChecked(): void {
-    this.scroll()
+   
   }
 
   errorImage:string;

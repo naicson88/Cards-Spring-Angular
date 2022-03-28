@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/classes/Card';
 import { AchetypeService } from 'src/app/service/archetype-service/achetype.service';
 import { CardServiceService } from 'src/app/service/card-service/card-service.service';
 import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
+import {Chart} from   'Chart.js';
 
 @Component({
   selector: 'app-card-detail',
@@ -11,29 +12,39 @@ import { GeneralFunctions } from 'src/app/Util/GeneralFunctions';
   styleUrls: ['./card-detail.component.css']
 })
 export class CardDetailComponent implements OnInit {
-
+  @ViewChild("attrCanvas",{static: true}) elemento: ElementRef;
   raridade:string;
+
   
 
   constructor(private router: Router, private service: CardServiceService, private archService: AchetypeService) { }
 
+
   ngOnInit() {
     window.scrollTo(0, 0);
     this.loadCardDetail();
+    this.cardPriceGrafic();
+
   }
 
   card: Card[]=[];
+  userKonamiCollectionMap: Map<any,any>
+  userHaveByUserCollection: Map<any,any>;
+  totalViews:number;
 
   loadCardDetail(){
    // const id = localStorage.getItem("idCard");
     let id = this.service.getCardNumber();
     
     if(id == null || id == undefined){
-      id = Number(localStorage.getItem("idArchetype"));
+      id = Number(localStorage.getItem("idCard"));
     }
-      this.service.getCardDetails(id).subscribe(data => {      
-        this.card = data;
-        
+      this.service.getCardDetails(id).subscribe(data => { 
+        this.card = data['card'];
+        this.qtdUserHaveByKonamiCollection(data);
+        this.qtdUserHaveByUserCollection(data);
+        this.totalViews = data['views']['totalQtdViews'];
+
       })  
   
   }
@@ -78,12 +89,11 @@ export class CardDetailComponent implements OnInit {
           return '..\\..\\assets\\img\\outras\\Counter.png';
         case 'Equip':
           return '..\\..\\assets\\img\\outras\\Equip.jpg'; 
-
-
     }
     
   }
 
+  /*
   tipoImagem(tipo:string){
     switch(tipo){
       case 'Aqua': return '..\\..\\assets\\img\\tiposMonstros\\Aqua.png';
@@ -112,7 +122,7 @@ export class CardDetailComponent implements OnInit {
     case 'Wyrm' : return '..\\..\\assets\\img\\tiposMonstros\\Wyrm-DG.png';
     case 'Zombie': return '..\\..\\assets\\img\\tiposMonstros\\Zombie-DG.png';
     }
-  }
+  } */
 
   corRaridade(raridade:string){  
     if(raridade == 'Common'){
@@ -168,5 +178,61 @@ export class CardDetailComponent implements OnInit {
       return false;
    }
   }
+
+  cardPriceGrafic(){
+
+
+  const data = {
+    labels: ['5 Weeks ago', '4 Weeks ago', '3 Weeks ago', '2 Weeks ago', 'Current'],
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [12.30,21,23,25,30,10],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0)',
+      },
+      {
+        label: 'Dataset 2',
+        data: [19,30,10,25,31,11],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0)',
+      }
+    ]
+  };
+
+    new Chart(this.elemento.nativeElement, {
+      type: 'line',
+      data: data,
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          },
+          plugins:{
+            legend: {
+              labels: {
+                usePointStyle: true
+              }
+            }
+          },
+          responsive: true
+
+      }
+    });
+  }
+
+   qtdUserHaveByKonamiCollection(data:any) {
+     // console.log(JSON.stringify(data['qtdUserHaveByKonamiCollection']));
+    let  result = Object.entries(data['qtdUserHaveByKonamiCollection']);
+    this.userKonamiCollectionMap = new Map(result);
+   // console.log(this.userKonamiCollectionMap);
+   }
+
+   qtdUserHaveByUserCollection(data:any){
+     let result = Object.entries(data['qtdUserHaveByUserCollection']);
+     this.userHaveByUserCollection = new Map(result);
+     console.log(this.userHaveByUserCollection)
+   }
 
 }

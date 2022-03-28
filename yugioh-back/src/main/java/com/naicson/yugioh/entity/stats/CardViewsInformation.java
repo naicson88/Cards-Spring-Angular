@@ -22,6 +22,7 @@ public class CardViewsInformation {
 	private Long qtdViewsWeekly;
 	private Long totalQtdViews;
 	private LocalDateTime lastUpdate;
+	
 	public Long getId() {
 		return id;
 	}

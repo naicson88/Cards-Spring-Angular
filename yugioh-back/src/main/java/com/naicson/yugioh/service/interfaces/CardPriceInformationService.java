@@ -19,4 +19,6 @@ public interface CardPriceInformationService {
 	public List<RankingForHomeDTO> getWeeklyLowStats();
 	
 	public List<RankingForHomeDTO> findWeeklyCards(CardStats stats);
+	
+	public List<CardPriceInformation> getAllPricesOfACardById(Integer cardId);
 }

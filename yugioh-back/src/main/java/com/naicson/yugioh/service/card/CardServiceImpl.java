@@ -12,8 +12,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +30,18 @@ import org.springframework.stereotype.Service;
 import com.naicson.yugioh.dao.CardDAO;
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardDetailsDTO;
 import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
 import com.naicson.yugioh.dto.set.CardsOfUserSetsDTO;
 import com.naicson.yugioh.entity.Card;
+import com.naicson.yugioh.entity.CardAlternativeNumber;
 import com.naicson.yugioh.entity.Deck;
 import com.naicson.yugioh.entity.RelDeckCards;
+import com.naicson.yugioh.entity.stats.CardPriceInformation;
+import com.naicson.yugioh.entity.stats.CardViewsInformation;
+import com.naicson.yugioh.repository.CardAlternativeNumberRepository;
 import com.naicson.yugioh.repository.CardRepository;
 import com.naicson.yugioh.repository.DeckRepository;
 import com.naicson.yugioh.repository.RelDeckCardsRepository;
@@ -60,6 +67,12 @@ public class CardServiceImpl implements CardDetailService {
 	CardDAO dao;
 	@Autowired
 	CardOfUserDetailDTO cardUserDTO;
+	@Autowired
+	CardAlternativeNumberRepository alternativeRepository;
+	@Autowired
+	CardPriceInformationServiceImpl cardPriceService;
+	@Autowired
+	CardViewsInformationServiceImpl viewsService;
 	
 	Logger logger = LoggerFactory.getLogger(HomeServiceImpl.class);	
 	
@@ -291,8 +304,84 @@ public class CardServiceImpl implements CardDetailService {
 	
 
 	@Override
-	public Card encontrarPorNumero(Long cardNumero) {
+	@Transactional
+	public CardDetailsDTO findCardByNumberWithDecks(Long cardNumero) {
+		
 		Card card = cardRepository.findByNumero(cardNumero);
+		
+		if (card == null || card.getId() == null) {
+			logger.error("It was not possible find card with number: {}".toUpperCase(), cardNumero);
+			throw new EntityNotFoundException("It was not possible find card with number: " + cardNumero);
+		}
+		
+		card = this.setAllCardSetsAndAlternativeNumbers(cardNumero, card);
+		
+		CardDetailsDTO dto = new CardDetailsDTO();
+		
+		dto.setCard(card);
+		dto.setQtdUserHaveByKonamiCollection(this.findQtdUserHaveByCollection(card.getId(), "konami"));
+		dto.setQtdUserHaveByUserCollection(this.findQtdUserHaveByCollection(card.getId(), "user"));
+		dto.setPrices(cardPriceService.getAllPricesOfACardById(card.getId()));
+		
+		try {
+			dto.setViews(this.updateQtdCardViews(cardNumero));	
+			
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}
+		
+		return dto;
+	}
+
+	private CardViewsInformation updateQtdCardViews(Long cardNumero) {
+		
+		CardViewsInformation views = viewsService.updateCardViewsOrInsertInDB(cardNumero);
+		
+		if(views != null)
+			logger.info("Card views successfully updated!");
+		
+		return views;
+	}
+
+	private Map<String, Integer> findQtdUserHaveByCollection(Integer cardId, String collectionSource) {
+		UserDetailsImpl user = GeneralFunctions.userLogged();
+		
+		Map<String, Integer> mapCardSetAndQuantity = new HashMap<>();
+		List<Tuple> total = null;
+		
+		if("konami".equalsIgnoreCase(collectionSource))
+			total = cardRepository.findQtdUserHaveByKonamiCollection(cardId, user.getId());
+		else if("user".equalsIgnoreCase(collectionSource))
+			total = cardRepository.findQtdUserHaveByUserCollection(cardId, user.getId());
+		else
+			throw new IllegalArgumentException("Invalid collection source");
+		
+		if(total != null) {
+			
+			total.stream().forEach(relation -> {
+				mapCardSetAndQuantity.put(relation.get(1, String.class), relation.get(0, BigInteger.class).intValue());
+			});			
+			
+		} else {
+			return Collections.emptyMap();
+		}
+		
+		return mapCardSetAndQuantity;
+	
+	}
+
+	
+	private Card setAllCardSetsAndAlternativeNumbers(Long cardNumero, Card card) {
+		
+		card.setSets(this.cardDecks(cardNumero));
+					
+		if(card.getSets() != null && card.getSets().size() > 0) {
+			
+			card.getSets().stream().forEach(deck -> 
+				deck.setRel_deck_cards(relDeckCardsRepository.findByDeckIdAndCardNumber(deck.getId(), cardNumero)));
+		}
+		
+		card.setAlternativeCardNumber(alternativeRepository.findAllByCardId(card.getId()));
 		
 		return card;
 	}

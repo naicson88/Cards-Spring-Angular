@@ -1,4 +1,7 @@
-<div id="mainDivCards">
+<div id="mainDivCards" >
+    <div class="set-header">  
+        Card Details
+       </div>
     <div id="cabecalho" class="row">
         <div id="cardImagem" >
             <!--<img [src]="card.imagem" alt="" width="193" height="265" style="margin-left: -3px; margin-top: -3px;">-->
@@ -106,7 +109,7 @@
                           <!--Descricao Card-->
                           <div class="row" style="padding: 5px; margin-left: 10px ; width: 95%; height: fit-content; border-top: solid thin #ccc;" >
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="text-align: left;">
-                                <p class="card-descr-pend" style="font-size:12px; margin-bottom: 1px;margin-top: 3px;
+                                <p class="card-descr-pend" style="font-size:14px; margin-bottom: 1px;margin-top: 3px;
                                  font-family:'Open Sans', Arial, sans-serif;" >
                                       {{card.descricao}}
                                  </p>
@@ -124,7 +127,7 @@
                 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 hide-sm">
                     <p class="nome-cabecalho">{{card.nome}}</p>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 hide-sm" *ngIf="expression">
                     <td class="td2">  <img [src]='atributoImagem(card.categoria)' alt="" width="40px" 
                         height="40px" style="display: inline-block; margin-top: -5px;"/> {{card.atributo.name}} </td>
                 </div>
@@ -175,7 +178,7 @@
     </div>
 
     <!--Div Decks que tem esse card-->
-    <div style=" width: 90%; margin-top: 30px;" class="container">
+    <div style=" width: 100%; margin-top: 30px; " class="container">
        <!-- <div id="setsTitle">
             <h3> Sets that contains this card</h3>
         </div>
@@ -200,44 +203,91 @@
               </div>
             </div>
           </div> -->
-          <div class="set-header" >
-            Sets that contains this card
+          <!-- Card Price -->
+          <div id="total-card-views">
+                Total Views:  <b>{{totalViews}}</b> 
           </div>
-          <div class="table-users">
+          <div id="card-price-chart">
+            <mat-accordion >
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                     (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title style="font-weight: 500 !important;">
+                        <mat-icon> attach_money</mat-icon>   Card Price History
+                    </mat-panel-title>
+                  
+                  </mat-expansion-panel-header>
+                  <canvas #attrCanvas ></canvas>
+                </mat-expansion-panel>
+              </mat-accordion>
+          </div>
+          <div id="card-table-and-collections" style="display: flex; justify-content: space-around;">
 
-          <table cellspacing="0">
-              <tr>
-                  <th width="20%">Image</th>
-                  <th width="30%">Set Name</th>
-                  <th width="15%">Card Set Code</th>
-                  <th width="10%">Rarity</th>
-                  <th width="15%">Price</th>
-              </tr >
-              <tr *ngFor="let sets of card.set_decks">
-                <td style="text-align: center;">
-                    <img [src]='sets.imagem' alt="Image of the set" width="120px" height="160px" >
-                </td>
-                <td>
-                   <a [routerLink]="['/deck-details/', sets.nome]" >{{sets.nome}}</a> 
-                </td>
-                <td style="text-align: center ;">
-                    {{sets.rel_deck_cards[0].card_set_code}}
-                </td>
-                <td style="text-align: center !important;">
-                    <p  [title]='sets.rel_deck_cards[0].card_raridade'
-                    [ngClass]="['raridade', corRaridade(sets.rel_deck_cards[0].card_raridade)]"
-                     style="margin-left: 15px;">
-                     {{raridade}}
-                  </p>
-                </td>
-                <td style="text-align: center !important;">
-                    <p class="card-text" style="color: #1c9eff !important;
-                    font-weight: bold; font-size: 1.3em !important;"> US$    {{sets.rel_deck_cards[0].card_price}}</p>
-                </td>
-              </tr>
-          </table>
-        </div>
+          <div id="table-description">
+           
+                <div class="table-users">
+                <i><span id="table-caption">Konami sets that contains this card</span></i>
+                <table cellspacing="0" >
+                  
+                    <tr>
+                        <th width="10%">Image</th>
+                        <th width="40%">Set Name</th>
+                        <th width="18%">Card Set Code</th>
+                        <th width="7%">Rarity</th>
+                        <th width="15%">Price (US$)</th>
+                    </tr >
+                    <tr *ngFor="let sets of card.sets">
+                        <td style="text-align: center;">
+                            <img [src]='sets.imagem' alt="Image of the set" width="80px" height="110px" >
+                        </td>
+                        <td>
+                        <a [routerLink]="['/deck-details/', sets.nome]" >{{sets.nome}}</a> 
+                        </td>
+                        <td style="text-align: center ;">
+                            {{sets.rel_deck_cards[0].card_set_code}}
+                        </td>
+                        <td style="text-align: center !important;">
+                            <p  [title]='sets.rel_deck_cards[0].card_raridade'
+                            [ngClass]="['raridade', corRaridade(sets.rel_deck_cards[0].card_raridade)]"
+                            style="margin-left: 15px;">
+                            {{raridade}}
+                        </p>
+                        </td>
+                        <td style="text-align: center !important;">
+                            <p class="card-text" style="color: #1c9eff !important;
+                            font-weight: bold; font-size: 1.3em !important;"> {{sets.rel_deck_cards[0].card_price}}</p>
+                        </td>
+                    </tr>
+                </table>
+                </div>
+          </div>
+                    <!--Your card collections-->
+            <div id="div-card-collections" >
+                    <div class="collection-description" style="border: solid 1px #faeec2;">
+                        <div class="collection-description-header" style="background-color: #FBF3D5; border: solid thin #fde899;">
+                            Your Konami Collections
+                        </div>
+                        <div class="collection-description-body" style="background-color: #f7f5f0;">
+                            <p *ngFor="let mapKonami of userKonamiCollectionMap | keyvalue">• {{mapKonami.key}}:<b style="color: #1c9eff;">{{mapKonami.value}}</b> </p>                            
+                        </div>
+                    </div>
+
+                    <div class="collection-description" style="border: solid 1px #B3D3EA;">
+                        <div class="collection-description-header" style="background-color: #B3D3EA; border: solid thin #a1d0f1;">
+                            This card in your collections
+                        </div>
+                        <div class="collection-description-body" style="background-color: #e0edf7;">
+                             <p *ngFor="let mapUserCol of userHaveByUserCollection | keyvalue">• {{mapUserCol.key}}:<b style="color: red;">{{mapUserCol.value}}</b> </p>                        
+                        </div>
+                    </div>
+            </div>
+          </div>
         </div> 
-        </div>
+           
+    </div>
+    
         <app-footer></app-footer>
+   
+        
+       
         

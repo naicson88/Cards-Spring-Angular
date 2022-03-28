@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -59,6 +60,9 @@ public class Card {
 
 	private Date registryDate;
 	
+	@Transient
+	private List<CardAlternativeNumber> alternativeCardNumber;
+	
 	public Card() {
 		
 	}
@@ -75,19 +79,21 @@ public class Card {
 		return atributo;
 	}
 
+	public List<CardAlternativeNumber> getAlternativeCardNumber() {
+		return alternativeCardNumber;
+	}
 
+	public void setAlternativeCardNumber(List<CardAlternativeNumber> alternativeCardNumber) {
+		this.alternativeCardNumber = alternativeCardNumber;
+	}
 
 	public void setAtributo(Atributo atributo) {
 		this.atributo = atributo;
 	}
 
-
-
 	public String getGenericType() {
 		return genericType;
 	}
-
-
 
 	public void setGenericType(String genericType) {
 		this.genericType = genericType;

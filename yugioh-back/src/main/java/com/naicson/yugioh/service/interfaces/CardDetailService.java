@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.naicson.yugioh.dto.RelUserCardsDTO;
 import com.naicson.yugioh.dto.cards.CardAndSetsDTO;
+import com.naicson.yugioh.dto.cards.CardDetailsDTO;
 import com.naicson.yugioh.dto.cards.CardOfArchetypeDTO;
 import com.naicson.yugioh.dto.cards.CardOfUserDetailDTO;
 import com.naicson.yugioh.dto.cards.CardsSearchDTO;
@@ -46,7 +47,7 @@ public interface CardDetailService {
 	
 	CardOfUserDetailDTO cardOfUserDetails(Long cardNumber) throws ErrorMessage, SQLException, Exception;
 	
-	Card encontrarPorNumero(Long cardNumero);
+	CardDetailsDTO findCardByNumberWithDecks(Long cardNumero);
 	
 	List<CardsSearchDTO> getByGenericType(Pageable page, String getByGenericType, long userId);
 	

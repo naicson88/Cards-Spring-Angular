@@ -1,6 +1,7 @@
 package com.naicson.yugioh.service.card;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -86,6 +87,59 @@ public class CardViewsInformationServiceImpl implements CardViewsInformationDeta
 		}
 		
 		return card.getNome();
+	}
+
+	private CardViewsInformation consultCardViews(Long cardNumber) {
+		
+		this.validCardNumber(cardNumber);
+		
+		CardViewsInformation views = cardViewsRepository.findByCardNumber(String.valueOf(cardNumber));
+		
+		return views;
+	}
+
+	@Override
+	public CardViewsInformation updateCardViewsOrInsertInDB(Long cardNumber) {
+		this.validCardNumber(cardNumber);
+		
+		CardViewsInformation views = this.consultCardViews(cardNumber);
+		
+		if(views != null && views.getId() > 0) {
+			views.setQtdViewsWeekly(views.getQtdViewsWeekly() + 1);
+			views.setTotalQtdViews(views.getTotalQtdViews() + 1);
+			views.setLastUpdate(LocalDateTime.now());
+			views = cardViewsRepository.save(views);
+			
+		} else {
+			views = this.insertCardViews(cardNumber);
+		}	
+		
+		return views;
+	}
+
+
+	private CardViewsInformation insertCardViews(Long cardNumber) {
+		this.validCardNumber(cardNumber);
+		
+		CardViewsInformation views = new CardViewsInformation();
+		views.setCardNumber(String.valueOf(cardNumber));
+		views.setQtdViewsWeekly(1L);
+		views.setTotalQtdViews(1L);
+		views.setLastUpdate(LocalDateTime.now());
+		
+		views = cardViewsRepository.save(views);
+		
+		if(views == null || views.getId() == null) {
+			logger.error("It was not possible save card views".toUpperCase());
+			throw new RuntimeException("It was not possible save card views");
+		}
+		
+		return views;
+	}
+	
+	private void validCardNumber(Long cardNumber) {
+		if(cardNumber == null || cardNumber == 0)
+			throw new IllegalArgumentException("Invalid Card Number: " + cardNumber);
 	}
 	
 }

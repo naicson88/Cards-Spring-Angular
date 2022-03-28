@@ -66,6 +66,27 @@ public interface CardRepository extends JpaRepository<Card, Long>, JpaSpecificat
 	
 	@Query(value = "select numero from tab_cards where numero in :cardsNumber", nativeQuery = true)
 	List<Long> findAllCardsByListOfCardNumbers(List<Long> cardsNumber);
+
+	Card findByNome(String nome);
+	
+	@Query(value = " SELECT count(rel.card_set_code) as total, CONCAT(decks.nome, ' (', rel.card_set_code,')' ) AS card_set "
+	+ " FROM yugioh.tab_rel_deckusers_cards as rel\r\n"
+	+ " inner join tab_rel_deck_cards rdc on rdc.card_set_code = rel.card_set_code"
+	+ " inner join tab_decks decks on decks.id = rdc.deck_id\r\n"
+	+ " inner join tab_deck_users du on du.id = rel.deck_id\r\n"
+	+ " where du.user_id = :userId "
+	+ " and  rel.card_numero in (select card_alternative_number from tab_card_alternative_numbers where card_id = :cardId) "
+	+ " group by rel.card_set_code, decks.nome", nativeQuery = true)
+	List<Tuple> findQtdUserHaveByKonamiCollection(Integer cardId, long userId);
+	
+	@Query(value = " SELECT count(rel.card_set_code) as total, CONCAT(du.nome, ' (', rel.card_set_code,')' ) AS card_set "
+	+ " FROM yugioh.tab_rel_deckusers_cards as rel\r\n"
+	+ " inner join tab_rel_deck_cards rdc on rdc.card_set_code = rel.card_set_code"
+	+ " inner join tab_deck_users du on du.id = rel.deck_id\r\n"
+	+ " where du.user_id = :userId "
+	+ " and  rel.card_numero in (select card_alternative_number from tab_card_alternative_numbers where card_id = :cardId) "
+	+ " group by rel.card_set_code, du.nome", nativeQuery = true)
+	List<Tuple> findQtdUserHaveByUserCollection(Integer cardId, long userId);
 	
 	
 }

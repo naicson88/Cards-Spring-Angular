@@ -12,6 +12,7 @@ public interface CardPriceInformationRepository extends JpaRepository<CardPriceI
 
 	List<CardPriceInformation> findTop6ByOrderByWeeklyPercentVariableDesc();
 	List<CardPriceInformation> findTop6ByOrderByWeeklyPercentVariableAsc();
+	List<CardPriceInformation> findByCardId(Integer cardId);
 	
 
 }

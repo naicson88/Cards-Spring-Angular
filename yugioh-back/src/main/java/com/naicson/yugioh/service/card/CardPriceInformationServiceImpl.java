@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +54,12 @@ public class CardPriceInformationServiceImpl implements CardPriceInformationServ
 		}
 		
 		cardInfo.setLastUpdate(LocalDateTime.now());
-		cardInfoRepository.save(cardInfo);
+		this.saveCardPriceInfo(cardInfo);
 	
+	}
+
+	public CardPriceInformation saveCardPriceInfo(CardPriceInformation cardInfo) {
+		return cardInfoRepository.save(cardInfo);
 	}
 	
 	private void validateWeeklyPercentageObj(CardPriceInformation cardInfo)  {
@@ -128,11 +133,11 @@ public class CardPriceInformationServiceImpl implements CardPriceInformationServ
 		this.validadeStatsList(cardsByStats, stats);
 		
 		List<RankingForHomeDTO> listCards = cardsByStats.stream().map(card -> {			
-			String cardName = this.getCardName(Long.parseLong(card.getCardNumber()));
+			String cardName = this.getCardName(card.getCardNumber().longValue());
 			RankingForHomeDTO cardByStats = new RankingForHomeDTO();
 			
 			cardByStats.setCardName(cardName);
-			cardByStats.setCardNumber(card.getCardNumber());
+			cardByStats.setCardNumber(String.valueOf(card.getCardNumber()));
 			cardByStats.setCardPrice(card.getCurrentPrice());
 			cardByStats.setPercentVariable(card.getWeeklyPercentVariable());
 			cardByStats.setSetCode(card.getCardSetCode());
@@ -160,7 +165,7 @@ public class CardPriceInformationServiceImpl implements CardPriceInformationServ
 		return card.getNome();		
 	}
 	
-	
+
 	private void validadeStatsList(List<CardPriceInformation> cardsByStats, CardStats stats) {
 		
 		try {
@@ -172,6 +177,20 @@ public class CardPriceInformationServiceImpl implements CardPriceInformationServ
 			logger.error("Something bad happened: " + e.getMessage());
 		}
 		
+	}
+	
+	@Override
+	public List<CardPriceInformation> getAllPricesOfACardById(Integer cardId) {
+		
+		if(cardId == null || cardId == 0)
+			throw new IllegalArgumentException("Invalid card id for search prices");
+		
+		List<CardPriceInformation> prices = cardInfoRepository.findByCardId(cardId);
+		
+		if(prices == null || prices.isEmpty())
+			return Collections.emptyList();
+		
+		return prices;
 	}
 
 
